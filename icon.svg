@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="NZ PTE Academic Trainer Icon">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f2942" />
+      <stop offset="100%" stop-color="#0066b2" />
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="100%" stop-color="#14b8a6" />
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#bgGrad)" />
+  <rect x="28" y="28" width="456" height="456" rx="92" fill="none" stroke="#ffffff" stroke-opacity="0.14" stroke-width="6" />
+
+  <!-- Sound waves -->
+  <path d="M128 214c-18 24-18 58 0 82" fill="none" stroke="url(#accentGrad)" stroke-width="18" stroke-linecap="round" opacity="0.7" />
+  <path d="M384 214c18 24 18 58 0 82" fill="none" stroke="url(#accentGrad)" stroke-width="18" stroke-linecap="round" opacity="0.7" />
+  <path d="M92 184c-28 42-28 100 0 142" fill="none" stroke="url(#accentGrad)" stroke-width="14" stroke-linecap="round" opacity="0.4" />
+  <path d="M420 184c28 42 28 100 0 142" fill="none" stroke="url(#accentGrad)" stroke-width="14" stroke-linecap="round" opacity="0.4" />
+
+  <!-- Microphone -->
+  <rect x="210" y="106" width="92" height="154" rx="46" fill="url(#accentGrad)" />
+  <path d="M168 228v24c0 48.6 39.4 88 88 88s88-39.4 88-88v-24" fill="none" stroke="#ffffff" stroke-width="20" stroke-linecap="round" />
+  <line x1="256" y1="340" x2="256" y2="386" stroke="#ffffff" stroke-width="20" stroke-linecap="round" />
+  <line x1="204" y1="386" x2="308" y2="386" stroke="#ffffff" stroke-width="20" stroke-linecap="round" />
+
+  <!-- PTE Badge -->
+  <rect x="166" y="410" width="180" height="52" rx="26" fill="#0f2942" stroke="#38bdf8" stroke-width="4" />
+  <text x="256" y="445" text-anchor="middle" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="30" font-weight="800" letter-spacing="4" fill="#ffffff">PTE</text>
+</svg>

@@ -1,0 +1,32 @@
+{
+  "name": "NZ PTE Academic 실전 연습 (Speaking & Writing)",
+  "short_name": "PTE 연습",
+  "description": "뉴질랜드 PTE Academic 스피킹(RA, DI, RS) 및 라이팅(SWT, Essay) 실전 타이머 연습 웹앱",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0f2942",
+  "theme_color": "#0f2942",
+  "lang": "ko",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./icon.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

@@ -1,0 +1,2316 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NZ PTE Academic 실전 연습 | Speaking &amp; Writing</title>
+
+  <!-- PWA & Apple Mobile Web App Meta Tags -->
+  <meta name="description" content="뉴질랜드 PTE Academic 스피킹(Read Aloud, Describe Image, Repeat Sentence) 및 라이팅(SWT, Essay) 실전 타이머 연습 웹앱" />
+  <meta name="theme-color" content="#0f2942" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="PTE 연습" />
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="icon" type="image/svg+xml" href="./icon.svg" />
+  <link rel="apple-touch-icon" href="./icon.svg" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Pretendard', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+          },
+          colors: {
+            pte: {
+              navy: '#0f2942',
+              blue: '#0066b2',
+              sky: '#e6f2fa',
+              teal: '#0d9488',
+            }
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    @keyframes pulse-ring {
+      0% { transform: scale(0.95); opacity: 0.7; }
+      70% { transform: scale(1.25); opacity: 0; }
+      100% { transform: scale(1.25); opacity: 0; }
+    }
+    .recording-ring {
+      animation: pulse-ring 1.4s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+    }
+    @keyframes sound-bar {
+      0%, 100% { transform: scaleY(0.35); }
+      50% { transform: scaleY(1); }
+    }
+    .sound-wave-bar {
+      animation: sound-bar 0.75s ease-in-out infinite;
+      transform-origin: bottom;
+    }
+    /* Custom scrollbar for subtle polish */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col antialiased">
+
+  <!-- Top Header -->
+  <header class="bg-pte-navy text-white shadow-md sticky top-0 z-30">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-3.5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-lg bg-sky-500/20 border border-sky-400/40 flex items-center justify-center shrink-0">
+          <svg class="w-5 h-5 text-sky-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 006-6v-1.5m-6 7.5a6 6 0 01-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 01-3-3V4.5a3 3 0 116 0v8.25a3 3 0 01-3 3z" />
+          </svg>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-base sm:text-lg font-bold tracking-tight">PTE Academic 실전 연습</h1>
+            <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-teal-500/20 text-teal-200 border border-teal-400/30">NZ 대비</span>
+          </div>
+          <p class="text-xs text-slate-300">Speaking (RA · DI · RS) &amp; Writing (SWT · Essay) 실전 타이머</p>
+        </div>
+      </div>
+
+      <!-- Microphone & Beep Quick Status -->
+      <div class="flex items-center gap-2 self-start sm:self-auto">
+        <button id="btn-mic-connect" type="button"
+          class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium bg-white/10 hover:bg-white/20 border border-white/15 transition cursor-pointer">
+          <span id="header-mic-dot" class="w-2 h-2 rounded-full bg-amber-400"></span>
+          <span id="header-mic-label">마이크 연결 확인</span>
+        </button>
+        <button id="btn-test-beep" type="button" title="비프음 볼륨 확인"
+          class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-white/10 hover:bg-white/20 border border-white/15 transition cursor-pointer">
+          <svg class="w-3.5 h-3.5 text-sky-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75z" />
+          </svg>
+          <span>Beep 테스트</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="bg-white border-b border-slate-200 text-slate-700">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 flex gap-1 sm:gap-4 overflow-x-auto whitespace-nowrap" role="tablist" aria-label="PTE 파트 선택">
+        <button id="tab-read-aloud" type="button" role="tab" aria-selected="true"
+          class="tab-btn shrink-0 relative py-3 px-3 sm:px-4 text-sm sm:text-base font-semibold border-b-2 border-pte-blue text-pte-blue flex items-center gap-2 transition cursor-pointer">
+          <span>Read Aloud (지문 읽기)</span>
+          <span class="hidden md:inline-block text-[11px] font-medium px-2 py-0.5 rounded-full bg-sky-100 text-pte-blue">35s / 40s</span>
+        </button>
+        <button id="tab-describe-image" type="button" role="tab" aria-selected="false"
+          class="tab-btn shrink-0 relative py-3 px-3 sm:px-4 text-sm sm:text-base font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-2 transition cursor-pointer">
+          <span>Describe Image (이미지 묘사)</span>
+          <span class="hidden md:inline-block text-[11px] font-medium px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">25s / 40s</span>
+        </button>
+        <button id="tab-repeat-sentence" type="button" role="tab" aria-selected="false"
+          class="tab-btn shrink-0 relative py-3 px-3 sm:px-4 text-sm sm:text-base font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-2 transition cursor-pointer">
+          <span>Repeat Sentence (문장 따라 말하기)</span>
+          <span class="hidden md:inline-block text-[11px] font-medium px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">3s / 15s</span>
+        </button>
+        <button id="tab-writing" type="button" role="tab" aria-selected="false"
+          class="tab-btn shrink-0 relative py-3 px-3 sm:px-4 text-sm sm:text-base font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-2 transition cursor-pointer">
+          <span>Writing (SWT &amp; Essay)</span>
+          <span class="hidden md:inline-block text-[11px] font-medium px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">10m / 20m</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-5 sm:py-7 space-y-5">
+
+    <!-- SPEAKING: Question Selector Bar -->
+    <section id="speaking-selector-bar" class="bg-white rounded-xl border border-slate-200 shadow-sm p-3.5 sm:p-4 flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-2 flex-wrap">
+        <span class="text-xs font-semibold uppercase tracking-wider text-slate-400 mr-1">샘플 문제</span>
+        <div id="question-pills" class="flex items-center gap-1.5 flex-wrap"></div>
+      </div>
+      <div class="flex items-center gap-2 ml-auto">
+        <button id="btn-prev-q" type="button"
+          class="px-3 py-1.5 text-xs font-medium rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 disabled:opacity-40 transition cursor-pointer">
+          ← 이전
+        </button>
+        <button id="btn-next-q" type="button"
+          class="px-3 py-1.5 text-xs font-medium rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 disabled:opacity-40 transition cursor-pointer">
+          다음 →
+        </button>
+      </div>
+    </section>
+
+    <!-- SPEAKING: Two-Column Responsive Workspace (Read Aloud / Describe Image / Repeat Sentence) -->
+    <div id="speaking-workspace" class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+
+      <!-- Left Column: Prompt / Passage / SVG Chart / Repeat Sentence -->
+      <section class="lg:col-span-7 space-y-4">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+          <!-- Card Header -->
+          <div class="px-5 py-3.5 bg-slate-50 border-b border-slate-200 flex flex-wrap items-center justify-between gap-2">
+            <div class="flex items-center gap-2">
+              <span id="q-badge" class="px-2.5 py-0.5 rounded-md text-xs font-bold bg-pte-blue text-white">Q1</span>
+              <h2 id="q-title" class="text-sm sm:text-base font-bold text-slate-800">문제 제목</h2>
+            </div>
+            <span id="q-meta" class="text-xs font-medium text-slate-500"></span>
+          </div>
+
+          <!-- Instruction Banner (Like real PTE screen) -->
+          <div id="instruction-box" class="px-5 py-3 bg-sky-50/70 border-b border-sky-100 text-xs sm:text-sm text-slate-700 leading-relaxed">
+          </div>
+
+          <!-- 1) Read Aloud Container -->
+          <div id="panel-read-aloud" class="p-5 sm:p-7">
+            <p id="ra-passage" class="text-lg sm:text-xl leading-relaxed sm:leading-loose text-slate-900 font-normal tracking-wide select-text">
+            </p>
+            <div class="mt-5 pt-4 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-500">
+              <span id="ra-word-count">단어 수: 0 words</span>
+              <span>💡 Tip: 끊어 읽기(/)와 강세에 유의하여 자연스러운 속도로 또박또박 읽으세요.</span>
+            </div>
+          </div>
+
+          <!-- 2) Describe Image Container -->
+          <div id="panel-describe-image" class="hidden p-4 sm:p-6 space-y-4">
+            <div class="bg-slate-50 rounded-xl border border-slate-200 p-3 sm:p-4">
+              <div id="di-chart-container" class="w-full overflow-x-auto flex justify-center">
+                <!-- SVG chart injected here -->
+              </div>
+            </div>
+
+            <!-- Model Answer Template Toggle -->
+            <div class="pt-1">
+              <button id="btn-toggle-template" type="button" aria-expanded="false"
+                class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 transition cursor-pointer">
+                <svg id="template-chevron" class="w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                </svg>
+                <span id="template-btn-text">모범 답변 템플릿 보기</span>
+              </button>
+
+              <div id="di-template-box" class="hidden mt-3 rounded-xl border border-indigo-200 bg-indigo-50/50 p-4 sm:p-5 space-y-4 text-sm">
+                <div>
+                  <h3 class="font-bold text-indigo-900 flex items-center gap-1.5 mb-2">
+                    <span>📌 PTE 고득점 만능 템플릿 구조 (4단계)</span>
+                  </h3>
+                  <ul class="space-y-1.5 text-slate-700 text-xs sm:text-sm leading-relaxed">
+                    <li><strong class="text-indigo-700">1. 도입 (Intro):</strong> The given <span class="underline decoration-indigo-300">[bar/line]</span> chart illustrates information about <span class="underline decoration-indigo-300">[Title]</span> over <span class="underline decoration-indigo-300">[X-axis/Period]</span>.</li>
+                    <li><strong class="text-indigo-700">2. 최댓값/주요 특징 (Highest):</strong> Looking closely at the chart, the highest figure is observed in <span class="underline decoration-indigo-300">[Category/Year]</span> at <span class="underline decoration-indigo-300">[Value]</span>.</li>
+                    <li><strong class="text-indigo-700">3. 최솟값/비교 (Lowest/Trend):</strong> On the other hand, the lowest figure appears in <span class="underline decoration-indigo-300">[Category/Year]</span> with <span class="underline decoration-indigo-300">[Value]</span>, while <span class="underline decoration-indigo-300">[Comparison/Trend]</span>.</li>
+                    <li><strong class="text-indigo-700">4. 결론 (Conclusion):</strong> Overall, the graph clearly shows significant variations across the given categories.</li>
+                  </ul>
+                </div>
+
+                <div class="pt-3 border-t border-indigo-200/70">
+                  <h4 class="font-bold text-slate-900 mb-1.5 flex items-center justify-between">
+                    <span>✨ 이 문제 모범 답변 예시 (약 30~35초 분량)</span>
+                  </h4>
+                  <p id="di-model-answer" class="text-slate-800 leading-relaxed bg-white p-3.5 rounded-lg border border-indigo-100 shadow-xs"></p>
+                  <p id="di-key-points" class="mt-2 text-xs text-slate-600"></p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3) Repeat Sentence Container -->
+          <div id="panel-repeat-sentence" class="hidden p-5 sm:p-6 space-y-5">
+            <!-- Accent & Speed Controls -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-slate-50 p-4 rounded-xl border border-slate-200">
+              <div>
+                <label for="rs-accent-select" class="block text-xs font-bold text-slate-600 mb-1.5">원어민 억양 선택 (Accent)</label>
+                <select id="rs-accent-select"
+                  class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-pte-blue">
+                  <option value="en-AU">호주 / 뉴질랜드 (AU/NZ)</option>
+                  <option value="en-GB">영국 억양 (UK)</option>
+                  <option value="en-US">미국 억양 (US)</option>
+                </select>
+              </div>
+              <div>
+                <label for="rs-rate-select" class="block text-xs font-bold text-slate-600 mb-1.5">재생 속도 (Speed)</label>
+                <div class="flex items-center gap-2">
+                  <select id="rs-rate-select"
+                    class="flex-1 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-pte-blue">
+                    <option value="1.0" selected>1.0x (실전 속도)</option>
+                    <option value="0.9">0.9x (조금 천천히)</option>
+                    <option value="1.1">1.1x (빠르게)</option>
+                  </select>
+                  <button id="btn-rs-listen-only" type="button"
+                    class="shrink-0 px-3 py-2 rounded-lg text-xs font-semibold bg-white hover:bg-sky-50 text-pte-blue border border-sky-200 transition cursor-pointer">
+                    🔊 음성 미리듣기
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Audio Prompt Visualizer Box -->
+            <div id="rs-audio-box" class="rounded-xl border border-slate-200 bg-slate-50/70 p-5 text-center space-y-3">
+              <div class="flex items-center justify-center gap-3">
+                <div id="rs-wave-bars" class="hidden items-end gap-1 h-6">
+                  <span class="sound-wave-bar w-1 h-4 bg-pte-blue rounded-full" style="animation-delay:0ms"></span>
+                  <span class="sound-wave-bar w-1 h-6 bg-pte-blue rounded-full" style="animation-delay:150ms"></span>
+                  <span class="sound-wave-bar w-1 h-5 bg-teal-500 rounded-full" style="animation-delay:300ms"></span>
+                  <span class="sound-wave-bar w-1 h-6 bg-pte-blue rounded-full" style="animation-delay:450ms"></span>
+                  <span class="sound-wave-bar w-1 h-3 bg-teal-500 rounded-full" style="animation-delay:600ms"></span>
+                </div>
+                <span id="rs-audio-status" class="text-sm font-semibold text-slate-700">
+                  오른쪽 '실전 연습 시작'을 누르면 원어민 음성이 재생됩니다
+                </span>
+              </div>
+              <p class="text-xs text-slate-500">
+                진행 순서: <strong>원어민 1문장 음성 재생</strong> → <strong>3초 준비</strong> → <strong>삐(Beep)</strong> → <strong>15초 녹음</strong>
+              </p>
+              <p id="rs-tts-fallback-note" class="hidden text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-1.5"></p>
+            </div>
+
+            <!-- Hidden Transcript & Post-Recording Reveal -->
+            <div class="space-y-3">
+              <div id="rs-script-masked" class="rounded-xl border border-dashed border-slate-300 bg-slate-50 p-4 text-center text-xs sm:text-sm text-slate-500">
+                🔒 실전과 동일하게 듣기 및 녹음 중에는 문장 텍스트가 숨겨집니다. 녹음을 마치면 원문을 확인할 수 있습니다.
+              </div>
+
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <button id="btn-rs-toggle-script" type="button" disabled aria-expanded="false"
+                  class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 disabled:opacity-45 disabled:cursor-not-allowed transition cursor-pointer">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  <span id="rs-script-btn-text">원문 스크립트 확인</span>
+                </button>
+                <span id="rs-script-hint" class="text-xs text-slate-400">녹음 완료 후 활성화됩니다</span>
+              </div>
+
+              <div id="rs-script-content" class="hidden rounded-xl border border-indigo-200 bg-indigo-50/50 p-4 sm:p-5 space-y-2.5">
+                <div class="flex items-center justify-between text-xs text-indigo-700 font-semibold">
+                  <span>원문 스크립트 (Transcript)</span>
+                  <span id="rs-word-count">0 words</span>
+                </div>
+                <p id="rs-sentence-text" class="text-base sm:text-lg font-bold text-slate-900 leading-relaxed bg-white p-3.5 rounded-lg border border-indigo-100"></p>
+                <p id="rs-chunking-text" class="text-xs sm:text-sm text-indigo-800 font-medium"></p>
+                <p id="rs-translation-text" class="text-xs sm:text-sm text-slate-600"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right Column: PTE Exam Timer + Mic Recorder + Playback -->
+      <aside class="lg:col-span-5 space-y-4">
+
+        <!-- PTE Recording / Timer Box -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 space-y-4">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Recorded Answer Status</span>
+            <span id="phase-badge" class="px-2.5 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-600">
+              대기 중 (Ready)
+            </span>
+          </div>
+
+          <!-- Countdown Display Box (Pearson PTE style) -->
+          <div id="timer-card" class="rounded-xl border border-slate-200 bg-slate-50 p-4 sm:p-5 text-center space-y-3 transition-colors">
+            <div class="flex items-center justify-center gap-2">
+              <div id="recording-indicator" class="hidden relative flex h-3 w-3">
+                <span class="recording-ring absolute inline-flex h-full w-full rounded-full bg-rose-500"></span>
+                <span class="relative inline-flex rounded-full h-3 w-3 bg-rose-600"></span>
+              </div>
+              <p id="timer-status-text" class="text-sm font-semibold text-slate-700">
+                시작 버튼을 누르면 준비 시간 카운트다운이 시작됩니다
+              </p>
+            </div>
+
+            <div class="flex items-baseline justify-center gap-1.5">
+              <span id="timer-seconds" class="text-5xl sm:text-6xl font-extrabold tabular-nums tracking-tight text-slate-900">35</span>
+              <span class="text-base font-semibold text-slate-500">초</span>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="w-full bg-slate-200 rounded-full h-3 overflow-hidden">
+              <div id="timer-progress-bar" class="h-full bg-pte-blue transition-all duration-300 ease-linear rounded-full" style="width: 100%;"></div>
+            </div>
+
+            <div class="flex justify-between text-[11px] font-medium text-slate-500">
+              <span id="phase-sequence-label">준비 35초 → 삐(Beep) → 녹음 40초</span>
+              <span id="timer-fraction">35 / 35s</span>
+            </div>
+          </div>
+
+          <!-- Live Mic Level Meter -->
+          <div class="space-y-1.5">
+            <div class="flex items-center justify-between text-xs">
+              <span class="font-medium text-slate-600">마이크 입력 레벨</span>
+              <span id="mic-status-detail" class="text-slate-500">미연결 (시작 시 자동 연결 시도)</span>
+            </div>
+            <div class="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden border border-slate-200">
+              <div id="mic-level-bar" class="h-full w-0 bg-emerald-500 transition-all duration-75 rounded-full"></div>
+            </div>
+            <p id="mic-warning-box" class="hidden text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2"></p>
+          </div>
+
+          <!-- Primary Controls -->
+          <div class="grid grid-cols-2 gap-2.5 pt-1">
+            <button id="btn-start" type="button"
+              class="col-span-2 py-3 px-4 rounded-xl text-sm sm:text-base font-bold text-white bg-pte-blue hover:bg-sky-700 active:scale-[0.99] shadow-sm transition flex items-center justify-center gap-2 cursor-pointer">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+              <span id="btn-start-text">실전 연습 시작</span>
+            </button>
+
+            <button id="btn-skip-prep" type="button" disabled
+              class="py-2.5 px-3 rounded-xl text-xs sm:text-sm font-semibold border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 disabled:opacity-40 disabled:cursor-not-allowed transition cursor-pointer">
+              준비 건너뛰기 → Beep
+            </button>
+
+            <button id="btn-reset" type="button"
+              class="py-2.5 px-3 rounded-xl text-xs sm:text-sm font-semibold border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 transition cursor-pointer">
+              초기화 (Reset)
+            </button>
+          </div>
+        </div>
+
+        <!-- Playback My Pronunciation Card -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 space-y-3">
+          <div class="flex items-center justify-between">
+            <h3 class="text-sm sm:text-base font-bold text-slate-800 flex items-center gap-2">
+              <svg class="w-5 h-5 text-pte-teal" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.91 11.672a.375.375 0 010 .656l-5.603 3.113a.375.375 0 01-.557-.328V8.887c0-.286.307-.466.557-.327l5.603 3.112z" />
+              </svg>
+              <span>내 발음 다시 듣기</span>
+            </h3>
+            <span id="playback-badge" class="text-[11px] font-medium px-2 py-0.5 rounded-full bg-slate-100 text-slate-500">녹음 대기</span>
+          </div>
+
+          <div id="playback-empty" class="rounded-xl border border-dashed border-slate-200 bg-slate-50/70 p-4 text-center text-xs sm:text-sm text-slate-500">
+            말하기 녹음이 완료되면 이곳에서 내 발음을 바로 재생해 볼 수 있습니다.
+          </div>
+
+          <div id="playback-ready" class="hidden space-y-3">
+            <audio id="audio-playback" controls class="w-full h-10"></audio>
+            <div class="flex items-center justify-between text-xs text-slate-500">
+              <span id="playback-info">녹음 완료</span>
+              <a id="btn-download-audio" href="#" download="pte-practice.webm"
+                class="font-semibold text-pte-blue hover:underline inline-flex items-center gap-1">
+                <span>녹음 파일 저장</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </aside>
+    </div>
+
+    <!-- WRITING WORKSPACE (SWT & Essay) -->
+    <section id="writing-workspace" class="hidden space-y-5">
+      <!-- Sub-mode Switcher & Question Selector -->
+      <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-3.5 sm:p-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+        <div class="flex items-center gap-2 flex-wrap">
+          <button id="subtab-swt" type="button"
+            class="px-3.5 py-2 rounded-lg text-xs sm:text-sm font-bold bg-pte-blue text-white shadow-xs transition cursor-pointer">
+            Summarize Written Text (SWT · 10분)
+          </button>
+          <button id="subtab-essay" type="button"
+            class="px-3.5 py-2 rounded-lg text-xs sm:text-sm font-medium bg-slate-100 hover:bg-slate-200 text-slate-700 transition cursor-pointer">
+            Write Essay (에세이 · 20분)
+          </button>
+        </div>
+
+        <div class="flex items-center justify-between md:justify-end gap-2 flex-wrap">
+          <div id="writing-question-pills" class="flex items-center gap-1.5"></div>
+          <div class="flex items-center gap-1.5 ml-2">
+            <button id="btn-writing-prev-q" type="button"
+              class="px-2.5 py-1.5 text-xs font-medium rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 disabled:opacity-40 transition cursor-pointer">
+              ← 이전
+            </button>
+            <button id="btn-writing-next-q" type="button"
+              class="px-2.5 py-1.5 text-xs font-medium rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 disabled:opacity-40 transition cursor-pointer">
+              다음 →
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Writing Two-Column Layout -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+        <!-- Left: Prompt / Reading Passage & Model Answer -->
+        <div class="lg:col-span-5 space-y-4">
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="px-5 py-3.5 bg-slate-50 border-b border-slate-200 flex items-center justify-between gap-2">
+              <div class="flex items-center gap-2">
+                <span id="w-q-badge" class="px-2.5 py-0.5 rounded-md text-xs font-bold bg-pte-blue text-white">SWT-1</span>
+                <h2 id="w-q-title" class="text-sm sm:text-base font-bold text-slate-800">문제 제목</h2>
+              </div>
+              <span id="w-q-meta" class="text-xs font-medium text-slate-500">5~75 words</span>
+            </div>
+
+            <div id="w-instruction-box" class="px-5 py-3 bg-sky-50/70 border-b border-sky-100 text-xs sm:text-sm text-slate-700 leading-relaxed"></div>
+
+            <div class="p-5 sm:p-6 space-y-4">
+              <p id="w-prompt-text" class="text-sm sm:text-[15px] leading-relaxed text-slate-800 whitespace-pre-line"></p>
+
+              <!-- Model Answer Toggle -->
+              <div class="pt-2 border-t border-slate-100">
+                <button id="btn-toggle-writing-model" type="button" aria-expanded="false"
+                  class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 transition cursor-pointer">
+                  <svg id="writing-model-chevron" class="w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                  </svg>
+                  <span id="writing-model-btn-text">모범 답안 예시 보기</span>
+                </button>
+
+                <div id="writing-model-box" class="hidden mt-3 rounded-xl border border-indigo-200 bg-indigo-50/50 p-4 space-y-2.5 text-xs sm:text-sm">
+                  <div class="flex items-center justify-between font-bold text-indigo-900">
+                    <span>✨ 모범 답안 예시</span>
+                    <span id="w-model-word-count" class="text-xs font-semibold text-indigo-700"></span>
+                  </div>
+                  <p id="w-model-answer" class="text-slate-800 leading-relaxed bg-white p-3.5 rounded-lg border border-indigo-100 whitespace-pre-line"></p>
+                  <p id="w-model-tip" class="text-xs text-slate-600"></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Timer, Editor, Live Word Counter & Validator, Copy / Save -->
+        <div class="lg:col-span-7 space-y-4">
+          <!-- Writing Timer Bar -->
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-5 flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center gap-3">
+              <div class="px-3.5 py-2 rounded-xl bg-slate-100 border border-slate-200 text-center min-w-[96px]">
+                <span class="block text-[10px] font-bold uppercase tracking-wider text-slate-400">남은 시간</span>
+                <span id="writing-timer-display" class="text-2xl sm:text-3xl font-extrabold tabular-nums text-slate-900">10:00</span>
+              </div>
+              <div>
+                <p id="writing-timer-status" class="text-xs sm:text-sm font-bold text-slate-800">타이머 대기 중</p>
+                <p id="writing-timer-sub" class="text-xs text-slate-500">타이머 시작 없이도 바로 작성할 수 있습니다</p>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-2 ml-auto">
+              <button id="btn-writing-timer-toggle" type="button"
+                class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-white bg-pte-blue hover:bg-sky-700 transition cursor-pointer">
+                타이머 시작
+              </button>
+              <button id="btn-writing-timer-reset" type="button"
+                class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 transition cursor-pointer">
+                초기화
+              </button>
+            </div>
+          </div>
+
+          <!-- Writing Textarea Card -->
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-5 space-y-3">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <label for="writing-textarea" class="text-sm font-bold text-slate-800">답안 작성란 (Response Box)</label>
+              <div class="flex items-center gap-2">
+                <span id="writing-save-status" class="text-[11px] font-medium text-emerald-600">자동 저장 대기 (localStorage)</span>
+              </div>
+            </div>
+
+            <textarea id="writing-textarea" rows="12" spellcheck="true"
+              placeholder="여기에 영어로 답안을 작성하세요. 입력한 내용은 브라우저 localStorage에 자동 저장됩니다..."
+              class="w-full rounded-xl border border-slate-300 bg-slate-50/50 focus:bg-white p-4 text-sm sm:text-base leading-relaxed text-slate-900 focus:outline-none focus:ring-2 focus:ring-pte-blue resize-y"></textarea>
+
+            <!-- Live Word Counter & SWT Sentence Validation -->
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5 pt-1">
+              <div class="flex items-center gap-2 flex-wrap">
+                <span id="writing-word-count" class="text-sm font-bold text-slate-800 tabular-nums">0 words</span>
+                <span id="writing-range-badge" class="px-2.5 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-600">
+                  권장: 5~75 words
+                </span>
+              </div>
+
+              <div class="flex items-center gap-2 flex-wrap">
+                <button id="btn-copy-writing" type="button"
+                  class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 transition cursor-pointer">
+                  📋 복사하기
+                </button>
+                <button id="btn-clear-writing" type="button"
+                  class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold border border-slate-200 bg-white hover:bg-rose-50 hover:text-rose-700 hover:border-rose-200 text-slate-600 transition cursor-pointer">
+                  초안 비우기
+                </button>
+              </div>
+            </div>
+
+            <!-- SWT Single-Sentence & Period Validator -->
+            <div id="swt-sentence-check" class="rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-xs font-medium text-slate-600">
+              💡 SWT 규칙: 반드시 <strong>5~75단어 이내의 한 문장(1 sentence)</strong>으로 작성하고, 마침표(<code>.</code>)는 맨 끝에만 한 번 찍어야 합니다.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="bg-white border-t border-slate-200 mt-auto">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-slate-500">
+      <span>NZ PTE Academic Trainer · RA (35s/40s) · DI (25s/40s) · RS (3s/15s) · Writing (10m/20m)</span>
+      <span>녹음과 작성 답안은 기기 브라우저 내에서만 처리·저장됩니다.</span>
+    </div>
+  </footer>
+
+  <script>
+    (() => {
+      'use strict';
+
+      // ==========================================
+      // 1. Sample Questions Data
+      // ==========================================
+      const READ_ALOUD_QUESTIONS = [
+        {
+          id: 'RA-1',
+          title: 'New Zealand Geothermal Energy',
+          topic: 'Energy & Environment',
+          passage: 'New Zealand generates more than eighty percent of its electricity from renewable sources, with geothermal power playing a vital role on the North Island. Unlike solar or wind energy, geothermal stations operate continuously regardless of weather conditions, providing a reliable baseline supply that supports both residential communities and industrial manufacturing across the country.'
+        },
+        {
+          id: 'RA-2',
+          title: 'Predator Free 2050 Conservation',
+          topic: 'Ecology & Policy',
+          passage: 'Because New Zealand evolved for millions of years without terrestrial mammals, its native birds such as the kiwi and kakapo remain highly vulnerable to introduced predators. To safeguard this unique biodiversity, the government launched an ambitious conservation initiative aiming to eradicate rats, stoats, and possums from the mainland by twenty-fifty.'
+        },
+        {
+          id: 'RA-3',
+          title: 'Southern Alps Glacial Retreat',
+          topic: 'Earth Science',
+          passage: 'Recent satellite measurements indicate that glaciers across the Southern Alps have lost nearly a third of their ice volume over the past four decades. Scientists warn that rising regional temperatures not only accelerate this melting process, but also alter seasonal river flows that downstream hydroelectric plants and agricultural farms heavily depend upon.'
+        },
+        {
+          id: 'RA-4',
+          title: 'Polynesian Celestial Navigation',
+          topic: 'History & Culture',
+          passage: 'Long before European explorers reached the South Pacific, skilled Polynesian navigators crossed thousands of kilometers of open ocean in double-hulled canoes. By carefully reading star paths, ocean swells, and migratory bird patterns, these voyagers established thriving settlements across Aotearoa and maintained extensive maritime networks throughout the Pacific triangle.'
+        },
+        {
+          id: 'RA-5',
+          title: 'Urban Public Transport & Sustainability',
+          topic: 'Urban Planning',
+          passage: 'Rapid population growth in major metropolitan centers has prompted urban planners to rethink how commuters travel each day. Expanding electric rail corridors and dedicated busways not only reduces peak-hour traffic congestion, but also significantly lowers per-capita carbon emissions while making outer suburbs far more accessible to employment hubs.'
+        }
+      ];
+
+      const DESCRIBE_IMAGE_QUESTIONS = [
+        {
+          id: 'DI-1',
+          title: 'NZ Electricity Generation by Source (2025)',
+          chartType: 'bar',
+          subtitle: 'Share of total national electricity output (%)',
+          unit: '%',
+          data: [
+            { label: 'Hydro', value: 57, color: '#0284c7' },
+            { label: 'Geothermal', value: 19, color: '#0d9488' },
+            { label: 'Gas & Coal', value: 13, color: '#64748b' },
+            { label: 'Wind', value: 9, color: '#2563eb' },
+            { label: 'Solar', value: 2, color: '#f59e0b' }
+          ],
+          modelAnswer: 'The given bar chart illustrates information about New Zealand electricity generation by source in 2025, measured in percentage. Looking closely at the chart, the highest share comes from hydro power, which accounts for 57 percent of total output, followed by geothermal energy at 19 percent. Gas and coal contribute 13 percent, while wind accounts for 9 percent. On the other hand, solar power represents the lowest figure at just 2 percent. Overall, renewable sources dominate New Zealand electricity generation.',
+          keyPoints: '핵심 포인트: 최대(Hydro 57%) → 2위(Geothermal 19%) → 비교(Gas & Coal 13%, Wind 9%) → 최소(Solar 2%) → 결론(신재생 에너지 비중 우세)'
+        },
+        {
+          id: 'DI-2',
+          title: 'International Student Enrolments in NZ (2020–2025)',
+          chartType: 'line',
+          subtitle: 'Total enrolled students (in thousands)',
+          unit: 'k',
+          series: [
+            {
+              name: 'University',
+              color: '#0284c7',
+              points: [
+                { label: '2020', value: 28 },
+                { label: '2021', value: 21 },
+                { label: '2022', value: 24 },
+                { label: '2023', value: 31 },
+                { label: '2024', value: 36 },
+                { label: '2025', value: 42 }
+              ]
+            },
+            {
+              name: 'Polytechnic',
+              color: '#f59e0b',
+              points: [
+                { label: '2020', value: 18 },
+                { label: '2021', value: 11 },
+                { label: '2022', value: 13 },
+                { label: '2023', value: 19 },
+                { label: '2024', value: 24 },
+                { label: '2025', value: 27 }
+              ]
+            }
+          ],
+          modelAnswer: 'The given line graph illustrates information about international student enrolments in New Zealand universities and polytechnics from 2020 to 2025, measured in thousands. Looking closely at the trends, both sectors experienced a dip in 2021, dropping to their lowest points of 21 thousand for universities and 11 thousand for polytechnics. However, enrolments recovered steadily afterward, reaching peaks in 2025 of 42 thousand and 27 thousand respectively. Overall, university enrolments remained consistently higher than polytechnic enrolments throughout the entire period.',
+          keyPoints: '핵심 포인트: 2021년 최저점 하락(21k, 11k) → 2025년 최고점 반등(42k, 27k) → 전 기간 University > Polytechnic 유지'
+        },
+        {
+          id: 'DI-3',
+          title: 'Average Weekly Living Costs by NZ City (2025)',
+          chartType: 'grouped-bar',
+          subtitle: 'Comparison of Rent vs. Other Expenses (NZD / week)',
+          unit: '$',
+          categories: ['Auckland', 'Wellington', 'Christchurch', 'Dunedin'],
+          series: [
+            { name: 'Rent (주거비)', color: '#2563eb', values: [420, 390, 310, 260] },
+            { name: 'Food & Transport', color: '#14b8a6', values: [210, 195, 175, 160] }
+          ],
+          modelAnswer: 'The given grouped bar chart compares average weekly living costs across four New Zealand cities in 2025, divided into rent and food plus transport in New Zealand dollars. According to the graph, Auckland has the highest expenses in both categories, with rent at 420 dollars and other costs at 210 dollars per week, closely followed by Wellington. Conversely, Dunedin records the lowest figures at 260 dollars for rent and 160 dollars for food and transport. Overall, rent accounts for roughly double the cost of food and transport in every city.',
+          keyPoints: '핵심 포인트: 최고 비용(Auckland $420 / $210) → 최저 비용(Dunedin $260 / $160) → 모든 도시에서 주거비가 식비·교통비의 약 2배'
+        },
+        {
+          id: 'DI-4',
+          title: 'NZ Household Recycling Rate Trend (2016–2026)',
+          chartType: 'single-line',
+          subtitle: 'Percentage of recyclable household waste diverted from landfill (%)',
+          unit: '%',
+          points: [
+            { label: '2016', value: 34 },
+            { label: '2018', value: 39 },
+            { label: '2020', value: 42 },
+            { label: '2022', value: 49 },
+            { label: '2024', value: 58 },
+            { label: '2026', value: 64 }
+          ],
+          color: '#0d9488',
+          modelAnswer: 'The given line chart shows the trend in New Zealand household recycling rates between 2016 and 2026, measured as a percentage of waste diverted from landfills. In 2016, the recycling rate stood at its lowest level of 34 percent. Since then, the figure has shown a consistent upward trajectory, rising moderately to 42 percent in 2020 before climbing sharply to 58 percent in 2024 and peaking at 64 percent in 2026. Overall, household recycling improved substantially by 30 percentage points over the decade.',
+          keyPoints: '핵심 포인트: 지속적 상승 추세(Upward trend) · 최저 2016년 34% → 최고 2026년 64% (10년간 30%p 증가)'
+        },
+        {
+          id: 'DI-5',
+          title: 'Quarterly Overseas Visitor Arrivals in NZ (2025)',
+          chartType: 'bar',
+          subtitle: 'Number of arrivals by region (in thousands)',
+          unit: 'k',
+          data: [
+            { label: 'Australia', value: 1280, color: '#0284c7' },
+            { label: 'North America', value: 460, color: '#4f46e5' },
+            { label: 'East Asia', value: 410, color: '#0d9488' },
+            { label: 'Europe', value: 320, color: '#f59e0b' },
+            { label: 'Pacific Islands', value: 180, color: '#ec4899' }
+          ],
+          modelAnswer: 'The given bar chart provides data on overseas visitor arrivals to New Zealand in 2025 by region, measured in thousands. It is clear from the graph that Australia is by far the largest source market, recording 1,280 thousand visitors, which is nearly three times higher than the second largest region, North America, at 460 thousand. East Asia and Europe follow with 410 thousand and 320 thousand arrivals respectively, whereas the Pacific Islands represent the smallest group at 180 thousand. Overall, regional proximity plays a major role in New Zealand tourism.',
+          keyPoints: '핵심 포인트: 압도적 1위(Australia 1,280k, 2위의 약 3배) → 중간(North America 460k, East Asia 410k, Europe 320k) → 최소(Pacific Islands 180k)'
+        }
+      ];
+
+      // 10 Repeat Sentence items (strictly 8–15 words each)
+      const REPEAT_SENTENCE_QUESTIONS = [
+        {
+          id: 'RS-1',
+          title: 'Academic Deadline',
+          topic: 'Campus Life',
+          sentence: 'All students must submit their laboratory reports before Friday afternoon.',
+          chunking: '끊어 듣기: All students / must submit their laboratory reports / before Friday afternoon.',
+          translation: '모든 학생은 금요일 오후 전까지 실험 보고서를 제출해야 합니다.'
+        },
+        {
+          id: 'RS-2',
+          title: 'Renewable Investment',
+          topic: 'NZ Economy',
+          sentence: 'Renewable energy investments have grown significantly across New Zealand in recent years.',
+          chunking: '끊어 듣기: Renewable energy investments / have grown significantly / across New Zealand in recent years.',
+          translation: '최근 몇 년간 뉴질랜드 전역에서 재생 에너지 투자가 크게 증가했습니다.'
+        },
+        {
+          id: 'RS-3',
+          title: 'Library Extended Hours',
+          topic: 'University Notice',
+          sentence: 'The university library will extend its opening hours during the final examination period.',
+          chunking: '끊어 듣기: The university library / will extend its opening hours / during the final examination period.',
+          translation: '대학 도서관은 기말고사 기간 동안 운영 시간을 연장할 예정입니다.'
+        },
+        {
+          id: 'RS-4',
+          title: 'Southern Alps Climate Data',
+          topic: 'Earth Science',
+          sentence: 'Climate researchers gathered valuable atmospheric data from remote stations in the Southern Alps.',
+          chunking: '끊어 듣기: Climate researchers / gathered valuable atmospheric data / from remote stations in the Southern Alps.',
+          translation: '기후 연구자들은 남알프스의 외딴 관측소에서 귀중한 대기 데이터를 수집했습니다.'
+        },
+        {
+          id: 'RS-5',
+          title: 'Speaking Test Mic Check',
+          topic: 'Exam Instructions',
+          sentence: 'Please make sure your microphone is properly positioned before beginning the speaking test.',
+          chunking: '끊어 듣기: Please make sure / your microphone is properly positioned / before beginning the speaking test.',
+          translation: '스피킹 시험을 시작하기 전에 마이크가 올바르게 배치되었는지 확인해 주세요.'
+        },
+        {
+          id: 'RS-6',
+          title: 'Marine Habitat Protection',
+          topic: 'Ecology',
+          sentence: 'Marine conservation programs protect endangered coastal habitats from excessive commercial fishing.',
+          chunking: '끊어 듣기: Marine conservation programs / protect endangered coastal habitats / from excessive commercial fishing.',
+          translation: '해양 보존 프로그램은 과도한 상업적 어업으로부터 멸종 위기 연안 서식지를 보호합니다.'
+        },
+        {
+          id: 'RS-7',
+          title: 'Flexible Online Learning',
+          topic: 'Higher Education',
+          sentence: 'Online lectures allow part-time students to balance academic coursework with full-time employment.',
+          chunking: '끊어 듣기: Online lectures allow part-time students / to balance academic coursework / with full-time employment.',
+          translation: '온라인 강의는 시간제 학생들이 학업과 전일제 직장의 균형을 맞출 수 있게 해줍니다.'
+        },
+        {
+          id: 'RS-8',
+          title: 'Health & Cognitive Wellness',
+          topic: 'Public Health',
+          sentence: 'A balanced diet and regular physical exercise contribute substantially to long-term cognitive health.',
+          chunking: '끊어 듣기: A balanced diet and regular physical exercise / contribute substantially / to long-term cognitive health.',
+          translation: '균형 잡힌 식단과 규칙적인 신체 운동은 장기적인 인지 건강에 크게 기여합니다.'
+        },
+        {
+          id: 'RS-9',
+          title: 'University Admission Documents',
+          topic: 'Admissions',
+          sentence: 'International applicants are required to provide certified academic transcripts prior to enrolment.',
+          chunking: '끊어 듣기: International applicants are required / to provide certified academic transcripts / prior to enrolment.',
+          translation: '유학생 지원자는 등록 전에 공증된 성적 증명서를 제출해야 합니다.'
+        },
+        {
+          id: 'RS-10',
+          title: 'Urban Transit Improvements',
+          topic: 'Urban Planning',
+          sentence: 'Public transit improvements have noticeably reduced morning traffic congestion in major urban centers.',
+          chunking: '끊어 듣기: Public transit improvements / have noticeably reduced morning traffic congestion / in major urban centers.',
+          translation: '대중교통 개선으로 주요 도심의 출근 시간대 교통 체증이 눈에 띄게 줄어들었습니다.'
+        }
+      ];
+
+      // Writing Questions: 3 SWT + 3 Essay
+      const SWT_QUESTIONS = [
+        {
+          id: 'SWT-1',
+          title: 'Marine Reserves in New Zealand',
+          topic: 'Marine Ecology',
+          passage: 'Over the past three decades, New Zealand has established more than forty marine reserves to safeguard coastal ecosystems from overfishing and habitat degradation. Inside these strictly protected zones, commercial and recreational harvesting are completely prohibited, allowing depleted populations of snapper, rock lobster, and kelp forests to recover naturally.\n\nMarine biologists studying Goat Island near Auckland found that adult snapper inside the reserve grew significantly larger and produced far more eggs than fish in neighboring unprotected waters. Consequently, these thriving populations spill over beyond reserve boundaries, gradually replenishing adjacent fisheries and attracting tens of thousands of eco-tourists each year.\n\nHowever, expanding the network remains politically challenging because local fishers often worry about losing access to traditional fishing grounds in the short term. Policymakers therefore emphasize transparent scientific monitoring and community consultation so that both marine biodiversity and coastal livelihoods can prosper together.',
+          modelAnswer: 'New Zealand has created over forty marine reserves to restore depleted coastal species and ecosystems, generating ecological spillover and tourism benefits for nearby waters, although policymakers must balance conservation with local fishers’ concerns through scientific monitoring and community consultation.',
+          tip: '핵심 요약 전략: 1) 목적(해양 보호구역 지정 및 생태 회복) + 2) 긍정적 효과(어류 개체수·생태관광 증가) + 3) 과제/해결(어민 우려 해소를 위한 과학적 모니터링과 지역 협의)를 관계절/분사구문으로 한 문장에 연결합니다.'
+        },
+        {
+          id: 'SWT-2',
+          title: 'Remote Work & Regional Towns',
+          topic: 'Society & Economy',
+          passage: 'Advances in high-speed broadband and cloud collaboration tools have enabled millions of knowledge workers to perform their jobs outside traditional city-center offices. During recent years, many professionals in countries like New Zealand relocated from high-cost metropolitan hubs to smaller regional towns in search of affordable housing and shorter commutes.\n\nThis demographic shift has injected fresh consumer spending into local cafes, schools, and community services across rural districts. Small business owners report higher weekday foot traffic, while regional councils welcome a broader tax base to fund infrastructure upgrades.\n\nNevertheless, rapid inward migration can inadvertently drive up local property rents and strain limited healthcare or transport capacity in small communities. Urban economists suggest that regional governments should pair digital connectivity investments with affordable housing plans to ensure sustainable long-term growth.',
+          modelAnswer: 'While high-speed digital connectivity has allowed knowledge workers to move from expensive cities to regional towns—boosting local businesses and municipal revenues—rapid migration can raise housing costs and pressure public services, prompting economists to recommend pairing broadband expansion with affordable housing planning.',
+          tip: '핵심 요약 전략: 원인(원격근무 확산·지방 이주) → 장점(지역 경제 활성화) → 부작용(집값 상승·인프라 부담) → 해결책(주거 계획 병행)을 한 문장으로 통합하세요.'
+        },
+        {
+          id: 'SWT-3',
+          title: 'Geothermal Energy & Grid Stability',
+          topic: 'Renewable Energy',
+          passage: 'As nations accelerate their transition away from fossil fuels, maintaining a stable electricity grid becomes increasingly complex. Solar panels and wind turbines provide clean, low-cost power, yet their output fluctuates constantly depending on cloud cover, time of day, and seasonal wind patterns.\n\nGeothermal energy offers a valuable complement to weather-dependent renewables because underground steam reservoirs deliver uninterrupted baseload electricity twenty-four hours a day. In regions with volcanic geology, such as New Zealand’s Taupō Volcanic Zone, geothermal plants can quickly adjust output to balance sudden drops in wind or solar generation.\n\nDespite these advantages, high upfront drilling costs and strict environmental regulations regarding groundwater management limit where geothermal stations can be built. Energy researchers therefore advocate combining geothermal baseload power with grid-scale battery storage to achieve a resilient zero-carbon energy system.',
+          modelAnswer: 'Because weather-dependent solar and wind power fluctuate, continuous geothermal electricity provides crucial grid stability, even though high drilling costs and environmental rules restrict site availability, leading researchers to recommend combining geothermal power with battery storage for a reliable zero-carbon grid.',
+          tip: '핵심 요약 전략: 문제(태양광·풍력의 변동성) → 대안(지열의 안정적 기저부하) → 한계(초기 시추 비용·환경 규제) → 결론(배터리 저장장치와 결합).'
+        }
+      ];
+
+      const ESSAY_QUESTIONS = [
+        {
+          id: 'ESSAY-1',
+          title: 'Compulsory Environmental Education',
+          topic: 'Education & Environment',
+          passage: 'Some educators argue that climate change and environmental sustainability should be taught as mandatory subjects in all secondary schools, while others believe schools should focus primarily on traditional core subjects such as mathematics, science, and literacy. Discuss both views and give your own opinion.',
+          modelAnswer: `In an era marked by accelerating climate challenges, there is ongoing debate over whether environmental sustainability should become a compulsory secondary school subject or remain secondary to traditional core disciplines. While strong foundations in mathematics and literacy are indispensable, I firmly believe that integrating mandatory environmental education into school curricula is essential for preparing responsible citizens.
+
+Proponents of prioritizing conventional subjects argue that school timetables are already overcrowded. They contend that mastering numeracy, reading comprehension, and foundational science equips students with the analytical skills needed for higher education and competitive labor markets. From this perspective, adding another standalone requirement could dilute instructional time dedicated to essential academic competencies.
+
+On the other hand, advocates for compulsory sustainability education emphasize that young people will directly inherit the consequences of ecological degradation. Teaching students about renewable energy, waste reduction, and local biodiversity fosters practical problem-solving skills and environmentally conscious habits early in life. Moreover, sustainability topics naturally reinforce science, geography, and data literacy rather than competing against them.
+
+In conclusion, although core academic skills must never be neglected, making environmental education mandatory equips future generations with both the scientific awareness and civic responsibility required to address global ecological issues effectively.`,
+          tip: '에세이 4단 구조 (약 215~250단어): 서론(배경 + 명확한 입장) → 본론1(전통 과목 중시 입장) → 본론2(필수 환경 교육 찬성 논거) → 결론(요약 및 재확인).'
+        },
+        {
+          id: 'ESSAY-2',
+          title: 'Tourism Growth vs. Nature Conservation',
+          topic: 'Tourism & Policy',
+          passage: 'International tourism brings substantial economic benefits to countries like New Zealand, yet increasing visitor numbers can place heavy pressure on natural environments and local infrastructure. Should governments limit the number of tourists visiting fragile natural sites, or focus instead on expanding infrastructure? Support your view with reasons and examples.',
+          modelAnswer: `International tourism serves as a major economic pillar for nations renowned for their natural landscapes, such as New Zealand. However, surging visitor numbers frequently strain fragile ecosystems and rural infrastructure. In my view, governments should implement targeted visitor limits at sensitive ecological sites alongside strategic infrastructure investment rather than relying solely on unrestricted expansion.
+
+Expanding roads, parking facilities, and accommodation can certainly alleviate overcrowding in popular destinations and allow local businesses to capture greater tourism revenue. Upgraded waste-treatment systems and reinforced walking tracks also help minimize physical damage caused by heavy foot traffic. Nevertheless, continuous expansion risks transforming pristine wilderness areas into commercialized zones, ultimately eroding the very natural beauty that attracts travelers in the first place.
+
+Conversely, setting daily visitor caps or introducing seasonal booking permits protects vulnerable wildlife habitats and preserves a peaceful visitor experience. For instance, strict hut booking quotas along New Zealand’s Great Walks have successfully prevented trail erosion while maintaining high satisfaction among hikers. Pairing reasonable caps with eco-levies ensures that conservation budgets grow sustainably without overwhelming local communities.
+
+In summary, while modernizing infrastructure remains important, placing sensible limits on fragile natural sites is vital to safeguard environmental integrity and sustain long-term tourism value.`,
+          tip: '에세이 4단 구조: 서론(조건부 제한 + 인프라 병행 지지) → 본론1(인프라 확장의 장점과 한계) → 본론2(방문객 제한 정책의 필요성과 NZ Great Walks 예시) → 결론.'
+        },
+        {
+          id: 'ESSAY-3',
+          title: 'Artificial Intelligence in University Assessment',
+          topic: 'Technology & Education',
+          passage: 'As generative artificial intelligence tools become widely accessible, universities are debating whether to ban AI tools completely in student assignments or redesign assessments to incorporate them responsibly. Which approach do you think is more effective for higher education?',
+          modelAnswer: `The rapid rise of generative artificial intelligence has sparked fierce debate across universities worldwide regarding academic integrity and student assessment. While some institutions attempt to prohibit AI tools entirely, redesigning assessments to integrate them responsibly is a far more practical and effective strategy for modern higher education.
+
+Supporters of strict bans argue that unrestricted AI use undermines critical thinking and makes plagiarism harder to detect. If students delegate essay drafting or problem-solving to automated software, grades may no longer reflect genuine comprehension. However, outright prohibition is increasingly difficult to enforce reliably, and detection tools frequently produce false positives that create unnecessary distrust between lecturers and students.
+
+By contrast, adapting assessment formats prepares graduates for workplaces where AI fluency is rapidly becoming standard. Universities can shift toward oral defenses, live laboratory demonstrations, and multi-stage research projects that evaluate original reasoning rather than polished surface text. Teaching students how to verify AI-generated claims, cite sources accurately, and critique algorithmic bias strengthens analytical rigor rather than weakening it.
+
+Ultimately, banning emerging technology is unsustainable, whereas redesigning assessments around critical evaluation and authentic application ensures both academic integrity and career readiness.`,
+          tip: '에세이 4단 구조: 서론(책임감 있는 통합 지지) → 본론1(전면 금지의 의도와 현실적 한계) → 본론2(평가 방식 재설계: 구술평가·비판적 검증의 장점) → 결론.'
+        }
+      ];
+
+      // ==========================================
+      // 2. App State
+      // ==========================================
+      const MODE_CONFIG = {
+        'read-aloud': {
+          label: 'Read Aloud (지문 읽기)',
+          prepSeconds: 35,
+          speakSeconds: 40,
+          instruction: '<strong>지시문:</strong> 화면의 지문을 눈으로 먼저 읽고 준비하세요. <strong>35초 준비 시간</strong>이 끝나면 <strong>삐(Beep) 소리</strong>와 함께 마이크가 켜지며, <strong>40초 동안</strong> 자연스럽고 또렷한 발음으로 지문을 읽으시면 됩니다.'
+        },
+        'describe-image': {
+          label: 'Describe Image (이미지 묘사)',
+          prepSeconds: 25,
+          speakSeconds: 40,
+          instruction: '<strong>지시문:</strong> 아래 그래프의 핵심 수치, 최댓값/최솟값, 전체 추세를 빠르게 파악하세요. <strong>25초 준비 시간</strong> 후 <strong>삐(Beep) 소리</strong>가 울리면 <strong>40초 동안</strong> 이미지를 영어로 묘사하세요.'
+        },
+        'repeat-sentence': {
+          label: 'Repeat Sentence (문장 따라 말하기)',
+          prepSeconds: 3,
+          speakSeconds: 15,
+          instruction: '<strong>지시문:</strong> 원어민이 읽어주는 1개의 영어 문장을 집중해서 들으세요. 음성이 끝나면 <strong>3초 준비 시간</strong> 후 <strong>삐(Beep) 소리</strong>와 함께 <strong>15초 동안</strong> 들은 문장을 그대로 따라 말하세요.'
+        }
+      };
+
+      const WRITING_CONFIG = {
+        swt: {
+          label: 'Summarize Written Text (SWT)',
+          durationSeconds: 600,
+          minWords: 5,
+          maxWords: 75,
+          instruction: '<strong>SWT 작성 지시문:</strong> 아래 지문의 핵심 내용을 <strong>5~75단어 이내의 단 한 문장(1 sentence)</strong>으로 요약하세요. 마침표(<code>.</code>)는 문장 끝에 한 번만 사용해야 합니다.'
+        },
+        essay: {
+          label: 'Write Essay (에세이)',
+          durationSeconds: 1200,
+          minWords: 200,
+          maxWords: 300,
+          instruction: '<strong>Essay 작성 지시문:</strong> 주어진 논제에 대해 <strong>200~300단어</strong> 분량의 논리적인 영어 에세이(서론-본론1-본론2-결론)를 20분 안에 작성하세요.'
+        }
+      };
+
+      const state = {
+        mode: 'read-aloud', // 'read-aloud' | 'describe-image' | 'repeat-sentence' | 'writing'
+        questionIndex: {
+          'read-aloud': 0,
+          'describe-image': 0,
+          'repeat-sentence': 0
+        },
+        phase: 'idle', // 'idle' | 'playing-audio' | 'prep' | 'recording' | 'done'
+        remainingSeconds: 35,
+        totalPhaseSeconds: 35,
+        timerId: null,
+        templateVisible: false,
+
+        // Repeat Sentence state
+        rsAccent: 'en-AU',
+        rsRate: 1.0,
+        rsScriptVisible: false,
+        rsSafetyTimerId: null,
+        rsVoices: [],
+
+        // Writing state
+        writingSubmode: 'swt', // 'swt' | 'essay'
+        writingIndex: { swt: 0, essay: 0 },
+        writingTimerRemaining: 600,
+        writingTimerRunning: false,
+        writingTimerId: null,
+        writingModelVisible: false,
+
+        // Audio / Beep
+        audioCtx: null,
+
+        // Microphone / MediaRecorder
+        micStream: null,
+        micStatus: 'unknown', // 'unknown' | 'ready' | 'denied' | 'unsupported'
+        mediaRecorder: null,
+        recordedChunks: [],
+        recordingUrl: null,
+        recordingMime: 'audio/webm',
+        analyser: null,
+        meterRafId: null
+      };
+
+      // ==========================================
+      // 3. DOM References
+      // ==========================================
+      const el = {
+        tabReadAloud: document.getElementById('tab-read-aloud'),
+        tabDescribeImage: document.getElementById('tab-describe-image'),
+        tabRepeatSentence: document.getElementById('tab-repeat-sentence'),
+        tabWriting: document.getElementById('tab-writing'),
+
+        speakingSelectorBar: document.getElementById('speaking-selector-bar'),
+        speakingWorkspace: document.getElementById('speaking-workspace'),
+        writingWorkspace: document.getElementById('writing-workspace'),
+
+        questionPills: document.getElementById('question-pills'),
+        btnPrevQ: document.getElementById('btn-prev-q'),
+        btnNextQ: document.getElementById('btn-next-q'),
+
+        qBadge: document.getElementById('q-badge'),
+        qTitle: document.getElementById('q-title'),
+        qMeta: document.getElementById('q-meta'),
+        instructionBox: document.getElementById('instruction-box'),
+
+        panelReadAloud: document.getElementById('panel-read-aloud'),
+        raPassage: document.getElementById('ra-passage'),
+        raWordCount: document.getElementById('ra-word-count'),
+
+        panelDescribeImage: document.getElementById('panel-describe-image'),
+        diChartContainer: document.getElementById('di-chart-container'),
+        btnToggleTemplate: document.getElementById('btn-toggle-template'),
+        templateBtnText: document.getElementById('template-btn-text'),
+        templateChevron: document.getElementById('template-chevron'),
+        diTemplateBox: document.getElementById('di-template-box'),
+        diModelAnswer: document.getElementById('di-model-answer'),
+        diKeyPoints: document.getElementById('di-key-points'),
+
+        // Repeat Sentence DOM
+        panelRepeatSentence: document.getElementById('panel-repeat-sentence'),
+        rsAccentSelect: document.getElementById('rs-accent-select'),
+        rsRateSelect: document.getElementById('rs-rate-select'),
+        btnRsListenOnly: document.getElementById('btn-rs-listen-only'),
+        rsWaveBars: document.getElementById('rs-wave-bars'),
+        rsAudioStatus: document.getElementById('rs-audio-status'),
+        rsTtsFallbackNote: document.getElementById('rs-tts-fallback-note'),
+        rsScriptMasked: document.getElementById('rs-script-masked'),
+        btnRsToggleScript: document.getElementById('btn-rs-toggle-script'),
+        rsScriptBtnText: document.getElementById('rs-script-btn-text'),
+        rsScriptHint: document.getElementById('rs-script-hint'),
+        rsScriptContent: document.getElementById('rs-script-content'),
+        rsWordCount: document.getElementById('rs-word-count'),
+        rsSentenceText: document.getElementById('rs-sentence-text'),
+        rsChunkingText: document.getElementById('rs-chunking-text'),
+        rsTranslationText: document.getElementById('rs-translation-text'),
+
+        // Speaking Timer DOM
+        phaseBadge: document.getElementById('phase-badge'),
+        timerCard: document.getElementById('timer-card'),
+        recordingIndicator: document.getElementById('recording-indicator'),
+        timerStatusText: document.getElementById('timer-status-text'),
+        timerSeconds: document.getElementById('timer-seconds'),
+        timerProgressBar: document.getElementById('timer-progress-bar'),
+        phaseSequenceLabel: document.getElementById('phase-sequence-label'),
+        timerFraction: document.getElementById('timer-fraction'),
+
+        btnStart: document.getElementById('btn-start'),
+        btnStartText: document.getElementById('btn-start-text'),
+        btnSkipPrep: document.getElementById('btn-skip-prep'),
+        btnReset: document.getElementById('btn-reset'),
+        btnTestBeep: document.getElementById('btn-test-beep'),
+
+        btnMicConnect: document.getElementById('btn-mic-connect'),
+        headerMicDot: document.getElementById('header-mic-dot'),
+        headerMicLabel: document.getElementById('header-mic-label'),
+        micStatusDetail: document.getElementById('mic-status-detail'),
+        micLevelBar: document.getElementById('mic-level-bar'),
+        micWarningBox: document.getElementById('mic-warning-box'),
+
+        playbackBadge: document.getElementById('playback-badge'),
+        playbackEmpty: document.getElementById('playback-empty'),
+        playbackReady: document.getElementById('playback-ready'),
+        audioPlayback: document.getElementById('audio-playback'),
+        playbackInfo: document.getElementById('playback-info'),
+        btnDownloadAudio: document.getElementById('btn-download-audio'),
+
+        // Writing DOM
+        subtabSwt: document.getElementById('subtab-swt'),
+        subtabEssay: document.getElementById('subtab-essay'),
+        writingQuestionPills: document.getElementById('writing-question-pills'),
+        btnWritingPrevQ: document.getElementById('btn-writing-prev-q'),
+        btnWritingNextQ: document.getElementById('btn-writing-next-q'),
+        wQBadge: document.getElementById('w-q-badge'),
+        wQTitle: document.getElementById('w-q-title'),
+        wQMeta: document.getElementById('w-q-meta'),
+        wInstructionBox: document.getElementById('w-instruction-box'),
+        wPromptText: document.getElementById('w-prompt-text'),
+        btnToggleWritingModel: document.getElementById('btn-toggle-writing-model'),
+        writingModelChevron: document.getElementById('writing-model-chevron'),
+        writingModelBtnText: document.getElementById('writing-model-btn-text'),
+        writingModelBox: document.getElementById('writing-model-box'),
+        wModelWordCount: document.getElementById('w-model-word-count'),
+        wModelAnswer: document.getElementById('w-model-answer'),
+        wModelTip: document.getElementById('w-model-tip'),
+        writingTimerDisplay: document.getElementById('writing-timer-display'),
+        writingTimerStatus: document.getElementById('writing-timer-status'),
+        writingTimerSub: document.getElementById('writing-timer-sub'),
+        btnWritingTimerToggle: document.getElementById('btn-writing-timer-toggle'),
+        btnWritingTimerReset: document.getElementById('btn-writing-timer-reset'),
+        writingTextarea: document.getElementById('writing-textarea'),
+        writingSaveStatus: document.getElementById('writing-save-status'),
+        writingWordCount: document.getElementById('writing-word-count'),
+        writingRangeBadge: document.getElementById('writing-range-badge'),
+        btnCopyWriting: document.getElementById('btn-copy-writing'),
+        btnClearWriting: document.getElementById('btn-clear-writing'),
+        swtSentenceCheck: document.getElementById('swt-sentence-check')
+      };
+
+      // ==========================================
+      // 4. Web Audio API (Beep Sound)
+      // ==========================================
+      function ensureAudioContext() {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return null;
+        if (!state.audioCtx) {
+          state.audioCtx = new AudioCtx();
+        }
+        if (state.audioCtx.state === 'suspended') {
+          state.audioCtx.resume().catch(() => {});
+        }
+        return state.audioCtx;
+      }
+
+      function playBeep(frequency = 980, durationSec = 0.38) {
+        try {
+          const ctx = ensureAudioContext();
+          if (!ctx) return;
+
+          const now = ctx.currentTime;
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(frequency, now);
+
+          gain.gain.setValueAtTime(0.001, now);
+          gain.gain.exponentialRampToValueAtTime(0.28, now + 0.02);
+          gain.gain.setValueAtTime(0.28, now + durationSec - 0.06);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + durationSec);
+
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+
+          osc.start(now);
+          osc.stop(now + durationSec);
+        } catch (err) {
+          console.warn('Web Audio Beep error:', err);
+        }
+      }
+
+      // ==========================================
+      // 5. SpeechSynthesis API (Repeat Sentence TTS)
+      // ==========================================
+      function loadVoices() {
+        if (!('speechSynthesis' in window)) return;
+        state.rsVoices = window.speechSynthesis.getVoices() || [];
+      }
+
+      if ('speechSynthesis' in window) {
+        loadVoices();
+        if (typeof window.speechSynthesis.onvoiceschanged !== 'undefined') {
+          window.speechSynthesis.onvoiceschanged = loadVoices;
+        }
+      }
+
+      function pickVoiceForAccent(accent) {
+        if (!state.rsVoices || state.rsVoices.length === 0) {
+          loadVoices();
+        }
+        const voices = state.rsVoices || [];
+        if (voices.length === 0) return null;
+
+        const targetLower = accent.toLowerCase();
+        // AU/NZ fallback preference
+        if (targetLower === 'en-au') {
+          const exactAU = voices.find(v => v.lang.toLowerCase() === 'en-au' || v.lang.toLowerCase() === 'en-nz');
+          if (exactAU) return exactAU;
+        }
+        const exact = voices.find(v => v.lang.toLowerCase() === targetLower);
+        if (exact) return exact;
+
+        const prefixMatch = voices.find(v => v.lang.toLowerCase().startsWith(targetLower.slice(0, 5)));
+        if (prefixMatch) return prefixMatch;
+
+        return voices.find(v => v.lang.toLowerCase().startsWith('en')) || null;
+      }
+
+      function cancelSpeech() {
+        if (state.rsSafetyTimerId !== null) {
+          clearTimeout(state.rsSafetyTimerId);
+          state.rsSafetyTimerId = null;
+        }
+        if ('speechSynthesis' in window) {
+          try {
+            window.speechSynthesis.cancel();
+          } catch (e) {
+            // ignore
+          }
+        }
+        el.rsWaveBars.classList.add('hidden');
+        el.rsWaveBars.classList.remove('flex');
+      }
+
+      function speakSentence(sentence, onComplete) {
+        cancelSpeech();
+        const words = sentence.trim().split(/\s+/).length;
+        const fallbackMs = Math.min(8000, Math.max(3200, Math.round((words * 430) / state.rsRate)));
+
+        let finished = false;
+        const done = () => {
+          if (finished) return;
+          finished = true;
+          if (state.rsSafetyTimerId !== null) {
+            clearTimeout(state.rsSafetyTimerId);
+            state.rsSafetyTimerId = null;
+          }
+          el.rsWaveBars.classList.add('hidden');
+          el.rsWaveBars.classList.remove('flex');
+          el.rsAudioStatus.textContent = '음성 재생 완료';
+          if (typeof onComplete === 'function') onComplete();
+        };
+
+        el.rsWaveBars.classList.remove('hidden');
+        el.rsWaveBars.classList.add('flex');
+        el.rsAudioStatus.textContent = `🔊 원어민 음성 재생 중 (${state.rsAccent})... 집중해서 들으세요`;
+
+        if (!('speechSynthesis' in window) || typeof SpeechSynthesisUtterance === 'undefined') {
+          el.rsTtsFallbackNote.textContent = '이 브라우저는 SpeechSynthesis를 지원하지 않아 타이머 모드로 진행됩니다.';
+          el.rsTtsFallbackNote.classList.remove('hidden');
+          state.rsSafetyTimerId = setTimeout(done, 2500);
+          return;
+        }
+
+        el.rsTtsFallbackNote.classList.add('hidden');
+
+        try {
+          const utterance = new SpeechSynthesisUtterance(sentence);
+          utterance.lang = state.rsAccent;
+          utterance.rate = state.rsRate;
+          utterance.pitch = 1.0;
+
+          const voice = pickVoiceForAccent(state.rsAccent);
+          if (voice) {
+            utterance.voice = voice;
+          }
+
+          utterance.onend = done;
+          utterance.onerror = () => {
+            // Headless environments or blocked TTS: cleanly proceed via short delay
+            done();
+          };
+
+          // Safety timer in case browser TTS hangs or never fires onend
+          state.rsSafetyTimerId = setTimeout(done, fallbackMs);
+
+          window.speechSynthesis.speak(utterance);
+        } catch (err) {
+          console.warn('SpeechSynthesis error:', err);
+          state.rsSafetyTimerId = setTimeout(done, 2500);
+        }
+      }
+
+      // ==========================================
+      // 6. Microphone & MediaRecorder Handling
+      // ==========================================
+      function updateMicUI(message, warning = '') {
+        if (state.micStatus === 'ready') {
+          el.headerMicDot.className = 'w-2 h-2 rounded-full bg-emerald-400';
+          el.headerMicLabel.textContent = '마이크 연결됨';
+          el.micStatusDetail.textContent = message || '녹음 준비 완료';
+          el.micStatusDetail.className = 'text-emerald-600 font-medium';
+        } else if (state.micStatus === 'denied' || state.micStatus === 'unsupported') {
+          el.headerMicDot.className = 'w-2 h-2 rounded-full bg-rose-400';
+          el.headerMicLabel.textContent = state.micStatus === 'unsupported' ? '마이크 미지원' : '마이크 권한 없음';
+          el.micStatusDetail.textContent = message || '타이머 전용 모드로 실행됩니다';
+          el.micStatusDetail.className = 'text-amber-600 font-medium';
+        } else {
+          el.headerMicDot.className = 'w-2 h-2 rounded-full bg-amber-400';
+          el.headerMicLabel.textContent = '마이크 연결 확인';
+          el.micStatusDetail.textContent = message || '미연결 (시작 시 자동 연결 시도)';
+          el.micStatusDetail.className = 'text-slate-500';
+        }
+
+        if (warning) {
+          el.micWarningBox.textContent = warning;
+          el.micWarningBox.classList.remove('hidden');
+        } else {
+          el.micWarningBox.classList.add('hidden');
+        }
+      }
+
+      async function requestMicrophone() {
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || typeof MediaRecorder === 'undefined') {
+          state.micStatus = 'unsupported';
+          updateMicUI(
+            '브라우저가 마이크 녹음을 지원하지 않습니다',
+            '현재 환경에서는 마이크 녹음 없이 실전 타이머와 Beep 알림만 동작합니다.'
+          );
+          return false;
+        }
+
+        if (state.micStream && state.micStream.active) {
+          state.micStatus = 'ready';
+          updateMicUI('마이크 연결됨 (음성 입력 대기)');
+          return true;
+        }
+
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({
+            audio: {
+              echoCancellation: true,
+              noiseSuppression: true,
+              autoGainControl: true
+            }
+          });
+          state.micStream = stream;
+          state.micStatus = 'ready';
+          setupMicAnalyser(stream);
+          updateMicUI('마이크 연결됨 (정상 작동)');
+          return true;
+        } catch (err) {
+          state.micStatus = 'denied';
+          updateMicUI(
+            '마이크 접근 불가 — 타이머 모드로 진행',
+            '마이크 장치 또는 권한이 없어 음성 녹음은 건너뛰고 실전 타이머만 진행됩니다. (' + (err.name || 'PermissionError') + ')'
+          );
+          return false;
+        }
+      }
+
+      function setupMicAnalyser(stream) {
+        try {
+          const ctx = ensureAudioContext();
+          if (!ctx) return;
+          const source = ctx.createMediaStreamSource(stream);
+          const analyser = ctx.createAnalyser();
+          analyser.fftSize = 256;
+          source.connect(analyser);
+          state.analyser = analyser;
+          startLevelMeter();
+        } catch (e) {
+          // Ignore analyser errors gracefully
+        }
+      }
+
+      function startLevelMeter() {
+        if (state.meterRafId) cancelAnimationFrame(state.meterRafId);
+        const dataArray = state.analyser ? new Uint8Array(state.analyser.frequencyBinCount) : null;
+
+        const tick = () => {
+          if (state.analyser && dataArray && state.micStream && state.micStream.active) {
+            state.analyser.getByteFrequencyData(dataArray);
+            let sum = 0;
+            for (let i = 0; i < dataArray.length; i++) sum += dataArray[i];
+            const avg = sum / dataArray.length;
+            const pct = Math.min(100, Math.round((avg / 90) * 100));
+            el.micLevelBar.style.width = pct + '%';
+            el.micLevelBar.className = state.phase === 'recording'
+              ? 'h-full bg-rose-500 transition-all duration-75 rounded-full'
+              : 'h-full bg-emerald-500 transition-all duration-75 rounded-full';
+          } else {
+            el.micLevelBar.style.width = '0%';
+          }
+          state.meterRafId = requestAnimationFrame(tick);
+        };
+        state.meterRafId = requestAnimationFrame(tick);
+      }
+
+      function pickSupportedMimeType() {
+        if (typeof MediaRecorder === 'undefined') return '';
+        const candidates = [
+          'audio/webm;codecs=opus',
+          'audio/webm',
+          'audio/mp4',
+          'audio/ogg;codecs=opus'
+        ];
+        for (const mime of candidates) {
+          if (MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(mime)) {
+            return mime;
+          }
+        }
+        return '';
+      }
+
+      function startMediaRecording() {
+        if (!state.micStream || !state.micStream.active || typeof MediaRecorder === 'undefined') {
+          return;
+        }
+
+        try {
+          state.recordedChunks = [];
+          const mime = pickSupportedMimeType();
+          const options = mime ? { mimeType: mime } : undefined;
+          const recorder = new MediaRecorder(state.micStream, options);
+          state.recordingMime = recorder.mimeType || mime || 'audio/webm';
+
+          recorder.ondataavailable = (e) => {
+            if (e.data && e.data.size > 0) {
+              state.recordedChunks.push(e.data);
+            }
+          };
+
+          recorder.onstop = () => {
+            if (state.recordedChunks.length === 0) return;
+            const blob = new Blob(state.recordedChunks, { type: state.recordingMime });
+            if (state.recordingUrl) {
+              URL.revokeObjectURL(state.recordingUrl);
+            }
+            state.recordingUrl = URL.createObjectURL(blob);
+
+            el.audioPlayback.src = state.recordingUrl;
+            const ext = state.recordingMime.includes('mp4') ? 'm4a' : (state.recordingMime.includes('ogg') ? 'ogg' : 'webm');
+            const q = getCurrentQuestion();
+            el.btnDownloadAudio.href = state.recordingUrl;
+            el.btnDownloadAudio.download = `${q.id}-recording.${ext}`;
+
+            const kb = Math.max(1, Math.round(blob.size / 1024));
+            el.playbackInfo.textContent = `${q.id} 녹음 완료 (${kb} KB)`;
+            el.playbackBadge.textContent = '재생 가능';
+            el.playbackBadge.className = 'text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700';
+            el.playbackEmpty.classList.add('hidden');
+            el.playbackReady.classList.remove('hidden');
+          };
+
+          recorder.start(250);
+          state.mediaRecorder = recorder;
+        } catch (err) {
+          console.warn('MediaRecorder start failed:', err);
+        }
+      }
+
+      function stopMediaRecording() {
+        if (state.mediaRecorder && state.mediaRecorder.state !== 'inactive') {
+          try {
+            state.mediaRecorder.stop();
+          } catch (e) {
+            // ignore
+          }
+        }
+      }
+
+      function clearPlayback() {
+        if (state.recordingUrl) {
+          URL.revokeObjectURL(state.recordingUrl);
+          state.recordingUrl = null;
+        }
+        el.audioPlayback.removeAttribute('src');
+        el.audioPlayback.load();
+        el.playbackEmpty.classList.remove('hidden');
+        el.playbackReady.classList.add('hidden');
+        el.playbackBadge.textContent = '녹음 대기';
+        el.playbackBadge.className = 'text-[11px] font-medium px-2 py-0.5 rounded-full bg-slate-100 text-slate-500';
+      }
+
+      // ==========================================
+      // 7. SVG Chart Rendering (Describe Image)
+      // ==========================================
+      function renderSvgChart(q) {
+        const W = 640;
+        const H = 350;
+        const pad = { top: 52, right: 28, bottom: 52, left: 58 };
+        const plotW = W - pad.left - pad.right;
+        const plotH = H - pad.top - pad.bottom;
+
+        const escapeHtml = (str) => String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;');
+
+        let inner = `
+          <rect x="0" y="0" width="${W}" height="${H}" rx="12" fill="#ffffff" />
+          <text x="${W / 2}" y="26" text-anchor="middle" font-size="15" font-weight="700" fill="#0f172a">${escapeHtml(q.title)}</text>
+          <text x="${W / 2}" y="43" text-anchor="middle" font-size="11.5" fill="#64748b">${escapeHtml(q.subtitle)}</text>
+        `;
+
+        let maxVal = 0;
+        if (q.chartType === 'bar') {
+          maxVal = Math.max(...q.data.map(d => d.value));
+        } else if (q.chartType === 'line') {
+          maxVal = Math.max(...q.series.flatMap(s => s.points.map(p => p.value)));
+        } else if (q.chartType === 'grouped-bar') {
+          maxVal = Math.max(...q.series.flatMap(s => s.values));
+        } else if (q.chartType === 'single-line') {
+          maxVal = Math.max(...q.points.map(p => p.value));
+        }
+
+        const niceStep = maxVal > 800 ? 300 : maxVal > 300 ? 100 : maxVal > 60 ? 20 : 10;
+        const yMax = Math.ceil((maxVal * 1.12) / niceStep) * niceStep;
+        const ticks = 5;
+
+        for (let i = 0; i <= ticks; i++) {
+          const val = Math.round((yMax / ticks) * i);
+          const y = pad.top + plotH - (val / yMax) * plotH;
+          const label = q.unit === '$' ? `$${val}` : (q.unit ? `${val}${q.unit}` : `${val}`);
+          inner += `
+            <line x1="${pad.left}" y1="${y}" x2="${W - pad.right}" y2="${y}" stroke="${i === 0 ? '#94a3b8' : '#e2e8f0'}" stroke-width="${i === 0 ? 1.5 : 1}" />
+            <text x="${pad.left - 8}" y="${y + 4}" text-anchor="end" font-size="11" fill="#64748b">${label}</text>
+          `;
+        }
+
+        inner += `<line x1="${pad.left}" y1="${pad.top}" x2="${pad.left}" y2="${pad.top + plotH}" stroke="#94a3b8" stroke-width="1.5" />`;
+
+        if (q.chartType === 'bar') {
+          const count = q.data.length;
+          const slotW = plotW / count;
+          const barW = Math.min(58, slotW * 0.56);
+
+          q.data.forEach((d, idx) => {
+            const barH = (d.value / yMax) * plotH;
+            const x = pad.left + idx * slotW + (slotW - barW) / 2;
+            const y = pad.top + plotH - barH;
+            const valLabel = q.unit ? `${d.value}${q.unit}` : `${d.value}`;
+            inner += `
+              <rect x="${x}" y="${y}" width="${barW}" height="${barH}" rx="4" fill="${d.color}" />
+              <text x="${x + barW / 2}" y="${y - 6}" text-anchor="middle" font-size="11.5" font-weight="700" fill="#1e293b">${valLabel}</text>
+              <text x="${x + barW / 2}" y="${pad.top + plotH + 20}" text-anchor="middle" font-size="11.5" font-weight="600" fill="#334155">${escapeHtml(d.label)}</text>
+            `;
+          });
+        } else if (q.chartType === 'grouped-bar') {
+          const count = q.categories.length;
+          const slotW = plotW / count;
+          const barW = Math.min(34, slotW * 0.28);
+          const gap = 6;
+
+          q.series.forEach((s, si) => {
+            const lx = pad.left + 12 + si * 155;
+            inner += `
+              <rect x="${lx}" y="${pad.top - 2}" width="11" height="11" rx="2" fill="${s.color}" />
+              <text x="${lx + 16}" y="${pad.top + 8}" font-size="11" font-weight="600" fill="#334155">${escapeHtml(s.name)}</text>
+            `;
+          });
+
+          q.categories.forEach((cat, idx) => {
+            const centerX = pad.left + idx * slotW + slotW / 2;
+            const totalGroupW = barW * 2 + gap;
+            q.series.forEach((s, si) => {
+              const val = s.values[idx];
+              const barH = (val / yMax) * plotH;
+              const x = centerX - totalGroupW / 2 + si * (barW + gap);
+              const y = pad.top + plotH - barH;
+              inner += `
+                <rect x="${x}" y="${y}" width="${barW}" height="${barH}" rx="3" fill="${s.color}" />
+                <text x="${x + barW / 2}" y="${y - 5}" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e293b">$${val}</text>
+              `;
+            });
+            inner += `<text x="${centerX}" y="${pad.top + plotH + 20}" text-anchor="middle" font-size="11.5" font-weight="600" fill="#334155">${escapeHtml(cat)}</text>`;
+          });
+        } else if (q.chartType === 'line') {
+          const labels = q.series[0].points.map(p => p.label);
+          const stepX = plotW / (labels.length - 1);
+
+          q.series.forEach((s, si) => {
+            const lx = pad.left + 12 + si * 125;
+            inner += `
+              <line x1="${lx}" y1="${pad.top + 4}" x2="${lx + 18}" y2="${pad.top + 4}" stroke="${s.color}" stroke-width="3" />
+              <circle cx="${lx + 9}" cy="${pad.top + 4}" r="3.5" fill="${s.color}" />
+              <text x="${lx + 24}" y="${pad.top + 8}" font-size="11" font-weight="600" fill="#334155">${escapeHtml(s.name)}</text>
+            `;
+          });
+
+          labels.forEach((lbl, idx) => {
+            const x = pad.left + idx * stepX;
+            inner += `<text x="${x}" y="${pad.top + plotH + 20}" text-anchor="middle" font-size="11.5" font-weight="600" fill="#334155">${escapeHtml(lbl)}</text>`;
+          });
+
+          q.series.forEach((s, si) => {
+            const pts = s.points.map((p, idx) => {
+              const x = pad.left + idx * stepX;
+              const y = pad.top + plotH - (p.value / yMax) * plotH;
+              return { x, y, value: p.value };
+            });
+            const dAttr = pts.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(' ');
+            inner += `<path d="${dAttr}" fill="none" stroke="${s.color}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />`;
+            pts.forEach(p => {
+              const dy = si === 0 ? -10 : 16;
+              inner += `
+                <circle cx="${p.x}" cy="${p.y}" r="4.5" fill="#ffffff" stroke="${s.color}" stroke-width="2.5" />
+                <text x="${p.x}" y="${p.y + dy}" text-anchor="middle" font-size="10.5" font-weight="700" fill="${s.color}">${p.value}${q.unit}</text>
+              `;
+            });
+          });
+        } else if (q.chartType === 'single-line') {
+          const stepX = plotW / (q.points.length - 1);
+          const pts = q.points.map((p, idx) => {
+            const x = pad.left + idx * stepX;
+            const y = pad.top + plotH - (p.value / yMax) * plotH;
+            return { x, y, label: p.label, value: p.value };
+          });
+
+          const areaPath = `M ${pts[0].x} ${pad.top + plotH} ` +
+            pts.map(p => `L ${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(' ') +
+            ` L ${pts[pts.length - 1].x} ${pad.top + plotH} Z`;
+          inner += `<path d="${areaPath}" fill="${q.color}" fill-opacity="0.12" />`;
+
+          const linePath = pts.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(' ');
+          inner += `<path d="${linePath}" fill="none" stroke="${q.color}" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" />`;
+
+          pts.forEach(p => {
+            inner += `
+              <circle cx="${p.x}" cy="${p.y}" r="5" fill="#ffffff" stroke="${q.color}" stroke-width="2.5" />
+              <text x="${p.x}" y="${p.y - 11}" text-anchor="middle" font-size="11" font-weight="700" fill="#0f172a">${p.value}${q.unit}</text>
+              <text x="${p.x}" y="${pad.top + plotH + 20}" text-anchor="middle" font-size="11.5" font-weight="600" fill="#334155">${escapeHtml(p.label)}</text>
+            `;
+          });
+        }
+
+        return `<svg viewBox="0 0 ${W} ${H}" class="w-full max-w-[640px] h-auto rounded-lg border border-slate-200 bg-white shadow-xs" role="img" aria-label="${escapeHtml(q.title)}">${inner}</svg>`;
+      }
+
+      // ==========================================
+      // 8. Speaking UI Rendering & State Machine
+      // ==========================================
+      function getQuestionsForMode(mode = state.mode) {
+        if (mode === 'read-aloud') return READ_ALOUD_QUESTIONS;
+        if (mode === 'describe-image') return DESCRIBE_IMAGE_QUESTIONS;
+        return REPEAT_SENTENCE_QUESTIONS;
+      }
+
+      function getCurrentQuestion() {
+        const list = getQuestionsForMode();
+        return list[state.questionIndex[state.mode]];
+      }
+
+      function renderTabs() {
+        const tabs = [
+          { el: el.tabReadAloud, mode: 'read-aloud' },
+          { el: el.tabDescribeImage, mode: 'describe-image' },
+          { el: el.tabRepeatSentence, mode: 'repeat-sentence' },
+          { el: el.tabWriting, mode: 'writing' }
+        ];
+
+        tabs.forEach(({ el: btn, mode }) => {
+          const active = state.mode === mode;
+          btn.setAttribute('aria-selected', String(active));
+          btn.className = active
+            ? 'tab-btn shrink-0 relative py-3 px-3 sm:px-4 text-sm sm:text-base font-semibold border-b-2 border-pte-blue text-pte-blue flex items-center gap-2 transition cursor-pointer'
+            : 'tab-btn shrink-0 relative py-3 px-3 sm:px-4 text-sm sm:text-base font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-2 transition cursor-pointer';
+
+          const badge = btn.querySelector('span:nth-child(2)');
+          if (badge) {
+            badge.className = active
+              ? 'hidden md:inline-block text-[11px] font-medium px-2 py-0.5 rounded-full bg-sky-100 text-pte-blue'
+              : 'hidden md:inline-block text-[11px] font-medium px-2 py-0.5 rounded-full bg-slate-100 text-slate-600';
+          }
+        });
+      }
+
+      function renderWorkspaceVisibility() {
+        const isWriting = state.mode === 'writing';
+        if (isWriting) {
+          el.speakingSelectorBar.classList.add('hidden');
+          el.speakingWorkspace.classList.add('hidden');
+          el.writingWorkspace.classList.remove('hidden');
+        } else {
+          el.speakingSelectorBar.classList.remove('hidden');
+          el.speakingWorkspace.classList.remove('hidden');
+          el.writingWorkspace.classList.add('hidden');
+        }
+      }
+
+      function renderQuestionSelector() {
+        if (state.mode === 'writing') return;
+        const list = getQuestionsForMode();
+        const currentIdx = state.questionIndex[state.mode];
+
+        el.questionPills.innerHTML = '';
+        list.forEach((item, idx) => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.textContent = `문제 ${idx + 1}`;
+          btn.className = idx === currentIdx
+            ? 'px-3 py-1.5 rounded-lg text-xs font-bold bg-pte-blue text-white shadow-xs transition cursor-pointer'
+            : 'px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-100 hover:bg-slate-200 text-slate-700 transition cursor-pointer';
+          btn.addEventListener('click', () => selectQuestion(idx));
+          el.questionPills.appendChild(btn);
+        });
+
+        el.btnPrevQ.disabled = currentIdx === 0;
+        el.btnNextQ.disabled = currentIdx === list.length - 1;
+      }
+
+      function renderRepeatSentenceScriptUI() {
+        const canReveal = state.phase === 'done';
+        el.btnRsToggleScript.disabled = !canReveal;
+        el.rsScriptHint.textContent = canReveal ? '클릭하여 원문과 끊어 듣기를 확인하세요' : '녹음 완료 후 활성화됩니다';
+
+        if (!canReveal) {
+          state.rsScriptVisible = false;
+        }
+
+        el.btnRsToggleScript.setAttribute('aria-expanded', String(state.rsScriptVisible));
+        if (state.rsScriptVisible && canReveal) {
+          el.rsScriptContent.classList.remove('hidden');
+          el.rsScriptMasked.classList.add('hidden');
+          el.rsScriptBtnText.textContent = '원문 스크립트 숨기기';
+        } else {
+          el.rsScriptContent.classList.add('hidden');
+          el.rsScriptMasked.classList.remove('hidden');
+          el.rsScriptBtnText.textContent = '원문 스크립트 확인';
+        }
+      }
+
+      function renderQuestionContent() {
+        if (state.mode === 'writing') return;
+
+        const q = getCurrentQuestion();
+        const cfg = MODE_CONFIG[state.mode];
+
+        el.qBadge.textContent = q.id;
+        el.qTitle.textContent = q.title;
+        el.instructionBox.innerHTML = cfg.instruction;
+
+        el.panelReadAloud.classList.add('hidden');
+        el.panelDescribeImage.classList.add('hidden');
+        el.panelRepeatSentence.classList.add('hidden');
+
+        if (state.mode === 'read-aloud') {
+          el.panelReadAloud.classList.remove('hidden');
+          el.qMeta.textContent = q.topic;
+          el.raPassage.textContent = q.passage;
+          const words = q.passage.trim().split(/\s+/).length;
+          el.raWordCount.textContent = `단어 수: ${words} words`;
+        } else if (state.mode === 'describe-image') {
+          el.panelDescribeImage.classList.remove('hidden');
+          el.qMeta.textContent = q.chartType.includes('line') ? 'Line Chart' : 'Bar Chart';
+          el.diChartContainer.innerHTML = renderSvgChart(q);
+          el.diModelAnswer.textContent = q.modelAnswer;
+          el.diKeyPoints.textContent = q.keyPoints;
+        } else if (state.mode === 'repeat-sentence') {
+          el.panelRepeatSentence.classList.remove('hidden');
+          const words = q.sentence.trim().split(/\s+/).length;
+          el.qMeta.textContent = `${q.topic} · ${words} words`;
+          el.rsWordCount.textContent = `${words} words`;
+          el.rsSentenceText.textContent = q.sentence;
+          el.rsChunkingText.textContent = q.chunking;
+          el.rsTranslationText.textContent = `해석: ${q.translation}`;
+          el.rsAudioStatus.textContent = "오른쪽 '실전 연습 시작'을 누르면 원어민 음성이 재생됩니다";
+          renderRepeatSentenceScriptUI();
+        }
+      }
+
+      function renderTimerUI() {
+        if (state.mode === 'writing') return;
+
+        const cfg = MODE_CONFIG[state.mode];
+        if (state.mode === 'repeat-sentence') {
+          el.phaseSequenceLabel.textContent = `음성 재생 → 준비 ${cfg.prepSeconds}초 → Beep → 녹음 ${cfg.speakSeconds}초`;
+        } else {
+          el.phaseSequenceLabel.textContent = `준비 ${cfg.prepSeconds}초 → 삐(Beep) → 녹음 ${cfg.speakSeconds}초`;
+        }
+
+        el.timerSeconds.textContent = state.remainingSeconds;
+        el.timerFraction.textContent = `${state.remainingSeconds} / ${state.totalPhaseSeconds}s`;
+
+        const pct = state.totalPhaseSeconds > 0
+          ? Math.max(0, Math.min(100, (state.remainingSeconds / state.totalPhaseSeconds) * 100))
+          : 0;
+        el.timerProgressBar.style.width = pct + '%';
+
+        if (state.phase === 'idle') {
+          el.phaseBadge.textContent = '대기 중 (Ready)';
+          el.phaseBadge.className = 'px-2.5 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-600';
+          el.timerCard.className = 'rounded-xl border border-slate-200 bg-slate-50 p-4 sm:p-5 text-center space-y-3 transition-colors';
+          el.timerStatusText.textContent = state.mode === 'repeat-sentence'
+            ? '시작 버튼을 누르면 원어민 음성이 재생됩니다'
+            : '시작 버튼을 누르면 준비 시간 카운트다운이 시작됩니다';
+          el.timerProgressBar.className = 'h-full bg-pte-blue transition-all duration-300 ease-linear rounded-full';
+          el.recordingIndicator.classList.add('hidden');
+          el.btnStart.disabled = false;
+          el.btnStartText.textContent = '실전 연습 시작';
+          el.btnSkipPrep.disabled = true;
+          el.btnSkipPrep.textContent = '준비 건너뛰기 → Beep';
+        } else if (state.phase === 'playing-audio') {
+          el.phaseBadge.textContent = '음성 재생 중 (Playing Audio)';
+          el.phaseBadge.className = 'px-2.5 py-1 rounded-full text-xs font-bold bg-sky-100 text-pte-blue';
+          el.timerCard.className = 'rounded-xl border border-sky-300 bg-sky-50/70 p-4 sm:p-5 text-center space-y-3 transition-colors';
+          el.timerStatusText.textContent = '원어민 음성을 듣고 문장을 기억하세요 (종료 후 3초 준비)';
+          el.timerProgressBar.className = 'h-full bg-pte-blue transition-all duration-300 ease-linear rounded-full';
+          el.recordingIndicator.classList.add('hidden');
+          el.btnStart.disabled = true;
+          el.btnStartText.textContent = '음성 재생 중...';
+          el.btnSkipPrep.disabled = false;
+          el.btnSkipPrep.textContent = '음성/준비 건너뛰기 → Beep';
+        } else if (state.phase === 'prep') {
+          el.phaseBadge.textContent = '준비 시간 (Preparation)';
+          el.phaseBadge.className = 'px-2.5 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800';
+          el.timerCard.className = 'rounded-xl border border-amber-300 bg-amber-50/70 p-4 sm:p-5 text-center space-y-3 transition-colors';
+          el.timerStatusText.textContent = state.mode === 'repeat-sentence'
+            ? '들은 문장을 머릿속으로 정리하세요 — 곧 Beep과 함께 녹음 시작'
+            : '지문/이미지를 파악하세요 — 곧 Beep 소리와 함께 녹음이 시작됩니다';
+          el.timerProgressBar.className = 'h-full bg-amber-500 transition-all duration-300 ease-linear rounded-full';
+          el.recordingIndicator.classList.add('hidden');
+          el.btnStart.disabled = true;
+          el.btnStartText.textContent = '준비 중...';
+          el.btnSkipPrep.disabled = false;
+          el.btnSkipPrep.textContent = '준비 건너뛰기 → Beep';
+        } else if (state.phase === 'recording') {
+          el.phaseBadge.textContent = '녹음 중 (Recording)';
+          el.phaseBadge.className = 'px-2.5 py-1 rounded-full text-xs font-bold bg-rose-100 text-rose-700';
+          el.timerCard.className = 'rounded-xl border border-rose-300 bg-rose-50/70 p-4 sm:p-5 text-center space-y-3 transition-colors';
+          el.timerStatusText.textContent = '지금 말하세요! (Recording in progress...)';
+          el.timerProgressBar.className = 'h-full bg-rose-600 transition-all duration-300 ease-linear rounded-full';
+          el.recordingIndicator.classList.remove('hidden');
+          el.btnStart.disabled = false;
+          el.btnStartText.textContent = '말하기 조기 완료 (Finish)';
+          el.btnSkipPrep.disabled = true;
+        } else if (state.phase === 'done') {
+          el.phaseBadge.textContent = '완료 (Completed)';
+          el.phaseBadge.className = 'px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-700';
+          el.timerCard.className = 'rounded-xl border border-emerald-300 bg-emerald-50/60 p-4 sm:p-5 text-center space-y-3 transition-colors';
+          el.timerStatusText.textContent = state.mode === 'repeat-sentence'
+            ? '녹음 완료! 원문 스크립트 확인 및 내 발음 다시 듣기가 활성화되었습니다'
+            : '연습 완료! 아래에서 내 발음을 다시 들어보세요';
+          el.timerProgressBar.className = 'h-full bg-emerald-500 transition-all duration-300 ease-linear rounded-full';
+          el.recordingIndicator.classList.add('hidden');
+          el.btnStart.disabled = false;
+          el.btnStartText.textContent = '다시 연습하기';
+          el.btnSkipPrep.disabled = true;
+        }
+
+        if (state.mode === 'repeat-sentence') {
+          renderRepeatSentenceScriptUI();
+        }
+      }
+
+      function clearTimerInterval() {
+        if (state.timerId !== null) {
+          clearInterval(state.timerId);
+          state.timerId = null;
+        }
+      }
+
+      function resetPractice(clearAudio = true) {
+        clearTimerInterval();
+        cancelSpeech();
+        stopMediaRecording();
+        if (state.mode !== 'writing') {
+          const cfg = MODE_CONFIG[state.mode];
+          state.phase = 'idle';
+          state.remainingSeconds = cfg.prepSeconds;
+          state.totalPhaseSeconds = cfg.prepSeconds;
+        }
+        state.rsScriptVisible = false;
+        if (clearAudio) clearPlayback();
+        renderTimerUI();
+      }
+
+      function startPrepCountdown() {
+        clearTimerInterval();
+        const cfg = MODE_CONFIG[state.mode];
+        state.phase = 'prep';
+        state.remainingSeconds = cfg.prepSeconds;
+        state.totalPhaseSeconds = cfg.prepSeconds;
+        renderTimerUI();
+
+        state.timerId = setInterval(() => {
+          state.remainingSeconds -= 1;
+          if (state.remainingSeconds <= 0) {
+            clearTimerInterval();
+            beginRecordingPhase();
+          } else {
+            renderTimerUI();
+          }
+        }, 1000);
+      }
+
+      async function startPractice() {
+        if (state.phase === 'recording') {
+          finishRecordingPhase();
+          return;
+        }
+
+        ensureAudioContext();
+        clearTimerInterval();
+        cancelSpeech();
+        clearPlayback();
+        state.rsScriptVisible = false;
+
+        await requestMicrophone();
+
+        if (state.mode === 'repeat-sentence') {
+          const cfg = MODE_CONFIG['repeat-sentence'];
+          const q = getCurrentQuestion();
+          state.phase = 'playing-audio';
+          state.remainingSeconds = cfg.prepSeconds;
+          state.totalPhaseSeconds = cfg.prepSeconds;
+          renderTimerUI();
+
+          speakSentence(q.sentence, () => {
+            if (state.mode === 'repeat-sentence' && state.phase === 'playing-audio') {
+              startPrepCountdown();
+            }
+          });
+        } else {
+          startPrepCountdown();
+        }
+      }
+
+      function beginRecordingPhase() {
+        clearTimerInterval();
+        cancelSpeech();
+        const cfg = MODE_CONFIG[state.mode];
+
+        playBeep(980, 0.38);
+
+        state.phase = 'recording';
+        state.remainingSeconds = cfg.speakSeconds;
+        state.totalPhaseSeconds = cfg.speakSeconds;
+        renderTimerUI();
+
+        startMediaRecording();
+
+        state.timerId = setInterval(() => {
+          state.remainingSeconds -= 1;
+          if (state.remainingSeconds <= 0) {
+            finishRecordingPhase();
+          } else {
+            renderTimerUI();
+          }
+        }, 1000);
+      }
+
+      function finishRecordingPhase() {
+        clearTimerInterval();
+        cancelSpeech();
+        stopMediaRecording();
+        playBeep(660, 0.18);
+
+        state.phase = 'done';
+        state.remainingSeconds = 0;
+        renderTimerUI();
+      }
+
+      function selectQuestion(index) {
+        if (state.mode === 'writing') return;
+        const list = getQuestionsForMode();
+        if (index < 0 || index >= list.length) return;
+        state.questionIndex[state.mode] = index;
+        resetPractice(true);
+        renderQuestionSelector();
+        renderQuestionContent();
+      }
+
+      function toggleTemplate() {
+        state.templateVisible = !state.templateVisible;
+        el.btnToggleTemplate.setAttribute('aria-expanded', String(state.templateVisible));
+        if (state.templateVisible) {
+          el.diTemplateBox.classList.remove('hidden');
+          el.templateBtnText.textContent = '모범 답변 템플릿 숨기기';
+          el.templateChevron.classList.add('rotate-180');
+        } else {
+          el.diTemplateBox.classList.add('hidden');
+          el.templateBtnText.textContent = '모범 답변 템플릿 보기';
+          el.templateChevron.classList.remove('rotate-180');
+        }
+      }
+
+      function toggleRepeatSentenceScript() {
+        if (state.phase !== 'done') return;
+        state.rsScriptVisible = !state.rsScriptVisible;
+        renderRepeatSentenceScriptUI();
+      }
+
+      // ==========================================
+      // 9. Writing Mode (SWT & Essay)
+      // ==========================================
+      function getWritingQuestions() {
+        return state.writingSubmode === 'swt' ? SWT_QUESTIONS : ESSAY_QUESTIONS;
+      }
+
+      function getCurrentWritingQuestion() {
+        const list = getWritingQuestions();
+        return list[state.writingIndex[state.writingSubmode]];
+      }
+
+      function getWritingStorageKey(questionId) {
+        return `pte_writing_draft_${questionId}`;
+      }
+
+      function countWords(text) {
+        const trimmed = text.trim();
+        return trimmed ? trimmed.split(/\s+/).length : 0;
+      }
+
+      function formatMMSS(totalSeconds) {
+        const mins = Math.floor(totalSeconds / 60);
+        const secs = totalSeconds % 60;
+        return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+      }
+
+      function stopWritingTimer() {
+        if (state.writingTimerId !== null) {
+          clearInterval(state.writingTimerId);
+          state.writingTimerId = null;
+        }
+        state.writingTimerRunning = false;
+      }
+
+      function resetWritingTimer() {
+        stopWritingTimer();
+        state.writingTimerRemaining = WRITING_CONFIG[state.writingSubmode].durationSeconds;
+        renderWritingTimerUI();
+      }
+
+      function toggleWritingTimer() {
+        ensureAudioContext();
+        if (state.writingTimerRunning) {
+          stopWritingTimer();
+          renderWritingTimerUI();
+          return;
+        }
+
+        if (state.writingTimerRemaining <= 0) {
+          state.writingTimerRemaining = WRITING_CONFIG[state.writingSubmode].durationSeconds;
+        }
+
+        state.writingTimerRunning = true;
+        renderWritingTimerUI();
+
+        state.writingTimerId = setInterval(() => {
+          state.writingTimerRemaining -= 1;
+          if (state.writingTimerRemaining <= 0) {
+            state.writingTimerRemaining = 0;
+            stopWritingTimer();
+            playBeep(660, 0.25);
+          }
+          renderWritingTimerUI();
+        }, 1000);
+      }
+
+      function renderWritingTimerUI() {
+        el.writingTimerDisplay.textContent = formatMMSS(state.writingTimerRemaining);
+
+        if (state.writingTimerRemaining === 0) {
+          el.writingTimerStatus.textContent = '시간 종료 (Time Up!)';
+          el.writingTimerStatus.className = 'text-xs sm:text-sm font-bold text-rose-700';
+          el.writingTimerSub.textContent = '초기화 버튼을 눌러 다시 시작할 수 있습니다';
+          el.btnWritingTimerToggle.textContent = '다시 시작';
+          el.btnWritingTimerToggle.className = 'px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-white bg-pte-blue hover:bg-sky-700 transition cursor-pointer';
+        } else if (state.writingTimerRunning) {
+          el.writingTimerStatus.textContent = '작성 타이머 진행 중...';
+          el.writingTimerStatus.className = 'text-xs sm:text-sm font-bold text-pte-blue';
+          el.writingTimerSub.textContent = state.writingSubmode === 'swt' ? 'SWT 제한 시간: 10분' : 'Essay 제한 시간: 20분';
+          el.btnWritingTimerToggle.textContent = '일시정지';
+          el.btnWritingTimerToggle.className = 'px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-amber-800 bg-amber-100 hover:bg-amber-200 transition cursor-pointer';
+        } else {
+          el.writingTimerStatus.textContent = '타이머 일시정지 / 대기 중';
+          el.writingTimerStatus.className = 'text-xs sm:text-sm font-bold text-slate-800';
+          el.writingTimerSub.textContent = '타이머 시작 없이도 바로 작성할 수 있습니다';
+          el.btnWritingTimerToggle.textContent = '타이머 시작';
+          el.btnWritingTimerToggle.className = 'px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-white bg-pte-blue hover:bg-sky-700 transition cursor-pointer';
+        }
+      }
+
+      function validateAndUpdateWritingStats() {
+        const text = el.writingTextarea.value;
+        const words = countWords(text);
+        const cfg = WRITING_CONFIG[state.writingSubmode];
+
+        el.writingWordCount.textContent = `${words} words`;
+
+        if (state.writingSubmode === 'swt') {
+          if (words === 0) {
+            el.writingRangeBadge.textContent = '권장: 5~75 words (작성 대기)';
+            el.writingRangeBadge.className = 'px-2.5 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-600';
+          } else if (words >= cfg.minWords && words <= cfg.maxWords) {
+            el.writingRangeBadge.textContent = `적정 범위 (${cfg.minWords}~${cfg.maxWords} words)`;
+            el.writingRangeBadge.className = 'px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-700';
+          } else if (words < cfg.minWords) {
+            el.writingRangeBadge.textContent = `단어 부족 (최소 ${cfg.minWords} words)`;
+            el.writingRangeBadge.className = 'px-2.5 py-1 rounded-full text-xs font-bold bg-rose-100 text-rose-700';
+          } else {
+            el.writingRangeBadge.textContent = `단어 초과 (최대 ${cfg.maxWords} words)`;
+            el.writingRangeBadge.className = 'px-2.5 py-1 rounded-full text-xs font-bold bg-rose-100 text-rose-700';
+          }
+
+          // SWT Single-Sentence & Period Validator
+          el.swtSentenceCheck.classList.remove('hidden');
+          const trimmed = text.trim();
+          if (!trimmed) {
+            el.swtSentenceCheck.innerHTML = '💡 SWT 규칙: 반드시 <strong>5~75단어 이내의 한 문장(1 sentence)</strong>으로 작성하고, 마침표(<code>.</code>)는 맨 끝에만 한 번 찍어야 합니다.';
+            el.swtSentenceCheck.className = 'rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-xs font-medium text-slate-600';
+          } else {
+            // Sentence-ending punctuation followed by whitespace or end of string (avoids false positives on decimals like 3.5)
+            const endPunctMatches = trimmed.match(/[.!?]+(?=\s|$)/g) || [];
+            const endsWithPeriod = /\.$/.test(trimmed);
+
+            if (endPunctMatches.length > 1) {
+              el.swtSentenceCheck.textContent = `⚠️ 문장 종결 부호가 ${endPunctMatches.length}개 감지되었습니다 — SWT는 반드시 1개의 문장으로 작성해야 합니다.`;
+              el.swtSentenceCheck.className = 'rounded-xl border border-rose-200 bg-rose-50 px-3.5 py-2.5 text-xs font-semibold text-rose-700';
+            } else if (!endsWithPeriod) {
+              el.swtSentenceCheck.textContent = '⚠️ 문장 마지막을 마침표(.)로 끝내주세요.';
+              el.swtSentenceCheck.className = 'rounded-xl border border-amber-200 bg-amber-50 px-3.5 py-2.5 text-xs font-semibold text-amber-800';
+            } else {
+              el.swtSentenceCheck.textContent = '✅ 한 문장 & 마지막 마침표(.) 조건을 충족했습니다.';
+              el.swtSentenceCheck.className = 'rounded-xl border border-emerald-200 bg-emerald-50 px-3.5 py-2.5 text-xs font-semibold text-emerald-700';
+            }
+          }
+        } else {
+          // Essay 200~300 word live color range
+          el.swtSentenceCheck.classList.add('hidden');
+          if (words === 0) {
+            el.writingRangeBadge.textContent = '권장: 200~300 words (작성 대기)';
+            el.writingRangeBadge.className = 'px-2.5 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-600';
+          } else if (words < cfg.minWords) {
+            el.writingRangeBadge.textContent = `단어 수 부족 (권장 200~300 words · ${cfg.minWords - words}단어 더 필요)`;
+            el.writingRangeBadge.className = 'px-2.5 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800';
+          } else if (words <= cfg.maxWords) {
+            el.writingRangeBadge.textContent = '권장 범위 충족 (200~300 words)';
+            el.writingRangeBadge.className = 'px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-700';
+          } else {
+            el.writingRangeBadge.textContent = `권장 범위 초과 (최대 300 words · ${words - cfg.maxWords}단어 초과)`;
+            el.writingRangeBadge.className = 'px-2.5 py-1 rounded-full text-xs font-bold bg-rose-100 text-rose-700';
+          }
+        }
+      }
+
+      function renderWritingSubtabs() {
+        const isSwt = state.writingSubmode === 'swt';
+        el.subtabSwt.className = isSwt
+          ? 'px-3.5 py-2 rounded-lg text-xs sm:text-sm font-bold bg-pte-blue text-white shadow-xs transition cursor-pointer'
+          : 'px-3.5 py-2 rounded-lg text-xs sm:text-sm font-medium bg-slate-100 hover:bg-slate-200 text-slate-700 transition cursor-pointer';
+        el.subtabEssay.className = !isSwt
+          ? 'px-3.5 py-2 rounded-lg text-xs sm:text-sm font-bold bg-pte-blue text-white shadow-xs transition cursor-pointer'
+          : 'px-3.5 py-2 rounded-lg text-xs sm:text-sm font-medium bg-slate-100 hover:bg-slate-200 text-slate-700 transition cursor-pointer';
+      }
+
+      function renderWritingQuestionSelector() {
+        const list = getWritingQuestions();
+        const currentIdx = state.writingIndex[state.writingSubmode];
+
+        el.writingQuestionPills.innerHTML = '';
+        list.forEach((item, idx) => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.textContent = `문제 ${idx + 1}`;
+          btn.className = idx === currentIdx
+            ? 'px-3 py-1.5 rounded-lg text-xs font-bold bg-pte-blue text-white shadow-xs transition cursor-pointer'
+            : 'px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-100 hover:bg-slate-200 text-slate-700 transition cursor-pointer';
+          btn.addEventListener('click', () => selectWritingQuestion(idx));
+          el.writingQuestionPills.appendChild(btn);
+        });
+
+        el.btnWritingPrevQ.disabled = currentIdx === 0;
+        el.btnWritingNextQ.disabled = currentIdx === list.length - 1;
+      }
+
+      function renderWritingModelBox() {
+        el.btnToggleWritingModel.setAttribute('aria-expanded', String(state.writingModelVisible));
+        if (state.writingModelVisible) {
+          el.writingModelBox.classList.remove('hidden');
+          el.writingModelBtnText.textContent = '모범 답안 예시 숨기기';
+          el.writingModelChevron.classList.add('rotate-180');
+        } else {
+          el.writingModelBox.classList.add('hidden');
+          el.writingModelBtnText.textContent = '모범 답안 예시 보기';
+          el.writingModelChevron.classList.remove('rotate-180');
+        }
+      }
+
+      function renderWritingContent() {
+        const q = getCurrentWritingQuestion();
+        const cfg = WRITING_CONFIG[state.writingSubmode];
+
+        el.wQBadge.textContent = q.id;
+        el.wQTitle.textContent = q.title;
+        el.wQMeta.textContent = `${cfg.minWords}~${cfg.maxWords} words · ${q.topic}`;
+        el.wInstructionBox.innerHTML = cfg.instruction;
+        el.wPromptText.textContent = q.passage;
+
+        el.wModelAnswer.textContent = q.modelAnswer;
+        el.wModelWordCount.textContent = `${countWords(q.modelAnswer)} words`;
+        el.wModelTip.textContent = q.tip;
+        renderWritingModelBox();
+
+        // Restore draft from localStorage
+        let saved = '';
+        try {
+          saved = localStorage.getItem(getWritingStorageKey(q.id)) || '';
+        } catch (e) {
+          saved = '';
+        }
+        el.writingTextarea.value = saved;
+        el.writingSaveStatus.textContent = saved
+          ? '저장된 답안 불러옴 (localStorage)'
+          : '자동 저장 대기 (localStorage)';
+
+        validateAndUpdateWritingStats();
+      }
+
+      function switchWritingSubmode(submode) {
+        if (state.writingSubmode === submode) return;
+        state.writingSubmode = submode;
+        state.writingModelVisible = false;
+        resetWritingTimer();
+        renderWritingSubtabs();
+        renderWritingQuestionSelector();
+        renderWritingContent();
+      }
+
+      function selectWritingQuestion(index) {
+        const list = getWritingQuestions();
+        if (index < 0 || index >= list.length) return;
+        state.writingIndex[state.writingSubmode] = index;
+        state.writingModelVisible = false;
+        renderWritingQuestionSelector();
+        renderWritingContent();
+      }
+
+      // ==========================================
+      // 10. Mode Switching & Event Listeners
+      // ==========================================
+      function switchMode(newMode) {
+        if (state.mode === newMode) return;
+        if (state.mode !== 'writing') {
+          resetPractice(true);
+        } else {
+          stopWritingTimer();
+          renderWritingTimerUI();
+        }
+
+        state.mode = newMode;
+        renderTabs();
+        renderWorkspaceVisibility();
+
+        if (newMode === 'writing') {
+          renderWritingSubtabs();
+          renderWritingQuestionSelector();
+          renderWritingContent();
+          renderWritingTimerUI();
+        } else {
+          resetPractice(true);
+          renderQuestionSelector();
+          renderQuestionContent();
+        }
+      }
+
+      // Navigation tabs
+      el.tabReadAloud.addEventListener('click', () => switchMode('read-aloud'));
+      el.tabDescribeImage.addEventListener('click', () => switchMode('describe-image'));
+      el.tabRepeatSentence.addEventListener('click', () => switchMode('repeat-sentence'));
+      el.tabWriting.addEventListener('click', () => switchMode('writing'));
+
+      // Speaking question nav
+      el.btnPrevQ.addEventListener('click', () => selectQuestion(state.questionIndex[state.mode] - 1));
+      el.btnNextQ.addEventListener('click', () => selectQuestion(state.questionIndex[state.mode] + 1));
+
+      // Describe Image template
+      el.btnToggleTemplate.addEventListener('click', toggleTemplate);
+
+      // Repeat Sentence controls
+      el.rsAccentSelect.addEventListener('change', (e) => {
+        state.rsAccent = e.target.value;
+      });
+      el.rsRateSelect.addEventListener('change', (e) => {
+        state.rsRate = parseFloat(e.target.value) || 1.0;
+      });
+      el.btnRsListenOnly.addEventListener('click', () => {
+        if (state.mode !== 'repeat-sentence') return;
+        const q = getCurrentQuestion();
+        speakSentence(q.sentence);
+      });
+      el.btnRsToggleScript.addEventListener('click', toggleRepeatSentenceScript);
+
+      // Speaking timer controls
+      el.btnStart.addEventListener('click', startPractice);
+      el.btnSkipPrep.addEventListener('click', () => {
+        if (state.phase === 'prep' || state.phase === 'playing-audio') {
+          beginRecordingPhase();
+        }
+      });
+      el.btnReset.addEventListener('click', () => resetPractice(true));
+
+      el.btnTestBeep.addEventListener('click', () => {
+        ensureAudioContext();
+        playBeep(980, 0.35);
+      });
+
+      el.btnMicConnect.addEventListener('click', async () => {
+        ensureAudioContext();
+        await requestMicrophone();
+      });
+
+      // Writing event listeners
+      el.subtabSwt.addEventListener('click', () => switchWritingSubmode('swt'));
+      el.subtabEssay.addEventListener('click', () => switchWritingSubmode('essay'));
+      el.btnWritingPrevQ.addEventListener('click', () => selectWritingQuestion(state.writingIndex[state.writingSubmode] - 1));
+      el.btnWritingNextQ.addEventListener('click', () => selectWritingQuestion(state.writingIndex[state.writingSubmode] + 1));
+
+      el.btnWritingTimerToggle.addEventListener('click', toggleWritingTimer);
+      el.btnWritingTimerReset.addEventListener('click', resetWritingTimer);
+
+      el.btnToggleWritingModel.addEventListener('click', () => {
+        state.writingModelVisible = !state.writingModelVisible;
+        renderWritingModelBox();
+      });
+
+      el.writingTextarea.addEventListener('input', () => {
+        const q = getCurrentWritingQuestion();
+        try {
+          localStorage.setItem(getWritingStorageKey(q.id), el.writingTextarea.value);
+          el.writingSaveStatus.textContent = '자동 저장됨 (localStorage)';
+        } catch (e) {
+          el.writingSaveStatus.textContent = '저장 실패 (localStorage 제한)';
+        }
+        validateAndUpdateWritingStats();
+      });
+
+      el.btnCopyWriting.addEventListener('click', async () => {
+        const text = el.writingTextarea.value;
+        if (!text) return;
+        try {
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            await navigator.clipboard.writeText(text);
+          } else {
+            el.writingTextarea.select();
+            document.execCommand('copy');
+          }
+          const orig = el.btnCopyWriting.textContent;
+          el.btnCopyWriting.textContent = '✅ 복사 완료!';
+          setTimeout(() => {
+            el.btnCopyWriting.textContent = orig;
+          }, 1600);
+        } catch (err) {
+          console.warn('Clipboard copy failed:', err);
+        }
+      });
+
+      el.btnClearWriting.addEventListener('click', () => {
+        const q = getCurrentWritingQuestion();
+        el.writingTextarea.value = '';
+        try {
+          localStorage.removeItem(getWritingStorageKey(q.id));
+        } catch (e) {
+          // ignore
+        }
+        el.writingSaveStatus.textContent = '초안 삭제됨';
+        validateAndUpdateWritingStats();
+      });
+
+      // Clean up resources on page unload
+      window.addEventListener('beforeunload', () => {
+        clearTimerInterval();
+        stopWritingTimer();
+        cancelSpeech();
+        stopMediaRecording();
+        if (state.micStream) {
+          state.micStream.getTracks().forEach(t => t.stop());
+        }
+        if (state.recordingUrl) {
+          URL.revokeObjectURL(state.recordingUrl);
+        }
+      });
+
+      // Register Service Worker for PWA offline caching
+      if ('serviceWorker' in navigator && window.location.protocol.startsWith('http')) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('./sw.js').catch((err) => {
+            console.warn('ServiceWorker registration failed:', err);
+          });
+        });
+      }
+
+      // Initial render
+      renderTabs();
+      renderWorkspaceVisibility();
+      renderQuestionSelector();
+      renderQuestionContent();
+      resetPractice(true);
+    })();
+  </script>
+</body>
+</html>
