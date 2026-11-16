@@ -3,7 +3,7 @@
 
 window.PTE_DATA = {
   // ==========================================================
-  // 1. Read Aloud (20 Questions)
+  // 1. Read Aloud (30 Questions)
   // ==========================================================
   READ_ALOUD_QUESTIONS: [
     {
@@ -125,6 +125,66 @@ window.PTE_DATA = {
       title: 'Peer Review in Scientific Publishing',
       topic: 'Research Methodology',
       passage: 'Before an academic manuscript appears in a reputable scientific journal, independent specialists in the same discipline evaluate its methodology, statistical analysis, and conclusions. Although peer review cannot prevent every experimental flaw, this rigorous screening process filters unsupported claims and strengthens the cumulative reliability of published research.'
+    },
+    {
+      id: 'RA-21',
+      title: 'Urban Heat Islands & Tree Canopies',
+      topic: 'Environmental Design',
+      passage: 'Dark asphalt roads and densely packed concrete buildings absorb substantial solar radiation during summer afternoons, making city centers noticeably warmer than surrounding rural districts. Expanding street tree canopies and installing reflective cool roofs provide cost-effective cooling through natural shading and evapotranspiration, lowering residential air-conditioning demand during extreme heatwaves.'
+    },
+    {
+      id: 'RA-22',
+      title: 'Sustainable Aquaculture in Marlborough Sounds',
+      topic: 'Marine Resources',
+      passage: 'Coastal aquaculture supplies high-protein seafood while relieving pressure on depleted wild fish stocks. In sheltered southern waterways, marine farmers cultivate green-lipped mussels alongside kelp forests that absorb excess dissolved nutrients from the water column. Careful site rotation and benthic monitoring ensure farming operations coexist harmoniously with native seabed ecosystems.'
+    },
+    {
+      id: 'RA-23',
+      title: 'AI Triage in Diagnostic Radiology',
+      topic: 'Medical Technology',
+      passage: 'Machine learning algorithms trained on hundreds of thousands of anonymized chest scans now assist hospital radiologists in flagging urgent abnormalities within seconds. Rather than replacing human clinical judgment, automated triage tools prioritize critical cases in crowded emergency departments, enabling physicians to initiate life-saving treatment without unnecessary administrative delays.'
+    },
+    {
+      id: 'RA-24',
+      title: 'Green Hydrogen for Heavy Transport',
+      topic: 'Clean Energy',
+      passage: 'While battery-electric vehicles efficiently power urban passenger commutes, long-haul freight trucks and coastal ferries require higher energy density. Engineers are increasingly producing green hydrogen by splitting water molecules with surplus renewable electricity. When utilized inside fuel cells, this clean fuel emits nothing from the exhaust pipe except pure water vapor.'
+    },
+    {
+      id: 'RA-25',
+      title: 'Alpine Tussock Grasslands & Water Yield',
+      topic: 'NZ Ecology',
+      passage: 'Native snow tussock grasslands carpeting high-country mountain slopes perform an indispensable hydrological function across the South Island. Their fine fibrous leaves capture wind-driven fog droplets and gradually release moisture into underlying soils, sustaining steady river flows during dry summer months when lowland pastoral farms require reliable irrigation.'
+    },
+    {
+      id: 'RA-26',
+      title: 'Sleep Deprivation & Memory Consolidation',
+      topic: 'Cognitive Psychology',
+      passage: 'During deep slow-wave sleep, the human brain replays newly acquired neural patterns and transfers fragile short-term memories from the hippocampus to permanent cortical networks. Students who sacrifice overnight rest to cram before examinations inadvertently disrupt this biological consolidation process, impairing both analytical reasoning and long-term factual recall.'
+    },
+    {
+      id: 'RA-27',
+      title: 'Deep-Sea Hydrothermal Ecosystems',
+      topic: 'Deep-Sea Biology',
+      passage: 'Far below the sunlit ocean surface, superheated mineral-rich fluids erupt through volcanic vents along tectonic mid-ocean ridges. Without any sunlight for photosynthesis, specialized bacteria derive energy from hydrogen sulfide through chemosynthesis, forming the foundation of extraordinary deep-sea communities populated by giant tube worms and translucent crustaceans.'
+    },
+    {
+      id: 'RA-28',
+      title: 'Financial Literacy & Early Savings',
+      topic: 'Personal Finance',
+      passage: 'Understanding compound interest early in adulthood exerts a profound influence on lifetime financial security. Small, consistent contributions placed into diversified index funds during one’s twenties often accumulate greater retirement wealth than substantially larger deposits started fifteen years later, illustrating why schools increasingly integrate practical budgeting workshops into secondary curricula.'
+    },
+    {
+      id: 'RA-29',
+      title: 'Oral History & Indigenous Knowledge',
+      topic: 'Anthropology',
+      passage: 'For centuries, oral storytelling preserved detailed ecological calendars, genealogical lineages, and resource stewardship laws across Pacific island societies. Contemporary researchers collaborate closely with tribal elders to record these traditional narratives respectfully, recognizing that intergenerational indigenous knowledge offers invaluable insights for modern biodiversity management and disaster preparedness.'
+    },
+    {
+      id: 'RA-30',
+      title: 'Global Supply Chain Diversification',
+      topic: 'International Business',
+      passage: 'Severe maritime disruptions and natural disasters over recent years exposed the fragility of single-source just-in-time manufacturing networks. Consequently, multinational corporations now balance cost efficiency with operational resilience by maintaining strategic inventory buffers, qualifying regional backup suppliers, and deploying real-time logistics tracking platforms across key ports.'
     }
   ],
 
@@ -412,7 +472,7 @@ window.PTE_DATA = {
   ],
 
   // ==========================================================
-  // 3. Repeat Sentence (30 Questions, strictly 8–15 words each)
+  // 3. Repeat Sentence (100 Questions: 7-9w Foundational, 10-12w Standard, 13-16w Advanced)
   // ==========================================================
   REPEAT_SENTENCE_QUESTIONS: [
     {
@@ -654,6 +714,569 @@ window.PTE_DATA = {
       sentence: 'Summer internships give final-year graduates practical industry experience prior to job interviews.',
       chunking: 'Summer internships give final-year graduates / practical industry experience / prior to job interviews.',
       translation: '여름 인턴십은 졸업 예정자들에게 취업 면접 전 실무 산업 경험을 제공합니다.'
+    },
+    // --- Short Foundational (7–9 words: RS-31 .. RS-53) ---
+    {
+      id: 'RS-31',
+      title: 'Campus Shuttle Schedule',
+      topic: 'Campus Life',
+      sentence: 'Free campus shuttle buses depart every fifteen minutes.',
+      chunking: 'Free campus shuttle buses / depart every fifteen minutes.',
+      translation: '무료 캠퍼스 셔틀버스는 15분마다 출발합니다.'
+    },
+    {
+      id: 'RS-32',
+      title: 'Lecture Recording Upload',
+      topic: 'Study Notice',
+      sentence: 'Recorded lecture videos are uploaded online every evening.',
+      chunking: 'Recorded lecture videos / are uploaded online / every evening.',
+      translation: '녹화된 강의 영상은 매일 저녁 온라인에 업로드됩니다.'
+    },
+    {
+      id: 'RS-33',
+      title: 'Chemistry Lab Safety',
+      topic: 'Lab Rules',
+      sentence: 'Safety goggles are mandatory inside all chemistry laboratories.',
+      chunking: 'Safety goggles are mandatory / inside all chemistry laboratories.',
+      translation: '모든 화학 실험실 내부에서는 보안경 착용이 필수입니다.'
+    },
+    {
+      id: 'RS-34',
+      title: 'Native Forest Restoration',
+      topic: 'Ecology',
+      sentence: 'Volunteers planted five hundred native seedlings this weekend.',
+      chunking: 'Volunteers planted / five hundred native seedlings / this weekend.',
+      translation: '자원봉사자들은 이번 주말에 토종 묘목 500그루를 심었습니다.'
+    },
+    {
+      id: 'RS-35',
+      title: 'Student ID Card',
+      topic: 'Campus Services',
+      sentence: 'Please carry your student identification card for library entry.',
+      chunking: 'Please carry your student identification card / for library entry.',
+      translation: '도서관 출입을 위해 학생증을 지참해 주세요.'
+    },
+    {
+      id: 'RS-36',
+      title: 'Essay Word Limit',
+      topic: 'Assignment Guide',
+      sentence: 'Essays exceeding the strict word limit may lose marks.',
+      chunking: 'Essays exceeding the strict word limit / may lose marks.',
+      translation: '엄격한 단어 수 제한을 초과하는 에세이는 감점될 수 있습니다.'
+    },
+    {
+      id: 'RS-37',
+      title: 'Auckland Weather Forecast',
+      topic: 'Daily Life',
+      sentence: 'Heavy coastal showers are expected throughout tomorrow morning.',
+      chunking: 'Heavy coastal showers / are expected throughout tomorrow morning.',
+      translation: '내일 오전 내내 해안 지역에 강한 소나기가 예상됩니다.'
+    },
+    {
+      id: 'RS-38',
+      title: 'Coffee Shop Discount',
+      topic: 'Sustainability',
+      sentence: 'Students bringing reusable cups receive a fifty-cent coffee discount.',
+      chunking: 'Students bringing reusable cups / receive a fifty-cent coffee discount.',
+      translation: '다회용 컵을 가져오는 학생은 커피 50센트 할인을 받습니다.'
+    },
+    {
+      id: 'RS-39',
+      title: 'Workshop Registration Fee',
+      topic: 'Events',
+      sentence: 'Early registration waives the fee for graduate workshops.',
+      chunking: 'Early registration waives the fee / for graduate workshops.',
+      translation: '사전 등록 시 대학원 워크숍 참가비가 면제됩니다.'
+    },
+    {
+      id: 'RS-40',
+      title: 'Tutorial Attendance Policy',
+      topic: 'Academics',
+      sentence: 'Regular tutorial attendance strongly correlates with higher exam grades.',
+      chunking: 'Regular tutorial attendance / strongly correlates with / higher exam grades.',
+      translation: '꾸준한 튜토리얼 출석은 더 높은 시험 성적과 강한 상관관계가 있습니다.'
+    },
+    {
+      id: 'RS-41',
+      title: 'Clean Freshwater Lakes',
+      topic: 'Environment',
+      sentence: 'Alpine lakes maintain remarkably clear water throughout winter.',
+      chunking: 'Alpine lakes maintain / remarkably clear water / throughout winter.',
+      translation: '고산 호수는 겨울 동안에도 놀라울 정도로 맑은 수질을 유지합니다.'
+    },
+    {
+      id: 'RS-42',
+      title: 'Professor Office Hours',
+      topic: 'Consultation',
+      sentence: 'Professor Williams holds weekly office hours every Wednesday.',
+      chunking: 'Professor Williams holds / weekly office hours / every Wednesday.',
+      translation: '윌리엄스 교수님은 매주 수요일마다 주간 상담 시간을 운영합니다.'
+    },
+    {
+      id: 'RS-43',
+      title: 'Computer Lab Maintenance',
+      topic: 'IT Support',
+      sentence: 'Campus computer labs will close Sunday for software upgrades.',
+      chunking: 'Campus computer labs will close Sunday / for software upgrades.',
+      translation: '캠퍼스 컴퓨터실은 소프트웨어 업그레이드를 위해 일요일에 문을 닫습니다.'
+    },
+    {
+      id: 'RS-44',
+      title: 'Sleep Quality Study',
+      topic: 'Health Science',
+      sentence: 'Consistent sleep schedules noticeably improve daytime academic focus.',
+      chunking: 'Consistent sleep schedules / noticeably improve / daytime academic focus.',
+      translation: '규칙적인 수면 일정은 낮 동안의 학업 집중력을 눈에 띄게 향상시킵니다.'
+    },
+    {
+      id: 'RS-45',
+      title: 'Bicycle Helmet Law',
+      topic: 'NZ Regulation',
+      sentence: 'Wearing an approved bicycle helmet is legally required.',
+      chunking: 'Wearing an approved bicycle helmet / is legally required.',
+      translation: '승인된 자전거 헬멧 착용은 법적으로 의무화되어 있습니다.'
+    },
+    {
+      id: 'RS-46',
+      title: 'Economics Reading List',
+      topic: 'Course Info',
+      sentence: 'Essential economics readings are available inside the portal.',
+      chunking: 'Essential economics readings / are available inside the portal.',
+      translation: '필수 경제학 읽기 자료는 포털에서 확인할 수 있습니다.'
+    },
+    {
+      id: 'RS-47',
+      title: 'Kiwi Fruit Export',
+      topic: 'Agriculture',
+      sentence: 'Golden kiwifruit remains a major horticultural export earner.',
+      chunking: 'Golden kiwifruit remains / a major horticultural export earner.',
+      translation: '골드 키위는 여전히 주요 원예 수출 효자 품목입니다.'
+    },
+    {
+      id: 'RS-48',
+      title: 'Peer Writing Center',
+      topic: 'Student Support',
+      sentence: 'Peer tutors offer free grammar feedback before submission.',
+      chunking: 'Peer tutors offer / free grammar feedback / before submission.',
+      translation: '동료 튜터들이 과제 제출 전 무료 문법 피드백을 제공합니다.'
+    },
+    {
+      id: 'RS-49',
+      title: 'Museum Entry Ticket',
+      topic: 'Culture',
+      sentence: 'Museum admission remains free for all local residents.',
+      chunking: 'Museum admission remains free / for all local residents.',
+      translation: '박물관 입장은 모든 지역 주민에게 무료로 유지됩니다.'
+    },
+    {
+      id: 'RS-50',
+      title: 'Digital Textbook Rental',
+      topic: 'Campus Store',
+      sentence: 'Digital textbook rentals substantially lower student living expenses.',
+      chunking: 'Digital textbook rentals / substantially lower / student living expenses.',
+      translation: '전자 교과서 대여는 학생들의 생활비 부담을 크게 줄여줍니다.'
+    },
+    {
+      id: 'RS-51',
+      title: 'Ocean Tides & Fishing',
+      topic: 'Marine Science',
+      sentence: 'Gravitational forces from the moon drive daily ocean tides.',
+      chunking: 'Gravitational forces from the moon / drive daily ocean tides.',
+      translation: '달의 중력은 매일 발생하는 바다의 조수 간만을 일으킵니다.'
+    },
+    {
+      id: 'RS-52',
+      title: 'Group Presentation Order',
+      topic: 'Class Notice',
+      sentence: 'Group presentation schedules will be announced next Monday.',
+      chunking: 'Group presentation schedules / will be announced next Monday.',
+      translation: '조별 발표 일정은 다음 주 월요일에 공지될 예정입니다.'
+    },
+    {
+      id: 'RS-53',
+      title: 'Wind Turbine Noise',
+      topic: 'Engineering',
+      sentence: 'Modern blade shapes reduce aerodynamic wind turbine noise.',
+      chunking: 'Modern blade shapes reduce / aerodynamic wind turbine noise.',
+      translation: '최신 날개 설계는 풍력 터빈의 공기역학적 소음을 줄여줍니다.'
+    },
+    // --- Medium Exam-Standard (10–12 words: RS-54 .. RS-78) ---
+    {
+      id: 'RS-54',
+      title: 'Assignment Extension Policy',
+      topic: 'Academic Policy',
+      sentence: 'Requests for assignment extensions require supporting medical certificates submitted before deadlines.',
+      chunking: 'Requests for assignment extensions / require supporting medical certificates / submitted before deadlines.',
+      translation: '과제 기한 연장 요청에는 마감일 전에 제출된 증빙 진단서가 필요합니다.'
+    },
+    {
+      id: 'RS-55',
+      title: 'Solar Panel Installation',
+      topic: 'Renewable Energy',
+      sentence: 'Many suburban schools installed rooftop solar panels to cut electricity expenses.',
+      chunking: 'Many suburban schools installed rooftop solar panels / to cut electricity expenses.',
+      translation: '많은 교외 학교들이 전기 요금을 절감하기 위해 옥상 태양광 패널을 설치했습니다.'
+    },
+    {
+      id: 'RS-56',
+      title: 'Psychology Survey Ethics',
+      topic: 'Research Ethics',
+      sentence: 'Psychology experiment participants may withdraw consent at any stage without penalty.',
+      chunking: 'Psychology experiment participants / may withdraw consent at any stage / without penalty.',
+      translation: '심리학 실험 참가자는 어느 단계에서든 불이익 없이 동의를 철회할 수 있습니다.'
+    },
+    {
+      id: 'RS-57',
+      title: 'Urban Cycling Lanes',
+      topic: 'Transportation',
+      sentence: 'Separated cycling lanes encourage commuters to leave private cars at home.',
+      chunking: 'Separated cycling lanes encourage commuters / to leave private cars at home.',
+      translation: '분리된 자전거 도로는 통근자들이 자가용을 집에 두고 출근하도록 장려합니다.'
+    },
+    {
+      id: 'RS-58',
+      title: 'Marine Reserve Recovery',
+      topic: 'Conservation',
+      sentence: 'Protected marine reserves allow depleted snapper populations to recover much faster.',
+      chunking: 'Protected marine reserves allow / depleted snapper populations / to recover much faster.',
+      translation: '해양 보호구역은 고갈된 도미 개체수가 훨씬 빠르게 회복되도록 돕습니다.'
+    },
+    {
+      id: 'RS-59',
+      title: 'Hospital Emergency Triage',
+      topic: 'Healthcare',
+      sentence: 'Trained nurses assess incoming emergency patients immediately upon arrival at hospital.',
+      chunking: 'Trained nurses assess incoming emergency patients / immediately upon arrival at hospital.',
+      translation: '숙련된 간호사들은 병원 도착 즉시 응급 환자의 상태를 평가합니다.'
+    },
+    {
+      id: 'RS-60',
+      title: 'Microclimate Urban Trees',
+      topic: 'Urban Planning',
+      sentence: 'Mature street trees significantly lower summer sidewalk temperatures across busy cities.',
+      chunking: 'Mature street trees significantly lower / summer sidewalk temperatures / across busy cities.',
+      translation: '다 자란 가로수는 번화한 도심의 여름철 인도 온도를 크게 낮춰줍니다.'
+    },
+    {
+      id: 'RS-61',
+      title: 'University Scholarship Audit',
+      topic: 'Financial Aid',
+      sentence: 'Postgraduate scholarship recipients must maintain strong grades across every enrolled course.',
+      chunking: 'Postgraduate scholarship recipients / must maintain strong grades / across every enrolled course.',
+      translation: '대학원 장학금 수혜자는 수강하는 모든 과목에서 우수한 성적을 유지해야 합니다.'
+    },
+    {
+      id: 'RS-62',
+      title: 'Soil Carbon Farming',
+      topic: 'Agriculture',
+      sentence: 'Minimal tillage farming techniques help agricultural soils retain vital organic carbon.',
+      chunking: 'Minimal tillage farming techniques / help agricultural soils retain / vital organic carbon.',
+      translation: '최소 경운 농법은 농지 토양이 필수 유기 탄소를 유지하는 데 도움이 됩니다.'
+    },
+    {
+      id: 'RS-63',
+      title: 'Earthquake Drill Alert',
+      topic: 'Safety',
+      sentence: 'Drop, cover, and hold remains the safest immediate response during earthquakes.',
+      chunking: 'Drop, cover, and hold / remains the safest immediate response / during earthquakes.',
+      translation: '엎드리고, 가리고, 잡기는 지진 발생 시 가장 안전한 즉각 대응 요령입니다.'
+    },
+    {
+      id: 'RS-64',
+      title: 'Bilingual Road Signage',
+      topic: 'NZ Society',
+      sentence: 'Bilingual transport signs increasingly appear across regional highways and railway stations.',
+      chunking: 'Bilingual transport signs increasingly appear / across regional highways / and railway stations.',
+      translation: '이중 언어 교통 표지판이 지역 고속도로와 기차역 전반에 점점 더 많이 도입되고 있습니다.'
+    },
+    {
+      id: 'RS-65',
+      title: 'Cloud Data Backup',
+      topic: 'Technology',
+      sentence: 'Automated cloud backups safeguard thesis drafts against unexpected laptop hardware failures.',
+      chunking: 'Automated cloud backups / safeguard thesis drafts / against unexpected laptop hardware failures.',
+      translation: '자동 클라우드 백업은 예기치 못한 노트북 고장으로부터 논문 초안을 보호합니다.'
+    },
+    {
+      id: 'RS-66',
+      title: 'Small Business Cashflow',
+      topic: 'Business',
+      sentence: 'Careful cashflow forecasting prevents seasonal shortages for growing retail businesses.',
+      chunking: 'Careful cashflow forecasting prevents / seasonal shortages / for growing retail businesses.',
+      translation: '신중한 현금흐름 예측은 성장하는 소매업체의 계절적 자금 부족을 예방합니다.'
+    },
+    {
+      id: 'RS-67',
+      title: 'Dietary Fiber Intake',
+      topic: 'Nutrition',
+      sentence: 'Whole grains and legumes provide dietary fiber essential for digestive wellbeing.',
+      chunking: 'Whole grains and legumes provide dietary fiber / essential for digestive wellbeing.',
+      translation: '통곡물과 콩류는 소화 건강에 필수적인 식이섬유를 제공합니다.'
+    },
+    {
+      id: 'RS-68',
+      title: 'Archaeological Carbon Dating',
+      topic: 'Archaeology',
+      sentence: 'Radiocarbon dating helps archaeologists estimate the age of ancient wooden artifacts.',
+      chunking: 'Radiocarbon dating helps archaeologists / estimate the age / of ancient wooden artifacts.',
+      translation: '방사성 탄소 연대 측정은 고고학자들이 고대 목재 유물의 연대를 추정하는 데 도움을 줍니다.'
+    },
+    {
+      id: 'RS-69',
+      title: 'Language Immersion Benefits',
+      topic: 'Linguistics',
+      sentence: 'Daily conversation practice builds speaking fluency much faster than passive reading.',
+      chunking: 'Daily conversation practice builds speaking fluency / much faster than passive reading.',
+      translation: '매일 하는 회화 연습은 수동적인 읽기보다 말하기 유창성을 훨씬 빠르게 길러줍니다.'
+    },
+    {
+      id: 'RS-70',
+      title: 'Tourism Seasonality Shift',
+      topic: 'Tourism',
+      sentence: 'Regional councils promote autumn cultural festivals to reduce winter tourism downturns.',
+      chunking: 'Regional councils promote autumn cultural festivals / to reduce winter tourism downturns.',
+      translation: '지역 의회는 겨울철 관광 비수기를 줄이기 위해 가을 문화 축제를 홍보합니다.'
+    },
+    {
+      id: 'RS-71',
+      title: 'Electric Ferry Route',
+      topic: 'Clean Transit',
+      sentence: 'Electric passenger ferries are quietly replacing older diesel vessels across harbors.',
+      chunking: 'Electric passenger ferries / are quietly replacing older diesel vessels / across harbors.',
+      translation: '전기 여객선이 항만 전역에서 노후 디젤 선박을 조용히 대체하고 있습니다.'
+    },
+    {
+      id: 'RS-72',
+      title: 'Lab Sample Labeling',
+      topic: 'Biology',
+      sentence: 'Mislabeling biological tissue samples can compromise months of careful clinical research.',
+      chunking: 'Mislabeling biological tissue samples / can compromise months / of careful clinical research.',
+      translation: '생물 조직 표본의 잘못된 라벨링은 수개월간의 신중한 임상 연구를 망칠 수 있습니다.'
+    },
+    {
+      id: 'RS-73',
+      title: 'Critical Media Literacy',
+      topic: 'Communication',
+      sentence: 'Verifying primary evidence protects readers from misleading headlines on social media.',
+      chunking: 'Verifying primary evidence protects readers / from misleading headlines on social media.',
+      translation: '원자료 근거를 확인하면 독자가 소셜 미디어의 오해를 부르는 제목에 현혹되지 않습니다.'
+    },
+    {
+      id: 'RS-74',
+      title: 'Wetland Bird Migration',
+      topic: 'Ornithology',
+      sentence: 'Godwits fly thousands of kilometers non-stop from Alaska to southern estuaries.',
+      chunking: 'Godwits fly thousands of kilometers non-stop / from Alaska to southern estuaries.',
+      translation: '큰뒷부리도요는 알래스카에서 남쪽 하구까지 수천 킬로미터를 쉬지 않고 날아갑니다.'
+    },
+    {
+      id: 'RS-75',
+      title: 'Academic Integrity Rule',
+      topic: 'University Policy',
+      sentence: 'Every paraphrased idea from external sources still requires an accurate reference.',
+      chunking: 'Every paraphrased idea from external sources / still requires an accurate reference.',
+      translation: '외부 출처에서 바꿔 쓴 모든 아이디어에도 여전히 정확한 참고문헌 표기가 필요합니다.'
+    },
+    {
+      id: 'RS-76',
+      title: 'Desalination Energy Demand',
+      topic: 'Water Engineering',
+      sentence: 'Membrane filtration improvements are gradually reducing the energy required for desalination.',
+      chunking: 'Membrane filtration improvements / are gradually reducing the energy / required for desalination.',
+      translation: '막 여과 기술의 발전으로 해수 담수화에 필요한 에너지가 점차 줄어들고 있습니다.'
+    },
+    {
+      id: 'RS-77',
+      title: 'Remote Rural Broadband',
+      topic: 'Infrastructure',
+      sentence: 'High-speed satellite broadband connects remote farming families to telehealth medical consultations.',
+      chunking: 'High-speed satellite broadband connects / remote farming families / to telehealth medical consultations.',
+      translation: '초고속 위성 인터넷은 외딴 농가 가족들을 원격 의료 상담 서비스와 연결해 줍니다.'
+    },
+    {
+      id: 'RS-78',
+      title: 'Career Networking Event',
+      topic: 'Employability',
+      sentence: 'Engineering employers will host portfolio review booths inside the atrium Friday.',
+      chunking: 'Engineering employers will host / portfolio review booths / inside the atrium Friday.',
+      translation: '엔지니어링 기업들이 금요일 아트리움에서 포트폴리오 리뷰 부스를 운영합니다.'
+    },
+    // --- Long High-Difficulty (13–16 words: RS-79 .. RS-100) ---
+    {
+      id: 'RS-79',
+      title: 'Longitudinal Cohort Study',
+      topic: 'Epidemiology',
+      sentence: 'Researchers followed more than two thousand volunteers over fifteen years to examine lifestyle diseases.',
+      chunking: 'Researchers followed more than two thousand volunteers / over fifteen years / to examine lifestyle diseases.',
+      translation: '연구자들은 생활습관병을 조사하기 위해 15년 동안 2,000명 이상의 자원자를 추적 관찰했습니다.'
+    },
+    {
+      id: 'RS-80',
+      title: 'Geothermal Reinjection Design',
+      topic: 'Energy Engineering',
+      sentence: 'Pumping cooled water back into underground geothermal reservoirs sustains steam pressure for future decades.',
+      chunking: 'Pumping cooled water back into underground geothermal reservoirs / sustains steam pressure / for future decades.',
+      translation: '식힌 물을 지하 지열 저류층으로 다시 주입하면 향후 수십 년간 증기 압력을 유지할 수 있습니다.'
+    },
+    {
+      id: 'RS-81',
+      title: 'Interdisciplinary Design Thinking',
+      topic: 'Higher Education',
+      sentence: 'Bringing engineering students together with sociology researchers often produces more practical community solutions.',
+      chunking: 'Bringing engineering students together with sociology researchers / often produces / more practical community solutions.',
+      translation: '공학도들과 사회학 연구자들이 함께 모여 일하면 더 실용적인 지역사회 해결책이 나오는 경우가 많습니다.'
+    },
+    {
+      id: 'RS-82',
+      title: 'Consumer Inflation Expectations',
+      topic: 'Macroeconomics',
+      sentence: 'When households expect prices to keep rising rapidly, workers negotiate higher annual wage increases.',
+      chunking: 'When households expect prices to keep rising rapidly / workers negotiate / higher annual wage increases.',
+      translation: '가계가 물가의 지속적인 급등을 예상하면 근로자들은 더 높은 연간 임금 인상을 협상하게 됩니다.'
+    },
+    {
+      id: 'RS-83',
+      title: 'Coastal Erosion Adaptation',
+      topic: 'Climate Adaptation',
+      sentence: 'Local governments must decide whether to reinforce sea walls or gradually relocate vulnerable coastal roads.',
+      chunking: 'Local governments must decide / whether to reinforce sea walls / or gradually relocate vulnerable coastal roads.',
+      translation: '지방 정부는 방파제를 보강할지 아니면 취약한 해안 도로를 점진적으로 이설할지 결정해야 합니다.'
+    },
+    {
+      id: 'RS-84',
+      title: 'Microbiome Antibiotic Recovery',
+      topic: 'Medical Science',
+      sentence: 'Consuming fermented foods after medical antibiotic treatment helps restore beneficial bacteria inside the human gut.',
+      chunking: 'Consuming fermented foods after medical antibiotic treatment / helps restore beneficial bacteria / inside the human gut.',
+      translation: '의료용 항생제 치료 후 발효 식품을 섭취하면 인체 장내 유익균 회복에 도움이 됩니다.'
+    },
+    {
+      id: 'RS-85',
+      title: 'Autonomous Vessel Sensors',
+      topic: 'Maritime Tech',
+      sentence: 'Autonomous hydrographic vessels use radar and acoustic sonar to map shallow coastal reefs without crews.',
+      chunking: 'Autonomous hydrographic vessels use radar and acoustic sonar / to map shallow coastal reefs / without crews.',
+      translation: '무인 수로 탐사선은 승무원 없이도 레이더와 음향 소나를 이용해 얕은 연안 암초를 지도화합니다.'
+    },
+    {
+      id: 'RS-86',
+      title: 'Historical Treaty Translation',
+      topic: 'Legal History',
+      sentence: 'Legal historians frequently compare English and Indigenous language drafts to interpret historical treaty obligations accurately.',
+      chunking: 'Legal historians frequently compare / English and Indigenous language drafts / to interpret historical treaty obligations accurately.',
+      translation: '법학 사학자들은 역사적 조약 의무를 정확히 해석하기 위해 영어본과 원주민어 초안을 자주 비교합니다.'
+    },
+    {
+      id: 'RS-87',
+      title: 'Supply Chain Inventory',
+      topic: 'Operations',
+      sentence: 'Maintaining slightly larger emergency warehouse inventories reduces factory shutdowns whenever international shipping ports experience delays.',
+      chunking: 'Maintaining slightly larger emergency warehouse inventories / reduces factory shutdowns / whenever international shipping ports experience delays.',
+      translation: '비상 창고 재고를 다소 넉넉히 유지하면 국제 항만 물류가 지연될 때 공장 가동 중단을 줄일 수 있습니다.'
+    },
+    {
+      id: 'RS-88',
+      title: 'Circular Construction Concrete',
+      topic: 'Civil Engineering',
+      sentence: 'Crushing demolished concrete buildings into recycled road aggregate significantly cuts quarry mining around major cities.',
+      chunking: 'Crushing demolished concrete buildings into recycled road aggregate / significantly cuts quarry mining / around major cities.',
+      translation: '철거된 콘크리트 건물을 재활용 도로 골재로 파쇄하면 대도시 인근 채석장 채굴을 크게 줄일 수 있습니다.'
+    },
+    {
+      id: 'RS-89',
+      title: 'Statistical Outliers & Bias',
+      topic: 'Data Science',
+      sentence: 'Removing extreme measurement outliers without documenting clear statistical criteria can unintentionally distort research findings.',
+      chunking: 'Removing extreme measurement outliers without documenting clear statistical criteria / can unintentionally distort / research findings.',
+      translation: '명확한 통계 기준을 기록하지 않고 극단적 이상치를 제거하면 연구 결과가 의도치 않게 왜곡될 수 있습니다.'
+    },
+    {
+      id: 'RS-90',
+      title: 'Acoustic Ceiling Architecture',
+      topic: 'Architecture',
+      sentence: 'Installing perforated wooden panels across lecture hall ceilings absorbs distracting echoes and improves speech clarity.',
+      chunking: 'Installing perforated wooden panels across lecture hall ceilings / absorbs distracting echoes / and improves speech clarity.',
+      translation: '강의실 천장에 타공 목재 패널을 설치하면 거슬리는 메아리를 흡수하고 음성 명료도를 높입니다.'
+    },
+    {
+      id: 'RS-91',
+      title: 'Antarctic Ocean Currents',
+      topic: 'Oceanography',
+      sentence: 'Cold, salty water sinking near Antarctica drives global ocean circulation currents that regulate planetary climate.',
+      chunking: 'Cold, salty water sinking near Antarctica / drives global ocean circulation currents / that regulate planetary climate.',
+      translation: '남극 인근에서 가라앉는 차갑고 염도 높은 해수는 지구 기후를 조절하는 전 지구 해류를 구동합니다.'
+    },
+    {
+      id: 'RS-92',
+      title: 'Financial Scam Prevention',
+      topic: 'Cybersecurity',
+      sentence: 'Enabling two-factor authentication on banking accounts blocks unauthorized access even when personal passwords become compromised.',
+      chunking: 'Enabling two-factor authentication on banking accounts / blocks unauthorized access / even when personal passwords become compromised.',
+      translation: '은행 계좌에 2단계 인증을 활성화하면 개인 비밀번호가 유출되더라도 무단 접속을 차단합니다.'
+    },
+    {
+      id: 'RS-93',
+      title: 'Glacial River Sediment',
+      topic: 'Geomorphology',
+      sentence: 'Finely ground rock flour suspended in glacial meltwater creates the striking turquoise color of mountain lakes.',
+      chunking: 'Finely ground rock flour suspended in glacial meltwater / creates the striking turquoise color / of mountain lakes.',
+      translation: '빙하 융해수에 떠 있는 미세한 암석 가루는 산악 호수의 인상적인 청록색 빛깔을 만들어냅니다.'
+    },
+    {
+      id: 'RS-94',
+      title: 'Open-Source Software Audit',
+      topic: 'Computer Science',
+      sentence: 'Publicly reviewing open-source security code enables independent developers worldwide to detect and patch critical software vulnerabilities.',
+      chunking: 'Publicly reviewing open-source security code / enables independent developers worldwide / to detect and patch critical software vulnerabilities.',
+      translation: '오픈소스 보안 코드를 공개적으로 검토하면 전 세계 독립 개발자들이 치명적인 취약점을 찾아 패치할 수 있습니다.'
+    },
+    {
+      id: 'RS-95',
+      title: 'Early Childhood Literacy',
+      topic: 'Education',
+      sentence: 'Reading illustrated storybooks aloud with preschool children builds foundational vocabulary and lasting curiosity about learning.',
+      chunking: 'Reading illustrated storybooks aloud with preschool children / builds foundational vocabulary / and lasting curiosity about learning.',
+      translation: '미취학 아동에게 그림 동화책을 소리 내어 읽어주면 기초 어휘력과 배움에 대한 지속적인 호기심이 자랍니다.'
+    },
+    {
+      id: 'RS-96',
+      title: 'Pharmaceutical Cold Chain',
+      topic: 'Logistics',
+      sentence: 'Continuous temperature monitoring inside refrigerated cargo containers guarantees vaccines remain effective throughout international air transit.',
+      chunking: 'Continuous temperature monitoring inside refrigerated cargo containers / guarantees vaccines remain effective / throughout international air transit.',
+      translation: '냉장 화물 컨테이너 내부의 지속적인 온도 감시는 국제 항공 운송 중 백신의 효능 유지를 보장합니다.'
+    },
+    {
+      id: 'RS-97',
+      title: 'Behavioral Default Nudges',
+      topic: 'Behavioral Economics',
+      sentence: 'Small changes in how workplace pension forms are phrased substantially raise voluntary retirement participation rates.',
+      chunking: 'Small changes in how workplace pension forms are phrased / substantially raise / voluntary retirement participation rates.',
+      translation: '직장 연금 서식의 문구를 조금만 바꾸어도 자발적 은퇴 저축 가입률이 크게 높아집니다.'
+    },
+    {
+      id: 'RS-98',
+      title: 'Biosecurity Border Screening',
+      topic: 'NZ Biosecurity',
+      sentence: 'Inspecting muddy hiking boots at international airports prevents invasive plant diseases from entering fragile forests.',
+      chunking: 'Inspecting muddy hiking boots at international airports / prevents invasive plant diseases / from entering fragile forests.',
+      translation: '국제공항에서 진흙 묻은 등산화를 검사하면 외래 식물 질병이 취약한 숲으로 유입되는 것을 막습니다.'
+    },
+    {
+      id: 'RS-99',
+      title: 'Urban Biodiversity Corridors',
+      topic: 'Urban Ecology',
+      sentence: 'Connecting isolated city parks with native flowering hedgerows helps native bees and birds travel safely.',
+      chunking: 'Connecting isolated city parks with native flowering hedgerows / helps native bees and birds / travel safely.',
+      translation: '고립된 도시 공원들을 토종 꽃 생울타리로 연결하면 토종 벌과 새들이 안전하게 이동할 수 있습니다.'
+    },
+    {
+      id: 'RS-100',
+      title: 'Scientific Uncertainty Communication',
+      topic: 'Science Policy',
+      sentence: 'Explaining statistical confidence intervals transparently helps policymakers weigh competing risks when designing long-term public regulations.',
+      chunking: 'Explaining statistical confidence intervals transparently / helps policymakers weigh competing risks / when designing long-term public regulations.',
+      translation: '통계적 신뢰 구간을 투명하게 설명하면 정책 입안자들이 장기 공공 규제를 설계할 때 상충하는 위험을 저울질하는 데 도움이 됩니다.'
     }
   ],
 

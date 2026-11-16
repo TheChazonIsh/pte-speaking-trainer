@@ -73,11 +73,11 @@
             <h1 class="text-base sm:text-lg font-bold tracking-tight">PTE Academic 실전 연습</h1>
             <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-teal-500/20 text-teal-200 border border-teal-400/30">NZ 대비</span>
           </div>
-          <p class="text-xs text-slate-300">Speaking (RA · DI · RS · RL) &amp; Writing (SWT · Essay) · 100문제 수록</p>
+          <p class="text-xs text-slate-300">Speaking (RA · DI · RS · RL) &amp; Writing (SWT · Essay) · 180문제 + AI 무한생성 &amp; 유튜브 클립</p>
         </div>
       </div>
 
-      <!-- Microphone, Beep & AI Settings Quick Status -->
+      <!-- Microphone, Beep, iOS Tip & AI Settings Quick Status -->
       <div class="flex items-center gap-2 flex-wrap self-start sm:self-auto">
         <button id="btn-mic-connect" type="button"
           class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium bg-white/10 hover:bg-white/20 border border-white/15 transition cursor-pointer">
@@ -90,6 +90,10 @@
             <path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75z" />
           </svg>
           <span>Beep 테스트</span>
+        </button>
+        <button id="btn-ios-audio-guide-header" type="button" data-toggle-ios-guide="1" title="아이폰 Safari/PWA 무음·이어폰·고품질 음성 안내"
+          class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-medium bg-amber-500/20 hover:bg-amber-500/35 border border-amber-300/40 text-amber-100 transition cursor-pointer">
+          <span>📱 iOS 오디오 안내</span>
         </button>
         <button id="btn-ai-settings" type="button" title="Google AI Studio Gemini API 설정"
           class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-indigo-500/30 hover:bg-indigo-500/45 border border-indigo-300/40 text-white transition cursor-pointer">
@@ -137,17 +141,17 @@
   </header>
 
   <!-- Main Content -->
-  <main class="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-5 sm:py-7 space-y-5">
+  <main class="flex-1 max-w-6xl w-full min-w-0 mx-auto px-4 sm:px-6 py-5 sm:py-7 space-y-5">
 
     <!-- SPEAKING: Question Selector, Random & Unsolved-First Bar -->
-    <section id="speaking-selector-bar" class="bg-white rounded-xl border border-slate-200 shadow-sm p-3.5 sm:p-4 space-y-3">
-      <div class="flex flex-wrap items-center justify-between gap-2.5">
-        <div class="flex items-center gap-2 flex-wrap">
+    <section id="speaking-selector-bar" class="bg-white rounded-xl border border-slate-200 shadow-sm p-3.5 sm:p-4 space-y-3 min-w-0 max-w-full">
+      <div class="flex flex-wrap items-center justify-between gap-2.5 min-w-0">
+        <div class="flex items-center gap-2 flex-wrap min-w-0 max-w-full">
           <span id="solved-progress-badge" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-sky-50 text-pte-blue border border-sky-200">
             풀이 완료: 0 / 20
           </span>
           <select id="question-select" aria-label="문제 빠르게 선택"
-            class="rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1.5 text-xs font-semibold text-slate-700 max-w-[230px] sm:max-w-[290px] focus:outline-none focus:ring-2 focus:ring-pte-blue">
+            class="rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1.5 text-xs font-semibold text-slate-700 w-full sm:w-auto max-w-full sm:max-w-[290px] min-w-0 focus:outline-none focus:ring-2 focus:ring-pte-blue">
           </select>
           <button id="btn-toggle-solved" type="button"
             class="px-2.5 py-1.5 rounded-lg text-xs font-semibold border border-slate-200 bg-white hover:bg-emerald-50 text-slate-600 transition cursor-pointer">
@@ -178,11 +182,31 @@
       <div id="question-pills" class="flex items-center gap-1.5 overflow-x-auto pb-1"></div>
     </section>
 
+    <!-- Collapsible iOS Safari / PWA Earphone & High-Quality Voice Guide -->
+    <section id="ios-audio-guide-box" class="hidden bg-amber-50/95 border border-amber-200 rounded-2xl shadow-xs p-4 text-xs sm:text-sm text-slate-700 space-y-2">
+      <div class="flex items-start justify-between gap-2">
+        <div class="space-y-1">
+          <h2 class="font-bold text-amber-900 flex items-center gap-1.5">
+            <span>📱 아이폰(iOS Safari / PWA) 이어폰 &amp; 고품질 음성 최적화 안내</span>
+          </h2>
+          <ul class="list-disc list-inside space-y-1 text-xs text-slate-700 leading-relaxed">
+            <li><strong>무음 모드(벨소리 스위치) 해제:</strong> iPhone 측면 무음 스위치가 켜져 있으면 브라우저 TTS 음성이 무음 처리될 수 있습니다.</li>
+            <li><strong>에어팟/이어폰 음질 보호 (자동 전환):</strong> 문제 듣기(TTS·유튜브) 중에는 마이크를 열지 않으며, <strong>녹음 구간에서만 마이크를 켠 뒤 종료 즉시 해제</strong>하여 통화 모드(저음질) 고착을 방지합니다.</li>
+            <li><strong>iOS 고품질 원어민 음성 다운로드:</strong> 아이폰 <code>설정 → 손쉬운 사용 → 콘텐츠 말하기 → 음성 → 영어(호주/영국/미국)</code>에서 <strong>향상된 품질(Enhanced / Premium)</strong> 음성을 내려받으면 훨씬 자연스럽게 재생됩니다.</li>
+          </ul>
+        </div>
+        <button id="btn-close-ios-guide" type="button" aria-label="안내 닫기"
+          class="px-2 py-1 rounded-lg text-xs font-bold text-amber-800 hover:bg-amber-200/70 transition cursor-pointer shrink-0">
+          닫기 ×
+        </button>
+      </div>
+    </section>
+
     <!-- SPEAKING: Two-Column Responsive Workspace (RA / DI / RS / RL) -->
-    <div id="speaking-workspace" class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+    <div id="speaking-workspace" class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start min-w-0">
 
       <!-- Left Column: Prompt / Passage / SVG Chart / Repeat Sentence / Retell Lecture -->
-      <section class="lg:col-span-7 space-y-4">
+      <section class="lg:col-span-7 min-w-0 space-y-4">
         <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
           <!-- Card Header -->
           <div class="px-5 py-3.5 bg-slate-50 border-b border-slate-200 flex flex-wrap items-center justify-between gap-2">
@@ -257,13 +281,34 @@
 
           <!-- 3) Repeat Sentence Container -->
           <div id="panel-repeat-sentence" class="hidden p-5 sm:p-6 space-y-5">
+            <!-- RS Question Bank & AI Sentence Generator Bar -->
+            <div class="space-y-2">
+              <div class="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-indigo-200 bg-indigo-50/50 px-3.5 py-2.5">
+                <div class="flex items-center gap-2 flex-wrap text-xs">
+                  <span class="font-bold text-indigo-900">📚 Repeat Sentence 문제 은행</span>
+                  <span id="rs-bank-summary-badge" class="px-2 py-0.5 rounded-full font-bold bg-white text-indigo-700 border border-indigo-200">기본 100문항 + AI 추가 0문항</span>
+                </div>
+                <button id="btn-rs-ai-generate" type="button"
+                  class="px-3 py-1.5 rounded-lg text-xs font-bold text-white bg-gradient-to-r from-indigo-600 to-pte-blue hover:from-indigo-700 hover:to-sky-700 shadow-xs transition cursor-pointer">
+                  ✨ AI 새 문장 10개 추가 생성
+                </button>
+              </div>
+              <p id="rs-ai-gen-status" class="hidden text-xs font-semibold rounded-lg px-3 py-2"></p>
+            </div>
+
             <!-- Shared Neural Voice Controls -->
             <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
               <div class="flex items-center justify-between gap-2 flex-wrap">
-                <span class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
-                  <span>🎙️ 뉴럴 원어민 음성 설정</span>
-                  <span id="rs-voice-quality-badge" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-sky-100 text-pte-blue">자동 최적화</span>
-                </span>
+                <div class="flex items-center gap-1.5 flex-wrap">
+                  <span class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+                    <span>🎙️ 뉴럴 원어민 음성 설정</span>
+                    <span id="rs-voice-quality-badge" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-sky-100 text-pte-blue">자동 최적화</span>
+                  </span>
+                  <button type="button" data-toggle-ios-guide="1"
+                    class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 hover:bg-amber-200 text-amber-800 border border-amber-200 transition cursor-pointer">
+                    📱 아이폰 무음·고품질 음성 팁
+                  </button>
+                </div>
                 <button id="btn-rs-listen-only" type="button"
                   class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-white hover:bg-sky-50 text-pte-blue border border-sky-200 transition cursor-pointer">
                   🔊 선택 음성 미리듣기
@@ -350,72 +395,190 @@
 
           <!-- 4) Retell Lecture Container -->
           <div id="panel-retell-lecture" class="hidden p-5 sm:p-6 space-y-5">
-            <!-- Shared Neural Voice Controls -->
-            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
-              <div class="flex items-center justify-between gap-2 flex-wrap">
-                <span class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
-                  <span>🎙️ 뉴럴 강의 음성 설정</span>
-                  <span id="rl-voice-quality-badge" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-sky-100 text-pte-blue">자동 최적화</span>
-                </span>
-                <button id="btn-rl-listen-only" type="button"
-                  class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-white hover:bg-sky-50 text-pte-blue border border-sky-200 transition cursor-pointer">
-                  🔊 강의 음성 미리듣기
-                </button>
+            <!-- Retell Lecture Source Switcher: Academic Bank vs YouTube AI Clip Generator -->
+            <div class="flex flex-wrap items-center gap-2 p-1.5 rounded-xl bg-slate-100 border border-slate-200">
+              <button id="btn-rl-mode-academic" type="button"
+                class="flex-1 sm:flex-none px-3.5 py-2 rounded-lg text-xs sm:text-sm font-bold bg-white text-pte-blue shadow-xs transition cursor-pointer">
+                📚 기본 아카데믹 문제 (15)
+              </button>
+              <button id="btn-rl-mode-youtube" type="button"
+                class="flex-1 sm:flex-none px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold text-slate-600 hover:text-slate-900 transition cursor-pointer">
+                🎬 내 유튜브 인터뷰로 연습하기
+              </button>
+            </div>
+
+            <!-- Academic TTS Mode Box -->
+            <div id="rl-academic-mode-box" class="space-y-5">
+              <!-- Shared Neural Voice Controls -->
+              <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+                <div class="flex items-center justify-between gap-2 flex-wrap">
+                  <div class="flex items-center gap-1.5 flex-wrap">
+                    <span class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+                      <span>🎙️ 뉴럴 강의 음성 설정</span>
+                      <span id="rl-voice-quality-badge" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-sky-100 text-pte-blue">자동 최적화</span>
+                    </span>
+                    <button type="button" data-toggle-ios-guide="1"
+                      class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 hover:bg-amber-200 text-amber-800 border border-amber-200 transition cursor-pointer">
+                      📱 아이폰 무음·고품질 음성 팁
+                    </button>
+                  </div>
+                  <button id="btn-rl-listen-only" type="button"
+                    class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-white hover:bg-sky-50 text-pte-blue border border-sky-200 transition cursor-pointer">
+                    🔊 강의 음성 미리듣기
+                  </button>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-12 gap-2.5">
+                  <div class="sm:col-span-4">
+                    <label for="rl-accent-select" class="block text-[11px] font-semibold text-slate-500 mb-1">억양 필터</label>
+                    <select id="rl-accent-select"
+                      class="w-full rounded-lg border border-slate-300 bg-white px-2.5 py-2 text-xs sm:text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-pte-blue">
+                      <option value="all">전체 영어 (All)</option>
+                      <option value="en-AU">호주/뉴질랜드 (AU/NZ)</option>
+                      <option value="en-GB">영국 억양 (UK)</option>
+                      <option value="en-US">미국 억양 (US)</option>
+                    </select>
+                  </div>
+                  <div class="sm:col-span-5">
+                    <label for="rl-voice-select" class="block text-[11px] font-semibold text-slate-500 mb-1">음성 선택 (Natural/Google 우선)</label>
+                    <select id="rl-voice-select"
+                      class="w-full rounded-lg border border-slate-300 bg-white px-2.5 py-2 text-xs sm:text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-pte-blue">
+                    </select>
+                  </div>
+                  <div class="sm:col-span-3">
+                    <label for="rl-rate-select" class="block text-[11px] font-semibold text-slate-500 mb-1">속도</label>
+                    <select id="rl-rate-select"
+                      class="w-full rounded-lg border border-slate-300 bg-white px-2.5 py-2 text-xs sm:text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-pte-blue">
+                      <option value="0.9">0.9x</option>
+                      <option value="1.0" selected>1.0x (실전)</option>
+                      <option value="1.1">1.1x</option>
+                    </select>
+                  </div>
+                </div>
               </div>
-              <div class="grid grid-cols-1 sm:grid-cols-12 gap-2.5">
-                <div class="sm:col-span-4">
-                  <label for="rl-accent-select" class="block text-[11px] font-semibold text-slate-500 mb-1">억양 필터</label>
-                  <select id="rl-accent-select"
-                    class="w-full rounded-lg border border-slate-300 bg-white px-2.5 py-2 text-xs sm:text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-pte-blue">
-                    <option value="all">전체 영어 (All)</option>
-                    <option value="en-AU">호주/뉴질랜드 (AU/NZ)</option>
-                    <option value="en-GB">영국 억양 (UK)</option>
-                    <option value="en-US">미국 억양 (US)</option>
-                  </select>
+
+              <!-- Lecture Audio Status & Context Slide -->
+              <div id="rl-audio-box" class="rounded-xl border border-slate-200 bg-slate-50/80 p-4 sm:p-5 space-y-3">
+                <div class="flex flex-wrap items-center justify-between gap-2">
+                  <div class="flex items-center gap-2.5">
+                    <div id="rl-wave-bars" class="hidden items-end gap-1 h-5">
+                      <span class="sound-wave-bar w-1 h-3 bg-pte-blue rounded-full" style="animation-delay:0ms"></span>
+                      <span class="sound-wave-bar w-1 h-5 bg-pte-blue rounded-full" style="animation-delay:150ms"></span>
+                      <span class="sound-wave-bar w-1 h-4 bg-teal-500 rounded-full" style="animation-delay:300ms"></span>
+                      <span class="sound-wave-bar w-1 h-5 bg-pte-blue rounded-full" style="animation-delay:450ms"></span>
+                    </div>
+                    <span id="rl-audio-status" class="text-sm font-semibold text-slate-700">
+                      실전 연습 시작을 누르면 45~60초 강의가 재생됩니다 (스크립트 숨김)
+                    </span>
+                  </div>
+                  <button id="btn-rl-skip-audio" type="button" disabled
+                    class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-white hover:bg-amber-50 text-amber-700 border border-amber-200 disabled:opacity-40 disabled:cursor-not-allowed transition cursor-pointer">
+                    강의 건너뛰기 → 10초 준비
+                  </button>
                 </div>
-                <div class="sm:col-span-5">
-                  <label for="rl-voice-select" class="block text-[11px] font-semibold text-slate-500 mb-1">음성 선택 (Natural/Google 우선)</label>
-                  <select id="rl-voice-select"
-                    class="w-full rounded-lg border border-slate-300 bg-white px-2.5 py-2 text-xs sm:text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-pte-blue">
-                  </select>
-                </div>
-                <div class="sm:col-span-3">
-                  <label for="rl-rate-select" class="block text-[11px] font-semibold text-slate-500 mb-1">속도</label>
-                  <select id="rl-rate-select"
-                    class="w-full rounded-lg border border-slate-300 bg-white px-2.5 py-2 text-xs sm:text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-pte-blue">
-                    <option value="0.9">0.9x</option>
-                    <option value="1.0" selected>1.0x (실전)</option>
-                    <option value="1.1">1.1x</option>
-                  </select>
+
+                <!-- Lecture Slide Preview (just like PTE Lecture screen image/title) -->
+                <div class="rounded-xl border border-sky-200 bg-white p-3.5 space-y-1.5">
+                  <p class="text-[11px] font-bold uppercase tracking-wider text-sky-700">Lecture Slide Context</p>
+                  <p id="rl-slide-title" class="text-sm font-bold text-slate-900"></p>
+                  <ul id="rl-slide-bullets" class="list-disc list-inside text-xs text-slate-600 space-y-0.5"></ul>
                 </div>
               </div>
             </div>
 
-            <!-- Lecture Audio Status & Context Slide -->
-            <div id="rl-audio-box" class="rounded-xl border border-slate-200 bg-slate-50/80 p-4 sm:p-5 space-y-3">
-              <div class="flex flex-wrap items-center justify-between gap-2">
-                <div class="flex items-center gap-2.5">
-                  <div id="rl-wave-bars" class="hidden items-end gap-1 h-5">
-                    <span class="sound-wave-bar w-1 h-3 bg-pte-blue rounded-full" style="animation-delay:0ms"></span>
-                    <span class="sound-wave-bar w-1 h-5 bg-pte-blue rounded-full" style="animation-delay:150ms"></span>
-                    <span class="sound-wave-bar w-1 h-4 bg-teal-500 rounded-full" style="animation-delay:300ms"></span>
-                    <span class="sound-wave-bar w-1 h-5 bg-pte-blue rounded-full" style="animation-delay:450ms"></span>
+            <!-- YouTube Interview AI Clip Generator & Player Box -->
+            <div id="rl-youtube-mode-box" class="hidden space-y-4">
+              <!-- Extractor Form -->
+              <div class="rounded-xl border border-indigo-200 bg-indigo-50/40 p-4 space-y-3">
+                <div class="flex flex-wrap items-center justify-between gap-2">
+                  <div>
+                    <h3 class="text-sm font-bold text-indigo-950">🎬 유튜브 인터뷰 AI 클립 생성기</h3>
+                    <p class="text-xs text-slate-600">유튜브 URL과 자막(타임스탬프 포함 권장)을 붙여넣으면 Gemini AI가 45~60초 핵심 구간 3~5개를 추출합니다.</p>
                   </div>
-                  <span id="rl-audio-status" class="text-sm font-semibold text-slate-700">
-                    실전 연습 시작을 누르면 45~60초 강의가 재생됩니다 (스크립트 숨김)
-                  </span>
                 </div>
-                <button id="btn-rl-skip-audio" type="button" disabled
-                  class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-white hover:bg-amber-50 text-amber-700 border border-amber-200 disabled:opacity-40 disabled:cursor-not-allowed transition cursor-pointer">
-                  강의 건너뛰기 → 10초 준비
-                </button>
+
+                <div class="grid grid-cols-1 sm:grid-cols-12 gap-2.5">
+                  <div class="sm:col-span-7">
+                    <label for="rl-yt-url-input" class="block text-[11px] font-bold text-slate-700 mb-1">유튜브 URL (또는 영상 ID)</label>
+                    <input id="rl-yt-url-input" type="url" placeholder="https://www.youtube.com/watch?v=..."
+                      class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs sm:text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-pte-blue" />
+                  </div>
+                  <div class="sm:col-span-5">
+                    <label for="rl-yt-topic-input" class="block text-[11px] font-bold text-slate-700 mb-1">원하는 주제 키워드 (선택)</label>
+                    <input id="rl-yt-topic-input" type="text" placeholder="예: AI ethics, startup growth..."
+                      class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs sm:text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-pte-blue" />
+                  </div>
+                </div>
+
+                <div>
+                  <label for="rl-yt-transcript-input" class="block text-[11px] font-bold text-slate-700 mb-1">영상 자막 / 스크립트 붙여넣기</label>
+                  <textarea id="rl-yt-transcript-input" rows="4"
+                    placeholder="00:12 Today we are talking about... 형태로 타임스탬프가 포함된 유튜브 스크립트를 붙여넣으면 정확한 초(startSec~endSec)를 자동으로 계산합니다."
+                    class="w-full rounded-lg border border-slate-300 bg-white p-3 text-xs sm:text-sm text-slate-900 leading-relaxed focus:outline-none focus:ring-2 focus:ring-pte-blue resize-y"></textarea>
+                </div>
+
+                <div class="flex flex-wrap items-center justify-between gap-2">
+                  <button id="btn-rl-yt-extract" type="button"
+                    class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-indigo-600 to-pte-blue hover:from-indigo-700 hover:to-sky-700 shadow-xs transition cursor-pointer">
+                    ✨ AI로 45~60초 강의 클립 추출하기
+                  </button>
+                  <span class="text-[11px] text-slate-500">생성된 세트는 브라우저에 자동 저장됩니다</span>
+                </div>
+                <p id="rl-yt-extract-status" class="hidden text-xs font-semibold rounded-lg px-3 py-2"></p>
               </div>
 
-              <!-- Lecture Slide Preview (just like PTE Lecture screen image/title) -->
-              <div class="rounded-xl border border-sky-200 bg-white p-3.5 space-y-1.5">
-                <p class="text-[11px] font-bold uppercase tracking-wider text-sky-700">Lecture Slide Context</p>
-                <p id="rl-slide-title" class="text-sm font-bold text-slate-900"></p>
-                <ul id="rl-slide-bullets" class="list-disc list-inside text-xs text-slate-600 space-y-0.5"></ul>
+              <!-- Saved Sets & Clips Selector -->
+              <div class="rounded-xl border border-slate-200 bg-slate-50/70 p-4 space-y-3 min-w-0">
+                <div class="flex flex-wrap items-center justify-between gap-2 min-w-0">
+                  <div class="flex items-center gap-2 flex-wrap flex-1 min-w-0 max-w-full">
+                    <label for="rl-yt-sets-select" class="text-xs font-bold text-slate-700 shrink-0">저장된 인터뷰 세트:</label>
+                    <select id="rl-yt-sets-select"
+                      class="w-full sm:flex-1 min-w-0 max-w-full rounded-lg border border-slate-300 bg-white px-2.5 py-1.5 text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-pte-blue"></select>
+                  </div>
+                  <button id="btn-rl-yt-delete-set" type="button"
+                    class="px-2.5 py-1.5 rounded-lg text-xs font-semibold border border-slate-200 bg-white hover:bg-rose-50 hover:text-rose-700 text-slate-600 transition cursor-pointer shrink-0">
+                    세트 삭제
+                  </button>
+                </div>
+
+                <div id="rl-yt-overall-summary" class="rounded-lg border border-sky-200 bg-white p-3 text-xs text-slate-700 leading-relaxed"></div>
+
+                <div class="space-y-1.5 min-w-0">
+                  <span class="block text-xs font-bold text-slate-700">추출된 45~60초 클립 (클릭해 연습할 클립 선택)</span>
+                  <div id="rl-yt-clips-list" class="grid grid-cols-1 gap-2 max-h-56 overflow-y-auto pr-1 min-w-0"></div>
+                </div>
+              </div>
+
+              <!-- Active YouTube Clip Player & Blind Mode -->
+              <div class="rounded-xl border border-slate-200 bg-white p-4 space-y-3 min-w-0">
+                <div class="flex flex-wrap items-center justify-between gap-2 min-w-0">
+                  <div class="min-w-0 max-w-full">
+                    <span id="rl-yt-active-clip-label" class="block text-xs sm:text-sm font-bold text-slate-900 truncate">선택된 클립</span>
+                    <span id="rl-yt-audio-status" class="block text-xs text-slate-600 mt-0.5">실전 연습 시작 또는 구간 미리듣기를 누르세요</span>
+                  </div>
+                  <div class="flex items-center gap-1.5 flex-wrap">
+                    <button id="btn-rl-yt-preview-clip" type="button"
+                      class="px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-sky-50 hover:bg-sky-100 text-pte-blue border border-sky-200 transition cursor-pointer">
+                      🔊 구간만 미리듣기
+                    </button>
+                    <button id="btn-rl-yt-blind-toggle" type="button" aria-pressed="false"
+                      class="px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 transition cursor-pointer">
+                      🙈 화면 가리고 오디오만 듣기 (블라인드 모드)
+                    </button>
+                    <button id="btn-rl-yt-skip-audio" type="button" disabled
+                      class="px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-white hover:bg-amber-50 text-amber-700 border border-amber-200 disabled:opacity-40 disabled:cursor-not-allowed transition cursor-pointer">
+                      클립 건너뛰기 → 10초 준비
+                    </button>
+                  </div>
+                </div>
+
+                <div class="relative aspect-video w-full rounded-xl overflow-hidden bg-slate-900 border border-slate-300">
+                  <div id="rl-yt-player" class="w-full h-full"></div>
+                  <div id="rl-yt-blind-overlay" class="hidden absolute inset-0 z-10 bg-slate-900/95 text-white flex flex-col items-center justify-center p-5 text-center space-y-2.5">
+                    <span class="text-3xl">🎧</span>
+                    <p class="text-sm sm:text-base font-bold">블라인드 모드 활성화됨 (오디오 집중 듣기)</p>
+                    <p class="text-xs text-slate-300 max-w-sm">화면과 자막을 가리고 영어 음성만 들으며 아래 메모장에 핵심 키워드를 필기하세요.</p>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -484,7 +647,7 @@
       </section>
 
       <!-- Right Column: PTE Exam Timer + Mic Recorder + Playback -->
-      <aside class="lg:col-span-5 space-y-4">
+      <aside class="lg:col-span-5 min-w-0 space-y-4">
 
         <!-- PTE Recording / Timer Box -->
         <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 space-y-4">
@@ -527,7 +690,7 @@
           <div class="space-y-1.5">
             <div class="flex items-center justify-between text-xs">
               <span class="font-medium text-slate-600">마이크 입력 레벨</span>
-              <span id="mic-status-detail" class="text-slate-500">미연결 (시작 시 자동 연결 시도)</span>
+              <span id="mic-status-detail" class="text-slate-500">대기 중 (녹음 시 자동 연결 · 이어폰 음질 보호)</span>
             </div>
             <div class="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden border border-slate-200">
               <div id="mic-level-bar" class="h-full w-0 bg-emerald-500 transition-all duration-75 rounded-full"></div>
@@ -992,7 +1155,7 @@
 
   <footer class="bg-white border-t border-slate-200 mt-auto">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-slate-500">
-      <span>NZ PTE Academic Trainer · RA (20) · DI (15) · RS (30) · RL (15) · Writing (20) · AI 채점 &amp; 오답/단어장</span>
+      <span>NZ PTE Academic Trainer · RA (30) · DI (15) · RS (100+AI) · RL (15+YouTube) · Writing (20) · AI 채점 &amp; 오답/단어장</span>
       <span>API 키·녹음·단어장·연습 기록은 사용자 브라우저에만 저장됩니다.</span>
     </div>
   </footer>
@@ -1025,8 +1188,53 @@
         geminiModel: 'pte_gemini_model',
         bookmarks: 'pte_bookmarks',
         vocabList: 'pte_vocab_list',
-        practiceLogs: 'pte_practice_logs'
+        practiceLogs: 'pte_practice_logs',
+        customRsQuestions: 'pte_custom_rs_questions',
+        ytClipSets: 'pte_rl_yt_clip_sets'
       };
+
+      const DEFAULT_YT_CLIP_SETS = [
+        {
+          id: 'yt-sample-neural',
+          title: '[샘플] AI Neural Networks & Deep Learning Lecture (YouTube)',
+          videoId: 'aircAruvnKk',
+          url: 'https://www.youtube.com/watch?v=aircAruvnKk',
+          overallSummary: '인간의 시각 피질이 손글씨 숫자를 인식하는 원리와 인공 신경망의 뉴런·가중치·층(Layer) 구조를 설명하는 대표적인 MIT/3Blue1Brown 스타일 강의입니다.',
+          createdAt: 1700000000000,
+          clips: [
+            {
+              id: 'YT-1',
+              title: 'Clip 1 · Neurons as Information Holders',
+              startSec: 15,
+              endSec: 70,
+              script: 'Imagine looking at a handwritten number three written carelessly on a small grid of pixels. Even when every stroke varies dramatically from person to person, your visual cortex immediately recognizes it as a three. Inside a neural network, each neuron simply holds a number between zero and one representing pixel activation, and twenty-eight by twenty-eight pixels feed into seven hundred eighty-four input neurons.',
+              keywords: ['Handwritten digits', 'Visual cortex', 'Neural network', 'Activation number', '784 input neurons', 'Pixel grid'],
+              modelAnswer: 'This lecture clip explains how humans and neural networks process visual patterns such as handwritten digits. First, the speaker notes that our brain recognizes varied strokes effortlessly. Next, it is explained that artificial neurons simply store activation values between zero and one across a pixel grid.',
+              translation: '사람의 뇌가 다양한 필체의 숫자를 즉시 인식하듯, 인공 신경망에서는 각 뉴런이 0과 1 사이의 활성화 숫자를 저장해 픽셀 정보를 입력받는다는 설명입니다.'
+            },
+            {
+              id: 'YT-2',
+              title: 'Clip 2 · Hidden Layers & Edge Detection',
+              startSec: 130,
+              endSec: 185,
+              script: 'Why do we place multiple hidden layers between the input pixels and the final ten digit classifications? Ideally, the second layer detects tiny visual edges, while the following layer combines those edges into simple loops and vertical lines. By breaking complex shapes into hierarchical subcomponents, the network generalizes smoothly rather than memorizing raw images.',
+              keywords: ['Hidden layers', 'Edge detection', 'Hierarchical patterns', 'Loops and lines', 'Generalization'],
+              modelAnswer: 'This clip discusses the role of hidden layers in deep learning architectures. Initially, early hidden layers detect small edges in an image. Subsequently, deeper layers combine those edges into loops and structural components, allowing the system to recognize digits rather than memorizing pixels.',
+              translation: '은닉층이 계층적으로 모서리(edge)에서 선·고리 패턴으로 조합하여 이미지를 일반화해 인식하는 원리를 설명하는 구간입니다.'
+            },
+            {
+              id: 'YT-3',
+              title: 'Clip 3 · Weights, Biases & Weighted Sums',
+              startSec: 260,
+              endSec: 315,
+              script: 'To measure whether a neuron should light up for a particular pattern, we assign a weight to every incoming connection and compute a weighted sum. Positive weights respond to active lines in an edge, while negative weights suppress surrounding pixels. Adding a bias term determines how high that weighted sum must climb before the neuron meaningfully activates.',
+              keywords: ['Weighted sum', 'Positive weights', 'Negative weights', 'Bias threshold', 'Neuron activation'],
+              modelAnswer: 'This segment focuses on how weights and biases govern neuron activation inside a network. The lecturer highlights that positive weights emphasize target edges whereas negative weights suppress background noise. Finally, adding a bias sets the activation threshold for each neuron.',
+              translation: '양·음의 가중치 합(weighted sum)과 편향(bias)이 뉴런이 언제 활성화될지 임계값을 결정한다는 핵심 메커니즘 설명입니다.'
+            }
+          ]
+        }
+      ];
 
       const MODE_CONFIG = {
         'read-aloud': {
@@ -1142,19 +1350,38 @@
         analyser: null,
         meterRafId: null,
 
-        // Gemini AI, Bookmarks, Vocabulary & Logs
+        // Gemini AI, Bookmarks, Vocabulary, Logs, Custom RS & YouTube RL
         geminiApiKey: loadRawStorage(STORAGE_KEYS.geminiApiKey, ''),
         geminiModel: loadRawStorage(STORAGE_KEYS.geminiModel, 'gemini-4-hydrogen') || 'gemini-4-hydrogen',
         bookmarks: loadJsonStorage(STORAGE_KEYS.bookmarks, []),
         vocabList: loadJsonStorage(STORAGE_KEYS.vocabList, []),
         practiceLogs: loadJsonStorage(STORAGE_KEYS.practiceLogs, []),
+        customRsQuestions: loadJsonStorage(STORAGE_KEYS.customRsQuestions, []),
         bookmarkFilter: 'all',
         vocabSearch: '',
         vocabFilter: 'all',
         lastSpeakingLogId: null,
         lastWritingLogId: null,
-        aiGradingBusy: false
+        aiGradingBusy: false,
+        rsAiGenerating: false,
+        ttsKeepAliveTimerId: null,
+
+        // Retell Lecture YouTube Clip Mode
+        rlSourceMode: 'academic', // 'academic' | 'youtube'
+        ytClipSets: (() => {
+          const loaded = loadJsonStorage(STORAGE_KEYS.ytClipSets, null);
+          return Array.isArray(loaded) && loaded.length > 0 ? loaded : DEFAULT_YT_CLIP_SETS;
+        })(),
+        activeYtSetId: '',
+        activeYtClipIndex: 0,
+        ytBlindMode: false,
+        ytPlayer: null,
+        ytWatchTimerId: null,
+        ytExtracting: false
       };
+      if (state.ytClipSets.length > 0 && !state.activeYtSetId) {
+        state.activeYtSetId = state.ytClipSets[0].id;
+      }
 
       function loadRawStorage(key, fallback = '') {
         try {
@@ -1190,6 +1417,37 @@
         btnQuickVocabSpeaking: document.getElementById('btn-quick-vocab-speaking'),
         btnBookmarkWriting: document.getElementById('btn-bookmark-writing'),
         btnQuickVocabWriting: document.getElementById('btn-quick-vocab-writing'),
+
+        // iOS Audio Guide
+        iosAudioGuideBox: document.getElementById('ios-audio-guide-box'),
+        btnCloseIosGuide: document.getElementById('btn-close-ios-guide'),
+
+        // Repeat Sentence Bank / AI Gen
+        rsBankSummaryBadge: document.getElementById('rs-bank-summary-badge'),
+        btnRsAiGenerate: document.getElementById('btn-rs-ai-generate'),
+        rsAiGenStatus: document.getElementById('rs-ai-gen-status'),
+
+        // Retell Lecture Source Switcher & YouTube Mode
+        btnRlModeAcademic: document.getElementById('btn-rl-mode-academic'),
+        btnRlModeYoutube: document.getElementById('btn-rl-mode-youtube'),
+        rlAcademicModeBox: document.getElementById('rl-academic-mode-box'),
+        rlYoutubeModeBox: document.getElementById('rl-youtube-mode-box'),
+        rlYtUrlInput: document.getElementById('rl-yt-url-input'),
+        rlYtTopicInput: document.getElementById('rl-yt-topic-input'),
+        rlYtTranscriptInput: document.getElementById('rl-yt-transcript-input'),
+        btnRlYtExtract: document.getElementById('btn-rl-yt-extract'),
+        rlYtExtractStatus: document.getElementById('rl-yt-extract-status'),
+        rlYtSetsSelect: document.getElementById('rl-yt-sets-select'),
+        btnRlYtDeleteSet: document.getElementById('btn-rl-yt-delete-set'),
+        rlYtOverallSummary: document.getElementById('rl-yt-overall-summary'),
+        rlYtClipsList: document.getElementById('rl-yt-clips-list'),
+        rlYtActiveClipLabel: document.getElementById('rl-yt-active-clip-label'),
+        rlYtAudioStatus: document.getElementById('rl-yt-audio-status'),
+        btnRlYtPreviewClip: document.getElementById('btn-rl-yt-preview-clip'),
+        btnRlYtBlindToggle: document.getElementById('btn-rl-yt-blind-toggle'),
+        btnRlYtSkipAudio: document.getElementById('btn-rl-yt-skip-audio'),
+        rlYtPlayerHost: document.getElementById('rl-yt-player'),
+        rlYtBlindOverlay: document.getElementById('rl-yt-blind-overlay'),
 
         solvedProgressBadge: document.getElementById('solved-progress-badge'),
         questionSelect: document.getElementById('question-select'),
@@ -1552,6 +1810,10 @@
 
       function cancelSpeech() {
         state.speechSessionId += 1;
+        if (state.ttsKeepAliveTimerId !== null) {
+          clearInterval(state.ttsKeepAliveTimerId);
+          state.ttsKeepAliveTimerId = null;
+        }
         if (state.ttsSafetyTimerId !== null) {
           clearTimeout(state.ttsSafetyTimerId);
           state.ttsSafetyTimerId = null;
@@ -1570,6 +1832,9 @@
       }
 
       function speakText(text, { targetMode = 'repeat-sentence', onComplete = null } = {}) {
+        ensureAudioContext();
+        // iOS Safari/PWA fix: ensure mic stream is released so AirPods stay in Media mode during TTS
+        releaseMicrophoneStream();
         cancelSpeech();
         const sessionId = state.speechSessionId;
         const isRL = targetMode === 'retell-lecture';
@@ -1578,6 +1843,10 @@
 
         const finish = () => {
           if (sessionId !== state.speechSessionId) return;
+          if (state.ttsKeepAliveTimerId !== null) {
+            clearInterval(state.ttsKeepAliveTimerId);
+            state.ttsKeepAliveTimerId = null;
+          }
           if (state.ttsSafetyTimerId !== null) {
             clearTimeout(state.ttsSafetyTimerId);
             state.ttsSafetyTimerId = null;
@@ -1608,11 +1877,21 @@
 
         if (!isRL) el.rsTtsFallbackNote.classList.add('hidden');
 
-        // Split long lecture scripts into sentences so Chromium TTS never stalls mid-lecture
-        const chunks = isRL
-          ? text.trim().split(/(?<=[.!?])\s+/).filter(Boolean)
-          : [text.trim()];
+        // iOS Safari & Chromium keep-alive: nudge engine every 10s so speech never stalls silently
+        state.ttsKeepAliveTimerId = setInterval(() => {
+          if (sessionId !== state.speechSessionId || !('speechSynthesis' in window)) return;
+          try {
+            if (window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
+              window.speechSynthesis.pause();
+              window.speechSynthesis.resume();
+            }
+          } catch (e) {
+            // ignore keep-alive errors
+          }
+        }, 10000);
 
+        // Split text into natural sentence chunks so mobile/desktop engines never stall mid-speech
+        const chunks = text.trim().split(/(?<=[.!?])\s+/).filter(Boolean);
         let chunkIdx = 0;
 
         const speakNextChunk = () => {
@@ -1660,13 +1939,14 @@
       }
 
       // ==========================================
-      // 5. Microphone & MediaRecorder Handling
+      // 5. Microphone & MediaRecorder Handling (iOS-Safe Lazy Open + Immediate Track Stop)
       // ==========================================
       function updateMicUI(message, warning = '') {
+        const micLive = Boolean(state.micStream && state.micStream.active);
         if (state.micStatus === 'ready') {
           el.headerMicDot.className = 'w-2 h-2 rounded-full bg-emerald-400';
-          el.headerMicLabel.textContent = '마이크 연결됨';
-          el.micStatusDetail.textContent = message || '녹음 준비 완료';
+          el.headerMicLabel.textContent = micLive ? '마이크 녹음 활성화' : '마이크 준비됨';
+          el.micStatusDetail.textContent = message || (micLive ? '마이크 입력 활성 중' : '대기 중 (녹음 시에만 활성화 · 이어폰 보호)');
           el.micStatusDetail.className = 'text-emerald-600 font-medium';
         } else if (state.micStatus === 'denied' || state.micStatus === 'unsupported') {
           el.headerMicDot.className = 'w-2 h-2 rounded-full bg-rose-400';
@@ -1676,7 +1956,7 @@
         } else {
           el.headerMicDot.className = 'w-2 h-2 rounded-full bg-amber-400';
           el.headerMicLabel.textContent = '마이크 연결 확인';
-          el.micStatusDetail.textContent = message || '미연결 (시작 시 자동 연결 시도)';
+          el.micStatusDetail.textContent = message || '대기 중 (녹음 시 자동 연결 · 이어폰 음질 보호)';
           el.micStatusDetail.className = 'text-slate-500';
         }
 
@@ -1685,6 +1965,28 @@
           el.micWarningBox.classList.remove('hidden');
         } else {
           el.micWarningBox.classList.add('hidden');
+        }
+      }
+
+      function releaseMicrophoneStream() {
+        if (state.meterRafId) {
+          cancelAnimationFrame(state.meterRafId);
+          state.meterRafId = null;
+        }
+        state.analyser = null;
+        if (state.micStream) {
+          try {
+            state.micStream.getTracks().forEach(track => track.stop());
+          } catch (e) {
+            // ignore
+          }
+          state.micStream = null;
+        }
+        if (el.micLevelBar) {
+          el.micLevelBar.style.width = '0%';
+        }
+        if (state.micStatus === 'ready') {
+          updateMicUI('대기 중 (녹음 종료 즉시 마이크 해제 · 이어폰 보호)');
         }
       }
 
@@ -1715,7 +2017,7 @@
           state.micStream = stream;
           state.micStatus = 'ready';
           setupMicAnalyser(stream);
-          updateMicUI('마이크 연결됨 (정상 작동)');
+          updateMicUI('마이크 연결됨 (녹음 중 활성화)');
           return true;
         } catch (err) {
           state.micStatus = 'denied';
@@ -1800,45 +2102,59 @@
           };
 
           recorder.onstop = () => {
-            if (state.recordedChunks.length === 0) {
-              state.recordedBlob = null;
-              return;
-            }
-            const blob = new Blob(state.recordedChunks, { type: state.recordingMime });
-            state.recordedBlob = blob;
-            if (state.recordingUrl) {
-              URL.revokeObjectURL(state.recordingUrl);
-            }
-            state.recordingUrl = URL.createObjectURL(blob);
+            try {
+              if (state.recordedChunks.length === 0) {
+                state.recordedBlob = null;
+                return;
+              }
+              const blob = new Blob(state.recordedChunks, { type: state.recordingMime });
+              state.recordedBlob = blob;
+              if (state.recordingUrl) {
+                URL.revokeObjectURL(state.recordingUrl);
+              }
+              state.recordingUrl = URL.createObjectURL(blob);
 
-            el.audioPlayback.src = state.recordingUrl;
-            const ext = state.recordingMime.includes('mp4') ? 'm4a' : (state.recordingMime.includes('ogg') ? 'ogg' : 'webm');
-            const q = getCurrentQuestion();
-            el.btnDownloadAudio.href = state.recordingUrl;
-            el.btnDownloadAudio.download = `${q.id}-recording.${ext}`;
+              el.audioPlayback.src = state.recordingUrl;
+              const ext = state.recordingMime.includes('mp4') ? 'm4a' : (state.recordingMime.includes('ogg') ? 'ogg' : 'webm');
+              const q = getCurrentQuestion();
+              el.btnDownloadAudio.href = state.recordingUrl;
+              el.btnDownloadAudio.download = `${q ? q.id : 'pte'}-recording.${ext}`;
 
-            const kb = Math.max(1, Math.round(blob.size / 1024));
-            el.playbackInfo.textContent = `${q.id} 녹음 완료 (${kb} KB)`;
-            el.playbackBadge.textContent = '재생 가능';
-            el.playbackBadge.className = 'text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700';
-            el.playbackEmpty.classList.add('hidden');
-            el.playbackReady.classList.remove('hidden');
+              const kb = Math.max(1, Math.round(blob.size / 1024));
+              el.playbackInfo.textContent = `${q ? q.id : 'PTE'} 녹음 완료 (${kb} KB)`;
+              el.playbackBadge.textContent = '재생 가능';
+              el.playbackBadge.className = 'text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700';
+              el.playbackEmpty.classList.add('hidden');
+              el.playbackReady.classList.remove('hidden');
+            } finally {
+              state.mediaRecorder = null;
+              releaseMicrophoneStream();
+            }
           };
 
           recorder.start(250);
           state.mediaRecorder = recorder;
         } catch (err) {
           console.warn('MediaRecorder start failed:', err);
+          releaseMicrophoneStream();
         }
       }
 
       function stopMediaRecording() {
-        if (state.mediaRecorder && state.mediaRecorder.state !== 'inactive') {
+        const rec = state.mediaRecorder;
+        if (rec && rec.state !== 'inactive') {
           try {
-            state.mediaRecorder.stop();
+            rec.stop();
           } catch (e) {
-            // ignore
+            releaseMicrophoneStream();
           }
+          setTimeout(() => {
+            if (state.phase !== 'recording') {
+              releaseMicrophoneStream();
+            }
+          }, 250);
+        } else {
+          releaseMicrophoneStream();
         }
       }
 
@@ -2144,16 +2460,51 @@
       // ==========================================
       // 7. Question Navigation, Solved Tracking & Randomizer
       // ==========================================
+      function getRepeatSentenceList() {
+        return [...REPEAT_SENTENCE_QUESTIONS, ...(Array.isArray(state.customRsQuestions) ? state.customRsQuestions : [])];
+      }
+
+      function getActiveYtSet() {
+        if (!Array.isArray(state.ytClipSets) || state.ytClipSets.length === 0) return null;
+        return state.ytClipSets.find(s => s.id === state.activeYtSetId) || state.ytClipSets[0];
+      }
+
+      function getRetellLectureQuestions() {
+        if (state.rlSourceMode === 'youtube') {
+          const activeSet = getActiveYtSet();
+          if (!activeSet || !Array.isArray(activeSet.clips)) return [];
+          return activeSet.clips.map(clip => ({
+            id: clip.id,
+            title: clip.title,
+            topic: activeSet.title,
+            script: clip.script || '',
+            keywords: clip.keywords || [],
+            modelAnswer: clip.modelAnswer || '',
+            translation: clip.translation || '',
+            videoId: activeSet.videoId,
+            startSec: Number(clip.startSec) || 0,
+            endSec: Number(clip.endSec) || 60,
+            isYoutubeClip: true
+          }));
+        }
+        return RETELL_LECTURE_QUESTIONS;
+      }
+
       function getQuestionsForMode(mode = state.mode) {
         if (mode === 'read-aloud') return READ_ALOUD_QUESTIONS;
         if (mode === 'describe-image') return DESCRIBE_IMAGE_QUESTIONS;
-        if (mode === 'repeat-sentence') return REPEAT_SENTENCE_QUESTIONS;
-        if (mode === 'retell-lecture') return RETELL_LECTURE_QUESTIONS;
+        if (mode === 'repeat-sentence') return getRepeatSentenceList();
+        if (mode === 'retell-lecture') return getRetellLectureQuestions();
         return [];
       }
 
       function getCurrentQuestion() {
         const list = getQuestionsForMode();
+        if (list.length === 0) return null;
+        const maxIdx = list.length - 1;
+        if ((state.questionIndex[state.mode] || 0) > maxIdx) {
+          state.questionIndex[state.mode] = 0;
+        }
         return list[state.questionIndex[state.mode]] || list[0];
       }
 
@@ -2323,7 +2674,11 @@
           el.rlModelBox.classList.add('hidden');
         }
 
-        el.btnRlSkipAudio.disabled = state.phase !== 'playing-audio';
+        const isPlayingAudio = state.phase === 'playing-audio';
+        el.btnRlSkipAudio.disabled = !isPlayingAudio;
+        if (el.btnRlYtSkipAudio) {
+          el.btnRlYtSkipAudio.disabled = !isPlayingAudio;
+        }
       }
 
       function getRlNotesKey(qId) {
@@ -2370,6 +2725,7 @@
           el.diKeyPoints.textContent = q.keyPoints;
         } else if (state.mode === 'repeat-sentence') {
           el.panelRepeatSentence.classList.remove('hidden');
+          updateRsBankSummaryUI();
           const words = q.sentence.trim().split(/\s+/).length;
           el.qMeta.textContent = `${q.topic} · ${words} words`;
           el.rsWordCount.textContent = `${words} words`;
@@ -2380,16 +2736,22 @@
           renderRepeatSentenceScriptUI();
         } else if (state.mode === 'retell-lecture') {
           el.panelRetellLecture.classList.remove('hidden');
-          const words = q.script.trim().split(/\s+/).length;
-          el.qMeta.textContent = `${q.topic} · ~${Math.round(words / 2.4)}초 분량`;
-          el.rlAudioStatus.textContent = '실전 연습 시작을 누르면 45~60초 강의가 재생됩니다 (스크립트 숨김)';
-          el.rlSlideTitle.textContent = q.slideTitle || q.title;
-          el.rlSlideBullets.innerHTML = '';
-          (q.slideBullets || []).forEach(b => {
-            const li = document.createElement('li');
-            li.textContent = b;
-            el.rlSlideBullets.appendChild(li);
-          });
+          renderRetellLectureSourceUI();
+          const words = q.script ? q.script.trim().split(/\s+/).length : 0;
+          if (state.rlSourceMode === 'youtube') {
+            const dur = Math.max(1, (q.endSec || 60) - (q.startSec || 0));
+            el.qMeta.textContent = `YouTube 클립 · ${formatMMSS(q.startSec)}~${formatMMSS(q.endSec)} (${dur}초)`;
+          } else {
+            el.qMeta.textContent = `${q.topic} · ~${Math.round(words / 2.4)}초 분량`;
+            el.rlAudioStatus.textContent = '실전 연습 시작을 누르면 45~60초 강의가 재생됩니다 (스크립트 숨김)';
+            el.rlSlideTitle.textContent = q.slideTitle || q.title;
+            el.rlSlideBullets.innerHTML = '';
+            (q.slideBullets || []).forEach(b => {
+              const li = document.createElement('li');
+              li.textContent = b;
+              el.rlSlideBullets.appendChild(li);
+            });
+          }
 
           // Restore scratchpad notes from localStorage
           let savedNotes = '';
@@ -2403,7 +2765,7 @@
 
           // Populate post-recording script & model answer
           el.rlWordCount.textContent = `${words} words`;
-          el.rlScriptText.textContent = q.script;
+          el.rlScriptText.textContent = q.script || '이 클립에는 스크립트 텍스트가 포함되어 있지 않습니다.';
           el.rlKeywordsList.innerHTML = '';
           (q.keywords || []).forEach(kw => {
             const span = document.createElement('span');
@@ -2411,8 +2773,8 @@
             span.textContent = kw;
             el.rlKeywordsList.appendChild(span);
           });
-          el.rlTranslationText.textContent = `요약 해석: ${q.translation}`;
-          el.rlModelAnswer.textContent = q.modelAnswer;
+          el.rlTranslationText.textContent = q.translation ? `요약 해석: ${q.translation}` : '';
+          el.rlModelAnswer.textContent = q.modelAnswer || '';
           renderRetellLectureRevealUI();
         }
       }
@@ -2516,6 +2878,7 @@
       function resetPractice(clearAudio = true) {
         clearTimerInterval();
         cancelSpeech();
+        stopYouTubeClipPlayback();
         stopMediaRecording();
         if (MODE_CONFIG[state.mode]) {
           const cfg = MODE_CONFIG[state.mode];
@@ -2533,6 +2896,9 @@
       function startPrepCountdown() {
         clearTimerInterval();
         cancelSpeech();
+        stopYouTubeClipPlayback();
+        // Keep mic stream closed during preparation so iOS earphones remain in Media mode
+        releaseMicrophoneStream();
         const cfg = MODE_CONFIG[state.mode];
         state.phase = 'prep';
         state.remainingSeconds = cfg.prepSeconds;
@@ -2556,19 +2922,44 @@
           return;
         }
 
+        // iOS Safari/PWA: resume AudioContext inside user tap & do NOT open mic before audio playback
         ensureAudioContext();
         clearTimerInterval();
         cancelSpeech();
+        stopYouTubeClipPlayback();
+        releaseMicrophoneStream();
         clearPlayback();
         state.rsScriptVisible = false;
         state.rlScriptVisible = false;
         state.rlModelVisible = false;
 
-        await requestMicrophone();
+        if (state.mode === 'retell-lecture' && state.rlSourceMode === 'youtube') {
+          const cfg = MODE_CONFIG['retell-lecture'];
+          const q = getCurrentQuestion();
+          if (!q) {
+            startPrepCountdown();
+            return;
+          }
+          state.phase = 'playing-audio';
+          state.remainingSeconds = cfg.prepSeconds;
+          state.totalPhaseSeconds = cfg.prepSeconds;
+          renderTimerUI();
 
-        if (state.mode === 'repeat-sentence' || state.mode === 'retell-lecture') {
+          playYouTubeClipSegment(q, {
+            previewOnly: false,
+            onComplete: () => {
+              if (state.mode === 'retell-lecture' && state.rlSourceMode === 'youtube' && state.phase === 'playing-audio') {
+                startPrepCountdown();
+              }
+            }
+          });
+        } else if (state.mode === 'repeat-sentence' || state.mode === 'retell-lecture') {
           const cfg = MODE_CONFIG[state.mode];
           const q = getCurrentQuestion();
+          if (!q) {
+            startPrepCountdown();
+            return;
+          }
           state.phase = 'playing-audio';
           state.remainingSeconds = cfg.prepSeconds;
           state.totalPhaseSeconds = cfg.prepSeconds;
@@ -2589,9 +2980,11 @@
         }
       }
 
-      function beginRecordingPhase() {
+      async function beginRecordingPhase() {
         clearTimerInterval();
         cancelSpeech();
+        stopYouTubeClipPlayback();
+        ensureAudioContext();
         const cfg = MODE_CONFIG[state.mode];
 
         playBeep(980, 0.38);
@@ -2601,7 +2994,15 @@
         state.totalPhaseSeconds = cfg.speakSeconds;
         renderTimerUI();
 
-        startMediaRecording();
+        // Lazy microphone activation ONLY when entering the recording phase
+        const micOk = await requestMicrophone();
+        if (state.phase !== 'recording') {
+          releaseMicrophoneStream();
+          return;
+        }
+        if (micOk) {
+          startMediaRecording();
+        }
 
         state.timerId = setInterval(() => {
           state.remainingSeconds -= 1;
@@ -3047,6 +3448,12 @@
         }
       });
 
+      el.btnRlYtSkipAudio.addEventListener('click', () => {
+        if (state.mode === 'retell-lecture' && state.phase === 'playing-audio') {
+          startPrepCountdown();
+        }
+      });
+
       el.rlScratchpad.addEventListener('input', () => {
         if (state.mode !== 'retell-lecture') return;
         const q = getCurrentQuestion();
@@ -3096,7 +3503,15 @@
 
       el.btnMicConnect.addEventListener('click', async () => {
         ensureAudioContext();
-        await requestMicrophone();
+        const ok = await requestMicrophone();
+        // Release track shortly after permission check so iOS AirPods/earphones return to Media mode
+        if (ok && state.phase !== 'recording') {
+          setTimeout(() => {
+            if (state.phase !== 'recording') {
+              releaseMicrophoneStream();
+            }
+          }, 450);
+        }
       });
 
       // Writing Controls
@@ -3181,7 +3596,7 @@
       const SECTION_CATALOG = [
         { key: 'read-aloud', label: 'Read Aloud', short: 'RA', filterGroup: 'read-aloud', badgeCls: 'bg-sky-100 text-sky-800', barCls: 'bg-pte-blue', getList: () => READ_ALOUD_QUESTIONS },
         { key: 'describe-image', label: 'Describe Image', short: 'DI', filterGroup: 'describe-image', badgeCls: 'bg-indigo-100 text-indigo-800', barCls: 'bg-indigo-500', getList: () => DESCRIBE_IMAGE_QUESTIONS },
-        { key: 'repeat-sentence', label: 'Repeat Sentence', short: 'RS', filterGroup: 'repeat-sentence', badgeCls: 'bg-teal-100 text-teal-800', barCls: 'bg-pte-teal', getList: () => REPEAT_SENTENCE_QUESTIONS },
+        { key: 'repeat-sentence', label: 'Repeat Sentence', short: 'RS', filterGroup: 'repeat-sentence', badgeCls: 'bg-teal-100 text-teal-800', barCls: 'bg-pte-teal', getList: () => getRepeatSentenceList() },
         { key: 'retell-lecture', label: 'Retell Lecture', short: 'RL', filterGroup: 'retell-lecture', badgeCls: 'bg-violet-100 text-violet-800', barCls: 'bg-violet-500', getList: () => RETELL_LECTURE_QUESTIONS },
         { key: 'swt', label: 'Writing · SWT', short: 'SWT', filterGroup: 'writing', badgeCls: 'bg-amber-100 text-amber-800', barCls: 'bg-amber-500', getList: () => SWT_QUESTIONS },
         { key: 'essay', label: 'Writing · Essay', short: 'Essay', filterGroup: 'writing', badgeCls: 'bg-rose-100 text-rose-800', barCls: 'bg-rose-500', getList: () => ESSAY_QUESTIONS }
@@ -3236,8 +3651,24 @@
             return {
               workspaceMode: isWritingSec ? 'writing' : sec.key,
               writingSubmode: isWritingSec ? sec.key : null,
+              rlSourceMode: sec.key === 'retell-lecture' ? 'academic' : null,
+              ytSetId: null,
               index: idx,
               question: list[idx]
+            };
+          }
+        }
+        // Also search saved YouTube Retell Lecture clips
+        for (const set of (state.ytClipSets || [])) {
+          const idx = (set.clips || []).findIndex(c => c.id === qId);
+          if (idx !== -1) {
+            return {
+              workspaceMode: 'retell-lecture',
+              writingSubmode: null,
+              rlSourceMode: 'youtube',
+              ytSetId: set.id,
+              index: idx,
+              question: set.clips[idx]
             };
           }
         }
@@ -3256,8 +3687,14 @@
           }
           selectWritingQuestion(loc.index);
         } else {
+          if (loc.workspaceMode === 'retell-lecture' && loc.rlSourceMode) {
+            state.rlSourceMode = loc.rlSourceMode;
+            if (loc.ytSetId) state.activeYtSetId = loc.ytSetId;
+          }
           if (state.mode !== loc.workspaceMode) {
             switchMode(loc.workspaceMode);
+          } else if (loc.workspaceMode === 'retell-lecture') {
+            renderQuestionSelector();
           }
           selectQuestion(loc.index);
         }
@@ -4237,15 +4674,561 @@
       el.btnAiGradeWriting.addEventListener('click', gradeWritingWithAi);
       el.btnAiGradeSpeaking.addEventListener('click', gradeSpeakingWithAi);
 
+      // ==========================================
+      // 13. Repeat Sentence AI Generator, YouTube RL Clip Mode & iOS Guide
+      // ==========================================
+      function showInlineStatus(elTarget, message, tone = 'info') {
+        if (!elTarget) return;
+        const styles = {
+          info: 'text-xs font-semibold rounded-lg px-3 py-2 bg-sky-50 text-sky-800 border border-sky-200',
+          success: 'text-xs font-semibold rounded-lg px-3 py-2 bg-emerald-50 text-emerald-800 border border-emerald-200',
+          error: 'text-xs font-semibold rounded-lg px-3 py-2 bg-rose-50 text-rose-700 border border-rose-200'
+        };
+        elTarget.textContent = message;
+        elTarget.className = styles[tone] || styles.info;
+        elTarget.classList.remove('hidden');
+      }
+
+      function updateRsBankSummaryUI() {
+        if (!el.rsBankSummaryBadge) return;
+        const baseCount = REPEAT_SENTENCE_QUESTIONS.length;
+        const customCount = Array.isArray(state.customRsQuestions) ? state.customRsQuestions.length : 0;
+        el.rsBankSummaryBadge.textContent = `기본 ${baseCount}문항 + AI 추가 ${customCount}문항`;
+      }
+
+      async function generateMoreRsWithAi() {
+        if (state.rsAiGenerating) return;
+        state.rsAiGenerating = true;
+        el.btnRsAiGenerate.disabled = true;
+        el.btnRsAiGenerate.classList.add('opacity-60');
+        showInlineStatus(el.rsAiGenStatus, `Gemini AI (${state.geminiModel || 'gemini-4-hydrogen'})가 새 실전 문장 10개를 생성 중입니다...`, 'info');
+
+        const existingList = getRepeatSentenceList();
+        const sampleExisting = existingList.slice(-15).map(q => q.sentence).join('\n');
+        const prompt = [
+          `You are a PTE Academic test designer.`,
+          `Generate exactly 10 NEW, unique Repeat Sentence items that do NOT duplicate these existing examples:\n${sampleExisting}`,
+          `\nBalance the 10 sentences evenly:`,
+          `- 3 short foundational sentences (7 to 9 words)`,
+          `- 4 medium exam-standard sentences (10 to 12 words)`,
+          `- 3 long high-difficulty academic sentences (13 to 16 words)`,
+          `\nRespond strictly in JSON matching this schema:`,
+          `{`,
+          `  "sentences": [`,
+          `    {`,
+          `      "title": "<short 2-4 word English title>",`,
+          `      "topic": "<academic category e.g. Campus Life, Ecology, Economics>",`,
+          `      "sentence": "<spoken English sentence ending with period>",`,
+          `      "chunking": "<same sentence divided by slashes / into natural breath groups>",`,
+          `      "translation": "<natural Korean translation>"`,
+          `    }`,
+          `  ]`,
+          `}`
+        ].join('\n');
+
+        try {
+          const result = await callGeminiApi([{ text: prompt }]);
+          const items = Array.isArray(result.sentences) ? result.sentences : [];
+          if (items.length === 0) {
+            throw new Error('AI가 유효한 문장 목록을 반환하지 않았습니다.');
+          }
+          const startNumber = REPEAT_SENTENCE_QUESTIONS.length + state.customRsQuestions.length + 1;
+          const prevTotal = getRepeatSentenceList().length;
+          const formatted = items.slice(0, 10).map((item, idx) => ({
+            id: `RS-${startNumber + idx}`,
+            title: String(item.title || `AI Sentence ${startNumber + idx}`).trim(),
+            topic: `${String(item.topic || 'Academic').trim()} · AI 생성`,
+            sentence: String(item.sentence || '').trim(),
+            chunking: String(item.chunking || item.sentence || '').trim(),
+            translation: String(item.translation || '').trim(),
+            isCustomAi: true
+          })).filter(it => it.sentence.length > 0);
+
+          if (formatted.length === 0) {
+            throw new Error('생성된 문장 데이터가 비어 있습니다.');
+          }
+
+          state.customRsQuestions = [...state.customRsQuestions, ...formatted];
+          saveStorage(STORAGE_KEYS.customRsQuestions, state.customRsQuestions);
+          updateRsBankSummaryUI();
+          showInlineStatus(
+            el.rsAiGenStatus,
+            `✅ 새 문장 ${formatted.length}개(RS-${startNumber}~RS-${startNumber + formatted.length - 1})가 localStorage에 추가되었습니다!`,
+            'success'
+          );
+          if (state.mode === 'repeat-sentence') {
+            selectQuestion(prevTotal);
+          }
+        } catch (err) {
+          if (err.isMissingKey) {
+            el.rsAiGenStatus.classList.add('hidden');
+          } else {
+            showInlineStatus(el.rsAiGenStatus, `⚠️ 생성 실패: ${err.message || '오류가 발생했습니다.'}`, 'error');
+          }
+        } finally {
+          state.rsAiGenerating = false;
+          el.btnRsAiGenerate.disabled = false;
+          el.btnRsAiGenerate.classList.remove('opacity-60');
+        }
+      }
+
+      // --- YouTube Video ID Parsing & IFrame API Player ---
+      function parseYouTubeVideoId(input) {
+        const raw = (input || '').trim();
+        if (!raw) return '';
+        if (/^[a-zA-Z0-9_-]{11}$/.test(raw)) return raw;
+        try {
+          const url = new URL(raw);
+          const host = url.hostname.replace(/^www\./, '').toLowerCase();
+          if (host === 'youtu.be') {
+            return url.pathname.replace(/^\//, '').split('/')[0].slice(0, 11);
+          }
+          if (host.includes('youtube.com')) {
+            const vParam = url.searchParams.get('v');
+            if (vParam) return vParam.slice(0, 11);
+            const match = url.pathname.match(/\/(?:embed|shorts|live)\/([a-zA-Z0-9_-]{11})/);
+            if (match) return match[1];
+          }
+        } catch (e) {
+          const fallbackMatch = raw.match(/(?:v=|youtu\.be\/|embed\/|shorts\/)([a-zA-Z0-9_-]{11})/);
+          if (fallbackMatch) return fallbackMatch[1];
+        }
+        return '';
+      }
+
+      let ytApiPromise = null;
+      let ytPlaySessionId = 0;
+
+      function ensureYouTubeIframeApi() {
+        if (window.YT && window.YT.Player) {
+          return Promise.resolve(window.YT);
+        }
+        if (ytApiPromise) return ytApiPromise;
+
+        ytApiPromise = new Promise((resolve, reject) => {
+          const prevCallback = window.onYouTubeIframeAPIReady;
+          let settled = false;
+          const timeoutId = setTimeout(() => {
+            if (!settled) {
+              settled = true;
+              ytApiPromise = null;
+              reject(new Error('YouTube IFrame API 로드 시간이 초과되었습니다.'));
+            }
+          }, 6000);
+
+          window.onYouTubeIframeAPIReady = () => {
+            if (typeof prevCallback === 'function') {
+              try { prevCallback(); } catch (e) {}
+            }
+            if (!settled) {
+              settled = true;
+              clearTimeout(timeoutId);
+              resolve(window.YT);
+            }
+          };
+
+          if (!document.querySelector('script[src*="youtube.com/iframe_api"]')) {
+            const tag = document.createElement('script');
+            tag.src = 'https://www.youtube.com/iframe_api';
+            tag.async = true;
+            tag.onerror = () => {
+              if (!settled) {
+                settled = true;
+                clearTimeout(timeoutId);
+                ytApiPromise = null;
+                reject(new Error('YouTube IFrame 스크립트를 불러올 수 없습니다.'));
+              }
+            };
+            document.head.appendChild(tag);
+          }
+        });
+        return ytApiPromise;
+      }
+
+      function stopYouTubeClipPlayback() {
+        ytPlaySessionId += 1;
+        if (state.ytWatchTimerId !== null) {
+          clearInterval(state.ytWatchTimerId);
+          state.ytWatchTimerId = null;
+        }
+        if (state.ytPlayer && typeof state.ytPlayer.pauseVideo === 'function') {
+          try {
+            state.ytPlayer.pauseVideo();
+          } catch (e) {
+            // ignore
+          }
+        }
+      }
+
+      function syncYtBlindModeUI() {
+        if (!el.rlYtBlindOverlay || !el.btnRlYtBlindToggle) return;
+        el.rlYtBlindOverlay.classList.toggle('hidden', !state.ytBlindMode);
+        el.btnRlYtBlindToggle.setAttribute('aria-pressed', String(state.ytBlindMode));
+        if (state.ytBlindMode) {
+          el.btnRlYtBlindToggle.textContent = '👀 영상 화면 다시 보기';
+          el.btnRlYtBlindToggle.className = 'px-2.5 py-1.5 rounded-lg text-xs font-bold bg-indigo-600 text-white border border-indigo-700 transition cursor-pointer';
+        } else {
+          el.btnRlYtBlindToggle.textContent = '🙈 화면 가리고 오디오만 듣기 (블라인드 모드)';
+          el.btnRlYtBlindToggle.className = 'px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 transition cursor-pointer';
+        }
+      }
+
+      async function playYouTubeClipSegment(clip, { previewOnly = false, onComplete = null } = {}) {
+        ensureAudioContext();
+        releaseMicrophoneStream();
+        cancelSpeech();
+        stopYouTubeClipPlayback();
+
+        if (!clip || !clip.videoId) {
+          if (typeof onComplete === 'function') onComplete();
+          return;
+        }
+
+        const sessionId = ytPlaySessionId;
+        const startSec = Math.max(0, Number(clip.startSec) || 0);
+        const endSec = Math.max(startSec + 5, Number(clip.endSec) || startSec + 50);
+
+        el.rlYtAudioStatus.textContent = `🎬 클립 로딩 중 (${formatMMSS(startSec)} ~ ${formatMMSS(endSec)})...`;
+
+        const fallbackToTtsOrAdvance = (reason) => {
+          if (sessionId !== ytPlaySessionId) return;
+          el.rlYtAudioStatus.textContent = `⚠️ ${reason} — ${previewOnly ? '미리듣기 중단' : '스크립트 TTS/준비 타이머로 자동 전환합니다'}`;
+          if (!previewOnly) {
+            if (clip.script && ('speechSynthesis' in window)) {
+              speakText(clip.script, { targetMode: 'retell-lecture', onComplete });
+            } else {
+              setTimeout(() => {
+                if (sessionId === ytPlaySessionId && typeof onComplete === 'function') onComplete();
+              }, 1500);
+            }
+          }
+        };
+
+        try {
+          const YT = await ensureYouTubeIframeApi();
+          if (sessionId !== ytPlaySessionId) return;
+
+          const startWatcher = (player) => {
+            if (state.ytWatchTimerId !== null) clearInterval(state.ytWatchTimerId);
+            el.rlYtAudioStatus.textContent = `▶️ 재생 중 (${formatMMSS(startSec)} ~ ${formatMMSS(endSec)}) — 종료 시 자동 일시정지됩니다`;
+            state.ytWatchTimerId = setInterval(() => {
+              if (sessionId !== ytPlaySessionId) {
+                clearInterval(state.ytWatchTimerId);
+                state.ytWatchTimerId = null;
+                return;
+              }
+              try {
+                const cur = typeof player.getCurrentTime === 'function' ? player.getCurrentTime() : 0;
+                const pState = typeof player.getPlayerState === 'function' ? player.getPlayerState() : -1;
+                if (cur >= endSec - 0.15 || pState === YT.PlayerState.ENDED) {
+                  stopYouTubeClipPlayback();
+                  el.rlYtAudioStatus.textContent = `✅ 클립 구간(${formatMMSS(startSec)} ~ ${formatMMSS(endSec)}) 재생 완료`;
+                  if (typeof onComplete === 'function') onComplete();
+                }
+              } catch (pollErr) {
+                stopYouTubeClipPlayback();
+              }
+            }, 250);
+          };
+
+          if (state.ytPlayer && typeof state.ytPlayer.loadVideoById === 'function') {
+            state.ytPlayer.loadVideoById({
+              videoId: clip.videoId,
+              startSeconds: startSec,
+              endSeconds: endSec
+            });
+            startWatcher(state.ytPlayer);
+          } else {
+            state.ytPlayer = new YT.Player('rl-yt-player', {
+              videoId: clip.videoId,
+              width: '100%',
+              height: '100%',
+              playerVars: {
+                start: startSec,
+                end: endSec,
+                rel: 0,
+                modestbranding: 1,
+                playsinline: 1
+              },
+              events: {
+                onReady: (ev) => {
+                  if (sessionId !== ytPlaySessionId) return;
+                  try {
+                    ev.target.seekTo(startSec, true);
+                    ev.target.playVideo();
+                    startWatcher(ev.target);
+                  } catch (e) {
+                    fallbackToTtsOrAdvance('YouTube 재생 시작 실패');
+                  }
+                },
+                onStateChange: (ev) => {
+                  if (sessionId !== ytPlaySessionId) return;
+                  if (ev.data === YT.PlayerState.ENDED) {
+                    stopYouTubeClipPlayback();
+                    el.rlYtAudioStatus.textContent = `✅ 클립 구간(${formatMMSS(startSec)} ~ ${formatMMSS(endSec)}) 재생 완료`;
+                    if (typeof onComplete === 'function') onComplete();
+                  }
+                },
+                onError: () => {
+                  fallbackToTtsOrAdvance('임베드가 제한되었거나 재생할 수 없는 영상입니다');
+                }
+              }
+            });
+          }
+        } catch (err) {
+          fallbackToTtsOrAdvance(err.message || 'YouTube 플레이어를 불러올 수 없습니다');
+        }
+      }
+
+      function renderYtClipSetsAndClips() {
+        const sets = Array.isArray(state.ytClipSets) && state.ytClipSets.length > 0
+          ? state.ytClipSets
+          : DEFAULT_YT_CLIP_SETS;
+        const activeSet = getActiveYtSet() || sets[0];
+        if (activeSet) state.activeYtSetId = activeSet.id;
+
+        el.rlYtSetsSelect.innerHTML = '';
+        sets.forEach(s => {
+          const opt = document.createElement('option');
+          opt.value = s.id;
+          opt.textContent = `${s.title} (${(s.clips || []).length} 클립)`;
+          el.rlYtSetsSelect.appendChild(opt);
+        });
+        if (activeSet) el.rlYtSetsSelect.value = activeSet.id;
+
+        el.rlYtOverallSummary.innerHTML = activeSet
+          ? `<strong class="text-sky-900 block mb-1">📋 인터뷰 전체 요약:</strong>${escapeHtml(activeSet.overallSummary || '')}`
+          : '';
+
+        const clips = activeSet?.clips || [];
+        const currentClipIdx = Math.min(state.questionIndex['retell-lecture'] || 0, Math.max(0, clips.length - 1));
+        el.rlYtClipsList.innerHTML = clips.map((c, idx) => {
+          const dur = Math.max(1, (Number(c.endSec) || 60) - (Number(c.startSec) || 0));
+          const active = idx === currentClipIdx;
+          const borderCls = active
+            ? 'border-pte-blue bg-sky-50/90 ring-1 ring-pte-blue'
+            : 'border-slate-200 bg-white hover:bg-slate-50';
+          return `
+            <button type="button" data-yt-clip-idx="${idx}"
+              class="w-full min-w-0 overflow-hidden text-left rounded-xl border ${borderCls} p-3 transition cursor-pointer space-y-1.5">
+              <div class="flex items-center justify-between gap-2 min-w-0">
+                <span class="text-xs sm:text-sm font-bold text-slate-900 truncate min-w-0">${escapeHtml(c.title)}</span>
+                <span class="shrink-0 px-2 py-0.5 rounded-full text-[11px] font-bold bg-indigo-100 text-indigo-800 tabular-nums">
+                  ${formatMMSS(c.startSec)} ~ ${formatMMSS(c.endSec)} (${dur}초)
+                </span>
+              </div>
+              <div class="flex flex-wrap gap-1">
+                ${(c.keywords || []).slice(0, 4).map(k => `<span class="px-1.5 py-0.5 rounded text-[10px] font-medium bg-slate-100 text-slate-600">${escapeHtml(k)}</span>`).join('')}
+              </div>
+            </button>
+          `;
+        }).join('');
+
+        const activeClip = clips[currentClipIdx];
+        if (activeClip) {
+          const dur = Math.max(1, (Number(activeClip.endSec) || 60) - (Number(activeClip.startSec) || 0));
+          el.rlYtActiveClipLabel.textContent = `${activeClip.title} · ${formatMMSS(activeClip.startSec)}~${formatMMSS(activeClip.endSec)} (${dur}초)`;
+        } else {
+          el.rlYtActiveClipLabel.textContent = '선택된 클립 없음';
+        }
+        syncYtBlindModeUI();
+      }
+
+      function renderRetellLectureSourceUI() {
+        const isYt = state.rlSourceMode === 'youtube';
+        el.rlAcademicModeBox.classList.toggle('hidden', isYt);
+        el.rlYoutubeModeBox.classList.toggle('hidden', !isYt);
+
+        el.btnRlModeAcademic.className = !isYt
+          ? 'flex-1 sm:flex-none px-3.5 py-2 rounded-lg text-xs sm:text-sm font-bold bg-white text-pte-blue shadow-xs transition cursor-pointer'
+          : 'flex-1 sm:flex-none px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold text-slate-600 hover:text-slate-900 transition cursor-pointer';
+        el.btnRlModeYoutube.className = isYt
+          ? 'flex-1 sm:flex-none px-3.5 py-2 rounded-lg text-xs sm:text-sm font-bold bg-white text-pte-blue shadow-xs transition cursor-pointer'
+          : 'flex-1 sm:flex-none px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold text-slate-600 hover:text-slate-900 transition cursor-pointer';
+
+        if (isYt) {
+          renderYtClipSetsAndClips();
+        }
+      }
+
+      function switchRlSourceMode(newSourceMode) {
+        if (state.rlSourceMode === newSourceMode) return;
+        resetPractice(true);
+        state.rlSourceMode = newSourceMode;
+        state.questionIndex['retell-lecture'] = 0;
+        renderQuestionSelector();
+        renderQuestionContent();
+      }
+
+      async function extractYouTubeClipsWithAi() {
+        if (state.ytExtracting) return;
+        const urlInput = (el.rlYtUrlInput.value || '').trim();
+        const topicFocus = (el.rlYtTopicInput.value || '').trim();
+        const transcript = (el.rlYtTranscriptInput.value || '').trim();
+        const videoId = parseYouTubeVideoId(urlInput);
+
+        if (!videoId) {
+          showInlineStatus(el.rlYtExtractStatus, '올바른 유튜브 URL(예: https://www.youtube.com/watch?v=...) 또는 11자리 영상 ID를 입력해주세요.', 'error');
+          return;
+        }
+        if (countWords(transcript) < 20 && transcript.length < 100) {
+          showInlineStatus(el.rlYtExtractStatus, '영상의 영어 자막/스크립트를 최소 20단어 이상 붙여넣어 주세요.', 'error');
+          return;
+        }
+
+        const prompt = [
+          `You are a PTE Academic Retell Lecture curriculum expert.`,
+          `Analyze the YouTube interview/lecture transcript below (Video ID: ${videoId})${topicFocus ? ` focusing especially on "${topicFocus}"` : ''}.`,
+          `Transcript:\n"""\n${transcript.slice(0, 12000)}\n"""`,
+          `\nExtract 3 to 5 high-value practice segments ideal for Retell Lecture, each lasting strictly 45 to 60 seconds (endSec - startSec between 45 and 60).`,
+          `If timestamps appear in the transcript, map startSec and endSec accurately in seconds; otherwise estimate natural timestamps starting from 15s onward.`,
+          `Respond strictly in JSON matching this schema:`,
+          `{`,
+          `  "setTitle": "<concise English title summarizing the video interview>",`,
+          `  "overallSummary": "<2-3 sentences overall interview summary in Korean>",`,
+          `  "clips": [`,
+          `    {`,
+          `      "title": "<short descriptive clip title>",`,
+          `      "startSec": <integer seconds>,`,
+          `      "endSec": <integer seconds, startSec + 45..60>,`,
+          `      "keywords": ["<keyword1>", "<keyword2>", "<keyword3>", "<keyword4>", "<keyword5>"],`,
+          `      "script": "<clean English transcript of this 45-60s segment>",`,
+          `      "modelAnswer": "<PTE Retell Lecture 4-sentence model summary in English (~65 words)>",`,
+          `      "translation": "<concise Korean summary of this segment>"`,
+          `    }`,
+          `  ]`,
+          `}`
+        ].join('\n');
+
+        state.ytExtracting = true;
+        el.btnRlYtExtract.disabled = true;
+        el.btnRlYtExtract.classList.add('opacity-60');
+        showInlineStatus(el.rlYtExtractStatus, `Gemini AI (${state.geminiModel || 'gemini-4-hydrogen'})로 45~60초 핵심 클립을 추출 중입니다...`, 'info');
+
+        try {
+          const result = await callGeminiApi([{ text: prompt }]);
+          const rawClips = Array.isArray(result.clips) ? result.clips : [];
+          if (rawClips.length === 0) {
+            throw new Error('추출된 클립이 없습니다. 자막 분량을 확인해주세요.');
+          }
+          const stamp = Date.now().toString().slice(-4);
+          const sanitizedClips = rawClips.slice(0, 5).map((c, idx) => {
+            const startSec = Math.max(0, Math.round(Number(c.startSec) || (idx * 65 + 15)));
+            let endSec = Math.round(Number(c.endSec) || (startSec + 55));
+            if (endSec - startSec < 40) endSec = startSec + 45;
+            if (endSec - startSec > 65) endSec = startSec + 60;
+            return {
+              id: `YT-${stamp}-${idx + 1}`,
+              title: String(c.title || `Clip ${idx + 1}`).trim(),
+              startSec,
+              endSec,
+              keywords: Array.isArray(c.keywords) ? c.keywords.map(k => String(k).trim()).filter(Boolean) : [],
+              script: String(c.script || '').trim(),
+              modelAnswer: String(c.modelAnswer || '').trim(),
+              translation: String(c.translation || '').trim()
+            };
+          });
+
+          const newSet = {
+            id: `yt-set-${Date.now()}`,
+            title: String(result.setTitle || `YouTube (${videoId})`).trim(),
+            videoId,
+            url: urlInput,
+            overallSummary: String(result.overallSummary || '').trim(),
+            createdAt: Date.now(),
+            clips: sanitizedClips
+          };
+
+          state.ytClipSets = [newSet, ...state.ytClipSets];
+          state.activeYtSetId = newSet.id;
+          state.questionIndex['retell-lecture'] = 0;
+          saveStorage(STORAGE_KEYS.ytClipSets, state.ytClipSets);
+
+          showInlineStatus(el.rlYtExtractStatus, `✅ '${newSet.title}' (${sanitizedClips.length}개 클립) 생성 및 저장 완료!`, 'success');
+          if (state.mode === 'retell-lecture' && state.rlSourceMode === 'youtube') {
+            resetPractice(true);
+            renderQuestionSelector();
+            renderQuestionContent();
+          }
+        } catch (err) {
+          if (err.isMissingKey) {
+            el.rlYtExtractStatus.classList.add('hidden');
+          } else {
+            showInlineStatus(el.rlYtExtractStatus, `⚠️ 클립 추출 실패: ${err.message || '오류가 발생했습니다.'}`, 'error');
+          }
+        } finally {
+          state.ytExtracting = false;
+          el.btnRlYtExtract.disabled = false;
+          el.btnRlYtExtract.classList.remove('opacity-60');
+        }
+      }
+
+      // Bind RS AI Gen, YouTube RL & iOS Guide Listeners
+      el.btnRsAiGenerate.addEventListener('click', generateMoreRsWithAi);
+      el.btnRlModeAcademic.addEventListener('click', () => switchRlSourceMode('academic'));
+      el.btnRlModeYoutube.addEventListener('click', () => switchRlSourceMode('youtube'));
+      el.btnRlYtExtract.addEventListener('click', extractYouTubeClipsWithAi);
+
+      el.rlYtSetsSelect.addEventListener('change', (e) => {
+        state.activeYtSetId = e.target.value;
+        state.questionIndex['retell-lecture'] = 0;
+        resetPractice(true);
+        renderQuestionSelector();
+        renderQuestionContent();
+      });
+
+      el.btnRlYtDeleteSet.addEventListener('click', () => {
+        if (!state.activeYtSetId) return;
+        state.ytClipSets = state.ytClipSets.filter(s => s.id !== state.activeYtSetId);
+        if (state.ytClipSets.length === 0) {
+          state.ytClipSets = [...DEFAULT_YT_CLIP_SETS];
+          showInlineStatus(el.rlYtExtractStatus, '기본 샘플 세트를 유지하기 위해 샘플 인터뷰 세트를 복원했습니다.', 'info');
+        }
+        state.activeYtSetId = state.ytClipSets[0].id;
+        state.questionIndex['retell-lecture'] = 0;
+        saveStorage(STORAGE_KEYS.ytClipSets, state.ytClipSets);
+        resetPractice(true);
+        renderQuestionSelector();
+        renderQuestionContent();
+      });
+
+      el.rlYtClipsList.addEventListener('click', (e) => {
+        const cardBtn = e.target.closest('[data-yt-clip-idx]');
+        if (!cardBtn) return;
+        const idx = parseInt(cardBtn.dataset.ytClipIdx, 10) || 0;
+        selectQuestion(idx);
+      });
+
+      el.btnRlYtPreviewClip.addEventListener('click', () => {
+        if (state.mode !== 'retell-lecture' || state.rlSourceMode !== 'youtube') return;
+        const q = getCurrentQuestion();
+        if (q) playYouTubeClipSegment(q, { previewOnly: true });
+      });
+
+      el.btnRlYtBlindToggle.addEventListener('click', () => {
+        state.ytBlindMode = !state.ytBlindMode;
+        syncYtBlindModeUI();
+      });
+
+      document.querySelectorAll('[data-toggle-ios-guide]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          el.iosAudioGuideBox.classList.toggle('hidden');
+        });
+      });
+      if (el.btnCloseIosGuide) {
+        el.btnCloseIosGuide.addEventListener('click', () => {
+          el.iosAudioGuideBox.classList.add('hidden');
+        });
+      }
+
       // Clean up resources on page unload
       window.addEventListener('beforeunload', () => {
         clearTimerInterval();
         stopWritingTimer();
         cancelSpeech();
+        stopYouTubeClipPlayback();
         stopMediaRecording();
-        if (state.micStream) {
-          state.micStream.getTracks().forEach(t => t.stop());
-        }
+        releaseMicrophoneStream();
         if (state.recordingUrl) {
           URL.revokeObjectURL(state.recordingUrl);
         }
@@ -4263,6 +5246,7 @@
       // Initial render
       updateAiHeaderUI();
       updateReviewTabBadge();
+      updateRsBankSummaryUI();
       syncVoiceDropdowns();
       renderTabs();
       renderWorkspaceVisibility();
