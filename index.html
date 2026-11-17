@@ -131,6 +131,11 @@
           <span>⏱️ 1분 즉흥 말하기</span>
           <span class="hidden lg:inline-block text-[11px] font-medium px-1.5 py-0.5 rounded-full bg-slate-100 text-slate-600">15s/60s</span>
         </button>
+        <button id="tab-roleplay" type="button" role="tab" aria-selected="false"
+          class="tab-btn shrink-0 relative py-3 px-3 text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-1.5 transition cursor-pointer">
+          <span>🎭 실전 AI 롤플레이</span>
+          <span class="hidden lg:inline-block text-[11px] font-medium px-1.5 py-0.5 rounded-full bg-slate-100 text-slate-600">NZ 회화</span>
+        </button>
         <button id="tab-writing" type="button" role="tab" aria-selected="false"
           class="tab-btn shrink-0 relative py-3 px-3 text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-1.5 transition cursor-pointer">
           <span>Writing (SWT &amp; Essay)</span>
@@ -1059,6 +1064,116 @@
       </div>
     </section>
 
+    <!-- REAL-LIFE NZ AI ROLEPLAY WORKSPACE -->
+    <section id="roleplay-workspace" class="hidden space-y-5">
+
+      <!-- Scenario Presets & Setup Card -->
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-6 space-y-4">
+        <div class="flex flex-wrap items-start justify-between gap-3">
+          <div class="min-w-0">
+            <div class="flex flex-wrap items-center gap-2 mb-1">
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-fuchsia-100 text-fuchsia-800">NZ Life &amp; Work</span>
+              <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                📱 iOS 이어폰 안전 모드 · 재생 중 마이크 차단
+              </span>
+            </div>
+            <h2 class="text-base sm:text-lg font-extrabold text-slate-900">🎭 뉴질랜드 실전 AI 롤플레이 (면접 · 생활 회화)</h2>
+            <p class="text-xs text-slate-500 mt-0.5">상대방 음성이 재생될 때는 마이크가 열리지 않으며, <strong>내 답변 녹음하기</strong>를 누를 때만 마이크가 켜지고 전송 즉시 해제됩니다.</p>
+          </div>
+          <div class="flex items-center gap-2 shrink-0">
+            <button id="btn-rp-reset" type="button"
+              class="px-3 py-1.5 rounded-lg text-xs font-semibold border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 transition cursor-pointer">
+              🔄 대화 초기화
+            </button>
+          </div>
+        </div>
+
+        <!-- 6 NZ Scenario Presets Grid -->
+        <div id="rp-preset-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5"></div>
+
+        <!-- Custom Scenario Input (visible when preset 6 'custom' selected) -->
+        <div id="rp-custom-box" class="hidden rounded-xl border border-fuchsia-200 bg-fuchsia-50/50 p-3.5 space-y-2">
+          <label for="rp-custom-input" class="block text-xs font-bold text-fuchsia-900">✏️ 직접 상황 &amp; 상대방 역할 입력</label>
+          <input id="rp-custom-input" type="text"
+            placeholder="예: 오클랜드 임대 주택 뷰잉에서 부동산 에이전트와 집 컨디션/주차 문의하기"
+            class="w-full px-3 py-2 text-xs sm:text-sm rounded-lg border border-fuchsia-200 bg-white focus:ring-2 focus:ring-fuchsia-500 focus:border-fuchsia-500 outline-none" />
+        </div>
+
+        <!-- Active Scenario Controls & TTS Audio Status Bar -->
+        <div class="rounded-xl border border-slate-200 bg-slate-50/80 p-3.5 sm:p-4 flex flex-col lg:flex-row lg:items-center justify-between gap-3 min-w-0">
+          <div class="min-w-0 space-y-1">
+            <div class="flex flex-wrap items-center gap-2">
+              <span id="rp-active-partner" class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-indigo-100 text-indigo-800">AI 상대방: Centre Manager</span>
+              <span id="rp-status-badge" class="px-2 py-0.5 rounded-md text-[11px] font-semibold bg-slate-200 text-slate-700">대기 중</span>
+            </div>
+            <p id="rp-active-title" class="text-sm font-bold text-slate-900 truncate">(1) ECE 유치원 취업 면접 (Interview)</p>
+            <div class="flex items-center gap-2 min-w-0">
+              <div id="rp-wave-bars" class="hidden items-end gap-0.5 h-4 shrink-0" aria-hidden="true">
+                <span class="wave-bar"></span>
+                <span class="wave-bar"></span>
+                <span class="wave-bar"></span>
+                <span class="wave-bar"></span>
+              </div>
+              <span id="rp-audio-status" class="text-xs text-slate-500 truncate">상황을 고른 뒤 '대화 시작'을 누르세요.</span>
+            </div>
+          </div>
+          <div class="flex flex-wrap items-center gap-2 shrink-0">
+            <button id="btn-rp-start" type="button"
+              class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-white bg-pte-blue hover:bg-sky-700 shadow-xs transition cursor-pointer flex items-center gap-1.5">
+              <span>▶️</span>
+              <span>대화 시작</span>
+            </button>
+            <button id="btn-rp-end" type="button" disabled
+              class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold text-fuchsia-800 bg-fuchsia-100 hover:bg-fuchsia-200 border border-fuchsia-200 transition cursor-pointer disabled:opacity-45 disabled:cursor-not-allowed flex items-center gap-1.5">
+              <span>🏁</span>
+              <span>대화 종료 및 종합 피드백</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Conversation Timeline & Interactive Mic Bar -->
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
+        <!-- Conversation Log -->
+        <div id="rp-chat-log" class="p-4 sm:p-6 space-y-4 min-h-[280px] max-h-[540px] overflow-y-auto bg-slate-50/40">
+        </div>
+
+        <!-- User Turn Response Bar -->
+        <div class="border-t border-slate-200 bg-white p-4 sm:p-5 space-y-3">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div class="flex flex-wrap items-center gap-2.5">
+              <button id="btn-rp-record" type="button" disabled
+                class="px-5 py-2.5 rounded-xl text-sm font-bold text-white bg-rose-600 hover:bg-rose-700 shadow-sm transition cursor-pointer disabled:opacity-45 disabled:cursor-not-allowed flex items-center gap-2">
+                <span id="rp-record-dot" class="w-2.5 h-2.5 rounded-full bg-white/90"></span>
+                <span id="rp-record-btn-label">🎤 내 답변 녹음하기</span>
+              </button>
+              <button id="btn-rp-cancel-record" type="button"
+                class="hidden px-3 py-2 rounded-xl text-xs font-semibold border border-slate-300 bg-white hover:bg-slate-100 text-slate-700 transition cursor-pointer">
+                녹음 취소
+              </button>
+              <span id="rp-record-timer" class="hidden px-2.5 py-1 rounded-lg bg-rose-50 border border-rose-200 text-xs font-extrabold text-rose-700 tabular-nums">00:00</span>
+            </div>
+            <p id="rp-record-status" class="text-xs text-slate-500">대화를 시작하면 음성 녹음 답변 버튼이 활성화됩니다.</p>
+          </div>
+
+          <!-- Optional Text Input Fallback -->
+          <div class="flex flex-col sm:flex-row gap-2 pt-2 border-t border-slate-100">
+            <input id="rp-text-input" type="text" disabled
+              placeholder="마이크 사용이 어려울 때는 영어로 직접 입력해 보낼 수도 있습니다..."
+              class="flex-1 min-w-0 px-3 py-2 rounded-xl border border-slate-200 bg-slate-50 text-xs sm:text-sm focus:bg-white focus:ring-2 focus:ring-pte-blue outline-none disabled:opacity-50" />
+            <button id="btn-rp-send-text" type="button" disabled
+              class="px-3.5 py-2 rounded-xl text-xs font-bold border border-slate-200 bg-slate-100 hover:bg-slate-200 text-slate-700 transition cursor-pointer disabled:opacity-45 disabled:cursor-not-allowed shrink-0">
+              텍스트로 답장 전송
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- End-of-Conversation Comprehensive Feedback Card -->
+      <div id="rp-summary-box" class="hidden bg-white rounded-2xl border border-fuchsia-200 shadow-sm p-5 sm:p-6 space-y-4">
+      </div>
+    </section>
+
     <!-- REVIEW, VOCABULARY & PRACTICE ANALYTICS WORKSPACE -->
     <section id="review-workspace" class="hidden space-y-6">
 
@@ -1105,6 +1220,80 @@
         <div>
           <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2.5">최근 연습 및 AI 채점 이력</h3>
           <div id="practice-log-list" class="space-y-2 max-h-64 overflow-y-auto pr-1"></div>
+        </div>
+      </div>
+
+      <!-- 1.5) Weakness Pronunciation & Konglish Report -->
+      <div id="weakness-report-card" class="bg-white rounded-2xl border border-rose-200/80 shadow-sm p-5 sm:p-6 space-y-5">
+        <div class="flex flex-wrap items-start justify-between gap-3">
+          <div class="min-w-0">
+            <div class="flex flex-wrap items-center gap-2 mb-1">
+              <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-rose-100 text-rose-800">Weakness Tracker</span>
+              <span id="weakness-total-badge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-slate-100 text-slate-700">0건 누적</span>
+            </div>
+            <h2 class="text-base sm:text-lg font-extrabold text-slate-900">🎯 내 취약 발음 &amp; 콩글리시 리포트</h2>
+            <p class="text-xs text-slate-500 mt-0.5">AI 스피킹 채점·롤플레이에서 반복 지적된 발음/누락·어색한 표현을 집계해 맞춤 훈련 문장을 만들어 드립니다.</p>
+          </div>
+          <div class="flex flex-wrap items-center gap-2 shrink-0">
+            <button id="btn-seed-sample-weakness" type="button"
+              class="px-3 py-1.5 rounded-lg text-xs font-semibold border border-amber-200 bg-amber-50 hover:bg-amber-100 text-amber-800 transition cursor-pointer">
+              샘플 취약점 테스트
+            </button>
+            <button id="btn-clear-weakness" type="button"
+              class="px-3 py-1.5 rounded-lg text-xs font-semibold border border-slate-200 bg-white hover:bg-rose-50 hover:text-rose-700 text-slate-600 transition cursor-pointer">
+              리포트 초기화
+            </button>
+          </div>
+        </div>
+
+        <!-- Quick Manual Weakness Input Form -->
+        <form id="weakness-add-form" class="bg-slate-50 rounded-xl border border-slate-200 p-3.5 grid grid-cols-1 sm:grid-cols-12 gap-2.5 items-center">
+          <select id="weakness-type-select"
+            class="sm:col-span-3 px-2.5 py-2 text-xs rounded-lg border border-slate-200 bg-white font-semibold text-slate-700">
+            <option value="pronunciation">🗣️ 취약 발음 / 누락</option>
+            <option value="konglish">🇰🇷 콩글리시 / 어색한 표현</option>
+          </select>
+          <input id="weakness-target-input" type="text" required placeholder="취약 단어·콩글리시 (예: thorough / play together)"
+            class="sm:col-span-4 min-w-0 px-3 py-2 text-xs rounded-lg border border-slate-200 bg-white focus:ring-2 focus:ring-pte-blue outline-none" />
+          <input id="weakness-fix-input" type="text" required placeholder="교정 발음 팁 / 원어민 표현 (예: θʌrə / interact with peers)"
+            class="sm:col-span-3 min-w-0 px-3 py-2 text-xs rounded-lg border border-slate-200 bg-white focus:ring-2 focus:ring-pte-blue outline-none" />
+          <button type="submit"
+            class="sm:col-span-2 px-3 py-2 rounded-lg text-xs font-bold text-white bg-rose-600 hover:bg-rose-700 transition cursor-pointer">
+            + 직접 기록
+          </button>
+        </form>
+
+        <!-- TOP 5 & Custom Drill Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start min-w-0">
+          <!-- Left: TOP 5 Recurring Weaknesses -->
+          <div class="lg:col-span-5 space-y-3 min-w-0">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-rose-700">🎯 나의 반복 실수 TOP 5</h3>
+            <div id="weakness-top5-list" class="space-y-2.5"></div>
+          </div>
+
+          <!-- Right: Tailored 5-Sentence Drill Generator -->
+          <div class="lg:col-span-7 space-y-3 min-w-0">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <div>
+                <h3 class="text-xs font-bold uppercase tracking-wider text-indigo-700">✨ 취약점 집중 교정 연습 문장</h3>
+                <div class="flex items-center gap-2 mt-0.5">
+                  <div id="weakness-wave-bars" class="hidden items-end gap-0.5 h-3.5 shrink-0" aria-hidden="true">
+                    <span class="wave-bar"></span>
+                    <span class="wave-bar"></span>
+                    <span class="wave-bar"></span>
+                    <span class="wave-bar"></span>
+                  </div>
+                  <span id="weakness-tts-status" class="text-[11px] text-slate-500">생성된 문장의 원어민 발음을 듣고 바로 따라 말해보세요.</span>
+                </div>
+              </div>
+              <button id="btn-generate-weakness-sentences" type="button"
+                class="px-3.5 py-2 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-rose-600 to-indigo-600 hover:opacity-95 shadow-xs transition cursor-pointer flex items-center gap-1.5 shrink-0">
+                <span>✨ 내 취약점 맞춤 5문장 생성</span>
+              </button>
+            </div>
+            <p id="weakness-gen-status" class="hidden text-xs font-medium text-indigo-700"></p>
+            <div id="weakness-drill-list" class="space-y-2.5"></div>
+          </div>
         </div>
       </div>
 
@@ -1323,8 +1512,79 @@
         practiceLogs: 'pte_practice_logs',
         customRsQuestions: 'pte_custom_rs_questions',
         customDiQuestions: 'pte_custom_di_questions',
-        ytClipSets: 'pte_rl_yt_clip_sets'
+        ytClipSets: 'pte_rl_yt_clip_sets',
+        weaknessLogs: 'pte_weakness_logs',
+        weaknessDrills: 'pte_weakness_drills'
       };
+
+      const ROLEPLAY_PRESETS = [
+        {
+          id: 'ece-interview',
+          badge: '취업 면접',
+          badgeCls: 'bg-indigo-100 text-indigo-800',
+          title: '(1) ECE 유치원 취업 면접 (Interview)',
+          partnerName: 'Centre Manager (Sarah)',
+          partnerVoiceHint: 'Warm Auckland ECE Centre Manager interviewing an early childhood teacher candidate',
+          contextEn: 'Job interview at an early childhood education (ECE) centre in Auckland, New Zealand. Discuss Te Whāriki curriculum, relationships with tamariki and whānau, behaviour guidance, and teamwork.',
+          openingEn: "Kia ora! Thanks so much for coming in today. Before we show you around the centre, could you tell me a bit about your ECE background and what draws you to teaching here in New Zealand?",
+          openingKo: '안녕하세요! 오늘 면접에 와주셔서 감사합니다. 센터를 둘러보기 전에 유아교육 경력과 뉴질랜드에서 가르치고 싶으신 이유를 간단히 말씀해 주실래요?'
+        },
+        {
+          id: 'parent-talk',
+          badge: 'ECE 학부모',
+          badgeCls: 'bg-emerald-100 text-emerald-800',
+          title: '(2) 학부모와의 아이 하루 일과 브리핑 (Parent Talk)',
+          partnerName: 'Kiwi Parent (Hannah)',
+          partnerVoiceHint: 'Friendly Kiwi mother picking up her 3-year-old child at afternoon pick-up time',
+          contextEn: 'Afternoon pick-up talk between an ECE kaiako (teacher) and a New Zealand parent about how their child Mia ate, slept, played with friends, and explored activities today.',
+          openingEn: "Hey there! Sorry I'm running a couple of minutes late—the traffic on the motorway was a bit crazy. How did Mia get on today? Did she manage to have a good rest and eat her lunch?",
+          openingKo: '안녕하세요! 고속도로가 막혀서 몇 분 늦어서 죄송해요. 오늘 미아는 어떻게 지냈나요? 낮잠도 잘 자고 점심도 잘 먹었나요?'
+        },
+        {
+          id: 'pharmacy',
+          badge: '생활·약국',
+          badgeCls: 'bg-sky-100 text-sky-800',
+          title: '(3) 오클랜드 약국에서 증상 설명 및 약 구매',
+          partnerName: 'Auckland Pharmacist (David)',
+          partnerVoiceHint: 'Helpful community pharmacist at a chemist in Auckland',
+          contextEn: 'Customer visiting an Auckland pharmacy to explain cold, sore throat, fever, or allergy symptoms, discuss symptom duration and medication allergies, and buy suitable over-the-counter medicine.',
+          openingEn: "Hi there, welcome in! How can I help you today? Are you looking for something for yourself or for someone else in your family?",
+          openingKo: '어서 오세요! 무엇을 도와드릴까요? 본인 증상 때문에 약을 찾으시나요, 아니면 가족분 약을 찾으시나요?'
+        },
+        {
+          id: 'gp-clinic',
+          badge: '병원·GP',
+          badgeCls: 'bg-rose-100 text-rose-800',
+          title: '(4) 병원/GP 전화 예약 및 증상 설명',
+          partnerName: 'GP Clinic Receptionist (Emma)',
+          partnerVoiceHint: 'Polite medical receptionist at a local New Zealand GP clinic',
+          contextEn: 'Phone call to a New Zealand family doctor (GP) clinic to book an appointment, confirm patient enrollment/DOB, briefly explain symptoms and urgency, and agree on a time slot.',
+          openingEn: "Good morning, Harbour Medical Centre, Emma speaking. Are you an enrolled patient with us, and how can I help you today?",
+          openingKo: '좋은 아침입니다, 하버 메디컬 센터 엠마입니다. 저희 클리닉 등록 환자분이신가요? 오늘 어떤 진료로 연락주셨나요?'
+        },
+        {
+          id: 'small-talk',
+          badge: '일상 스몰토크',
+          badgeCls: 'bg-amber-100 text-amber-800',
+          title: '(5) 카페·이웃과의 스몰토크',
+          partnerName: 'Kiwi Barista / Neighbour (Sam)',
+          partnerVoiceHint: 'Cheerful Kiwi local barista or neighbour making friendly casual morning conversation',
+          contextEn: 'Natural casual New Zealand small talk at a local Auckland café or with a friendly neighbour chatting about weather, coffee order (flat white), weekend plans, or local events.',
+          openingEn: "Morning! How's your week going so far? Pretty breezy out there today, isn't it? What can I get started for you this morning?",
+          openingKo: '좋은 아침이에요! 이번 주 어떻게 보내고 계신가요? 오늘 바람이 꽤 쌀쌀하죠? 오늘 아침엔 어떤 음료로 준비해 드릴까요?'
+        },
+        {
+          id: 'custom',
+          badge: '자유 주제',
+          badgeCls: 'bg-fuchsia-100 text-fuchsia-800',
+          title: '(6) 자유 주제 (직접 상황 입력)',
+          partnerName: 'AI Conversation Partner',
+          partnerVoiceHint: 'Adaptable New Zealand English conversation partner matching user custom scenario',
+          contextEn: 'User-defined real-life New Zealand conversation scenario.',
+          openingEn: "Kia ora! Let's jump right into your chosen situation. Tell me how you'd like to start, or ask me your first question!",
+          openingKo: '안녕하세요! 설정하신 상황으로 바로 대화를 시작해 볼게요. 먼저 인사를 건네거나 첫 질문을 말씀해 보세요!'
+        }
+      ];
 
       const DEFAULT_YT_CLIP_SETS = [
         {
@@ -1525,7 +1785,30 @@
         ytBlindMode: false,
         ytPlayer: null,
         ytWatchTimerId: null,
-        ytExtracting: false
+        ytExtracting: false,
+
+        // Real-life NZ AI Roleplay State
+        rpPresetId: 'ece-interview',
+        rpCustomContext: '',
+        rpActive: false,
+        rpBusy: false,
+        rpIsRecording: false,
+        rpMediaRecorder: null,
+        rpAudioChunks: [],
+        rpRecordStartMs: 0,
+        rpRecordTimerId: null,
+        rpRecordCancelFlag: false,
+        rpBlobUrls: [],
+        rpMessages: [],
+
+        // Weakness Pronunciation & Konglish Tracker
+        weaknessLogs: loadJsonStorage(STORAGE_KEYS.weaknessLogs, []),
+        weaknessDrills: loadJsonStorage(STORAGE_KEYS.weaknessDrills, []),
+        weaknessGenerating: false,
+        drillRecordingIdx: null,
+        drillMediaRecorder: null,
+        drillAudioChunks: [],
+        drillBlobMap: {}
       };
       if (state.ytClipSets.length > 0 && !state.activeYtSetId) {
         state.activeYtSetId = state.ytClipSets[0].id;
@@ -1549,6 +1832,7 @@
         tabRepeatSentence: document.getElementById('tab-repeat-sentence'),
         tabRetellLecture: document.getElementById('tab-retell-lecture'),
         tabImpromptu: document.getElementById('tab-impromptu'),
+        tabRoleplay: document.getElementById('tab-roleplay'),
         tabWriting: document.getElementById('tab-writing'),
         tabReview: document.getElementById('tab-review'),
         tabReviewCount: document.getElementById('tab-review-count'),
@@ -1560,6 +1844,7 @@
         speakingSelectorBar: document.getElementById('speaking-selector-bar'),
         speakingWorkspace: document.getElementById('speaking-workspace'),
         writingWorkspace: document.getElementById('writing-workspace'),
+        roleplayWorkspace: document.getElementById('roleplay-workspace'),
         reviewWorkspace: document.getElementById('review-workspace'),
 
         btnBookmarkSpeaking: document.getElementById('btn-bookmark-speaking'),
@@ -1772,6 +2057,44 @@
 
         // Review, Vocabulary & Analytics Elements
         btnClearLogs: document.getElementById('btn-clear-logs'),
+        weaknessReportCard: document.getElementById('weakness-report-card'),
+        weaknessTotalBadge: document.getElementById('weakness-total-badge'),
+        btnSeedSampleWeakness: document.getElementById('btn-seed-sample-weakness'),
+        btnClearWeakness: document.getElementById('btn-clear-weakness'),
+        weaknessAddForm: document.getElementById('weakness-add-form'),
+        weaknessTypeSelect: document.getElementById('weakness-type-select'),
+        weaknessTargetInput: document.getElementById('weakness-target-input'),
+        weaknessFixInput: document.getElementById('weakness-fix-input'),
+        weaknessTop5List: document.getElementById('weakness-top5-list'),
+        weaknessWaveBars: document.getElementById('weakness-wave-bars'),
+        weaknessTtsStatus: document.getElementById('weakness-tts-status'),
+        btnGenerateWeaknessSentences: document.getElementById('btn-generate-weakness-sentences'),
+        weaknessGenStatus: document.getElementById('weakness-gen-status'),
+        weaknessDrillList: document.getElementById('weakness-drill-list'),
+
+        // Roleplay Elements
+        rpPresetGrid: document.getElementById('rp-preset-grid'),
+        rpCustomBox: document.getElementById('rp-custom-box'),
+        rpCustomInput: document.getElementById('rp-custom-input'),
+        rpActivePartner: document.getElementById('rp-active-partner'),
+        rpStatusBadge: document.getElementById('rp-status-badge'),
+        rpActiveTitle: document.getElementById('rp-active-title'),
+        rpWaveBars: document.getElementById('rp-wave-bars'),
+        rpAudioStatus: document.getElementById('rp-audio-status'),
+        btnRpStart: document.getElementById('btn-rp-start'),
+        btnRpEnd: document.getElementById('btn-rp-end'),
+        btnRpReset: document.getElementById('btn-rp-reset'),
+        rpChatLog: document.getElementById('rp-chat-log'),
+        btnRpRecord: document.getElementById('btn-rp-record'),
+        rpRecordDot: document.getElementById('rp-record-dot'),
+        rpRecordBtnLabel: document.getElementById('rp-record-btn-label'),
+        btnRpCancelRecord: document.getElementById('btn-rp-cancel-record'),
+        rpRecordTimer: document.getElementById('rp-record-timer'),
+        rpRecordStatus: document.getElementById('rp-record-status'),
+        rpTextInput: document.getElementById('rp-text-input'),
+        btnRpSendText: document.getElementById('btn-rp-send-text'),
+        rpSummaryBox: document.getElementById('rp-summary-box'),
+
         statTodayCount: document.getElementById('stat-today-count'),
         statTotalCount: document.getElementById('stat-total-count'),
         statAvgAiScore: document.getElementById('stat-avg-ai-score'),
@@ -2186,6 +2509,32 @@
             browserPrefix: '🔊 모범 답변 재생 중',
             browserSuffix: '',
             geminiPrefix: '🔊 Gemini AI 모범 답변 재생 중',
+            geminiSuffix: ''
+          };
+        }
+        if (targetMode === 'roleplay') {
+          return {
+            isRL: false,
+            isRS: false,
+            waveBars: el.rpWaveBars,
+            statusLabel: el.rpAudioStatus,
+            doneText: '상대방 발화 재생 완료 · 🎤 내 답변 녹음하기를 눌러 말해보세요',
+            browserPrefix: '🔊 상대방 음성 재생 중',
+            browserSuffix: ' (마이크 차단됨)',
+            geminiPrefix: '🔊 Gemini AI 상대방 음성 재생 중',
+            geminiSuffix: ' (마이크 차단됨)'
+          };
+        }
+        if (targetMode === 'weakness-drill') {
+          return {
+            isRL: false,
+            isRS: false,
+            waveBars: el.weaknessWaveBars,
+            statusLabel: el.weaknessTtsStatus,
+            doneText: '원어민 발음 재생 완료 · 바로 따라 말해보세요',
+            browserPrefix: '🔊 취약점 교정 문장 재생 중',
+            browserSuffix: '',
+            geminiPrefix: '🔊 Gemini AI 교정 문장 재생 중',
             geminiSuffix: ''
           };
         }
@@ -3130,6 +3479,7 @@
           { el: el.tabRepeatSentence, mode: 'repeat-sentence' },
           { el: el.tabRetellLecture, mode: 'retell-lecture' },
           { el: el.tabImpromptu, mode: 'impromptu' },
+          { el: el.tabRoleplay, mode: 'roleplay' },
           { el: el.tabWriting, mode: 'writing' },
           { el: el.tabReview, mode: 'review' }
         ];
@@ -3154,10 +3504,14 @@
       function renderWorkspaceVisibility() {
         const isWriting = state.mode === 'writing';
         const isReview = state.mode === 'review';
-        const isSpeaking = !isWriting && !isReview;
+        const isRoleplay = state.mode === 'roleplay';
+        const isSpeaking = !isWriting && !isReview && !isRoleplay;
 
         el.speakingSelectorBar.classList.toggle('hidden', !isSpeaking);
         el.speakingWorkspace.classList.toggle('hidden', !isSpeaking);
+        if (el.roleplayWorkspace) {
+          el.roleplayWorkspace.classList.toggle('hidden', !isRoleplay);
+        }
         el.writingWorkspace.classList.toggle('hidden', !isWriting);
         el.reviewWorkspace.classList.toggle('hidden', !isReview);
       }
@@ -3983,6 +4337,14 @@
         } else if (state.mode === 'writing') {
           stopWritingTimer();
           renderWritingTimerUI();
+        } else if (state.mode === 'roleplay') {
+          stopRoleplayRecording(true);
+          cancelSpeech();
+          releaseMicrophoneStream();
+        } else if (state.mode === 'review') {
+          stopDrillRecording(true);
+          cancelSpeech();
+          releaseMicrophoneStream();
         }
 
         state.mode = newMode;
@@ -3994,6 +4356,8 @@
           renderWritingQuestionSelector();
           renderWritingContent();
           renderWritingTimerUI();
+        } else if (newMode === 'roleplay') {
+          renderRoleplayWorkspace();
         } else if (newMode === 'review') {
           renderReviewDashboard();
         } else {
@@ -4009,6 +4373,7 @@
       el.tabRepeatSentence.addEventListener('click', () => switchMode('repeat-sentence'));
       el.tabRetellLecture.addEventListener('click', () => switchMode('retell-lecture'));
       el.tabImpromptu.addEventListener('click', () => switchMode('impromptu'));
+      el.tabRoleplay.addEventListener('click', () => switchMode('roleplay'));
       el.tabWriting.addEventListener('click', () => switchMode('writing'));
       el.tabReview.addEventListener('click', () => switchMode('review'));
 
@@ -4297,6 +4662,17 @@
       }
 
       function getSectionMeta(sectionKey) {
+        if (sectionKey === 'roleplay') {
+          return {
+            key: 'roleplay',
+            label: '실전 AI 롤플레이 (NZ 회화)',
+            short: 'RP',
+            filterGroup: 'roleplay',
+            badgeCls: 'bg-fuchsia-100 text-fuchsia-800',
+            barCls: 'bg-fuchsia-500',
+            getList: () => []
+          };
+        }
         return SECTION_CATALOG.find(s => s.key === sectionKey) || {
           key: sectionKey,
           label: sectionKey || '기타',
@@ -4360,6 +4736,16 @@
       }
 
       function openQuestionById(qId) {
+        if (typeof qId === 'string' && qId.startsWith('RP-')) {
+          const slug = qId.slice(3).toLowerCase();
+          const matchedPreset = ROLEPLAY_PRESETS.find(p => p.id === slug);
+          if (matchedPreset) {
+            state.rpPresetId = matchedPreset.id;
+          }
+          switchMode('roleplay');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+          return;
+        }
         const loc = findQuestionLocation(qId);
         if (!loc) return;
         if (loc.workspaceMode === 'writing') {
@@ -4707,6 +5093,7 @@
 
       function renderReviewDashboard() {
         renderPracticeStatsAndLogs();
+        renderWeaknessReport();
         renderBookmarkList();
         renderVocabList();
       }
@@ -5268,6 +5655,7 @@
           } else {
             renderSpeakingAiResult(result);
           }
+          extractAndRecordWeaknessesFromAi(result, state.mode);
           state.lastSpeakingLogId = attachAiScoreToPracticeLog(
             state.lastSpeakingLogId,
             q.id,
@@ -5388,14 +5776,14 @@
         renderReviewDashboard();
       });
 
-      // Shared delegation for AI result containers (+ 단어장 추가 / settings shortcut)
-      [el.writingAiResult, el.speakingAiResult].forEach(container => {
+      // Shared delegation for AI result, Roleplay, and Weakness Drill containers (+ 단어장 추가 / settings shortcut)
+      [el.writingAiResult, el.speakingAiResult, el.roleplayWorkspace, el.weaknessReportCard].filter(Boolean).forEach(container => {
         container.addEventListener('click', (e) => {
           const addBtn = e.target.closest('[data-ai-vocab-word]');
           if (addBtn) {
             const word = addBtn.dataset.aiVocabWord;
-            const meaning = addBtn.dataset.aiVocabMeaning;
-            const example = addBtn.dataset.aiVocabExample;
+            const meaning = addBtn.dataset.aiVocabMeaning || '실전 추천 표현';
+            const example = addBtn.dataset.aiVocabExample || '';
             if (addVocabItem(word, meaning, example)) {
               addBtn.textContent = '✓ 단어장 저장됨';
               addBtn.disabled = true;
@@ -6211,17 +6599,1074 @@
         });
       }
 
+      // ==========================================
+      // 13. Real-life NZ AI Roleplay & Weakness Report
+      // ==========================================
+      function getActiveRoleplayPreset() {
+        return ROLEPLAY_PRESETS.find(p => p.id === state.rpPresetId) || ROLEPLAY_PRESETS[0];
+      }
+
+      function getRoleplayScenarioDescription() {
+        const preset = getActiveRoleplayPreset();
+        if (preset.id === 'custom') {
+          const custom = (state.rpCustomContext || el.rpCustomInput?.value || '').trim();
+          return custom || 'General everyday life and workplace communication in Auckland, New Zealand.';
+        }
+        return preset.contextEn;
+      }
+
+      function setRoleplayRecordingUI(isRec, statusMsg = '') {
+        state.rpIsRecording = Boolean(isRec);
+        if (!el.btnRpRecord) return;
+
+        const canRespond = state.rpActive && !state.rpBusy;
+        el.btnRpRecord.disabled = !canRespond && !isRec;
+
+        if (isRec) {
+          el.btnRpRecord.className = 'px-5 py-2.5 rounded-xl text-sm font-bold text-white bg-slate-900 hover:bg-slate-800 shadow-sm transition cursor-pointer flex items-center gap-2 ring-2 ring-rose-400';
+          el.rpRecordDot.className = 'w-2.5 h-2.5 rounded-full bg-rose-500 animate-ping';
+          el.rpRecordBtnLabel.textContent = '⏹️ 녹음 완료 및 AI에게 전송';
+          el.btnRpCancelRecord.classList.remove('hidden');
+          el.rpRecordTimer.classList.remove('hidden');
+        } else {
+          el.btnRpRecord.className = 'px-5 py-2.5 rounded-xl text-sm font-bold text-white bg-rose-600 hover:bg-rose-700 shadow-sm transition cursor-pointer disabled:opacity-45 disabled:cursor-not-allowed flex items-center gap-2';
+          el.rpRecordDot.className = 'w-2.5 h-2.5 rounded-full bg-white/90';
+          el.rpRecordBtnLabel.textContent = '🎤 내 답변 녹음하기';
+          el.btnRpCancelRecord.classList.add('hidden');
+          el.rpRecordTimer.classList.add('hidden');
+          el.rpRecordTimer.textContent = '00:00';
+        }
+
+        if (el.rpTextInput) el.rpTextInput.disabled = !canRespond || isRec;
+        if (el.btnRpSendText) el.btnRpSendText.disabled = !canRespond || isRec;
+        if (el.btnRpEnd) el.btnRpEnd.disabled = !state.rpActive || isRec || state.rpBusy;
+
+        if (statusMsg && el.rpRecordStatus) {
+          el.rpRecordStatus.textContent = statusMsg;
+        }
+      }
+
+      function renderRoleplayPresets() {
+        if (!el.rpPresetGrid) return;
+        const preset = getActiveRoleplayPreset();
+
+        el.rpPresetGrid.innerHTML = ROLEPLAY_PRESETS.map(p => {
+          const active = p.id === preset.id;
+          return `
+            <button type="button" data-rp-preset="${escapeHtml(p.id)}"
+              class="text-left rounded-xl border p-3 transition cursor-pointer min-w-0 ${
+                active
+                  ? 'border-fuchsia-400 bg-fuchsia-50/70 ring-1 ring-fuchsia-300 shadow-xs'
+                  : 'border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50'
+              }">
+              <div class="flex items-center justify-between gap-2 mb-1">
+                <span class="px-2 py-0.5 rounded-md text-[10px] font-bold ${p.badgeCls}">${escapeHtml(p.badge)}</span>
+                ${active ? '<span class="text-[11px] font-bold text-fuchsia-700">선택됨 ✓</span>' : ''}
+              </div>
+              <p class="text-xs sm:text-sm font-bold text-slate-900 leading-snug">${escapeHtml(p.title)}</p>
+              <p class="text-[11px] text-slate-500 truncate mt-0.5">${escapeHtml(p.partnerName)}</p>
+            </button>
+          `;
+        }).join('');
+
+        if (el.rpCustomBox) {
+          el.rpCustomBox.classList.toggle('hidden', preset.id !== 'custom');
+        }
+        if (el.rpActivePartner) {
+          el.rpActivePartner.textContent = `AI 상대방: ${preset.partnerName}`;
+        }
+        if (el.rpActiveTitle) {
+          el.rpActiveTitle.textContent = preset.id === 'custom' && state.rpCustomContext.trim()
+            ? `(6) 자유 주제 · ${state.rpCustomContext.trim()}`
+            : preset.title;
+        }
+      }
+
+      function renderRoleplayChatLog() {
+        if (!el.rpChatLog) return;
+        const msgs = state.rpMessages;
+
+        if (!msgs || msgs.length === 0) {
+          const preset = getActiveRoleplayPreset();
+          el.rpChatLog.innerHTML = `
+            <div class="rounded-2xl border border-dashed border-slate-300 bg-white p-6 text-center space-y-2 max-w-xl mx-auto my-6">
+              <p class="text-sm font-bold text-slate-800">${escapeHtml(preset.title)} 준비 완료</p>
+              <p class="text-xs text-slate-500 leading-relaxed">
+                위 <strong>▶️ 대화 시작</strong> 버튼을 누르면 상대방(<strong>${escapeHtml(preset.partnerName)}</strong>)이 첫 질문을 음성으로 건넵니다.<br />
+                음성 재생 중에는 마이크가 차단되어 블루투스/아이폰 이어폰 음질이 유지됩니다.
+              </p>
+            </div>
+          `;
+          return;
+        }
+
+        el.rpChatLog.innerHTML = msgs.map((m, idx) => {
+          if (m.role === 'partner') {
+            return `
+              <div class="flex justify-start">
+                <div class="max-w-[92%] sm:max-w-[80%] rounded-2xl rounded-tl-sm border border-indigo-200 bg-white p-4 shadow-xs space-y-2">
+                  <div class="flex flex-wrap items-center justify-between gap-2">
+                    <span class="text-[11px] font-bold text-indigo-700">${escapeHtml(m.speakerLabel || 'AI Partner')}</span>
+                    <button type="button" data-rp-speak="${idx}"
+                      class="px-2 py-0.5 rounded-md text-[11px] font-semibold bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 transition cursor-pointer">
+                      🔊 다시 듣기
+                    </button>
+                  </div>
+                  <p class="text-sm text-slate-900 font-medium leading-relaxed">${escapeHtml(m.textEn || '')}</p>
+                  ${m.textKo ? `<p class="text-xs text-slate-500 border-t border-slate-100 pt-1.5 leading-relaxed">${escapeHtml(m.textKo)}</p>` : ''}
+                </div>
+              </div>
+            `;
+          }
+
+          const tip = m.oneLineTip;
+          return `
+            <div class="flex justify-end">
+              <div class="max-w-[92%] sm:max-w-[82%] rounded-2xl rounded-tr-sm border border-sky-200 bg-sky-50/90 p-4 shadow-xs space-y-2.5">
+                <div class="flex items-center justify-between gap-2">
+                  <span class="text-[11px] font-bold text-sky-800">🎙️ 나의 답변</span>
+                  ${m.pending ? '<span class="text-[11px] font-semibold text-indigo-600 animate-pulse">AI 분석 중...</span>' : ''}
+                </div>
+                ${m.audioUrl ? `
+                  <audio controls preload="metadata" src="${escapeHtml(m.audioUrl)}" class="w-full h-9 rounded-lg"></audio>
+                ` : ''}
+                ${m.transcript ? `
+                  <p class="text-sm text-slate-900 leading-relaxed">${escapeHtml(m.transcript)}</p>
+                ` : m.pending ? '' : '<p class="text-xs text-slate-500 italic">(전송된 음성 답변)</p>'}
+
+                ${m.errorNote ? `
+                  <p class="text-xs text-rose-700 bg-rose-50 border border-rose-200 rounded-lg px-2.5 py-1.5">${escapeHtml(m.errorNote)}</p>
+                ` : ''}
+
+                ${tip && tip.betterExpression ? `
+                  <div class="rounded-xl border border-amber-200 bg-amber-50/90 p-3 space-y-1.5 text-xs">
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                      <span class="font-extrabold text-amber-900">💡 방금 내 답변의 더 자연스러운 표현 1줄 팁</span>
+                      <button type="button"
+                        data-ai-vocab-word="${escapeHtml(tip.betterExpression)}"
+                        data-ai-vocab-meaning="${escapeHtml(tip.meaningKo || tip.reasonKo || '롤플레이 추천 표현')}"
+                        data-ai-vocab-example="${escapeHtml(tip.example || tip.betterExpression)}"
+                        class="shrink-0 px-2.5 py-1 rounded-lg text-[11px] font-bold text-white bg-teal-600 hover:bg-teal-700 transition cursor-pointer">
+                        + 단어장 추가
+                      </button>
+                    </div>
+                    ${tip.myPhrase ? `<p class="text-rose-700"><span class="font-semibold">내 표현:</span> ${escapeHtml(tip.myPhrase)}</p>` : ''}
+                    <p class="text-emerald-900 font-bold">→ ${escapeHtml(tip.betterExpression)}</p>
+                    ${tip.reasonKo ? `<p class="text-slate-600 leading-relaxed">${escapeHtml(tip.reasonKo)}</p>` : ''}
+                  </div>
+                ` : ''}
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        el.rpChatLog.scrollTop = el.rpChatLog.scrollHeight;
+      }
+
+      function renderRoleplayWorkspace() {
+        renderRoleplayPresets();
+        renderRoleplayChatLog();
+        setRoleplayRecordingUI(
+          state.rpIsRecording,
+          state.rpActive
+            ? '상대방 말을 들은 뒤 🎤 내 답변 녹음하기를 눌러 영어로 대답하세요.'
+            : '대화를 시작하면 음성 녹음 답변 버튼이 활성화됩니다.'
+        );
+      }
+
+      function stopRoleplayRecording(discard = false) {
+        if (state.rpRecordTimerId) {
+          clearInterval(state.rpRecordTimerId);
+          state.rpRecordTimerId = null;
+        }
+        if (state.rpMediaRecorder && state.rpMediaRecorder.state !== 'inactive') {
+          state.rpRecordCancelFlag = Boolean(discard);
+          try {
+            state.rpMediaRecorder.stop();
+          } catch (e) {
+            releaseMicrophoneStream();
+          }
+        } else {
+          if (discard) releaseMicrophoneStream();
+          setRoleplayRecordingUI(false);
+        }
+      }
+
+      function resetRoleplaySession(keepPreset = true) {
+        stopRoleplayRecording(true);
+        cancelSpeech();
+        releaseMicrophoneStream();
+        if (Array.isArray(state.rpBlobUrls)) {
+          state.rpBlobUrls.forEach(url => {
+            try { URL.revokeObjectURL(url); } catch (e) {}
+          });
+          state.rpBlobUrls = [];
+        }
+        state.rpActive = false;
+        state.rpBusy = false;
+        state.rpMessages = [];
+        if (!keepPreset) state.rpPresetId = 'ece-interview';
+        if (el.rpSummaryBox) {
+          el.rpSummaryBox.classList.add('hidden');
+          el.rpSummaryBox.innerHTML = '';
+        }
+        if (el.rpStatusBadge) {
+          el.rpStatusBadge.textContent = '대기 중';
+          el.rpStatusBadge.className = 'px-2 py-0.5 rounded-md text-[11px] font-semibold bg-slate-200 text-slate-700';
+        }
+        if (el.rpAudioStatus) {
+          el.rpAudioStatus.textContent = "상황을 고른 뒤 '대화 시작'을 누르세요.";
+        }
+        renderRoleplayWorkspace();
+      }
+
+      async function startRoleplayConversation() {
+        if (state.rpBusy) return;
+        ensureAudioContext();
+        stopRoleplayRecording(true);
+        cancelSpeech();
+        releaseMicrophoneStream();
+
+        const preset = getActiveRoleplayPreset();
+        const scenarioDesc = getRoleplayScenarioDescription();
+
+        if (Array.isArray(state.rpBlobUrls)) {
+          state.rpBlobUrls.forEach(url => {
+            try { URL.revokeObjectURL(url); } catch (e) {}
+          });
+          state.rpBlobUrls = [];
+        }
+        if (el.rpSummaryBox) {
+          el.rpSummaryBox.classList.add('hidden');
+          el.rpSummaryBox.innerHTML = '';
+        }
+
+        state.rpMessages = [];
+        state.rpActive = true;
+        state.rpBusy = true;
+
+        if (el.rpStatusBadge) {
+          el.rpStatusBadge.textContent = '대화 진행 중';
+          el.rpStatusBadge.className = 'px-2 py-0.5 rounded-md text-[11px] font-bold bg-emerald-100 text-emerald-800';
+        }
+        setRoleplayRecordingUI(false, 'AI 상대방의 첫 질문을 준비하고 있습니다...');
+        renderRoleplayChatLog();
+
+        let openingEn = preset.openingEn;
+        let openingKo = preset.openingKo;
+
+        const hasApiKey = Boolean(state.geminiApiKey && state.geminiApiKey.trim());
+        if (hasApiKey) {
+          if (el.rpAudioStatus) el.rpAudioStatus.textContent = '✨ Gemini AI가 실전 오프닝 대사를 생성 중...';
+          try {
+            const prompt = [
+              `You are playing the role of "${preset.partnerName}" (${preset.partnerVoiceHint}) in a New Zealand real-life English roleplay.`,
+              `Scenario context: ${scenarioDesc}`,
+              `Generate a natural, authentic New Zealand English opening line (2-3 sentences max) inviting the user to respond.`,
+              `Respond strictly in JSON:`,
+              `{ "partnerLineEn": "<opening line in natural NZ English>", "partnerLineKo": "<natural Korean translation>" }`
+            ].join('\n');
+            const aiOpening = await callGeminiApi([{ text: prompt }]);
+            if (aiOpening && aiOpening.partnerLineEn) {
+              openingEn = aiOpening.partnerLineEn;
+              openingKo = aiOpening.partnerLineKo || '';
+            }
+          } catch (err) {
+            // Fall back cleanly to built-in authentic Kiwi opening line
+          }
+        }
+
+        state.rpBusy = false;
+        state.rpMessages.push({
+          role: 'partner',
+          speakerLabel: preset.partnerName,
+          textEn: openingEn,
+          textKo: openingKo
+        });
+        renderRoleplayChatLog();
+        setRoleplayRecordingUI(false, '상대방 말을 들은 뒤 🎤 내 답변 녹음하기를 눌러 대답하세요.');
+        speakText(openingEn, { targetMode: 'roleplay' });
+      }
+
+      async function startRoleplayRecording() {
+        if (!state.rpActive || state.rpBusy) return;
+        if (state.rpIsRecording) {
+          stopRoleplayRecording(false);
+          return;
+        }
+
+        ensureAudioContext();
+        cancelSpeech();
+        if (el.rpAudioStatus) el.rpAudioStatus.textContent = '마이크 연결 중...';
+
+        const ok = await requestMicrophone();
+        if (!ok || !state.micStream || state.mode !== 'roleplay' || !state.rpActive) {
+          releaseMicrophoneStream();
+          setRoleplayRecordingUI(false, '마이크 권한이 없거나 장치를 찾을 수 없습니다. 아래 텍스트 입력을 이용해보세요.');
+          return;
+        }
+
+        try {
+          state.rpAudioChunks = [];
+          state.rpRecordCancelFlag = false;
+          const mime = pickSupportedMimeType();
+          const options = mime ? { mimeType: mime } : undefined;
+          const recorder = new MediaRecorder(state.micStream, options);
+          const actualMime = (recorder.mimeType || mime || 'audio/webm').split(';')[0];
+
+          recorder.ondataavailable = (ev) => {
+            if (ev.data && ev.data.size > 0) {
+              state.rpAudioChunks.push(ev.data);
+            }
+          };
+
+          recorder.onstop = () => {
+            // CRITICAL iOS compatibility: stop mic tracks IMMEDIATELY so AirPods return to Media mode before AI TTS
+            releaseMicrophoneStream();
+            state.rpMediaRecorder = null;
+            if (state.rpRecordTimerId) {
+              clearInterval(state.rpRecordTimerId);
+              state.rpRecordTimerId = null;
+            }
+
+            const canceled = state.rpRecordCancelFlag;
+            state.rpRecordCancelFlag = false;
+            setRoleplayRecordingUI(false);
+
+            if (canceled || state.rpAudioChunks.length === 0) {
+              state.rpAudioChunks = [];
+              if (el.rpRecordStatus) el.rpRecordStatus.textContent = '녹음이 취소되었습니다. 다시 녹음할 수 있습니다.';
+              return;
+            }
+
+            const audioBlob = new Blob(state.rpAudioChunks, { type: actualMime });
+            state.rpAudioChunks = [];
+            const blobUrl = URL.createObjectURL(audioBlob);
+            state.rpBlobUrls.push(blobUrl);
+
+            submitRoleplayUserTurn({ audioBlob, mimeType: actualMime, blobUrl });
+          };
+
+          state.rpMediaRecorder = recorder;
+          recorder.start();
+          state.rpRecordStartMs = Date.now();
+          setRoleplayRecordingUI(true, '🔴 녹음 중... 말씀이 끝나면 [녹음 완료 및 AI에게 전송]을 누르세요.');
+
+          state.rpRecordTimerId = setInterval(() => {
+            const elapsedSec = Math.floor((Date.now() - state.rpRecordStartMs) / 1000);
+            const mm = String(Math.floor(elapsedSec / 60)).padStart(2, '0');
+            const ss = String(elapsedSec % 60).padStart(2, '0');
+            if (el.rpRecordTimer) el.rpRecordTimer.textContent = `${mm}:${ss}`;
+          }, 250);
+        } catch (err) {
+          releaseMicrophoneStream();
+          setRoleplayRecordingUI(false, '녹음 시작 중 오류가 발생했습니다: ' + (err.message || 'AudioError'));
+        }
+      }
+
+      async function submitRoleplayUserTurn({ audioBlob = null, mimeType = 'audio/webm', blobUrl = '', textFallback = '' }) {
+        if (!state.rpActive || state.rpBusy) return;
+        const preset = getActiveRoleplayPreset();
+        const scenarioDesc = getRoleplayScenarioDescription();
+
+        // Ensure mic is strictly closed before AI turn
+        releaseMicrophoneStream();
+
+        const userMsgIndex = state.rpMessages.length;
+        state.rpMessages.push({
+          role: 'user',
+          audioUrl: blobUrl,
+          transcript: textFallback || '',
+          pending: true,
+          oneLineTip: null,
+          errorNote: ''
+        });
+        state.rpBusy = true;
+        setRoleplayRecordingUI(false, 'AI가 방금 답변을 듣고 다음 질문과 1줄 표현 팁을 작성 중입니다...');
+        if (el.rpAudioStatus) el.rpAudioStatus.textContent = '🤖 AI 응답 및 1줄 팁 생성 중...';
+        renderRoleplayChatLog();
+
+        const historyLines = state.rpMessages.slice(0, userMsgIndex).map(m => {
+          if (m.role === 'partner') return `${preset.partnerName}: ${m.textEn}`;
+          return `User: ${m.transcript || '(voice reply)'}`;
+        }).join('\n');
+
+        const prompt = [
+          `You are roleplaying as "${preset.partnerName}" (${preset.partnerVoiceHint}) in a New Zealand real-life scenario.`,
+          `Scenario: ${scenarioDesc}`,
+          `\nConversation so far:\n${historyLines}`,
+          audioBlob
+            ? `\nListen carefully to the attached user audio reply, transcribe it verbatim, give ONE concise natural expression upgrade tip for how they phrased it, and reply naturally in-character to continue the conversation (2-3 sentences max).`
+            : `\nThe user replied in text: "${textFallback}". Give ONE concise natural expression upgrade tip and reply naturally in-character (2-3 sentences max).`,
+          `\nRespond strictly in JSON matching this schema:`,
+          `{`,
+          `  "userTranscript": "<exact English transcript of the user reply>",`,
+          `  "oneLineTip": {`,
+          `    "myPhrase": "<awkward/Konglish phrase or key snippet from user reply>",`,
+          `    "betterExpression": "<1 more natural native NZ/English expression>",`,
+          `    "meaningKo": "<short Korean meaning>",`,
+          `    "reasonKo": "<1 concise Korean explanation of why this sounds better>",`,
+          `    "example": "<short natural example sentence using betterExpression>"`,
+          `  },`,
+          `  "partnerReplyEn": "<natural in-character follow-up response + next question in NZ English>",`,
+          `  "partnerReplyKo": "<Korean translation of partnerReplyEn>"`,
+          `}`
+        ].join('\n');
+
+        try {
+          const parts = [{ text: prompt }];
+          if (audioBlob) {
+            const base64Audio = await blobToBase64(audioBlob);
+            parts.push({ inlineData: { mimeType, data: base64Audio } });
+          }
+
+          const result = await callGeminiApi(parts);
+          const msg = state.rpMessages[userMsgIndex];
+          msg.pending = false;
+          msg.transcript = result.userTranscript || textFallback || '(인식된 발화)';
+          msg.oneLineTip = result.oneLineTip || null;
+
+          if (result.oneLineTip && result.oneLineTip.betterExpression) {
+            recordWeaknessEntry({
+              target: result.oneLineTip.myPhrase || result.oneLineTip.betterExpression,
+              correction: `${result.oneLineTip.betterExpression}${result.oneLineTip.meaningKo ? ' (' + result.oneLineTip.meaningKo + ')' : ''}`,
+              category: 'konglish',
+              sourceMode: 'roleplay'
+            });
+          }
+
+          const partnerReplyEn = result.partnerReplyEn || "Thanks for sharing that! Could you tell me a little more about what happened next?";
+          const partnerReplyKo = result.partnerReplyKo || '';
+          state.rpMessages.push({
+            role: 'partner',
+            speakerLabel: preset.partnerName,
+            textEn: partnerReplyEn,
+            textKo: partnerReplyKo
+          });
+
+          state.rpBusy = false;
+          renderRoleplayChatLog();
+          setRoleplayRecordingUI(false, '상대방 답변 재생 후 🎤 내 답변 녹음하기로 이어서 말하세요.');
+          speakText(partnerReplyEn, { targetMode: 'roleplay' });
+        } catch (err) {
+          state.rpBusy = false;
+          const msg = state.rpMessages[userMsgIndex];
+          msg.pending = false;
+          msg.errorNote = err.isMissingKey
+            ? '⚙️ 상단 [AI 설정]에서 Google AI Studio API 키를 저장하면 음성 분석 및 대화가 이어집니다.'
+            : (err.message || 'AI 응답 생성 중 오류가 발생했습니다.');
+          if (el.rpAudioStatus) {
+            el.rpAudioStatus.textContent = err.isMissingKey
+              ? '⚙️ AI API 키 설정 후 다시 전송하거나 새로운 대화를 시작하세요.'
+              : '⚠️ AI 응답 생성이 중단되었습니다. 다시 시도해주세요.';
+          }
+          renderRoleplayChatLog();
+          setRoleplayRecordingUI(false, '다시 녹음하거나 텍스트로 답변을 보낼 수 있습니다.');
+        }
+      }
+
+      async function endRoleplayConversation() {
+        if (!state.rpActive || state.rpBusy) return;
+        stopRoleplayRecording(true);
+        cancelSpeech();
+        releaseMicrophoneStream();
+
+        const preset = getActiveRoleplayPreset();
+        const userTurns = state.rpMessages.filter(m => m.role === 'user');
+        if (userTurns.length === 0) {
+          el.rpSummaryBox.classList.remove('hidden');
+          el.rpSummaryBox.innerHTML = `
+            <div class="text-xs text-slate-700 bg-slate-50 border border-slate-200 rounded-xl p-4">
+              아직 내 답변 턴이 기록되지 않았습니다. 최소 1회 이상 영어로 답변한 뒤 종합 피드백을 받아보세요!
+            </div>
+          `;
+          return;
+        }
+
+        const hasApiKey = Boolean(state.geminiApiKey && state.geminiApiKey.trim());
+        state.rpBusy = true;
+        setRoleplayRecordingUI(false, '종합 회화 피드백을 생성 중입니다...');
+        el.rpSummaryBox.classList.remove('hidden');
+        el.rpSummaryBox.innerHTML = `
+          <div class="flex items-center gap-3 text-fuchsia-800 py-2">
+            <span class="w-5 h-5 rounded-full border-2 border-fuchsia-200 border-t-fuchsia-600 animate-spin shrink-0"></span>
+            <p class="text-sm font-bold">대화 내용을 바탕으로 종합 피드백 리포트를 작성 중입니다...</p>
+          </div>
+        `;
+
+        if (!hasApiKey) {
+          state.rpBusy = false;
+          state.rpActive = false;
+          recordPracticeLog(`RP-${preset.id.toUpperCase()}`, 'roleplay', preset.title, null);
+          el.rpStatusBadge.textContent = '대화 종료';
+          el.rpStatusBadge.className = 'px-2 py-0.5 rounded-md text-[11px] font-semibold bg-slate-200 text-slate-700';
+          if (el.rpAudioStatus) {
+            el.rpAudioStatus.textContent = '대화가 종료되었습니다. 새 대화를 시작하려면 ▶️ 대화 시작을 누르세요.';
+          }
+          setRoleplayRecordingUI(false, '대화가 종료되었습니다. 새 대화를 시작하려면 ▶️ 대화 시작을 누르세요.');
+          el.rpSummaryBox.innerHTML = `
+            <div class="space-y-2 text-xs">
+              <h3 class="text-sm font-extrabold text-slate-900">🏁 롤플레이 연습 완료 (${escapeHtml(preset.title)})</h3>
+              <p class="text-slate-600">총 ${userTurns.length}회의 답변을 연습하고 학습 기록에 저장했습니다. API 키를 설정하면 AI 종합 점수 및 핵심 표현 추천 리포트를 받을 수 있습니다.</p>
+            </div>
+          `;
+          return;
+        }
+
+        const transcriptText = state.rpMessages.map(m => {
+          return m.role === 'partner'
+            ? `${preset.partnerName}: ${m.textEn}`
+            : `User: ${m.transcript || '(voice reply)'}`;
+        }).join('\n');
+
+        const prompt = [
+          `You are a New Zealand English & ECE/workplace communication coach.`,
+          `Scenario: ${preset.title} — ${getRoleplayScenarioDescription()}`,
+          `\nFull Roleplay Transcript:\n${transcriptText}`,
+          `\nEvaluate the learner's overall fluency, naturalness, clarity, and cultural appropriateness in New Zealand.`,
+          `Respond strictly in JSON (Korean feedback):`,
+          `{`,
+          `  "overallScore": <integer 10..90>,`,
+          `  "strengthsKo": "<what the learner did well in Korean>",`,
+          `  "improvementsKo": "<key points to improve in Korean>",`,
+          `  "keyExpressions": [`,
+          `    { "expression": "<useful NZ English expression>", "meaningKo": "<Korean meaning>", "example": "<example sentence>" }`,
+          `  ]`,
+          `}`
+        ].join('\n');
+
+        try {
+          const summary = await callGeminiApi([{ text: prompt }]);
+          const score = Math.max(10, Math.min(90, Math.round(Number(summary.overallScore) || 75)));
+          recordPracticeLog(`RP-${preset.id.toUpperCase()}`, 'roleplay', preset.title, score);
+
+          state.rpBusy = false;
+          state.rpActive = false;
+          el.rpStatusBadge.textContent = '종료 및 피드백 완료';
+          el.rpStatusBadge.className = 'px-2 py-0.5 rounded-md text-[11px] font-bold bg-fuchsia-100 text-fuchsia-800';
+          if (el.rpAudioStatus) {
+            el.rpAudioStatus.textContent = '대화가 종료되고 종합 피드백 리포트가 생성되었습니다.';
+          }
+          setRoleplayRecordingUI(false, '대화가 종료되었습니다. 다시 연습하려면 ▶️ 대화 시작을 누르세요.');
+
+          el.rpSummaryBox.innerHTML = `
+            <div class="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-fuchsia-100">
+              <div>
+                <span class="text-xs font-bold uppercase tracking-wider text-fuchsia-700">Roleplay Summary</span>
+                <h3 class="text-base font-extrabold text-slate-900">🏁 종합 회화 피드백 리포트</h3>
+              </div>
+              <div class="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-fuchsia-600 to-indigo-600 text-white text-center shadow-xs">
+                <span class="block text-[10px] opacity-85">회화 점수</span>
+                <span class="text-xl font-extrabold tabular-nums">${score}<span class="text-xs font-normal opacity-80">/90</span></span>
+              </div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+              <div class="rounded-xl border border-emerald-200 bg-emerald-50/70 p-3.5 space-y-1">
+                <span class="font-bold text-emerald-900 block">👍 잘한 점</span>
+                <p class="text-slate-700 leading-relaxed">${escapeHtml(summary.strengthsKo || '')}</p>
+              </div>
+              <div class="rounded-xl border border-amber-200 bg-amber-50/70 p-3.5 space-y-1">
+                <span class="font-bold text-amber-900 block">📌 보완 포인트</span>
+                <p class="text-slate-700 leading-relaxed">${escapeHtml(summary.improvementsKo || '')}</p>
+              </div>
+            </div>
+            ${renderHighScoreExpressionsSection(summary.keyExpressions)}
+          `;
+        } catch (err) {
+          state.rpBusy = false;
+          setRoleplayRecordingUI(false);
+          renderAiErrorCard(el.rpSummaryBox, err.message || '종합 피드백 생성 중 오류가 발생했습니다.');
+        }
+      }
+
+      // ---- Weakness Tracker & Custom 5-Sentence Drills ----
+      function recordWeaknessEntry({ target, correction = '', category = 'pronunciation', sourceMode = 'speaking' }) {
+        const cleanTarget = (target || '').trim();
+        const cleanFix = (correction || '').trim();
+        if (!cleanTarget) return;
+
+        const normKey = `${category}::${cleanTarget.toLowerCase().replace(/\s+/g, ' ')}`;
+        if (!Array.isArray(state.weaknessLogs)) state.weaknessLogs = [];
+
+        const existing = state.weaknessLogs.find(w => w.key === normKey);
+        if (existing) {
+          existing.count = (existing.count || 1) + 1;
+          existing.lastSeen = Date.now();
+          if (cleanFix) existing.correction = cleanFix;
+          if (sourceMode) existing.sourceMode = sourceMode;
+        } else {
+          state.weaknessLogs.unshift({
+            id: `wk-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+            key: normKey,
+            target: cleanTarget,
+            correction: cleanFix || '발음·억양 및 자연스러운 어휘 사용 주의',
+            category,
+            sourceMode,
+            count: 1,
+            lastSeen: Date.now()
+          });
+        }
+
+        if (state.weaknessLogs.length > 150) {
+          state.weaknessLogs.length = 150;
+        }
+        saveStorage(STORAGE_KEYS.weaknessLogs, state.weaknessLogs);
+        if (state.mode === 'review') renderWeaknessReport();
+      }
+
+      function extractAndRecordWeaknessesFromAi(data, sourceMode) {
+        if (!data || typeof data !== 'object') return;
+        if (Array.isArray(data.omittedOrMispronounced)) {
+          data.omittedOrMispronounced.forEach(item => {
+            if (item && item.target) {
+              recordWeaknessEntry({
+                target: item.target,
+                correction: item.issue || '발음 정확도 및 단어 누락 주의',
+                category: 'pronunciation',
+                sourceMode
+              });
+            }
+          });
+        }
+        if (Array.isArray(data.expressionUpgrades)) {
+          data.expressionUpgrades.forEach(up => {
+            const raw = (up && (up.myExpression || up.original || '')).trim();
+            const nat = (up && (up.nativeExpression || up.improved || '')).trim();
+            if (raw || nat) {
+              recordWeaknessEntry({
+                target: raw || nat,
+                correction: nat ? `${nat}${up.meaningKo ? ' — ' + up.meaningKo : ''}` : (up.explanationKo || ''),
+                category: 'konglish',
+                sourceMode
+              });
+            }
+          });
+        }
+      }
+
+      function getTopWeaknesses(limit = 5) {
+        const list = Array.isArray(state.weaknessLogs) ? [...state.weaknessLogs] : [];
+        list.sort((a, b) => (b.count || 1) - (a.count || 1) || (b.lastSeen || 0) - (a.lastSeen || 0));
+        return list.slice(0, limit);
+      }
+
+      function renderWeaknessReport() {
+        if (!el.weaknessTop5List || !el.weaknessDrillList) return;
+
+        const logs = Array.isArray(state.weaknessLogs) ? state.weaknessLogs : [];
+        const totalHits = logs.reduce((acc, cur) => acc + (cur.count || 1), 0);
+        if (el.weaknessTotalBadge) {
+          el.weaknessTotalBadge.textContent = `${logs.length}종 · ${totalHits}회 누적`;
+        }
+
+        const top5 = getTopWeaknesses(5);
+        if (top5.length === 0) {
+          el.weaknessTop5List.innerHTML = `
+            <div class="rounded-xl border border-dashed border-slate-200 bg-slate-50/70 p-5 text-center text-xs text-slate-500 leading-relaxed">
+              아직 누적된 취약 발음·콩글리시 기록이 없습니다.<br />
+              스피킹 AI 채점이나 롤플레이를 진행하면 자동 누적되며, 위 <strong>샘플 취약점 테스트</strong> 버튼으로도 바로 체험할 수 있습니다.
+            </div>
+          `;
+        } else {
+          el.weaknessTop5List.innerHTML = top5.map((w, idx) => {
+            const isPron = w.category === 'pronunciation';
+            const catBadge = isPron
+              ? '<span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-rose-100 text-rose-800">발음/누락</span>'
+              : '<span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-amber-100 text-amber-800">콩글리시/표현</span>';
+            const inVocab = Array.isArray(state.vocabList)
+              && state.vocabList.some(v => v.word.toLowerCase() === String(w.target || '').trim().toLowerCase());
+            return `
+              <div class="rounded-xl border border-slate-200 bg-slate-50/70 p-3 space-y-1.5">
+                <div class="flex items-center justify-between gap-2">
+                  <div class="flex flex-wrap items-center gap-1.5 min-w-0">
+                    <span class="px-1.5 py-0.5 rounded text-[10px] font-extrabold bg-slate-800 text-white">TOP ${idx + 1}</span>
+                    ${catBadge}
+                    <span class="text-[11px] font-bold text-rose-700">${w.count || 1}회 누적</span>
+                  </div>
+                  <div class="flex items-center gap-1 shrink-0">
+                    <button type="button" data-speak-weakness="${escapeHtml(w.target)}"
+                      class="px-2 py-0.5 rounded text-[11px] font-semibold bg-white border border-slate-200 hover:bg-sky-50 text-pte-blue cursor-pointer">
+                      🔊
+                    </button>
+                    <button type="button"
+                      ${inVocab ? 'disabled' : ''}
+                      data-ai-vocab-word="${escapeHtml(w.target)}"
+                      data-ai-vocab-meaning="${escapeHtml(w.correction || '')}"
+                      data-ai-vocab-example=""
+                      class="${inVocab
+                        ? 'px-2 py-0.5 rounded text-[11px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200 cursor-default'
+                        : 'px-2 py-0.5 rounded text-[11px] font-semibold bg-teal-600 hover:bg-teal-700 text-white cursor-pointer'}">
+                      ${inVocab ? '✓ 단어장 저장됨' : '+ 단어장'}
+                    </button>
+                    <button type="button" data-delete-weakness="${escapeHtml(w.id)}" title="삭제"
+                      class="px-1.5 py-0.5 rounded text-[11px] text-slate-400 hover:text-rose-600 cursor-pointer">
+                      ✕
+                    </button>
+                  </div>
+                </div>
+                <p class="text-xs sm:text-sm font-bold text-slate-900 break-words">${escapeHtml(w.target)}</p>
+                ${w.correction ? `<p class="text-xs text-slate-600 leading-relaxed break-words">→ ${escapeHtml(w.correction)}</p>` : ''}
+              </div>
+            `;
+          }).join('');
+        }
+
+        const drills = Array.isArray(state.weaknessDrills) ? state.weaknessDrills : [];
+        if (drills.length === 0) {
+          el.weaknessDrillList.innerHTML = `
+            <div class="rounded-xl border border-dashed border-indigo-200 bg-indigo-50/40 p-5 text-center text-xs text-slate-500 leading-relaxed">
+              <strong>✨ 내 취약점 맞춤 5문장 생성</strong> 버튼을 누르면 TOP 5 약점을 집중 훈련할 수 있는 실전 문장 5개를 만들어 드립니다.
+            </div>
+          `;
+        } else {
+          el.weaknessDrillList.innerHTML = drills.map((d, idx) => {
+            const isRec = state.drillRecordingIdx === idx;
+            const blobUrl = state.drillBlobMap && state.drillBlobMap[idx] ? state.drillBlobMap[idx] : '';
+            const drillWord = String(d.targetFocus || d.sentence || '').trim();
+            const inVocab = Array.isArray(state.vocabList)
+              && state.vocabList.some(v => v.word.toLowerCase() === drillWord.toLowerCase());
+            return `
+              <div class="rounded-xl border border-indigo-100 bg-white p-3.5 shadow-2xs space-y-2">
+                <div class="flex flex-wrap items-center justify-between gap-2">
+                  <div class="flex items-center gap-1.5 min-w-0">
+                    <span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-indigo-100 text-indigo-800">문장 ${idx + 1}</span>
+                    ${d.targetFocus ? `<span class="text-[11px] font-semibold text-rose-700 truncate">집중 포인트: ${escapeHtml(d.targetFocus)}</span>` : ''}
+                  </div>
+                  <div class="flex flex-wrap items-center gap-1.5 shrink-0">
+                    <button type="button" data-speak-drill="${idx}"
+                      class="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-sky-50 hover:bg-sky-100 text-pte-blue border border-sky-200 transition cursor-pointer">
+                      🔊 듣기
+                    </button>
+                    <button type="button" data-record-drill="${idx}"
+                      class="px-2.5 py-1 rounded-lg text-[11px] font-bold transition cursor-pointer ${
+                        isRec
+                          ? 'bg-slate-900 text-white ring-2 ring-rose-400'
+                          : 'bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200'
+                      }">
+                      ${isRec ? '⏹️ 녹음 정지' : '🎤 따라 말하기'}
+                    </button>
+                    <button type="button"
+                      ${inVocab ? 'disabled' : ''}
+                      data-ai-vocab-word="${escapeHtml(drillWord)}"
+                      data-ai-vocab-meaning="${escapeHtml(d.translationKo || d.chunkingTipKo || '취약점 집중 문장')}"
+                      data-ai-vocab-example="${escapeHtml(d.sentence)}"
+                      class="${inVocab
+                        ? 'px-2 py-1 rounded-lg text-[11px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200 cursor-default'
+                        : 'px-2 py-1 rounded-lg text-[11px] font-bold bg-teal-600 hover:bg-teal-700 text-white transition cursor-pointer'}">
+                      ${inVocab ? '✓ 단어장 저장됨' : '+ 단어장'}
+                    </button>
+                  </div>
+                </div>
+                <p class="text-sm font-semibold text-slate-900 leading-relaxed">${escapeHtml(d.sentence || '')}</p>
+                ${d.chunkingTipKo ? `<p class="text-[11px] text-indigo-700">💡 ${escapeHtml(d.chunkingTipKo)}</p>` : ''}
+                ${d.translationKo ? `<p class="text-xs text-slate-500">${escapeHtml(d.translationKo)}</p>` : ''}
+                ${blobUrl ? `
+                  <audio controls preload="metadata" src="${escapeHtml(blobUrl)}" class="w-full h-8 mt-1 rounded-lg"></audio>
+                ` : ''}
+              </div>
+            `;
+          }).join('');
+        }
+      }
+
+      async function generateWeaknessDrillsWithAi() {
+        if (state.weaknessGenerating) return;
+        const top5 = getTopWeaknesses(5);
+        if (top5.length === 0) {
+          el.weaknessGenStatus.classList.remove('hidden');
+          el.weaknessGenStatus.textContent = '먼저 AI 채점/롤플레이를 1회 이상 진행하거나 [샘플 취약점 테스트]를 눌러 취약점을 등록해주세요.';
+          return;
+        }
+
+        state.weaknessGenerating = true;
+        el.btnGenerateWeaknessSentences.disabled = true;
+        el.btnGenerateWeaknessSentences.classList.add('opacity-60');
+        el.weaknessGenStatus.classList.remove('hidden');
+        el.weaknessGenStatus.textContent = '⏳ Gemini AI가 TOP 5 취약점을 반영한 맞춤 훈련 5문장을 생성 중입니다...';
+
+        const weaknessSummary = top5.map((w, i) => {
+          return `${i + 1}. [${w.category}] "${w.target}" -> "${w.correction}" (${w.count || 1}x)`;
+        }).join('\n');
+
+        const prompt = [
+          `You are a PTE Academic & New Zealand English speaking coach.`,
+          `Based on the learner's top recurring pronunciation/omission/Konglish weaknesses below, write EXACTLY 5 natural, high-utility practice sentences (10-18 words each) designed to drill those exact words/expressions in realistic PTE or New Zealand everyday/ECE contexts.`,
+          `\nLearner Top Weaknesses:\n${weaknessSummary}`,
+          `\nRespond strictly in JSON matching this schema:`,
+          `{`,
+          `  "drills": [`,
+          `    {`,
+          `      "sentence": "<10-18 word natural English practice sentence>",`,
+          `      "targetFocus": "<specific word or expression drilled in this sentence>",`,
+          `      "chunkingTipKo": "<short Korean pronunciation/stress/phrasing tip>",`,
+          `      "translationKo": "<natural Korean translation>"`,
+          `    }`,
+          `  ]`,
+          `}`
+        ].join('\n');
+
+        try {
+          const res = await callGeminiApi([{ text: prompt }]);
+          const drills = Array.isArray(res?.drills) ? res.drills.slice(0, 5) : [];
+          if (drills.length === 0) {
+            throw new Error('유효한 5문장을 생성하지 못했습니다. 다시 시도해주세요.');
+          }
+          state.weaknessDrills = drills;
+          saveStorage(STORAGE_KEYS.weaknessDrills, state.weaknessDrills);
+          el.weaknessGenStatus.textContent = '✅ 맞춤 교정 5문장이 생성되었습니다! 🔊 원어민 발음 듣기와 🎤 따라 말하기로 바로 연습하세요.';
+          renderWeaknessReport();
+        } catch (err) {
+          if (err.isMissingKey) {
+            el.weaknessGenStatus.classList.add('hidden');
+          } else {
+            el.weaknessGenStatus.textContent = '❌ ' + (err.message || '문장 생성 중 오류가 발생했습니다.');
+          }
+        } finally {
+          state.weaknessGenerating = false;
+          el.btnGenerateWeaknessSentences.disabled = false;
+          el.btnGenerateWeaknessSentences.classList.remove('opacity-60');
+        }
+      }
+
+      function stopDrillRecording(discard = false) {
+        if (state.drillMediaRecorder && state.drillMediaRecorder.state !== 'inactive') {
+          state._drillDiscard = Boolean(discard);
+          try {
+            state.drillMediaRecorder.stop();
+          } catch (e) {
+            releaseMicrophoneStream();
+            state.drillRecordingIdx = null;
+          }
+        } else {
+          if (discard) releaseMicrophoneStream();
+          state.drillRecordingIdx = null;
+        }
+      }
+
+      async function toggleDrillRecording(idx) {
+        if (state.drillRecordingIdx === idx) {
+          stopDrillRecording(false);
+          return;
+        }
+        if (state.drillRecordingIdx !== null) {
+          stopDrillRecording(true);
+        }
+
+        ensureAudioContext();
+        cancelSpeech();
+        const ok = await requestMicrophone();
+        if (!ok || !state.micStream || state.mode !== 'review') {
+          releaseMicrophoneStream();
+          if (el.weaknessTtsStatus) el.weaknessTtsStatus.textContent = '마이크 권한이 없어 녹음할 수 없습니다.';
+          return;
+        }
+
+        try {
+          state.drillAudioChunks = [];
+          state._drillDiscard = false;
+          const mime = pickSupportedMimeType();
+          const options = mime ? { mimeType: mime } : undefined;
+          const recorder = new MediaRecorder(state.micStream, options);
+          const actualMime = (recorder.mimeType || mime || 'audio/webm').split(';')[0];
+
+          recorder.ondataavailable = (ev) => {
+            if (ev.data && ev.data.size > 0) state.drillAudioChunks.push(ev.data);
+          };
+
+          recorder.onstop = () => {
+            releaseMicrophoneStream();
+            state.drillMediaRecorder = null;
+            const prevIdx = state.drillRecordingIdx;
+            state.drillRecordingIdx = null;
+            const discard = state._drillDiscard;
+            state._drillDiscard = false;
+
+            if (!discard && prevIdx !== null && state.drillAudioChunks.length > 0) {
+              const blob = new Blob(state.drillAudioChunks, { type: actualMime });
+              if (state.drillBlobMap[prevIdx]) {
+                try { URL.revokeObjectURL(state.drillBlobMap[prevIdx]); } catch (e) {}
+              }
+              state.drillBlobMap[prevIdx] = URL.createObjectURL(blob);
+              if (el.weaknessTtsStatus) {
+                el.weaknessTtsStatus.textContent = `문장 ${prevIdx + 1} 녹음 완료! 위 플레이어에서 내 발음을 들어보세요.`;
+              }
+            }
+            state.drillAudioChunks = [];
+            renderWeaknessReport();
+          };
+
+          state.drillMediaRecorder = recorder;
+          state.drillRecordingIdx = idx;
+          recorder.start();
+          if (el.weaknessTtsStatus) {
+            el.weaknessTtsStatus.textContent = `🔴 문장 ${idx + 1} 녹음 중... 완료되면 [⏹️ 녹음 정지]를 누르세요.`;
+          }
+          renderWeaknessReport();
+        } catch (err) {
+          releaseMicrophoneStream();
+          state.drillRecordingIdx = null;
+        }
+      }
+
+      // Roleplay Event Listeners
+      if (el.rpPresetGrid) {
+        el.rpPresetGrid.addEventListener('click', (e) => {
+          const btn = e.target.closest('[data-rp-preset]');
+          if (!btn) return;
+          const nextId = btn.dataset.rpPreset;
+          if (!nextId || nextId === state.rpPresetId) return;
+          state.rpPresetId = nextId;
+          resetRoleplaySession(true);
+        });
+      }
+      if (el.rpCustomInput) {
+        el.rpCustomInput.addEventListener('input', (e) => {
+          state.rpCustomContext = e.target.value;
+          renderRoleplayPresets();
+        });
+      }
+      if (el.btnRpStart) {
+        el.btnRpStart.addEventListener('click', startRoleplayConversation);
+      }
+      if (el.btnRpReset) {
+        el.btnRpReset.addEventListener('click', () => resetRoleplaySession(true));
+      }
+      if (el.btnRpEnd) {
+        el.btnRpEnd.addEventListener('click', endRoleplayConversation);
+      }
+      if (el.btnRpRecord) {
+        el.btnRpRecord.addEventListener('click', startRoleplayRecording);
+      }
+      if (el.btnRpCancelRecord) {
+        el.btnRpCancelRecord.addEventListener('click', () => stopRoleplayRecording(true));
+      }
+      if (el.btnRpSendText) {
+        el.btnRpSendText.addEventListener('click', () => {
+          const txt = (el.rpTextInput?.value || '').trim();
+          if (!txt || !state.rpActive || state.rpBusy) return;
+          el.rpTextInput.value = '';
+          submitRoleplayUserTurn({ textFallback: txt });
+        });
+      }
+      if (el.rpTextInput) {
+        el.rpTextInput.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            el.btnRpSendText?.click();
+          }
+        });
+      }
+      if (el.rpChatLog) {
+        el.rpChatLog.addEventListener('click', (e) => {
+          const speakBtn = e.target.closest('[data-rp-speak]');
+          if (!speakBtn) return;
+          const idx = parseInt(speakBtn.dataset.rpSpeak, 10);
+          const msg = state.rpMessages[idx];
+          if (msg && msg.textEn) {
+            speakText(msg.textEn, { targetMode: 'roleplay' });
+          }
+        });
+      }
+
+      // Weakness Report Event Listeners
+      if (el.weaknessAddForm) {
+        el.weaknessAddForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const target = (el.weaknessTargetInput?.value || '').trim();
+          const fix = (el.weaknessFixInput?.value || '').trim();
+          const cat = el.weaknessTypeSelect?.value || 'pronunciation';
+          if (!target || !fix) return;
+          recordWeaknessEntry({
+            target,
+            correction: fix,
+            category: cat,
+            sourceMode: 'manual'
+          });
+          el.weaknessTargetInput.value = '';
+          el.weaknessFixInput.value = '';
+          renderWeaknessReport();
+        });
+      }
+      if (el.btnSeedSampleWeakness) {
+        el.btnSeedSampleWeakness.addEventListener('click', () => {
+          const samples = [
+            { target: 'thoroughly', correction: '/ˈθʌrəli/ (th 무성음 + 강세 첫음절 주의)', category: 'pronunciation', sourceMode: 'read-aloud' },
+            { target: 'curriculum', correction: '/kəˈrɪkjələm/ (두 번째 음절 강세, 커리큘럼 장모음 주의)', category: 'pronunciation', sourceMode: 'describe-image' },
+            { target: 'play together with friends', correction: 'engage in collaborative play with peers (ECE 전문 표현)', category: 'konglish', sourceMode: 'impromptu' },
+            { target: 'have a cold symptom', correction: 'have a runny nose and sore throat / coming down with a cold', category: 'konglish', sourceMode: 'roleplay' },
+            { target: 'environment', correction: '/ɪnˈvaɪrənmənt/ (n 발음 누락 주의)', category: 'pronunciation', sourceMode: 'repeat-sentence' }
+          ];
+          samples.forEach(s => recordWeaknessEntry(s));
+          renderWeaknessReport();
+        });
+      }
+      if (el.btnClearWeakness) {
+        el.btnClearWeakness.addEventListener('click', () => {
+          state.weaknessLogs = [];
+          state.weaknessDrills = [];
+          saveStorage(STORAGE_KEYS.weaknessLogs, []);
+          saveStorage(STORAGE_KEYS.weaknessDrills, []);
+          if (el.weaknessGenStatus) el.weaknessGenStatus.classList.add('hidden');
+          renderWeaknessReport();
+        });
+      }
+      if (el.weaknessTop5List) {
+        el.weaknessTop5List.addEventListener('click', (e) => {
+          const speakBtn = e.target.closest('[data-speak-weakness]');
+          if (speakBtn) {
+            speakText(speakBtn.dataset.speakWeakness, { targetMode: 'weakness-drill' });
+            return;
+          }
+          const delBtn = e.target.closest('[data-delete-weakness]');
+          if (delBtn) {
+            const id = delBtn.dataset.deleteWeakness;
+            state.weaknessLogs = state.weaknessLogs.filter(w => w.id !== id);
+            saveStorage(STORAGE_KEYS.weaknessLogs, state.weaknessLogs);
+            renderWeaknessReport();
+          }
+        });
+      }
+      if (el.weaknessDrillList) {
+        el.weaknessDrillList.addEventListener('click', (e) => {
+          const speakBtn = e.target.closest('[data-speak-drill]');
+          if (speakBtn) {
+            const idx = parseInt(speakBtn.dataset.speakDrill, 10);
+            const drill = state.weaknessDrills[idx];
+            if (drill && drill.sentence) {
+              speakText(drill.sentence, { targetMode: 'weakness-drill' });
+            }
+            return;
+          }
+          const recBtn = e.target.closest('[data-record-drill]');
+          if (recBtn) {
+            const idx = parseInt(recBtn.dataset.recordDrill, 10);
+            if (!Number.isNaN(idx)) toggleDrillRecording(idx);
+          }
+        });
+      }
+      if (el.btnGenerateWeaknessSentences) {
+        el.btnGenerateWeaknessSentences.addEventListener('click', generateWeaknessDrillsWithAi);
+      }
+
       // Clean up resources on page unload
       window.addEventListener('beforeunload', () => {
         clearTimerInterval();
         stopWritingTimer();
         stopShadowingCompare(false);
+        stopRoleplayRecording(true);
+        stopDrillRecording(true);
         cancelSpeech();
         stopYouTubeClipPlayback();
         stopMediaRecording();
         releaseMicrophoneStream();
         if (state.recordingUrl) {
           URL.revokeObjectURL(state.recordingUrl);
+        }
+        if (Array.isArray(state.rpBlobUrls)) {
+          state.rpBlobUrls.forEach(u => { try { URL.revokeObjectURL(u); } catch (e) {} });
+        }
+        if (state.drillBlobMap) {
+          Object.values(state.drillBlobMap).forEach(u => { try { URL.revokeObjectURL(u); } catch (e) {} });
         }
         if (state.ttsAudioCache) {
           state.ttsAudioCache.forEach(entry => {
@@ -6245,6 +7690,8 @@
       updateReviewTabBadge();
       updateRsBankSummaryUI();
       updateDiBankSummaryUI();
+      renderRoleplayWorkspace();
+      renderWeaknessReport();
       syncVoiceDropdowns();
       renderTabs();
       renderWorkspaceVisibility();
