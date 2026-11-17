@@ -571,15 +571,19 @@
               <div class="rounded-xl border border-indigo-200 bg-indigo-50/40 p-4 space-y-3">
                 <div class="flex flex-wrap items-center justify-between gap-2">
                   <div>
-                    <h3 class="text-sm font-bold text-indigo-950">🎬 유튜브 인터뷰 AI 클립 생성기</h3>
-                    <p class="text-xs text-slate-600">유튜브 URL과 자막(타임스탬프 포함 권장)을 붙여넣으면 Gemini AI가 45~60초 핵심 구간 3~5개를 추출합니다.</p>
+                    <h3 class="text-sm font-bold text-indigo-950">🎬 유튜브 인터뷰 · 쇼츠 AI 클립 생성기</h3>
+                    <p class="text-xs text-slate-600">유튜브/쇼츠 링크만 넣어도 Gemini AI가 영상 오디오를 직접 분석해 핵심 구간 3~5개를 추출합니다.</p>
                   </div>
+                </div>
+
+                <div class="rounded-lg border border-amber-200 bg-amber-50/80 px-3 py-2 text-[11px] font-semibold text-amber-900">
+                  💡 유튜브 쇼츠 등 자막 복사가 안 되는 영상은 링크만 넣고 추출 버튼을 누르세요! (공개 영상만 지원 · 자막을 함께 넣으면 토큰을 절약해 더 빠르게 추출합니다)
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-12 gap-2.5">
                   <div class="sm:col-span-7">
-                    <label for="rl-yt-url-input" class="block text-[11px] font-bold text-slate-700 mb-1">유튜브 URL (또는 영상 ID)</label>
-                    <input id="rl-yt-url-input" type="url" placeholder="https://www.youtube.com/watch?v=..."
+                    <label for="rl-yt-url-input" class="block text-[11px] font-bold text-slate-700 mb-1">유튜브 / 쇼츠 URL (또는 11자리 영상 ID)</label>
+                    <input id="rl-yt-url-input" type="url" placeholder="https://www.youtube.com/watch?v=... 또는 .../shorts/..."
                       class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs sm:text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-pte-blue" />
                   </div>
                   <div class="sm:col-span-5">
@@ -590,9 +594,9 @@
                 </div>
 
                 <div>
-                  <label for="rl-yt-transcript-input" class="block text-[11px] font-bold text-slate-700 mb-1">영상 자막 / 스크립트 붙여넣기</label>
+                  <label for="rl-yt-transcript-input" class="block text-[11px] font-bold text-slate-700 mb-1">영상 자막 / 스크립트 붙여넣기 <span class="font-normal text-indigo-700">(선택 사항 — 비워두면 AI가 영상 직접 분석)</span></label>
                   <textarea id="rl-yt-transcript-input" rows="4"
-                    placeholder="00:12 Today we are talking about... 형태로 타임스탬프가 포함된 유튜브 스크립트를 붙여넣으면 정확한 초(startSec~endSec)를 자동으로 계산합니다."
+                    placeholder="(선택 사항) 비워두면 Gemini가 유튜브 영상을 직접 듣고 구간을 추출합니다. 타임스탬프가 있는 자막이 있다면 붙여넣어 토큰을 절약하세요."
                     class="w-full rounded-lg border border-slate-300 bg-white p-3 text-xs sm:text-sm text-slate-900 leading-relaxed focus:outline-none focus:ring-2 focus:ring-pte-blue resize-y"></textarea>
                 </div>
 
@@ -1221,19 +1225,22 @@
         <!-- Collapsible AI Extractor Box -->
         <div id="yts-extractor-box" class="hidden rounded-xl border border-indigo-200 bg-indigo-50/50 p-4 space-y-3">
           <div class="flex flex-wrap items-center justify-between gap-2">
-            <h3 class="text-xs sm:text-sm font-extrabold text-indigo-900">🤖 Gemini AI 유튜브 핵심 문장(6~10개) 자동 추출</h3>
+            <h3 class="text-xs sm:text-sm font-extrabold text-indigo-900">🤖 Gemini AI 유튜브 · 쇼츠 핵심 문장(6~10개) 자동 추출</h3>
             <span class="text-[11px] text-indigo-700 font-medium">3~8초 길이 · 해석 &amp; 강세·연음 팁 포함</span>
+          </div>
+          <div class="rounded-lg border border-amber-200 bg-amber-50/90 px-3 py-2 text-[11px] font-semibold text-amber-900">
+            💡 유튜브 쇼츠 등 자막 복사가 안 되는 영상은 링크만 넣고 추출 버튼을 누르세요! (공개 영상만 지원)
           </div>
           <div class="space-y-2.5">
             <div>
-              <label for="yts-url-input" class="block text-xs font-semibold text-slate-700 mb-1">유튜브 영상 URL 또는 Video ID</label>
-              <input id="yts-url-input" type="url" placeholder="https://www.youtube.com/watch?v=..."
+              <label for="yts-url-input" class="block text-xs font-semibold text-slate-700 mb-1">유튜브 / 쇼츠 URL (또는 Video ID)</label>
+              <input id="yts-url-input" type="url" placeholder="https://www.youtube.com/watch?v=... 또는 https://www.youtube.com/shorts/..."
                 class="w-full min-w-0 px-3 py-2 text-xs sm:text-sm rounded-xl border border-slate-200 bg-white focus:ring-2 focus:ring-indigo-500 outline-none" />
             </div>
             <div>
-              <label for="yts-transcript-input" class="block text-xs font-semibold text-slate-700 mb-1">영상 자막 / 스크립트 붙여넣기</label>
+              <label for="yts-transcript-input" class="block text-xs font-semibold text-slate-700 mb-1">영상 자막 / 스크립트 붙여넣기 <span class="font-normal text-indigo-700">(선택 사항 — 비워두면 영상 직접 분석)</span></label>
               <textarea id="yts-transcript-input" rows="4"
-                placeholder="유튜브 더보기 → '스크립트 표시'에서 타임스탬프와 함께 복사한 영어 자막을 붙여넣으세요..."
+                placeholder="(선택 사항) 비워두면 Gemini가 유튜브·쇼츠 오디오를 직접 분석해 문장/구간을 추출합니다. 자막을 넣으면 토큰을 절약해 더 빠르게 추출합니다."
                 class="w-full min-w-0 px-3 py-2 text-xs sm:text-sm rounded-xl border border-slate-200 bg-white focus:ring-2 focus:ring-indigo-500 outline-none"></textarea>
             </div>
             <div class="flex flex-wrap items-center justify-between gap-2">
@@ -6644,23 +6651,53 @@
         const raw = (input || '').trim();
         if (!raw) return '';
         if (/^[a-zA-Z0-9_-]{11}$/.test(raw)) return raw;
+
+        const withProto = /^https?:\/\//i.test(raw) ? raw : `https://${raw}`;
         try {
-          const url = new URL(raw);
-          const host = url.hostname.replace(/^www\./, '').toLowerCase();
+          const url = new URL(withProto);
+          const host = url.hostname.replace(/^(?:www\.|m\.|music\.)+/i, '').toLowerCase();
           if (host === 'youtu.be') {
-            return url.pathname.replace(/^\//, '').split('/')[0].slice(0, 11);
+            const candidate = url.pathname.replace(/^\//, '').split('/')[0];
+            if (/^[a-zA-Z0-9_-]{11}/.test(candidate)) return candidate.slice(0, 11);
           }
-          if (host.includes('youtube.com')) {
+          if (host.includes('youtube.com') || host.includes('youtube-nocookie.com')) {
             const vParam = url.searchParams.get('v');
-            if (vParam) return vParam.slice(0, 11);
-            const match = url.pathname.match(/\/(?:embed|shorts|live)\/([a-zA-Z0-9_-]{11})/);
-            if (match) return match[1];
+            if (vParam && /^[a-zA-Z0-9_-]{11}/.test(vParam)) return vParam.slice(0, 11);
+            const pathMatch = url.pathname.match(/\/(?:shorts|live|embed|v)\/([a-zA-Z0-9_-]{11})/);
+            if (pathMatch) return pathMatch[1];
           }
         } catch (e) {
-          const fallbackMatch = raw.match(/(?:v=|youtu\.be\/|embed\/|shorts\/)([a-zA-Z0-9_-]{11})/);
-          if (fallbackMatch) return fallbackMatch[1];
+          // fall through to regex parser
         }
-        return '';
+
+        const fallbackMatch = raw.match(/(?:v=|youtu\.be\/|\/shorts\/|\/live\/|\/embed\/|\/v\/)([a-zA-Z0-9_-]{11})/);
+        return fallbackMatch ? fallbackMatch[1] : '';
+      }
+
+      function toCanonicalWatchUrl(input) {
+        const videoId = parseYouTubeVideoId(input);
+        return videoId ? `https://www.youtube.com/watch?v=${videoId}` : '';
+      }
+
+      function formatYouTubeDirectAiError(err, usedDirectVideo) {
+        const msg = String(err?.message || '').trim();
+        const lower = msg.toLowerCase();
+        if (usedDirectVideo && (
+          lower.includes('403') ||
+          lower.includes('404') ||
+          lower.includes('400') ||
+          lower.includes('permission') ||
+          lower.includes('private') ||
+          lower.includes('unavailable') ||
+          lower.includes('not found') ||
+          lower.includes('youtube') ||
+          lower.includes('file') ||
+          lower.includes('uri') ||
+          lower.includes('invalid argument')
+        )) {
+          return '비공개/일부공개 영상, 연령·지역 제한, 또는 길이/접근 제한으로 Gemini가 유튜브 URL을 직접 읽지 못했습니다. 공개(Public) 유튜브/쇼츠 링크인지 확인하거나 영상 자막(스크립트)을 함께 붙여넣어 다시 시도해주세요. (상세: ' + msg + ')';
+        }
+        return msg || '오류가 발생했습니다.';
       }
 
       let ytApiPromise = null;
@@ -6933,56 +6970,78 @@
         const topicFocus = (el.rlYtTopicInput.value || '').trim();
         const transcript = (el.rlYtTranscriptInput.value || '').trim();
         const videoId = parseYouTubeVideoId(urlInput);
+        const canonicalWatchUrl = toCanonicalWatchUrl(videoId);
 
-        if (!videoId) {
-          showInlineStatus(el.rlYtExtractStatus, '올바른 유튜브 URL(예: https://www.youtube.com/watch?v=...) 또는 11자리 영상 ID를 입력해주세요.', 'error');
-          return;
-        }
-        if (countWords(transcript) < 20 && transcript.length < 100) {
-          showInlineStatus(el.rlYtExtractStatus, '영상의 영어 자막/스크립트를 최소 20단어 이상 붙여넣어 주세요.', 'error');
+        if (!videoId || !canonicalWatchUrl) {
+          showInlineStatus(el.rlYtExtractStatus, '올바른 유튜브/쇼츠 URL(예: https://www.youtube.com/watch?v=... 또는 /shorts/...) 또는 11자리 영상 ID를 입력해주세요.', 'error');
           return;
         }
 
-        const prompt = [
-          `You are a PTE Academic Retell Lecture curriculum expert.`,
-          `Analyze the YouTube interview/lecture transcript below (Video ID: ${videoId})${topicFocus ? ` focusing especially on "${topicFocus}"` : ''}.`,
-          `Transcript:\n"""\n${transcript.slice(0, 12000)}\n"""`,
-          `\nExtract 3 to 5 high-value practice segments ideal for Retell Lecture, each lasting strictly 45 to 60 seconds (endSec - startSec between 45 and 60).`,
-          `If timestamps appear in the transcript, map startSec and endSec accurately in seconds; otherwise estimate natural timestamps starting from 15s onward.`,
+        const hasTranscript = transcript.length >= 20;
+        const schemaInstruction = [
+          `\nExtract 3 to 5 high-value spoken segments ideal for PTE Retell Lecture practice (for longer videos aim for 45 to 60 seconds per clip; for Shorts under 60s extract 1 to 3 concise segments matching actual speech timestamps).`,
           `Respond strictly in JSON matching this schema:`,
           `{`,
-          `  "setTitle": "<concise English title summarizing the video interview>",`,
-          `  "overallSummary": "<2-3 sentences overall interview summary in Korean>",`,
+          `  "setTitle": "<concise English title summarizing the video>",`,
+          `  "overallSummary": "<2-3 sentences overall summary in Korean>",`,
           `  "clips": [`,
           `    {`,
           `      "title": "<short descriptive clip title>",`,
-          `      "startSec": <integer seconds>,`,
-          `      "endSec": <integer seconds, startSec + 45..60>,`,
+          `      "startSec": <integer start seconds>,`,
+          `      "endSec": <integer end seconds>,`,
           `      "keywords": ["<keyword1>", "<keyword2>", "<keyword3>", "<keyword4>", "<keyword5>"],`,
-          `      "script": "<clean English transcript of this 45-60s segment>",`,
-          `      "modelAnswer": "<PTE Retell Lecture 4-sentence model summary in English (~65 words)>",`,
+          `      "script": "<clean English transcript spoken in this segment>",`,
+          `      "modelAnswer": "<PTE Retell Lecture 4-sentence model summary in English>",`,
           `      "translation": "<concise Korean summary of this segment>"`,
           `    }`,
           `  ]`,
           `}`
         ].join('\n');
 
+        const parts = hasTranscript
+          ? [{
+              text: [
+                `You are a PTE Academic Retell Lecture curriculum expert.`,
+                `Analyze the YouTube interview/lecture transcript below (Video ID: ${videoId}, URL: ${canonicalWatchUrl})${topicFocus ? ` focusing especially on "${topicFocus}"` : ''}.`,
+                `If timestamps appear in the transcript, map startSec and endSec accurately in seconds; otherwise estimate natural timestamps starting from 15s onward.`,
+                `Transcript:\n"""\n${transcript.slice(0, 12000)}\n"""`,
+                schemaInstruction
+              ].join('\n')
+            }]
+          : [
+              { fileData: { fileUri: canonicalWatchUrl } },
+              {
+                text: [
+                  `You are a PTE Academic Retell Lecture curriculum expert.`,
+                  `Watch and listen directly to the attached YouTube video (${canonicalWatchUrl})${topicFocus ? ` focusing especially on "${topicFocus}"` : ''}.`,
+                  `Identify the exact spoken startSec and endSec timestamps in integer seconds and transcribe the speech verbatim for each extracted clip.`,
+                  schemaInstruction
+                ].join('\n')
+              }
+            ];
+
         state.ytExtracting = true;
         el.btnRlYtExtract.disabled = true;
         el.btnRlYtExtract.classList.add('opacity-60');
-        showInlineStatus(el.rlYtExtractStatus, `Gemini AI (${state.geminiModel || 'gemini-4-hydrogen'})로 45~60초 핵심 클립을 추출 중입니다...`, 'info');
+        showInlineStatus(
+          el.rlYtExtractStatus,
+          hasTranscript
+            ? `입력한 자막을 바탕으로 Gemini AI (${state.geminiModel || 'gemini-4-hydrogen'})가 핵심 클립을 추출 중입니다...`
+            : `자막 없이 영상 오디오를 직접 분석 중입니다 (${canonicalWatchUrl})...`,
+          'info'
+        );
 
         try {
-          const result = await callGeminiApi([{ text: prompt }]);
+          const result = await callGeminiApi(parts);
           const rawClips = Array.isArray(result.clips) ? result.clips : [];
           if (rawClips.length === 0) {
-            throw new Error('추출된 클립이 없습니다. 자막 분량을 확인해주세요.');
+            throw new Error('추출된 클립이 없습니다. 공개 영상 여부 또는 자막 내용을 확인해주세요.');
           }
           const stamp = Date.now().toString().slice(-4);
           const sanitizedClips = rawClips.slice(0, 5).map((c, idx) => {
-            const startSec = Math.max(0, Math.round(Number(c.startSec) || (idx * 65 + 15)));
-            let endSec = Math.round(Number(c.endSec) || (startSec + 55));
-            if (endSec - startSec < 40) endSec = startSec + 45;
+            const startSec = Math.max(0, Math.round(Number(c.startSec) || (idx * 30)));
+            let endSec = Math.round(Number(c.endSec) || (startSec + 45));
+            if (endSec <= startSec + 4) endSec = startSec + 15;
             if (endSec - startSec > 65) endSec = startSec + 60;
             return {
               id: `YT-${stamp}-${idx + 1}`,
@@ -7000,7 +7059,7 @@
             id: `yt-set-${Date.now()}`,
             title: String(result.setTitle || `YouTube (${videoId})`).trim(),
             videoId,
-            url: urlInput,
+            url: canonicalWatchUrl,
             overallSummary: String(result.overallSummary || '').trim(),
             createdAt: Date.now(),
             clips: sanitizedClips
@@ -7021,7 +7080,7 @@
           if (err.isMissingKey) {
             el.rlYtExtractStatus.classList.add('hidden');
           } else {
-            showInlineStatus(el.rlYtExtractStatus, `⚠️ 클립 추출 실패: ${err.message || '오류가 발생했습니다.'}`, 'error');
+            showInlineStatus(el.rlYtExtractStatus, `⚠️ 클립 추출 실패: ${formatYouTubeDirectAiError(err, !hasTranscript)}`, 'error');
           }
         } finally {
           state.ytExtracting = false;
@@ -8772,33 +8831,18 @@
         const urlInput = (el.ytsUrlInput?.value || '').trim();
         const transcript = (el.ytsTranscriptInput?.value || '').trim();
         const videoId = parseYouTubeVideoId(urlInput);
+        const canonicalWatchUrl = toCanonicalWatchUrl(videoId);
 
-        if (!videoId) {
+        if (!videoId || !canonicalWatchUrl) {
           if (el.ytsExtractStatus) {
-            el.ytsExtractStatus.textContent = '⚠️ 올바른 유튜브 URL 또는 Video ID를 입력하세요.';
-          }
-          return;
-        }
-        if (transcript.length < 30) {
-          if (el.ytsExtractStatus) {
-            el.ytsExtractStatus.textContent = '⚠️ 자막 또는 스크립트 텍스트를 30자 이상 붙여넣어 주세요.';
+            el.ytsExtractStatus.textContent = '⚠️ 올바른 유튜브/쇼츠 URL(예: watch?v=... 또는 /shorts/...) 또는 Video ID를 입력하세요.';
           }
           return;
         }
 
-        state.ytsExtracting = true;
-        if (el.btnYtsExtract) {
-          el.btnYtsExtract.disabled = true;
-          el.btnYtsExtract.classList.add('opacity-60');
-        }
-        if (el.ytsExtractStatus) {
-          el.ytsExtractStatus.textContent = '⏳ Gemini AI가 3~8초 길이의 핵심 쉐도잉 문장 6~10개를 추출 중입니다...';
-        }
-
-        const prompt = [
-          `Analyze the YouTube transcript below (Video ID: ${videoId}) and extract 6 to 10 high-utility English sentences suitable for spoken shadowing practice.`,
-          `Each segment MUST be roughly 3 to 8 seconds long.`,
-          `\nTranscript:\n${transcript}`,
+        const hasTranscript = transcript.length >= 20;
+        const schemaText = [
+          `Extract 6 to 10 high-utility English sentences suitable for spoken shadowing practice (roughly 3 to 8 seconds per sentence).`,
           `\nRespond strictly in JSON matching this exact schema:`,
           `{`,
           `  "setTitle": "<short Korean+English title for this shadowing set>",`,
@@ -8814,8 +8858,38 @@
           `}`
         ].join('\n');
 
+        const parts = hasTranscript
+          ? [{
+              text: [
+                `Analyze the YouTube transcript below (Video ID: ${videoId}, URL: ${canonicalWatchUrl}).`,
+                `Transcript:\n${transcript.slice(0, 12000)}`,
+                schemaText
+              ].join('\n')
+            }]
+          : [
+              { fileData: { fileUri: canonicalWatchUrl } },
+              {
+                text: [
+                  `Listen carefully to the actual audio of the attached YouTube video (${canonicalWatchUrl}).`,
+                  `Transcribe spoken lines with accurate integer timestamps (startSec and endSec, 3-8 seconds each) in the video.`,
+                  schemaText
+                ].join('\n')
+              }
+            ];
+
+        state.ytsExtracting = true;
+        if (el.btnYtsExtract) {
+          el.btnYtsExtract.disabled = true;
+          el.btnYtsExtract.classList.add('opacity-60');
+        }
+        if (el.ytsExtractStatus) {
+          el.ytsExtractStatus.textContent = hasTranscript
+            ? '⏳ 입력한 자막에서 Gemini AI가 핵심 쉐도잉 문장 6~10개를 추출 중입니다...'
+            : `⏳ 자막 없이 영상 오디오를 직접 분석 중입니다 (${canonicalWatchUrl})...`;
+        }
+
         try {
-          const result = await callGeminiApi([{ text: prompt }]);
+          const result = await callGeminiApi(parts);
           const rawSentences = Array.isArray(result?.sentences) ? result.sentences.slice(0, 10) : [];
           const normalized = rawSentences
             .map(s => {
@@ -8832,14 +8906,14 @@
             .filter(s => s.enText.length > 0);
 
           if (normalized.length === 0) {
-            throw new Error('추출된 유효 문장이 없습니다. 타임스탬프가 포함된 자막을 확인해주세요.');
+            throw new Error('추출된 유효 문장이 없습니다. 공개 영상 여부 또는 자막을 확인해주세요.');
           }
 
           const newSet = {
             id: `yts-${Date.now()}`,
             title: String(result?.setTitle || `YouTube (${videoId}) 쉐도잉`).trim(),
             videoId,
-            url: urlInput,
+            url: canonicalWatchUrl,
             createdAt: Date.now(),
             sentences: normalized
           };
@@ -8856,7 +8930,7 @@
           renderYtsWorkspace();
         } catch (err) {
           if (el.ytsExtractStatus && !err.isMissingKey) {
-            el.ytsExtractStatus.textContent = '❌ ' + (err.message || '문장 추출 중 오류가 발생했습니다.');
+            el.ytsExtractStatus.textContent = '❌ ' + formatYouTubeDirectAiError(err, !hasTranscript);
           }
         } finally {
           state.ytsExtracting = false;
