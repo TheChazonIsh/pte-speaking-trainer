@@ -298,6 +298,21 @@
 
             <!-- Shared Neural Voice Controls -->
             <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+              <!-- Gemini 3.8 Flash TTS Toggle Bar -->
+              <div class="flex flex-wrap items-center justify-between gap-2 pb-2.5 border-b border-slate-200/80">
+                <label class="inline-flex items-center gap-2.5 cursor-pointer select-none min-w-0">
+                  <span class="relative inline-flex items-center shrink-0">
+                    <input id="chk-rs-gemini-tts" type="checkbox" checked class="sr-only peer" />
+                    <span class="w-9 h-5 bg-slate-300 rounded-full peer peer-checked:bg-indigo-600 transition-colors after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-4"></span>
+                  </span>
+                  <span class="text-xs font-bold text-slate-800">🔊 AI 자연스러운 원어민 음성 사용 (Gemini TTS)</span>
+                </label>
+                <div class="flex items-center gap-1.5 flex-wrap">
+                  <span id="rs-gemini-tts-badge" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800">키 미등록 → 브라우저 음성 자동 폴백</span>
+                  <span id="rs-tts-cache-badge" class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-slate-200/80 text-slate-700 tabular-nums">캐시 0건</span>
+                </div>
+              </div>
+
               <div class="flex items-center justify-between gap-2 flex-wrap">
                 <div class="flex items-center gap-1.5 flex-wrap">
                   <span class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
@@ -411,6 +426,21 @@
             <div id="rl-academic-mode-box" class="space-y-5">
               <!-- Shared Neural Voice Controls -->
               <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+                <!-- Gemini 3.8 Flash TTS Toggle Bar -->
+                <div class="flex flex-wrap items-center justify-between gap-2 pb-2.5 border-b border-slate-200/80">
+                  <label class="inline-flex items-center gap-2.5 cursor-pointer select-none min-w-0">
+                    <span class="relative inline-flex items-center shrink-0">
+                      <input id="chk-rl-gemini-tts" type="checkbox" checked class="sr-only peer" />
+                      <span class="w-9 h-5 bg-slate-300 rounded-full peer peer-checked:bg-indigo-600 transition-colors after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-4"></span>
+                    </span>
+                    <span class="text-xs font-bold text-slate-800">🔊 AI 자연스러운 원어민 음성 사용 (Gemini TTS)</span>
+                  </label>
+                  <div class="flex items-center gap-1.5 flex-wrap">
+                    <span id="rl-gemini-tts-badge" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800">키 미등록 → 브라우저 음성 자동 폴백</span>
+                    <span id="rl-tts-cache-badge" class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-slate-200/80 text-slate-700 tabular-nums">캐시 0건</span>
+                  </div>
+                </div>
+
                 <div class="flex items-center justify-between gap-2 flex-wrap">
                   <div class="flex items-center gap-1.5 flex-wrap">
                     <span class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
@@ -1160,6 +1190,9 @@
     </div>
   </footer>
 
+  <!-- Reusable iOS-Safe Audio Element for Gemini 3.8 Flash TTS WAV Playback -->
+  <audio id="gemini-tts-audio" preload="auto" playsinline class="hidden"></audio>
+
   <!-- External Question Bank -->
   <script src="./data.js"></script>
 
@@ -1184,6 +1217,7 @@
         ttsAccent: 'pte_tts_accent',
         ttsVoiceUri: 'pte_tts_voice_uri',
         ttsRate: 'pte_tts_rate',
+        useGeminiTts: 'pte_use_gemini_tts',
         geminiApiKey: 'pte_gemini_api_key',
         geminiModel: 'pte_gemini_model',
         bookmarks: 'pte_bookmarks',
@@ -1353,6 +1387,8 @@
         // Gemini AI, Bookmarks, Vocabulary, Logs, Custom RS & YouTube RL
         geminiApiKey: loadRawStorage(STORAGE_KEYS.geminiApiKey, ''),
         geminiModel: loadRawStorage(STORAGE_KEYS.geminiModel, 'gemini-4-hydrogen') || 'gemini-4-hydrogen',
+        useGeminiTts: loadRawStorage(STORAGE_KEYS.useGeminiTts, 'true') !== 'false',
+        ttsAudioCache: new Map(),
         bookmarks: loadJsonStorage(STORAGE_KEYS.bookmarks, []),
         vocabList: loadJsonStorage(STORAGE_KEYS.vocabList, []),
         practiceLogs: loadJsonStorage(STORAGE_KEYS.practiceLogs, []),
@@ -1478,6 +1514,9 @@
 
         // Repeat Sentence DOM
         panelRepeatSentence: document.getElementById('panel-repeat-sentence'),
+        chkRsGeminiTts: document.getElementById('chk-rs-gemini-tts'),
+        rsGeminiTtsBadge: document.getElementById('rs-gemini-tts-badge'),
+        rsTtsCacheBadge: document.getElementById('rs-tts-cache-badge'),
         rsVoiceQualityBadge: document.getElementById('rs-voice-quality-badge'),
         rsAccentSelect: document.getElementById('rs-accent-select'),
         rsVoiceSelect: document.getElementById('rs-voice-select'),
@@ -1498,6 +1537,10 @@
 
         // Retell Lecture DOM
         panelRetellLecture: document.getElementById('panel-retell-lecture'),
+        chkRlGeminiTts: document.getElementById('chk-rl-gemini-tts'),
+        rlGeminiTtsBadge: document.getElementById('rl-gemini-tts-badge'),
+        rlTtsCacheBadge: document.getElementById('rl-tts-cache-badge'),
+        geminiTtsAudio: document.getElementById('gemini-tts-audio'),
         rlVoiceQualityBadge: document.getElementById('rl-voice-quality-badge'),
         rlAccentSelect: document.getElementById('rl-accent-select'),
         rlVoiceSelect: document.getElementById('rl-voice-select'),
@@ -1783,6 +1826,168 @@
             b.className = 'px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800';
           }
         });
+
+        syncGeminiTtsUI();
+      }
+
+      function getGeminiTtsVoiceName(accent = state.ttsAccent, targetMode = state.mode) {
+        if (accent === 'en-AU') return 'Puck';
+        if (accent === 'en-GB') return 'Charon';
+        if (accent === 'en-US') return 'Kore';
+        return targetMode === 'retell-lecture' ? 'Fenrir' : 'Aoede';
+      }
+
+      function isGeminiTtsActive() {
+        return Boolean(state.useGeminiTts && state.geminiApiKey && state.geminiApiKey.trim());
+      }
+
+      function updateTtsCacheBadges() {
+        const count = state.ttsAudioCache ? state.ttsAudioCache.size : 0;
+        [el.rsTtsCacheBadge, el.rlTtsCacheBadge].forEach(badge => {
+          if (badge) badge.textContent = `캐시 ${count}건`;
+        });
+      }
+
+      function syncGeminiTtsUI() {
+        const checkboxes = [el.chkRsGeminiTts, el.chkRlGeminiTts];
+        const badges = [
+          { el: el.rsGeminiTtsBadge, mode: 'repeat-sentence' },
+          { el: el.rlGeminiTtsBadge, mode: 'retell-lecture' }
+        ];
+        const hasKey = Boolean(state.geminiApiKey && state.geminiApiKey.trim());
+
+        checkboxes.forEach(chk => {
+          if (chk) chk.checked = Boolean(state.useGeminiTts);
+        });
+
+        badges.forEach(({ el: badge, mode }) => {
+          if (!badge) return;
+          const voiceName = getGeminiTtsVoiceName(state.ttsAccent, mode);
+          if (state.useGeminiTts && hasKey) {
+            badge.textContent = `✨ Gemini 3.8 Flash · ${voiceName}`;
+            badge.className = 'px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-100 text-indigo-800';
+          } else if (state.useGeminiTts && !hasKey) {
+            badge.textContent = '키 미등록 → 브라우저 음성 자동 폴백';
+            badge.className = 'px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800';
+          } else {
+            badge.textContent = 'OFF · 브라우저 기본 음성 사용';
+            badge.className = 'px-2 py-0.5 rounded-full text-[10px] font-medium bg-slate-200 text-slate-600';
+          }
+        });
+
+        updateTtsCacheBadges();
+      }
+
+      function pcmBase64ToWavBlob(base64Data, mimeType = 'audio/L16;rate=24000') {
+        const cleanB64 = String(base64Data || '')
+          .replace(/\s+/g, '')
+          .replace(/-/g, '+')
+          .replace(/_/g, '/');
+        const binaryStr = atob(cleanB64);
+        const len = binaryStr.length;
+        const pcmBytes = new Uint8Array(len);
+        for (let i = 0; i < len; i++) {
+          pcmBytes[i] = binaryStr.charCodeAt(i);
+        }
+
+        // Skip adding header if response already contains a standard RIFF container
+        if (
+          len >= 12 &&
+          pcmBytes[0] === 0x52 && pcmBytes[1] === 0x49 &&
+          pcmBytes[2] === 0x46 && pcmBytes[3] === 0x46
+        ) {
+          return new Blob([pcmBytes], { type: 'audio/wav' });
+        }
+
+        const rateMatch = String(mimeType || '').match(/rate=(\d+)/i);
+        const chanMatch = String(mimeType || '').match(/channels=(\d+)/i);
+        const sampleRate = rateMatch ? Math.max(8000, parseInt(rateMatch[1], 10) || 24000) : 24000;
+        const numChannels = chanMatch ? Math.max(1, parseInt(chanMatch[1], 10) || 1) : 1;
+        const bitsPerSample = 16;
+        const byteRate = sampleRate * numChannels * (bitsPerSample / 8);
+        const blockAlign = numChannels * (bitsPerSample / 8);
+
+        const wavHeader = new ArrayBuffer(44);
+        const view = new DataView(wavHeader);
+        const writeAscii = (offset, str) => {
+          for (let i = 0; i < str.length; i++) {
+            view.setUint8(offset + i, str.charCodeAt(i));
+          }
+        };
+
+        writeAscii(0, 'RIFF');
+        view.setUint32(4, 36 + pcmBytes.byteLength, true);
+        writeAscii(8, 'WAVE');
+        writeAscii(12, 'fmt ');
+        view.setUint32(16, 16, true); // PCM chunk size
+        view.setUint16(20, 1, true);  // AudioFormat = 1 (PCM)
+        view.setUint16(22, numChannels, true);
+        view.setUint32(24, sampleRate, true);
+        view.setUint32(28, byteRate, true);
+        view.setUint16(32, blockAlign, true);
+        view.setUint16(34, bitsPerSample, true);
+        writeAscii(36, 'data');
+        view.setUint32(40, pcmBytes.byteLength, true);
+
+        return new Blob([wavHeader, pcmBytes], { type: 'audio/wav' });
+      }
+
+      async function fetchOrGetCachedGeminiTts(text, voiceName) {
+        const cleanText = String(text || '').trim();
+        const cacheKey = `${voiceName}::${cleanText}`;
+        if (state.ttsAudioCache.has(cacheKey)) {
+          const cached = state.ttsAudioCache.get(cacheKey);
+          return { ...cached, fromCache: true };
+        }
+
+        const apiKey = (state.geminiApiKey || '').trim();
+        if (!apiKey) {
+          throw new Error('Gemini API 키가 설정되지 않았습니다.');
+        }
+
+        const endpoint = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash-tts:generateContent';
+        const response = await fetch(endpoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-goog-api-key': apiKey
+          },
+          body: JSON.stringify({
+            contents: [{ role: 'user', parts: [{ text: cleanText }] }],
+            generationConfig: {
+              responseModalities: ['AUDIO'],
+              speechConfig: {
+                voiceConfig: {
+                  prebuiltVoiceConfig: {
+                    voiceName
+                  }
+                }
+              }
+            }
+          })
+        });
+
+        const payload = await response.json().catch(() => ({}));
+        if (!response.ok) {
+          const errMsg = payload?.error?.message || `HTTP ${response.status} 오류가 발생했습니다.`;
+          throw new Error(errMsg);
+        }
+
+        const parts = payload?.candidates?.[0]?.content?.parts || [];
+        const audioPart = parts.find(p => p.inlineData && p.inlineData.data);
+        if (!audioPart) {
+          throw new Error('Gemini TTS 응답에 오디오 데이터가 포함되지 않았습니다.');
+        }
+
+        const wavBlob = pcmBase64ToWavBlob(
+          audioPart.inlineData.data,
+          audioPart.inlineData.mimeType || 'audio/L16;rate=24000'
+        );
+        const blobUrl = URL.createObjectURL(wavBlob);
+        const entry = { blobUrl, voiceName, byteLength: wavBlob.size };
+        state.ttsAudioCache.set(cacheKey, entry);
+        updateTtsCacheBadges();
+        return { ...entry, fromCache: false };
       }
 
       function loadVoices() {
@@ -1818,6 +2023,16 @@
           clearTimeout(state.ttsSafetyTimerId);
           state.ttsSafetyTimerId = null;
         }
+        if (el.geminiTtsAudio) {
+          try {
+            el.geminiTtsAudio.onended = null;
+            el.geminiTtsAudio.onerror = null;
+            el.geminiTtsAudio.pause();
+            el.geminiTtsAudio.currentTime = 0;
+          } catch (e) {
+            // ignore
+          }
+        }
         if ('speechSynthesis' in window) {
           try {
             window.speechSynthesis.cancel();
@@ -1831,51 +2046,37 @@
         });
       }
 
-      function speakText(text, { targetMode = 'repeat-sentence', onComplete = null } = {}) {
-        ensureAudioContext();
-        // iOS Safari/PWA fix: ensure mic stream is released so AirPods stay in Media mode during TTS
-        releaseMicrophoneStream();
-        cancelSpeech();
-        const sessionId = state.speechSessionId;
-        const isRL = targetMode === 'retell-lecture';
-        const waveBars = isRL ? el.rlWaveBars : el.rsWaveBars;
-        const statusLabel = isRL ? el.rlAudioStatus : el.rsAudioStatus;
-
-        const finish = () => {
-          if (sessionId !== state.speechSessionId) return;
-          if (state.ttsKeepAliveTimerId !== null) {
-            clearInterval(state.ttsKeepAliveTimerId);
-            state.ttsKeepAliveTimerId = null;
-          }
-          if (state.ttsSafetyTimerId !== null) {
-            clearTimeout(state.ttsSafetyTimerId);
-            state.ttsSafetyTimerId = null;
-          }
-          waveBars.classList.add('hidden');
-          waveBars.classList.remove('flex');
-          statusLabel.textContent = isRL ? '강의 오디오 재생 완료' : '음성 재생 완료';
-          if (typeof onComplete === 'function') onComplete();
-        };
+      function speakWithBrowserTts({ text, sessionId, isRL, waveBars, statusLabel, finish, fallbackNotice = '' }) {
+        if (sessionId !== state.speechSessionId) return;
 
         const voice = getSelectedVoiceObject();
         const effectiveLang = (voice && voice.lang) || (state.ttsAccent !== 'all' ? state.ttsAccent : 'en-AU');
 
         waveBars.classList.remove('hidden');
         waveBars.classList.add('flex');
-        statusLabel.textContent = isRL
-          ? `🔊 강의 재생 중 (${voice ? voice.name : effectiveLang}) — 메모장에 필기하세요`
-          : `🔊 원어민 음성 재생 중 (${voice ? voice.name : effectiveLang})... 집중해서 들으세요`;
+        if (fallbackNotice) {
+          statusLabel.textContent = `🔊 브라우저 음성 폴백 재생 중 (${voice ? voice.name : effectiveLang})`;
+          if (!isRL && el.rsTtsFallbackNote) {
+            el.rsTtsFallbackNote.textContent = fallbackNotice;
+            el.rsTtsFallbackNote.classList.remove('hidden');
+          }
+        } else {
+          statusLabel.textContent = isRL
+            ? `🔊 강의 재생 중 (${voice ? voice.name : effectiveLang}) — 메모장에 필기하세요`
+            : `🔊 원어민 음성 재생 중 (${voice ? voice.name : effectiveLang})... 집중해서 들으세요`;
+          if (!isRL && el.rsTtsFallbackNote) {
+            el.rsTtsFallbackNote.classList.add('hidden');
+          }
+        }
 
         if (!('speechSynthesis' in window) || typeof SpeechSynthesisUtterance === 'undefined') {
-          if (!isRL) {
+          if (!isRL && el.rsTtsFallbackNote) {
             el.rsTtsFallbackNote.textContent = '이 브라우저는 SpeechSynthesis를 지원하지 않아 타이머 모드로 진행됩니다.';
             el.rsTtsFallbackNote.classList.remove('hidden');
           }
           state.ttsSafetyTimerId = setTimeout(finish, 2500);
           return;
         }
-
-        if (!isRL) el.rsTtsFallbackNote.classList.add('hidden');
 
         // iOS Safari & Chromium keep-alive: nudge engine every 10s so speech never stalls silently
         state.ttsKeepAliveTimerId = setInterval(() => {
@@ -1936,6 +2137,104 @@
         };
 
         speakNextChunk();
+      }
+
+      async function speakText(text, { targetMode = 'repeat-sentence', onComplete = null } = {}) {
+        ensureAudioContext();
+        // iOS Safari/PWA fix: ensure mic stream is released so AirPods stay in Media mode during playback
+        releaseMicrophoneStream();
+        cancelSpeech();
+        const sessionId = state.speechSessionId;
+        const isRL = targetMode === 'retell-lecture';
+        const waveBars = isRL ? el.rlWaveBars : el.rsWaveBars;
+        const statusLabel = isRL ? el.rlAudioStatus : el.rsAudioStatus;
+
+        const finish = () => {
+          if (sessionId !== state.speechSessionId) return;
+          if (state.ttsKeepAliveTimerId !== null) {
+            clearInterval(state.ttsKeepAliveTimerId);
+            state.ttsKeepAliveTimerId = null;
+          }
+          if (state.ttsSafetyTimerId !== null) {
+            clearTimeout(state.ttsSafetyTimerId);
+            state.ttsSafetyTimerId = null;
+          }
+          waveBars.classList.add('hidden');
+          waveBars.classList.remove('flex');
+          statusLabel.textContent = isRL ? '강의 오디오 재생 완료' : '음성 재생 완료';
+          if (typeof onComplete === 'function') onComplete();
+        };
+
+        if (isGeminiTtsActive() && el.geminiTtsAudio) {
+          const voiceName = getGeminiTtsVoiceName(state.ttsAccent, targetMode);
+          const cleanText = String(text || '').trim();
+          const isCached = state.ttsAudioCache.has(`${voiceName}::${cleanText}`);
+
+          if (!isRL && el.rsTtsFallbackNote) {
+            el.rsTtsFallbackNote.classList.add('hidden');
+          }
+          waveBars.classList.remove('hidden');
+          waveBars.classList.add('flex');
+          statusLabel.textContent = isCached
+            ? `⚡ Gemini 3.8 Flash 캐시 음성 로드 중 (${voiceName})...`
+            : `✨ Gemini 3.8 Flash 원어민 음성 생성 중 (${voiceName})...`;
+
+          try {
+            const { blobUrl, fromCache } = await fetchOrGetCachedGeminiTts(cleanText, voiceName);
+            if (sessionId !== state.speechSessionId) return;
+
+            const audio = el.geminiTtsAudio;
+            audio.src = blobUrl;
+            audio.defaultPlaybackRate = state.ttsRate || 1.0;
+            audio.playbackRate = state.ttsRate || 1.0;
+
+            const cacheTag = fromCache ? ' · 캐시 즉시 재생 ⚡' : '';
+            statusLabel.textContent = isRL
+              ? `🔊 Gemini AI 강의 재생 중 (${voiceName}${cacheTag}) — 메모장에 필기하세요`
+              : `🔊 Gemini AI 원어민 음성 재생 중 (${voiceName}${cacheTag})... 집중해서 들으세요`;
+
+            audio.onended = () => {
+              if (sessionId === state.speechSessionId) finish();
+            };
+            audio.onerror = () => {
+              if (sessionId !== state.speechSessionId) return;
+              speakWithBrowserTts({
+                text,
+                sessionId,
+                isRL,
+                waveBars,
+                statusLabel,
+                finish,
+                fallbackNotice: 'Gemini 오디오 재생에 실패해 브라우저 기본 음성으로 전환했습니다.'
+              });
+            };
+
+            await audio.play();
+            audio.playbackRate = state.ttsRate || 1.0;
+          } catch (err) {
+            if (sessionId !== state.speechSessionId) return;
+            console.warn('Gemini TTS fallback to SpeechSynthesis:', err);
+            speakWithBrowserTts({
+              text,
+              sessionId,
+              isRL,
+              waveBars,
+              statusLabel,
+              finish,
+              fallbackNotice: `Gemini TTS 폴백 (${err.message || '연결 오류'}) → 브라우저 음성으로 재생 중`
+            });
+          }
+          return;
+        }
+
+        speakWithBrowserTts({
+          text,
+          sessionId,
+          isRL,
+          waveBars,
+          statusLabel,
+          finish
+        });
       }
 
       // ==========================================
@@ -3416,12 +3715,20 @@
         syncVoiceDropdowns();
       }
 
+      function handleGeminiTtsToggle(enabled) {
+        state.useGeminiTts = Boolean(enabled);
+        saveStorage(STORAGE_KEYS.useGeminiTts, String(state.useGeminiTts));
+        syncGeminiTtsUI();
+      }
+
       el.rsAccentSelect.addEventListener('change', (e) => handleAccentChange(e.target.value));
       el.rlAccentSelect.addEventListener('change', (e) => handleAccentChange(e.target.value));
       el.rsVoiceSelect.addEventListener('change', (e) => handleVoiceChange(e.target.value));
       el.rlVoiceSelect.addEventListener('change', (e) => handleVoiceChange(e.target.value));
       el.rsRateSelect.addEventListener('change', (e) => handleRateChange(e.target.value));
       el.rlRateSelect.addEventListener('change', (e) => handleRateChange(e.target.value));
+      el.chkRsGeminiTts.addEventListener('change', (e) => handleGeminiTtsToggle(e.target.checked));
+      el.chkRlGeminiTts.addEventListener('change', (e) => handleGeminiTtsToggle(e.target.checked));
 
       el.btnRsListenOnly.addEventListener('click', () => {
         if (state.mode !== 'repeat-sentence') return;
@@ -4055,6 +4362,7 @@
           el.headerAiDot.className = 'w-2 h-2 rounded-full bg-slate-300';
           el.headerAiLabel.textContent = '⚙️ AI 설정';
         }
+        syncGeminiTtsUI();
       }
 
       function showAiSettingsFeedback(msg, isError = false) {
@@ -5231,6 +5539,12 @@
         releaseMicrophoneStream();
         if (state.recordingUrl) {
           URL.revokeObjectURL(state.recordingUrl);
+        }
+        if (state.ttsAudioCache) {
+          state.ttsAudioCache.forEach(entry => {
+            if (entry && entry.blobUrl) URL.revokeObjectURL(entry.blobUrl);
+          });
+          state.ttsAudioCache.clear();
         }
       });
 

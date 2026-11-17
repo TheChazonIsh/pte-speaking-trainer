@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pte-trainer-v5';
+const CACHE_NAME = 'pte-trainer-v6';
 const PRECACHE_URLS = [
   './',
   './index.html',
