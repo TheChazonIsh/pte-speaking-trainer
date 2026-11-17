@@ -73,7 +73,7 @@
             <h1 class="text-base sm:text-lg font-bold tracking-tight">PTE Academic 실전 연습</h1>
             <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-teal-500/20 text-teal-200 border border-teal-400/30">NZ 대비</span>
           </div>
-          <p class="text-xs text-slate-300">Speaking (RA · DI · RS · RL) &amp; Writing (SWT · Essay) · 180문제 + AI 무한생성 &amp; 유튜브 클립</p>
+          <p class="text-xs text-slate-300">Speaking · Impromptu Talk · Writing · 215문제 + AI 섀도잉 &amp; 원어민 교정</p>
         </div>
       </div>
 
@@ -125,6 +125,11 @@
           class="tab-btn shrink-0 relative py-3 px-3 text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-1.5 transition cursor-pointer">
           <span>Retell Lecture (강의 요약)</span>
           <span class="hidden lg:inline-block text-[11px] font-medium px-1.5 py-0.5 rounded-full bg-slate-100 text-slate-600">10s/40s</span>
+        </button>
+        <button id="tab-impromptu" type="button" role="tab" aria-selected="false"
+          class="tab-btn shrink-0 relative py-3 px-3 text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-1.5 transition cursor-pointer">
+          <span>⏱️ 1분 즉흥 말하기</span>
+          <span class="hidden lg:inline-block text-[11px] font-medium px-1.5 py-0.5 rounded-full bg-slate-100 text-slate-600">15s/60s</span>
         </button>
         <button id="tab-writing" type="button" role="tab" aria-selected="false"
           class="tab-btn shrink-0 relative py-3 px-3 text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-1.5 transition cursor-pointer">
@@ -232,10 +237,25 @@
           </div>
 
           <!-- 1) Read Aloud Container -->
-          <div id="panel-read-aloud" class="p-5 sm:p-7">
+          <div id="panel-read-aloud" class="p-5 sm:p-7 space-y-4">
             <p id="ra-passage" class="text-lg sm:text-xl leading-relaxed sm:leading-loose text-slate-900 font-normal tracking-wide select-text">
             </p>
-            <div class="mt-5 pt-4 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-500">
+            <!-- Shadowing Pre-Listen Bar (Reuses Gemini 3.8 Flash TTS / Cache / Browser Fallback) -->
+            <div class="rounded-xl border border-sky-200 bg-sky-50/60 px-3.5 py-2.5 flex flex-wrap items-center justify-between gap-2.5">
+              <div class="flex items-center gap-2 min-w-0">
+                <div id="ra-wave-bars" class="hidden items-end gap-1 h-4 shrink-0">
+                  <span class="sound-wave-bar w-1 h-3 bg-pte-blue rounded-full" style="animation-delay:0ms"></span>
+                  <span class="sound-wave-bar w-1 h-4 bg-pte-blue rounded-full" style="animation-delay:150ms"></span>
+                  <span class="sound-wave-bar w-1 h-3 bg-teal-500 rounded-full" style="animation-delay:300ms"></span>
+                </div>
+                <span id="ra-audio-status" class="text-xs font-semibold text-slate-700 truncate">원어민 모범 읽기를 먼저 듣고 섀도잉으로 발음을 다듬어 보세요</span>
+              </div>
+              <button id="btn-ra-listen-model" type="button"
+                class="shrink-0 px-3 py-1.5 rounded-lg text-xs font-bold text-pte-blue bg-white hover:bg-sky-100 border border-sky-300 shadow-2xs transition cursor-pointer">
+                🔊 원어민 모범 읽기 먼저 듣기
+              </button>
+            </div>
+            <div class="pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-500">
               <span id="ra-word-count">단어 수: 0 words</span>
               <span>💡 Tip: 끊어 읽기(/)와 강세에 유의하여 자연스러운 속도로 또박또박 읽으세요.</span>
             </div>
@@ -243,6 +263,21 @@
 
           <!-- 2) Describe Image Container -->
           <div id="panel-describe-image" class="hidden p-4 sm:p-6 space-y-4">
+            <!-- DI Question Bank & AI Chart Generator Bar -->
+            <div class="space-y-2">
+              <div class="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-indigo-200 bg-indigo-50/50 px-3.5 py-2.5">
+                <div class="flex items-center gap-2 flex-wrap text-xs">
+                  <span class="font-bold text-indigo-900">📊 Describe Image 차트 은행</span>
+                  <span id="di-bank-summary-badge" class="px-2 py-0.5 rounded-full font-bold bg-white text-indigo-700 border border-indigo-200">기본 30문항 + AI 추가 0문항</span>
+                </div>
+                <button id="btn-di-ai-generate" type="button"
+                  class="px-3 py-1.5 rounded-lg text-xs font-bold text-white bg-gradient-to-r from-indigo-600 to-pte-blue hover:from-indigo-700 hover:to-sky-700 shadow-xs transition cursor-pointer">
+                  ✨ AI 새 차트 문제 5개 추가 생성
+                </button>
+              </div>
+              <p id="di-ai-gen-status" class="hidden text-xs font-semibold rounded-lg px-3 py-2"></p>
+            </div>
+
             <div class="bg-slate-50 rounded-xl border border-slate-200 p-3 sm:p-4">
               <div id="di-chart-container" class="w-full overflow-x-auto flex justify-center"></div>
             </div>
@@ -673,6 +708,62 @@
               </div>
             </div>
           </div>
+
+          <!-- 5) 1-Minute Impromptu Talk Container -->
+          <div id="panel-impromptu" class="hidden p-5 sm:p-6 space-y-5">
+            <!-- Prompt Card -->
+            <div class="rounded-2xl border border-emerald-200 bg-gradient-to-br from-emerald-50/80 via-white to-sky-50/70 p-4 sm:p-5 space-y-3">
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <span id="imp-category-badge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
+                  New Zealand Life
+                </span>
+                <span class="text-[11px] font-semibold text-slate-500">15초 구상 → Beep → 60초 말하기</span>
+              </div>
+              <p id="imp-question-ko" class="text-base sm:text-lg font-extrabold text-slate-900 leading-snug"></p>
+              <p id="imp-question-en" class="text-sm sm:text-[15px] font-medium text-slate-700 leading-relaxed bg-white/85 rounded-xl border border-slate-200 p-3.5 select-text"></p>
+            </div>
+
+            <!-- 15-Second Idea Guide & Helpful Starter Phrases -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div class="rounded-xl border border-amber-200 bg-amber-50/50 p-3.5 space-y-2">
+                <h3 class="text-xs font-bold text-amber-900">💡 15초 생각 가이드 (구조화 팁)</h3>
+                <ul id="imp-guide-points" class="list-disc list-inside text-xs text-slate-700 space-y-1 leading-relaxed"></ul>
+              </div>
+              <div class="rounded-xl border border-sky-200 bg-sky-50/50 p-3.5 space-y-2">
+                <h3 class="text-xs font-bold text-sky-900">🗣️ 바로 써먹는 원어민 오프닝 표현</h3>
+                <ul id="imp-sample-expressions" class="space-y-1.5 text-xs text-slate-700"></ul>
+              </div>
+            </div>
+
+            <!-- Optional Native Sample Answer Audio & Script -->
+            <div class="pt-1 space-y-3">
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <div class="flex items-center gap-2 flex-wrap">
+                  <button id="btn-imp-toggle-model" type="button" aria-expanded="false"
+                    class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 transition cursor-pointer">
+                    ✨ 1분 모범 답변 스크립트 보기
+                  </button>
+                  <button id="btn-imp-listen-model" type="button"
+                    class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-white hover:bg-sky-50 text-pte-blue border border-sky-200 transition cursor-pointer">
+                    🔊 원어민 모범 답변 듣기
+                  </button>
+                </div>
+                <div class="flex items-center gap-1.5 min-w-0">
+                  <div id="imp-wave-bars" class="hidden items-end gap-1 h-4 shrink-0">
+                    <span class="sound-wave-bar w-1 h-3 bg-pte-blue rounded-full" style="animation-delay:0ms"></span>
+                    <span class="sound-wave-bar w-1 h-4 bg-pte-blue rounded-full" style="animation-delay:150ms"></span>
+                    <span class="sound-wave-bar w-1 h-3 bg-teal-500 rounded-full" style="animation-delay:300ms"></span>
+                  </div>
+                  <span id="imp-audio-status" class="text-xs text-slate-500 truncate"></span>
+                </div>
+              </div>
+
+              <div id="imp-model-box" class="hidden rounded-xl border border-indigo-200 bg-indigo-50/50 p-4 space-y-2">
+                <span class="block text-xs font-bold text-indigo-900">✨ 1분 즉흥 말하기 모범 답변 예시</span>
+                <p id="imp-model-answer" class="text-sm text-slate-800 leading-relaxed bg-white p-3.5 rounded-lg border border-indigo-100 select-text"></p>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -776,9 +867,14 @@
                 <span>녹음 파일 저장</span>
               </a>
             </div>
+            <button id="btn-shadowing-compare" type="button"
+              class="hidden w-full py-2.5 px-4 rounded-xl text-xs sm:text-sm font-bold text-teal-900 bg-teal-50 hover:bg-teal-100 border border-teal-300 shadow-2xs transition flex items-center justify-center gap-2 cursor-pointer">
+              <span>🔄 원어민 → 내 발음 연속 비교 듣기</span>
+            </button>
+            <p id="shadowing-compare-status" class="hidden text-xs font-semibold rounded-lg px-3 py-2 bg-teal-50 text-teal-800 border border-teal-200 text-center"></p>
             <button id="btn-ai-grade-speaking" type="button"
               class="w-full py-2.5 px-4 rounded-xl text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-indigo-600 to-pte-blue hover:from-indigo-700 hover:to-sky-700 shadow-xs transition flex items-center justify-center gap-2 cursor-pointer">
-              <span>✨ AI 발음·유창성 채점</span>
+              <span id="btn-ai-grade-speaking-label">✨ AI 발음·유창성 채점</span>
             </button>
           </div>
         </div>
@@ -1031,6 +1127,7 @@
             <button type="button" data-filter="describe-image" class="bm-filter-btn px-2.5 py-1 rounded-lg text-xs font-medium bg-slate-100 text-slate-600 cursor-pointer">DI</button>
             <button type="button" data-filter="repeat-sentence" class="bm-filter-btn px-2.5 py-1 rounded-lg text-xs font-medium bg-slate-100 text-slate-600 cursor-pointer">RS</button>
             <button type="button" data-filter="retell-lecture" class="bm-filter-btn px-2.5 py-1 rounded-lg text-xs font-medium bg-slate-100 text-slate-600 cursor-pointer">RL</button>
+            <button type="button" data-filter="impromptu" class="bm-filter-btn px-2.5 py-1 rounded-lg text-xs font-medium bg-slate-100 text-slate-600 cursor-pointer">IMP</button>
             <button type="button" data-filter="writing" class="bm-filter-btn px-2.5 py-1 rounded-lg text-xs font-medium bg-slate-100 text-slate-600 cursor-pointer">Writing</button>
           </div>
 
@@ -1185,7 +1282,7 @@
 
   <footer class="bg-white border-t border-slate-200 mt-auto">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-slate-500">
-      <span>NZ PTE Academic Trainer · RA (30) · DI (15) · RS (100+AI) · RL (15+YouTube) · Writing (20) · AI 채점 &amp; 오답/단어장</span>
+      <span>NZ PTE Academic Trainer · RA (30) · DI (30+AI) · RS (100+AI) · RL (15+YT) · Impromptu (20) · Writing (20)</span>
       <span>API 키·녹음·단어장·연습 기록은 사용자 브라우저에만 저장됩니다.</span>
     </div>
   </footer>
@@ -1205,6 +1302,7 @@
       const DESCRIBE_IMAGE_QUESTIONS = DATA.DESCRIBE_IMAGE_QUESTIONS || [];
       const REPEAT_SENTENCE_QUESTIONS = DATA.REPEAT_SENTENCE_QUESTIONS || [];
       const RETELL_LECTURE_QUESTIONS = DATA.RETELL_LECTURE_QUESTIONS || [];
+      const IMPROMPTU_QUESTIONS = DATA.IMPROMPTU_QUESTIONS || [];
       const SWT_QUESTIONS = DATA.SWT_QUESTIONS || [];
       const ESSAY_QUESTIONS = DATA.ESSAY_QUESTIONS || [];
 
@@ -1224,6 +1322,7 @@
         vocabList: 'pte_vocab_list',
         practiceLogs: 'pte_practice_logs',
         customRsQuestions: 'pte_custom_rs_questions',
+        customDiQuestions: 'pte_custom_di_questions',
         ytClipSets: 'pte_rl_yt_clip_sets'
       };
 
@@ -1294,6 +1393,12 @@
           prepSeconds: 10,
           speakSeconds: 40,
           instruction: '<strong>지시문:</strong> 45~60초 분량의 아카데믹 강의를 들으며 아래 <strong>실시간 메모장</strong>에 핵심 키워드를 필기하세요. 강의가 끝나면 <strong>10초 준비</strong> → <strong>삐(Beep)</strong> → <strong>40초 동안</strong> 강의 내용을 요약해 말하세요.'
+        },
+        impromptu: {
+          label: '1분 즉흥 말하기 (Impromptu Talk)',
+          prepSeconds: 15,
+          speakSeconds: 60,
+          instruction: '<strong>지시문:</strong> 일상·뉴질랜드 생활·유아교육(ECE)·비즈니스 주제에 대해 <strong>15초 동안 아이디어를 구상</strong>한 뒤(건너뛰기 가능), <strong>삐(Beep) 소리</strong>와 함께 <strong>60초 동안</strong> 영어로 즉흥 답변하세요.'
         }
       };
 
@@ -1332,12 +1437,13 @@
       }
 
       const state = {
-        mode: 'read-aloud', // 'read-aloud' | 'describe-image' | 'repeat-sentence' | 'retell-lecture' | 'writing'
+        mode: 'read-aloud', // 'read-aloud' | 'describe-image' | 'repeat-sentence' | 'retell-lecture' | 'impromptu' | 'writing' | 'review'
         questionIndex: {
           'read-aloud': 0,
           'describe-image': 0,
           'repeat-sentence': 0,
-          'retell-lecture': 0
+          'retell-lecture': 0,
+          impromptu: 0
         },
         phase: 'idle', // 'idle' | 'playing-audio' | 'prep' | 'recording' | 'done'
         remainingSeconds: 35,
@@ -1357,10 +1463,14 @@
         speechSessionId: 0,
         ttsSafetyTimerId: null,
 
-        // RS / RL Reveal state
+        // RS / RL / Impromptu Reveal & Shadowing Compare State
         rsScriptVisible: false,
         rlScriptVisible: false,
         rlModelVisible: false,
+        impModelVisible: false,
+        shadowingSessionId: 0,
+        shadowingDelayTimerId: null,
+        shadowingRunning: false,
 
         // Writing state
         writingSubmode: 'swt',
@@ -1393,6 +1503,7 @@
         vocabList: loadJsonStorage(STORAGE_KEYS.vocabList, []),
         practiceLogs: loadJsonStorage(STORAGE_KEYS.practiceLogs, []),
         customRsQuestions: loadJsonStorage(STORAGE_KEYS.customRsQuestions, []),
+        customDiQuestions: loadJsonStorage(STORAGE_KEYS.customDiQuestions, []),
         bookmarkFilter: 'all',
         vocabSearch: '',
         vocabFilter: 'all',
@@ -1400,6 +1511,7 @@
         lastWritingLogId: null,
         aiGradingBusy: false,
         rsAiGenerating: false,
+        diAiGenerating: false,
         ttsKeepAliveTimerId: null,
 
         // Retell Lecture YouTube Clip Mode
@@ -1436,6 +1548,7 @@
         tabDescribeImage: document.getElementById('tab-describe-image'),
         tabRepeatSentence: document.getElementById('tab-repeat-sentence'),
         tabRetellLecture: document.getElementById('tab-retell-lecture'),
+        tabImpromptu: document.getElementById('tab-impromptu'),
         tabWriting: document.getElementById('tab-writing'),
         tabReview: document.getElementById('tab-review'),
         tabReviewCount: document.getElementById('tab-review-count'),
@@ -1502,8 +1615,14 @@
         panelReadAloud: document.getElementById('panel-read-aloud'),
         raPassage: document.getElementById('ra-passage'),
         raWordCount: document.getElementById('ra-word-count'),
+        btnRaListenModel: document.getElementById('btn-ra-listen-model'),
+        raWaveBars: document.getElementById('ra-wave-bars'),
+        raAudioStatus: document.getElementById('ra-audio-status'),
 
         panelDescribeImage: document.getElementById('panel-describe-image'),
+        diBankSummaryBadge: document.getElementById('di-bank-summary-badge'),
+        btnDiAiGenerate: document.getElementById('btn-di-ai-generate'),
+        diAiGenStatus: document.getElementById('di-ai-gen-status'),
         diChartContainer: document.getElementById('di-chart-container'),
         btnToggleTemplate: document.getElementById('btn-toggle-template'),
         templateBtnText: document.getElementById('template-btn-text'),
@@ -1565,6 +1684,20 @@
         rlModelBox: document.getElementById('rl-model-box'),
         rlModelAnswer: document.getElementById('rl-model-answer'),
 
+        // 1-Minute Impromptu Talk DOM
+        panelImpromptu: document.getElementById('panel-impromptu'),
+        impCategoryBadge: document.getElementById('imp-category-badge'),
+        impQuestionKo: document.getElementById('imp-question-ko'),
+        impQuestionEn: document.getElementById('imp-question-en'),
+        impGuidePoints: document.getElementById('imp-guide-points'),
+        impSampleExpressions: document.getElementById('imp-sample-expressions'),
+        btnImpToggleModel: document.getElementById('btn-imp-toggle-model'),
+        btnImpListenModel: document.getElementById('btn-imp-listen-model'),
+        impWaveBars: document.getElementById('imp-wave-bars'),
+        impAudioStatus: document.getElementById('imp-audio-status'),
+        impModelBox: document.getElementById('imp-model-box'),
+        impModelAnswer: document.getElementById('imp-model-answer'),
+
         // Speaking Timer DOM
         phaseBadge: document.getElementById('phase-badge'),
         timerCard: document.getElementById('timer-card'),
@@ -1594,7 +1727,10 @@
         audioPlayback: document.getElementById('audio-playback'),
         playbackInfo: document.getElementById('playback-info'),
         btnDownloadAudio: document.getElementById('btn-download-audio'),
+        btnShadowingCompare: document.getElementById('btn-shadowing-compare'),
+        shadowingCompareStatus: document.getElementById('shadowing-compare-status'),
         btnAiGradeSpeaking: document.getElementById('btn-ai-grade-speaking'),
+        btnAiGradeSpeakingLabel: document.getElementById('btn-ai-grade-speaking-label'),
         speakingAiResult: document.getElementById('speaking-ai-result'),
 
         // Writing DOM
@@ -2013,6 +2149,59 @@
         return ranked.find(v => v.voiceURI === state.ttsVoiceUri) || ranked[0] || null;
       }
 
+      function getTtsUiTargets(targetMode) {
+        if (targetMode === 'retell-lecture') {
+          return {
+            isRL: true,
+            isRS: false,
+            waveBars: el.rlWaveBars,
+            statusLabel: el.rlAudioStatus,
+            doneText: '강의 오디오 재생 완료',
+            browserPrefix: '🔊 강의 재생 중',
+            browserSuffix: ' — 메모장에 필기하세요',
+            geminiPrefix: '🔊 Gemini AI 강의 재생 중',
+            geminiSuffix: ' — 메모장에 필기하세요'
+          };
+        }
+        if (targetMode === 'read-aloud') {
+          return {
+            isRL: false,
+            isRS: false,
+            waveBars: el.raWaveBars,
+            statusLabel: el.raAudioStatus,
+            doneText: '원어민 모범 읽기 완료 — 억양·끊어 읽기를 참고해 말해보세요',
+            browserPrefix: '🔊 원어민 지문 읽기 중',
+            browserSuffix: ' (섀도잉/억양 집중)',
+            geminiPrefix: '🔊 Gemini AI 원어민 읽기 중',
+            geminiSuffix: ' (억양·끊어 읽기 참고)'
+          };
+        }
+        if (targetMode === 'impromptu') {
+          return {
+            isRL: false,
+            isRS: false,
+            waveBars: el.impWaveBars,
+            statusLabel: el.impAudioStatus,
+            doneText: '모범 답변 재생 완료',
+            browserPrefix: '🔊 모범 답변 재생 중',
+            browserSuffix: '',
+            geminiPrefix: '🔊 Gemini AI 모범 답변 재생 중',
+            geminiSuffix: ''
+          };
+        }
+        return {
+          isRL: false,
+          isRS: true,
+          waveBars: el.rsWaveBars,
+          statusLabel: el.rsAudioStatus,
+          doneText: '음성 재생 완료',
+          browserPrefix: '🔊 원어민 음성 재생 중',
+          browserSuffix: '... 집중해서 들으세요',
+          geminiPrefix: '🔊 Gemini AI 원어민 음성 재생 중',
+          geminiSuffix: '... 집중해서 들으세요'
+        };
+      }
+
       function cancelSpeech() {
         state.speechSessionId += 1;
         if (state.ttsKeepAliveTimerId !== null) {
@@ -2040,15 +2229,110 @@
             // ignore
           }
         }
-        [el.rsWaveBars, el.rlWaveBars].forEach(bars => {
+        [el.rsWaveBars, el.rlWaveBars, el.raWaveBars, el.impWaveBars].forEach(bars => {
+          if (!bars) return;
           bars.classList.add('hidden');
           bars.classList.remove('flex');
         });
       }
 
-      function speakWithBrowserTts({ text, sessionId, isRL, waveBars, statusLabel, finish, fallbackNotice = '' }) {
+      function stopShadowingCompare(clearStatus = true) {
+        state.shadowingSessionId += 1;
+        if (state.shadowingDelayTimerId !== null) {
+          clearTimeout(state.shadowingDelayTimerId);
+          state.shadowingDelayTimerId = null;
+        }
+        state.shadowingRunning = false;
+        if (el.audioPlayback) {
+          el.audioPlayback.onended = null;
+          el.audioPlayback.onerror = null;
+          try {
+            el.audioPlayback.pause();
+            el.audioPlayback.currentTime = 0;
+          } catch (e) {
+            // ignore
+          }
+        }
+        if (el.btnShadowingCompare) {
+          const span = el.btnShadowingCompare.querySelector('span');
+          if (span) span.textContent = '🔄 원어민 → 내 발음 연속 비교 듣기';
+        }
+        if (clearStatus && el.shadowingCompareStatus) {
+          el.shadowingCompareStatus.classList.add('hidden');
+          el.shadowingCompareStatus.textContent = '';
+        }
+      }
+
+      function startShadowingCompare() {
+        if (state.shadowingRunning) {
+          stopShadowingCompare(true);
+          cancelSpeech();
+          return;
+        }
+        if (state.mode !== 'read-aloud' && state.mode !== 'repeat-sentence') return;
+        const q = getCurrentQuestion();
+        if (!q || !state.recordingUrl) return;
+
+        ensureAudioContext();
+        stopShadowingCompare(false);
+        state.shadowingRunning = true;
+        state.shadowingSessionId += 1;
+        const mySession = state.shadowingSessionId;
+
+        const btnSpan = el.btnShadowingCompare.querySelector('span');
+        if (btnSpan) btnSpan.textContent = '⏹️ 비교 듣기 중지';
+        el.shadowingCompareStatus.textContent = '1/2 🔊 원어민 음성 재생 중... (억양·강세·연음에 집중하세요)';
+        el.shadowingCompareStatus.className = 'text-xs font-semibold rounded-lg px-3 py-2 bg-sky-50 text-pte-blue border border-sky-200 text-center';
+        el.shadowingCompareStatus.classList.remove('hidden');
+
+        const targetText = state.mode === 'read-aloud' ? q.passage : q.sentence;
+
+        speakText(targetText, {
+          targetMode: state.mode,
+          onComplete: () => {
+            if (!state.shadowingRunning || mySession !== state.shadowingSessionId) return;
+            el.shadowingCompareStatus.textContent = '⏳ 0.7초 후 내 녹음 발음이 자동으로 이어집니다...';
+            el.shadowingCompareStatus.className = 'text-xs font-semibold rounded-lg px-3 py-2 bg-amber-50 text-amber-800 border border-amber-200 text-center';
+
+            state.shadowingDelayTimerId = setTimeout(async () => {
+              state.shadowingDelayTimerId = null;
+              if (!state.shadowingRunning || mySession !== state.shadowingSessionId) return;
+
+              el.shadowingCompareStatus.textContent = '2/2 🎧 내 발음 재생 중... (방금 들은 원어민과 비교해 보세요)';
+              el.shadowingCompareStatus.className = 'text-xs font-semibold rounded-lg px-3 py-2 bg-teal-50 text-teal-800 border border-teal-200 text-center';
+
+              el.audioPlayback.onended = () => {
+                if (mySession !== state.shadowingSessionId) return;
+                state.shadowingRunning = false;
+                if (btnSpan) btnSpan.textContent = '🔄 원어민 → 내 발음 연속 비교 듣기';
+                el.shadowingCompareStatus.textContent = '✅ 원어민 → 내 발음 연속 비교 완료! 다시 눌러 반복 비교할 수 있습니다.';
+                el.shadowingCompareStatus.className = 'text-xs font-semibold rounded-lg px-3 py-2 bg-emerald-50 text-emerald-700 border border-emerald-200 text-center';
+              };
+              el.audioPlayback.onerror = () => {
+                if (mySession !== state.shadowingSessionId) return;
+                stopShadowingCompare(false);
+                el.shadowingCompareStatus.textContent = '⚠️ 내 녹음 오디오 재생 중 오류가 발생했습니다.';
+                el.shadowingCompareStatus.className = 'text-xs font-semibold rounded-lg px-3 py-2 bg-rose-50 text-rose-700 border border-rose-200 text-center';
+              };
+
+              try {
+                el.audioPlayback.currentTime = 0;
+                await el.audioPlayback.play();
+              } catch (playErr) {
+                if (mySession !== state.shadowingSessionId) return;
+                stopShadowingCompare(false);
+                el.shadowingCompareStatus.textContent = '⚠️ 자동 재생이 차단되었습니다. 위 재생 버튼을 직접 눌러 확인해 주세요.';
+                el.shadowingCompareStatus.className = 'text-xs font-semibold rounded-lg px-3 py-2 bg-amber-50 text-amber-800 border border-amber-200 text-center';
+              }
+            }, 700);
+          }
+        });
+      }
+
+      function speakWithBrowserTts({ text, sessionId, ui, finish, fallbackNotice = '' }) {
         if (sessionId !== state.speechSessionId) return;
 
+        const { isRS, waveBars, statusLabel, browserPrefix, browserSuffix } = ui;
         const voice = getSelectedVoiceObject();
         const effectiveLang = (voice && voice.lang) || (state.ttsAccent !== 'all' ? state.ttsAccent : 'en-AU');
 
@@ -2056,21 +2340,19 @@
         waveBars.classList.add('flex');
         if (fallbackNotice) {
           statusLabel.textContent = `🔊 브라우저 음성 폴백 재생 중 (${voice ? voice.name : effectiveLang})`;
-          if (!isRL && el.rsTtsFallbackNote) {
+          if (isRS && el.rsTtsFallbackNote) {
             el.rsTtsFallbackNote.textContent = fallbackNotice;
             el.rsTtsFallbackNote.classList.remove('hidden');
           }
         } else {
-          statusLabel.textContent = isRL
-            ? `🔊 강의 재생 중 (${voice ? voice.name : effectiveLang}) — 메모장에 필기하세요`
-            : `🔊 원어민 음성 재생 중 (${voice ? voice.name : effectiveLang})... 집중해서 들으세요`;
-          if (!isRL && el.rsTtsFallbackNote) {
+          statusLabel.textContent = `${browserPrefix} (${voice ? voice.name : effectiveLang})${browserSuffix}`;
+          if (isRS && el.rsTtsFallbackNote) {
             el.rsTtsFallbackNote.classList.add('hidden');
           }
         }
 
         if (!('speechSynthesis' in window) || typeof SpeechSynthesisUtterance === 'undefined') {
-          if (!isRL && el.rsTtsFallbackNote) {
+          if (isRS && el.rsTtsFallbackNote) {
             el.rsTtsFallbackNote.textContent = '이 브라우저는 SpeechSynthesis를 지원하지 않아 타이머 모드로 진행됩니다.';
             el.rsTtsFallbackNote.classList.remove('hidden');
           }
@@ -2145,9 +2427,8 @@
         releaseMicrophoneStream();
         cancelSpeech();
         const sessionId = state.speechSessionId;
-        const isRL = targetMode === 'retell-lecture';
-        const waveBars = isRL ? el.rlWaveBars : el.rsWaveBars;
-        const statusLabel = isRL ? el.rlAudioStatus : el.rsAudioStatus;
+        const ui = getTtsUiTargets(targetMode);
+        const { isRS, waveBars, statusLabel, doneText, geminiPrefix, geminiSuffix } = ui;
 
         const finish = () => {
           if (sessionId !== state.speechSessionId) return;
@@ -2161,7 +2442,7 @@
           }
           waveBars.classList.add('hidden');
           waveBars.classList.remove('flex');
-          statusLabel.textContent = isRL ? '강의 오디오 재생 완료' : '음성 재생 완료';
+          statusLabel.textContent = doneText;
           if (typeof onComplete === 'function') onComplete();
         };
 
@@ -2170,7 +2451,7 @@
           const cleanText = String(text || '').trim();
           const isCached = state.ttsAudioCache.has(`${voiceName}::${cleanText}`);
 
-          if (!isRL && el.rsTtsFallbackNote) {
+          if (isRS && el.rsTtsFallbackNote) {
             el.rsTtsFallbackNote.classList.add('hidden');
           }
           waveBars.classList.remove('hidden');
@@ -2189,9 +2470,7 @@
             audio.playbackRate = state.ttsRate || 1.0;
 
             const cacheTag = fromCache ? ' · 캐시 즉시 재생 ⚡' : '';
-            statusLabel.textContent = isRL
-              ? `🔊 Gemini AI 강의 재생 중 (${voiceName}${cacheTag}) — 메모장에 필기하세요`
-              : `🔊 Gemini AI 원어민 음성 재생 중 (${voiceName}${cacheTag})... 집중해서 들으세요`;
+            statusLabel.textContent = `${geminiPrefix} (${voiceName}${cacheTag})${geminiSuffix}`;
 
             audio.onended = () => {
               if (sessionId === state.speechSessionId) finish();
@@ -2201,9 +2480,7 @@
               speakWithBrowserTts({
                 text,
                 sessionId,
-                isRL,
-                waveBars,
-                statusLabel,
+                ui,
                 finish,
                 fallbackNotice: 'Gemini 오디오 재생에 실패해 브라우저 기본 음성으로 전환했습니다.'
               });
@@ -2217,9 +2494,7 @@
             speakWithBrowserTts({
               text,
               sessionId,
-              isRL,
-              waveBars,
-              statusLabel,
+              ui,
               finish,
               fallbackNotice: `Gemini TTS 폴백 (${err.message || '연결 오류'}) → 브라우저 음성으로 재생 중`
             });
@@ -2230,9 +2505,7 @@
         speakWithBrowserTts({
           text,
           sessionId,
-          isRL,
-          waveBars,
-          statusLabel,
+          ui,
           finish
         });
       }
@@ -2458,6 +2731,7 @@
       }
 
       function clearPlayback() {
+        stopShadowingCompare(true);
         if (state.recordingUrl) {
           URL.revokeObjectURL(state.recordingUrl);
           state.recordingUrl = null;
@@ -2636,10 +2910,16 @@
         const yMax = Math.ceil((maxVal * 1.12) / niceStep) * niceStep;
         const ticks = 5;
 
+        const formatChartVal = (val, unit) => {
+          if (unit === '$') return `$${val}`;
+          if (unit === 'B') return `$${val}B`;
+          return unit ? `${val}${unit}` : `${val}`;
+        };
+
         for (let i = 0; i <= ticks; i++) {
           const val = Math.round(((yMax / ticks) * i) * 10) / 10;
           const y = pad.top + plotH - (val / yMax) * plotH;
-          const label = q.unit === '$' ? `$${val}` : (q.unit === 'B' ? `$${val}B` : (q.unit ? `${val}${q.unit}` : `${val}`));
+          const label = formatChartVal(val, q.unit);
           inner += `
             <line x1="${pad.left}" y1="${y}" x2="${W - pad.right}" y2="${y}" stroke="${i === 0 ? '#94a3b8' : '#e2e8f0'}" stroke-width="${i === 0 ? 1.5 : 1}" />
             <text x="${pad.left - 8}" y="${y + 4}" text-anchor="end" font-size="11" fill="#64748b">${label}</text>
@@ -2657,7 +2937,7 @@
             const barH = (d.value / yMax) * plotH;
             const x = pad.left + idx * slotW + (slotW - barW) / 2;
             const y = pad.top + plotH - barH;
-            const valLabel = q.unit ? `${d.value}${q.unit}` : `${d.value}`;
+            const valLabel = formatChartVal(d.value, q.unit);
             inner += `
               <rect x="${x}" y="${y}" width="${barW}" height="${barH}" rx="4" fill="${d.color}" />
               <text x="${x + barW / 2}" y="${y - 6}" text-anchor="middle" font-size="11.5" font-weight="700" fill="#1e293b">${valLabel}</text>
@@ -2666,12 +2946,13 @@
           });
         } else if (q.chartType === 'grouped-bar') {
           const count = q.categories.length;
-          const slotW = plotW / count;
-          const barW = Math.min(34, slotW * 0.28);
+          const slotW = plotW / Math.max(1, count);
+          const seriesCount = Math.max(1, q.series.length);
+          const barW = Math.min(34, (slotW * 0.7) / seriesCount);
           const gap = 6;
 
           q.series.forEach((s, si) => {
-            const lx = pad.left + 12 + si * 155;
+            const lx = pad.left + 12 + si * 165;
             inner += `
               <rect x="${lx}" y="${pad.top - 2}" width="11" height="11" rx="2" fill="${s.color}" />
               <text x="${lx + 16}" y="${pad.top + 8}" font-size="11" font-weight="600" fill="#334155">${escapeHtml(s.name)}</text>
@@ -2680,25 +2961,26 @@
 
           q.categories.forEach((cat, idx) => {
             const centerX = pad.left + idx * slotW + slotW / 2;
-            const totalGroupW = barW * 2 + gap;
+            const totalGroupW = barW * seriesCount + gap * Math.max(0, seriesCount - 1);
             q.series.forEach((s, si) => {
-              const val = s.values[idx];
+              const val = s.values[idx] ?? 0;
               const barH = (val / yMax) * plotH;
               const x = centerX - totalGroupW / 2 + si * (barW + gap);
               const y = pad.top + plotH - barH;
+              const valLabel = formatChartVal(val, q.unit);
               inner += `
                 <rect x="${x}" y="${y}" width="${barW}" height="${barH}" rx="3" fill="${s.color}" />
-                <text x="${x + barW / 2}" y="${y - 5}" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e293b">$${val}</text>
+                <text x="${x + barW / 2}" y="${y - 5}" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e293b">${valLabel}</text>
               `;
             });
             inner += `<text x="${centerX}" y="${pad.top + plotH + 20}" text-anchor="middle" font-size="11.5" font-weight="600" fill="#334155">${escapeHtml(cat)}</text>`;
           });
         } else if (q.chartType === 'line') {
-          const labels = q.series[0].points.map(p => p.label);
-          const stepX = plotW / (labels.length - 1);
+          const labels = (q.series[0]?.points || []).map(p => p.label);
+          const stepX = plotW / Math.max(1, labels.length - 1);
 
           q.series.forEach((s, si) => {
-            const lx = pad.left + 12 + si * 125;
+            const lx = pad.left + 12 + si * 145;
             inner += `
               <line x1="${lx}" y1="${pad.top + 4}" x2="${lx + 18}" y2="${pad.top + 4}" stroke="${s.color}" stroke-width="3" />
               <circle cx="${lx + 9}" cy="${pad.top + 4}" r="3.5" fill="${s.color}" />
@@ -2723,12 +3005,12 @@
               const dy = si === 0 ? -10 : 16;
               inner += `
                 <circle cx="${p.x}" cy="${p.y}" r="4.5" fill="#ffffff" stroke="${s.color}" stroke-width="2.5" />
-                <text x="${p.x}" y="${p.y + dy}" text-anchor="middle" font-size="10.5" font-weight="700" fill="${s.color}">${p.value}${q.unit}</text>
+                <text x="${p.x}" y="${p.y + dy}" text-anchor="middle" font-size="10.5" font-weight="700" fill="${s.color}">${formatChartVal(p.value, q.unit)}</text>
               `;
             });
           });
         } else if (q.chartType === 'single-line') {
-          const stepX = plotW / (q.points.length - 1);
+          const stepX = plotW / Math.max(1, q.points.length - 1);
           const pts = q.points.map((p, idx) => {
             const x = pad.left + idx * stepX;
             const y = pad.top + plotH - (p.value / yMax) * plotH;
@@ -2744,7 +3026,7 @@
           inner += `<path d="${linePath}" fill="none" stroke="${q.color}" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" />`;
 
           pts.forEach(p => {
-            const valLabel = q.unit === 'B' ? `$${p.value}B` : `${p.value}${q.unit}`;
+            const valLabel = formatChartVal(p.value, q.unit);
             inner += `
               <circle cx="${p.x}" cy="${p.y}" r="5" fill="#ffffff" stroke="${q.color}" stroke-width="2.5" />
               <text x="${p.x}" y="${p.y - 11}" text-anchor="middle" font-size="11" font-weight="700" fill="#0f172a">${valLabel}</text>
@@ -2789,11 +3071,16 @@
         return RETELL_LECTURE_QUESTIONS;
       }
 
+      function getDescribeImageList() {
+        return [...DESCRIBE_IMAGE_QUESTIONS, ...(Array.isArray(state.customDiQuestions) ? state.customDiQuestions : [])];
+      }
+
       function getQuestionsForMode(mode = state.mode) {
         if (mode === 'read-aloud') return READ_ALOUD_QUESTIONS;
-        if (mode === 'describe-image') return DESCRIBE_IMAGE_QUESTIONS;
+        if (mode === 'describe-image') return getDescribeImageList();
         if (mode === 'repeat-sentence') return getRepeatSentenceList();
         if (mode === 'retell-lecture') return getRetellLectureQuestions();
+        if (mode === 'impromptu') return IMPROMPTU_QUESTIONS;
         return [];
       }
 
@@ -2842,6 +3129,7 @@
           { el: el.tabDescribeImage, mode: 'describe-image' },
           { el: el.tabRepeatSentence, mode: 'repeat-sentence' },
           { el: el.tabRetellLecture, mode: 'retell-lecture' },
+          { el: el.tabImpromptu, mode: 'impromptu' },
           { el: el.tabWriting, mode: 'writing' },
           { el: el.tabReview, mode: 'review' }
         ];
@@ -2984,6 +3272,15 @@
         return `pte_rl_notes_${qId}`;
       }
 
+      function renderImpromptuModelBox() {
+        if (!el.btnImpToggleModel || !el.impModelBox) return;
+        el.btnImpToggleModel.setAttribute('aria-expanded', String(state.impModelVisible));
+        el.impModelBox.classList.toggle('hidden', !state.impModelVisible);
+        el.btnImpToggleModel.textContent = state.impModelVisible
+          ? '✨ 1분 모범 답변 스크립트 숨기기'
+          : '✨ 1분 모범 답변 스크립트 보기';
+      }
+
       function renderQuestionContent() {
         if (!MODE_CONFIG[state.mode]) return;
 
@@ -2996,10 +3293,22 @@
         el.instructionBox.innerHTML = cfg.instruction;
         renderSpeakingBookmarkBtn();
 
+        // Update Shadowing Compare button & AI grading CTA label by mode
+        if (el.btnShadowingCompare) {
+          const allowShadowing = state.mode === 'read-aloud' || state.mode === 'repeat-sentence';
+          el.btnShadowingCompare.classList.toggle('hidden', !allowShadowing);
+        }
+        if (el.btnAiGradeSpeakingLabel) {
+          el.btnAiGradeSpeakingLabel.textContent = state.mode === 'impromptu'
+            ? '✨ AI 원어민식 표현 교정'
+            : '✨ AI 발음·유창성 채점';
+        }
+
         el.panelReadAloud.classList.add('hidden');
         el.panelDescribeImage.classList.add('hidden');
         el.panelRepeatSentence.classList.add('hidden');
         el.panelRetellLecture.classList.add('hidden');
+        el.panelImpromptu.classList.add('hidden');
 
         if (state.mode === 'read-aloud') {
           el.panelReadAloud.classList.remove('hidden');
@@ -3007,8 +3316,12 @@
           el.raPassage.textContent = q.passage;
           const words = q.passage.trim().split(/\s+/).length;
           el.raWordCount.textContent = `단어 수: ${words} words`;
+          if (el.raAudioStatus) {
+            el.raAudioStatus.textContent = '원어민 모범 읽기를 먼저 듣고 섀도잉으로 발음을 다듬어 보세요';
+          }
         } else if (state.mode === 'describe-image') {
           el.panelDescribeImage.classList.remove('hidden');
+          updateDiBankSummaryUI();
           const typeLabels = {
             bar: 'Bar Chart',
             'grouped-bar': 'Grouped Bar Chart',
@@ -3075,6 +3388,32 @@
           el.rlTranslationText.textContent = q.translation ? `요약 해석: ${q.translation}` : '';
           el.rlModelAnswer.textContent = q.modelAnswer || '';
           renderRetellLectureRevealUI();
+        } else if (state.mode === 'impromptu') {
+          el.panelImpromptu.classList.remove('hidden');
+          el.qMeta.textContent = `${q.topic} · 15s / 60s`;
+          el.impCategoryBadge.textContent = q.topic;
+          el.impQuestionKo.textContent = q.questionKo;
+          el.impQuestionEn.textContent = q.questionEn;
+
+          el.impGuidePoints.innerHTML = '';
+          (q.guidePoints || []).forEach(pt => {
+            const li = document.createElement('li');
+            li.textContent = pt;
+            el.impGuidePoints.appendChild(li);
+          });
+
+          el.impSampleExpressions.innerHTML = '';
+          (q.sampleExpressions || []).forEach(expr => {
+            const li = document.createElement('li');
+            li.className = 'rounded-lg bg-white border border-sky-200/80 px-2.5 py-1.5 font-medium text-sky-950';
+            li.textContent = `“${expr}”`;
+            el.impSampleExpressions.appendChild(li);
+          });
+
+          el.impModelAnswer.textContent = q.modelAnswer || '';
+          if (el.impAudioStatus) el.impAudioStatus.textContent = '';
+          state.impModelVisible = false;
+          renderImpromptuModelBox();
         }
       }
 
@@ -3102,7 +3441,9 @@
           el.timerCard.className = 'rounded-xl border border-slate-200 bg-slate-50 p-4 sm:p-5 text-center space-y-3 transition-colors';
           el.timerStatusText.textContent = (state.mode === 'repeat-sentence' || state.mode === 'retell-lecture')
             ? '시작 버튼을 누르면 원어민 음성이 재생됩니다'
-            : '시작 버튼을 누르면 준비 시간 카운트다운이 시작됩니다';
+            : (state.mode === 'impromptu'
+              ? '15초 생각 시간 후 삐(Beep) 소리와 함께 60초 녹음이 시작됩니다'
+              : '시작 버튼을 누르면 준비 시간 카운트다운이 시작됩니다');
           el.timerProgressBar.className = 'h-full bg-pte-blue transition-all duration-300 ease-linear rounded-full';
           el.recordingIndicator.classList.add('hidden');
           el.btnStart.disabled = false;
@@ -3130,7 +3471,9 @@
             ? '필기한 메모를 보며 40초 요약을 구상하세요 — 곧 Beep'
             : (state.mode === 'repeat-sentence'
               ? '들은 문장을 머릿속으로 정리하세요 — 곧 Beep과 함께 녹음 시작'
-              : '지문/이미지를 파악하세요 — 곧 Beep 소리와 함께 녹음이 시작됩니다');
+              : (state.mode === 'impromptu'
+                ? '1분 답변 핵심 구조와 오프닝 표현을 구상하세요 — 곧 Beep'
+                : '지문/이미지를 파악하세요 — 곧 Beep 소리와 함께 녹음이 시작됩니다'));
           el.timerProgressBar.className = 'h-full bg-amber-500 transition-all duration-300 ease-linear rounded-full';
           el.recordingIndicator.classList.add('hidden');
           el.btnStart.disabled = true;
@@ -3154,8 +3497,12 @@
           el.timerStatusText.textContent = state.mode === 'retell-lecture'
             ? '녹음 완료! 내 발음 듣기, 원문·키워드 및 모범 요약이 활성화되었습니다'
             : (state.mode === 'repeat-sentence'
-              ? '녹음 완료! 원문 스크립트 확인 및 내 발음 다시 듣기가 활성화되었습니다'
-              : '연습 완료! 아래에서 내 발음을 다시 들어보세요');
+              ? '녹음 완료! 원문 스크립트 확인 및 원어민·내 발음 비교가 활성화되었습니다'
+              : (state.mode === 'impromptu'
+                ? '1분 말하기 녹음 완료! 내 발음 듣기 및 ✨ AI 원어민식 표현 교정을 받아보세요'
+                : (state.mode === 'read-aloud'
+                  ? '녹음 완료! 아래에서 원어민 → 내 발음 연속 비교 듣기를 해보세요'
+                  : '연습 완료! 아래에서 내 발음을 다시 들어보세요')));
           el.timerProgressBar.className = 'h-full bg-emerald-500 transition-all duration-300 ease-linear rounded-full';
           el.recordingIndicator.classList.add('hidden');
           el.btnStart.disabled = false;
@@ -3176,6 +3523,7 @@
 
       function resetPractice(clearAudio = true) {
         clearTimerInterval();
+        stopShadowingCompare(clearAudio);
         cancelSpeech();
         stopYouTubeClipPlayback();
         stopMediaRecording();
@@ -3224,6 +3572,7 @@
         // iOS Safari/PWA: resume AudioContext inside user tap & do NOT open mic before audio playback
         ensureAudioContext();
         clearTimerInterval();
+        stopShadowingCompare(true);
         cancelSpeech();
         stopYouTubeClipPlayback();
         releaseMicrophoneStream();
@@ -3659,6 +4008,7 @@
       el.tabDescribeImage.addEventListener('click', () => switchMode('describe-image'));
       el.tabRepeatSentence.addEventListener('click', () => switchMode('repeat-sentence'));
       el.tabRetellLecture.addEventListener('click', () => switchMode('retell-lecture'));
+      el.tabImpromptu.addEventListener('click', () => switchMode('impromptu'));
       el.tabWriting.addEventListener('click', () => switchMode('writing'));
       el.tabReview.addEventListener('click', () => switchMode('review'));
 
@@ -3730,11 +4080,37 @@
       el.chkRsGeminiTts.addEventListener('change', (e) => handleGeminiTtsToggle(e.target.checked));
       el.chkRlGeminiTts.addEventListener('change', (e) => handleGeminiTtsToggle(e.target.checked));
 
+      el.btnRaListenModel.addEventListener('click', () => {
+        if (state.mode !== 'read-aloud') return;
+        const q = getCurrentQuestion();
+        if (!q) return;
+        stopShadowingCompare(false);
+        speakText(q.passage, { targetMode: 'read-aloud' });
+      });
+
       el.btnRsListenOnly.addEventListener('click', () => {
         if (state.mode !== 'repeat-sentence') return;
         const q = getCurrentQuestion();
+        if (!q) return;
+        stopShadowingCompare(false);
         speakText(q.sentence, { targetMode: 'repeat-sentence' });
       });
+
+      el.btnImpToggleModel.addEventListener('click', () => {
+        if (state.mode !== 'impromptu') return;
+        state.impModelVisible = !state.impModelVisible;
+        renderImpromptuModelBox();
+      });
+
+      el.btnImpListenModel.addEventListener('click', () => {
+        if (state.mode !== 'impromptu') return;
+        const q = getCurrentQuestion();
+        if (!q) return;
+        stopShadowingCompare(false);
+        speakText(q.modelAnswer, { targetMode: 'impromptu' });
+      });
+
+      el.btnShadowingCompare.addEventListener('click', startShadowingCompare);
 
       el.btnRsToggleScript.addEventListener('click', () => {
         if (state.phase !== 'done') return;
@@ -3902,9 +4278,10 @@
       // ==========================================
       const SECTION_CATALOG = [
         { key: 'read-aloud', label: 'Read Aloud', short: 'RA', filterGroup: 'read-aloud', badgeCls: 'bg-sky-100 text-sky-800', barCls: 'bg-pte-blue', getList: () => READ_ALOUD_QUESTIONS },
-        { key: 'describe-image', label: 'Describe Image', short: 'DI', filterGroup: 'describe-image', badgeCls: 'bg-indigo-100 text-indigo-800', barCls: 'bg-indigo-500', getList: () => DESCRIBE_IMAGE_QUESTIONS },
+        { key: 'describe-image', label: 'Describe Image', short: 'DI', filterGroup: 'describe-image', badgeCls: 'bg-indigo-100 text-indigo-800', barCls: 'bg-indigo-500', getList: () => getDescribeImageList() },
         { key: 'repeat-sentence', label: 'Repeat Sentence', short: 'RS', filterGroup: 'repeat-sentence', badgeCls: 'bg-teal-100 text-teal-800', barCls: 'bg-pte-teal', getList: () => getRepeatSentenceList() },
         { key: 'retell-lecture', label: 'Retell Lecture', short: 'RL', filterGroup: 'retell-lecture', badgeCls: 'bg-violet-100 text-violet-800', barCls: 'bg-violet-500', getList: () => RETELL_LECTURE_QUESTIONS },
+        { key: 'impromptu', label: '1분 즉흥 말하기', short: 'IMP', filterGroup: 'impromptu', badgeCls: 'bg-emerald-100 text-emerald-800', barCls: 'bg-emerald-500', getList: () => IMPROMPTU_QUESTIONS },
         { key: 'swt', label: 'Writing · SWT', short: 'SWT', filterGroup: 'writing', badgeCls: 'bg-amber-100 text-amber-800', barCls: 'bg-amber-500', getList: () => SWT_QUESTIONS },
         { key: 'essay', label: 'Writing · Essay', short: 'Essay', filterGroup: 'writing', badgeCls: 'bg-rose-100 text-rose-800', barCls: 'bg-rose-500', getList: () => ESSAY_QUESTIONS }
       ];
@@ -4723,6 +5100,77 @@
         }
       }
 
+      function renderImpromptuAiResult(data) {
+        const overall = Math.max(10, Math.min(90, Math.round(Number(data.overallScore) || 0)));
+        const subScores = [
+          { label: '유창성 (Fluency)', val: data.fluencyScore },
+          { label: '논리성 (Logic/Structure)', val: data.logicScore },
+          { label: '원어민 자연스러움', val: data.naturalnessScore }
+        ];
+        const upgrades = Array.isArray(data.expressionUpgrades) ? data.expressionUpgrades.slice(0, 3) : [];
+
+        el.speakingAiResult.classList.remove('hidden');
+        el.speakingAiResult.innerHTML = `
+          <div class="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-indigo-100">
+            <div>
+              <span class="text-xs font-bold uppercase tracking-wider text-emerald-700">AI Impromptu Coaching</span>
+              <h3 class="text-sm sm:text-base font-extrabold text-slate-900">1분 말하기 원어민식 표현 교정</h3>
+            </div>
+            <div class="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-emerald-600 to-pte-teal text-white text-center shadow-xs">
+              <span class="block text-[10px] opacity-85">예상 점수</span>
+              <span class="text-xl font-extrabold tabular-nums">${overall}<span class="text-xs font-normal opacity-80">/90</span></span>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-3 gap-2">
+            ${subScores.map(s => `
+              <div class="rounded-xl border border-slate-200 bg-slate-50 p-2.5 text-center">
+                <span class="block text-[11px] font-medium text-slate-500">${s.label}</span>
+                <span class="text-sm font-extrabold text-emerald-800 tabular-nums">${escapeHtml(s.val ?? '-')}</span>
+              </div>
+            `).join('')}
+          </div>
+
+          ${data.transcript ? `
+            <div class="rounded-xl border border-slate-200 bg-slate-50/70 p-3 space-y-1 text-xs">
+              <span class="font-bold text-slate-700 block">🎙️ 내가 말한 스크립트 (Transcript)</span>
+              <p class="text-slate-700 leading-relaxed">${escapeHtml(data.transcript)}</p>
+            </div>
+          ` : ''}
+
+          <div class="space-y-2">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-teal-800">💎 어색한/콩글리시 표현 → 원어민 자연스러운 대체 표현 3쌍</h4>
+            ${upgrades.length === 0 ? `
+              <p class="text-xs text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-xl p-3">전반적으로 자연스러운 원어민 표현을 구사하셨습니다!</p>
+            ` : upgrades.map(up => `
+              <div class="rounded-xl border border-teal-200 bg-teal-50/50 p-3.5 space-y-2 text-xs">
+                <div class="space-y-1">
+                  <p class="text-rose-700"><span class="font-bold">내 표현:</span> ${escapeHtml(up.myExpression || up.original || '')}</p>
+                  <p class="text-emerald-800 font-bold text-sm">→ 원어민 표현: ${escapeHtml(up.nativeExpression || up.improved || '')}</p>
+                  ${up.explanationKo ? `<p class="text-slate-600 leading-relaxed">${escapeHtml(up.explanationKo)}</p>` : ''}
+                  ${up.example ? `<p class="text-slate-600 italic">"${escapeHtml(up.example)}"</p>` : ''}
+                </div>
+                <div class="flex justify-end">
+                  <button type="button"
+                    data-ai-vocab-word="${escapeHtml(up.nativeExpression || up.improved || '')}"
+                    data-ai-vocab-meaning="${escapeHtml(up.meaningKo || up.explanationKo || '')}"
+                    data-ai-vocab-example="${escapeHtml(up.example || '')}"
+                    class="px-2.5 py-1.5 rounded-lg text-xs font-bold text-white bg-teal-600 hover:bg-teal-700 transition cursor-pointer">
+                    + 단어장 추가
+                  </button>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+
+          ${data.feedbackKo ? `
+            <div class="rounded-xl bg-indigo-50/70 border border-indigo-100 p-3 text-xs text-slate-800 leading-relaxed">
+              <strong class="text-indigo-900">유창성·논리력 피드백:</strong> ${escapeHtml(data.feedbackKo)}
+            </div>
+          ` : ''}
+        `;
+      }
+
       function buildSpeakingReferencePrompt(q, mode) {
         if (mode === 'read-aloud') {
           return `Task: Read Aloud\nOriginal Passage to read aloud:\n"${q.passage}"\nEvaluate pronunciation, oral fluency, and content omissions/insertions/hesitations against the passage.`;
@@ -4731,8 +5179,11 @@
           return `Task: Repeat Sentence\nTarget Sentence:\n"${q.sentence}"\nEvaluate how accurately the candidate repeated the exact words, pronunciation, and fluency.`;
         }
         if (mode === 'describe-image') {
-          const chartSummary = JSON.stringify(q.data || {});
-          return `Task: Describe Image (${q.type || 'chart'})\nTitle: ${q.title}\nChart Data: ${chartSummary}\nReference Template: ${q.modelTemplate || ''}\nEvaluate whether the candidate clearly described key trends, highest/lowest values, pronunciation, and fluency without long pauses.`;
+          const chartData = q.data || q.series || q.points || q.slices || q.steps || {};
+          return `Task: Describe Image (${q.chartType || 'chart'})\nTitle: ${q.title}\nSubtitle: ${q.subtitle || ''}\nUnit: ${q.unit || ''}\nChart Data: ${JSON.stringify(chartData)}\nReference Answer: ${q.modelAnswer || ''}\nKey Points: ${q.keyPoints || ''}\nEvaluate whether the candidate clearly described key trends, highest/lowest values, pronunciation, and fluency without long pauses.`;
+        }
+        if (mode === 'impromptu') {
+          return `Task: 1-Minute Impromptu Talk (${q.topic})\nQuestion (EN): ${q.questionEn}\nQuestion (KO): ${q.questionKo}`;
         }
         return `Task: Retell Lecture\nLecture Title: ${q.title}\nKeywords: ${(q.keywords || []).join(', ')}\nReference Lecture Script:\n${q.script || ''}\nModel Summary:\n${q.modelAnswer || ''}\nEvaluate keyword coverage, logical summary, pronunciation, and fluency.`;
       }
@@ -4747,9 +5198,37 @@
           return;
         }
 
+        stopShadowingCompare(false);
         const cleanMime = (state.recordingMime || state.recordedBlob.type || 'audio/webm').split(';')[0] || 'audio/webm';
         const refContext = buildSpeakingReferencePrompt(q, state.mode);
-        const prompt = [
+        const isImpromptu = state.mode === 'impromptu';
+
+        const prompt = isImpromptu ? [
+          `You are a native English speaking coach helping a Korean learner living in New Zealand.`,
+          refContext,
+          `\nListen carefully to the attached 1-minute impromptu speech recording and provide:`,
+          `1. Exact English transcript of what the learner actually spoke.`,
+          `2. Exactly 3 pairs comparing awkward/Konglish phrasing or missed opportunities in the learner's response with natural, idiomatic native English expressions actually used by Kiwis/native speakers.`,
+          `3. Detailed Korean coaching feedback on oral fluency, pacing, and logical organization.`,
+          `\nRespond strictly in JSON matching this schema:`,
+          `{`,
+          `  "overallScore": <integer 10..90>,`,
+          `  "fluencyScore": "<e.g. 78/90>",`,
+          `  "logicScore": "<e.g. 80/90>",`,
+          `  "naturalnessScore": "<e.g. 74/90>",`,
+          `  "transcript": "<exact English transcription of the audio>",`,
+          `  "expressionUpgrades": [`,
+          `    {`,
+          `      "myExpression": "<what the speaker said or literal Konglish phrase>",`,
+          `      "nativeExpression": "<natural native English expression>",`,
+          `      "meaningKo": "<short Korean meaning of the native expression>",`,
+          `      "explanationKo": "<why the native phrasing sounds better in Korean>",`,
+          `      "example": "<short natural example sentence>"`,
+          `    }`,
+          `  ],`,
+          `  "feedbackKo": "<detailed Korean feedback on fluency and logical structure>"`,
+          `}`
+        ].join('\n') : [
           `You are a strict official PTE Academic Speaking examiner.`,
           refContext,
           `\nListen carefully to the attached learner audio recording and evaluate:`,
@@ -4774,14 +5253,21 @@
         ].join('\n');
 
         state.aiGradingBusy = true;
-        setAiLoadingState(el.speakingAiResult, el.btnAiGradeSpeaking, '녹음된 음성을 분석하여 발음·유창성 채점 중입니다...');
+        const loadingMsg = isImpromptu
+          ? '1분 즉흥 말하기를 분석하고 원어민식 표현 교정을 생성 중입니다...'
+          : '녹음된 음성을 분석하여 발음·유창성 채점 중입니다...';
+        setAiLoadingState(el.speakingAiResult, el.btnAiGradeSpeaking, loadingMsg);
         try {
           const base64Audio = await blobToBase64(state.recordedBlob);
           const result = await callGeminiApi([
             { text: prompt },
             { inlineData: { mimeType: cleanMime, data: base64Audio } }
           ]);
-          renderSpeakingAiResult(result);
+          if (isImpromptu) {
+            renderImpromptuAiResult(result);
+          } else {
+            renderSpeakingAiResult(result);
+          }
           state.lastSpeakingLogId = attachAiScoreToPracticeLog(
             state.lastSpeakingLogId,
             q.id,
@@ -5002,6 +5488,201 @@
         const baseCount = REPEAT_SENTENCE_QUESTIONS.length;
         const customCount = Array.isArray(state.customRsQuestions) ? state.customRsQuestions.length : 0;
         el.rsBankSummaryBadge.textContent = `기본 ${baseCount}문항 + AI 추가 ${customCount}문항`;
+      }
+
+      function updateDiBankSummaryUI() {
+        if (!el.diBankSummaryBadge) return;
+        const baseCount = DESCRIBE_IMAGE_QUESTIONS.length;
+        const customCount = Array.isArray(state.customDiQuestions) ? state.customDiQuestions.length : 0;
+        el.diBankSummaryBadge.textContent = `기본 ${baseCount}문항 + AI 추가 ${customCount}문항`;
+      }
+
+      const DI_COLOR_PALETTE = ['#0284c7', '#0d9488', '#4f46e5', '#f59e0b', '#ec4899', '#16a34a'];
+
+      function normalizeDiQuestion(raw, id) {
+        let chartType = String(raw?.chartType || 'bar').toLowerCase().trim();
+        if (chartType === 'multi-line' || chartType === 'multiline') chartType = 'line';
+        const validTypes = ['bar', 'grouped-bar', 'line', 'single-line', 'pie', 'process', 'horizontal-bar'];
+        if (!validTypes.includes(chartType)) chartType = 'bar';
+
+        const labels = Array.isArray(raw?.labels) ? raw.labels.map(String) : [];
+        const rawDatasets = Array.isArray(raw?.datasets) ? raw.datasets : [];
+        const rawValues = Array.isArray(raw?.values)
+          ? raw.values.map(v => Number(v) || 0)
+          : (Array.isArray(rawDatasets[0]?.data) ? rawDatasets[0].data.map(v => Number(v) || 0) : []);
+
+        const base = {
+          id,
+          title: String(raw?.title || `AI Chart ${id}`).trim(),
+          chartType,
+          subtitle: String(raw?.subtitle || 'Data Overview').trim(),
+          unit: raw?.unit !== undefined ? String(raw.unit) : '',
+          modelAnswer: String(raw?.modelAnswer || '').trim(),
+          keyPoints: String(raw?.keyPoints || '').trim(),
+          isCustomAi: true
+        };
+
+        if (chartType === 'pie') {
+          let slices = Array.isArray(raw?.slices) ? raw.slices : [];
+          if (slices.length === 0 && Array.isArray(raw?.data)) slices = raw.data;
+          if (slices.length === 0 && labels.length > 0) {
+            slices = labels.map((lbl, i) => ({ label: lbl, value: rawValues[i] ?? 10 }));
+          }
+          base.slices = slices.slice(0, 5).map((s, i) => ({
+            label: String(s.label || `Item ${i + 1}`),
+            value: Math.max(1, Number(s.value) || 0),
+            color: s.color || DI_COLOR_PALETTE[i % DI_COLOR_PALETTE.length]
+          }));
+          if (base.slices.length === 0) {
+            base.slices = [{ label: 'Category A', value: 60, color: DI_COLOR_PALETTE[0] }, { label: 'Category B', value: 40, color: DI_COLOR_PALETTE[1] }];
+          }
+          if (!base.unit) base.unit = '%';
+        } else if (chartType === 'process') {
+          let steps = Array.isArray(raw?.steps) ? raw.steps : [];
+          if (steps.length === 0 && labels.length > 0) {
+            steps = labels.map((lbl, i) => ({ step: String(i + 1), title: lbl, detail: 'Stage process' }));
+          }
+          base.steps = steps.slice(0, 5).map((st, i) => ({
+            step: String(st.step || i + 1),
+            title: String(st.title || `Stage ${i + 1}`).slice(0, 18),
+            detail: String(st.detail || '').slice(0, 26),
+            color: st.color || DI_COLOR_PALETTE[i % DI_COLOR_PALETTE.length]
+          }));
+          if (base.steps.length === 0) {
+            base.steps = [{ step: '1', title: 'Input', detail: 'Collect materials', color: DI_COLOR_PALETTE[0] }, { step: '2', title: 'Output', detail: 'Final product', color: DI_COLOR_PALETTE[1] }];
+          }
+        } else if (chartType === 'grouped-bar') {
+          const cats = Array.isArray(raw?.categories) && raw.categories.length > 0
+            ? raw.categories.map(String)
+            : (labels.length > 0 ? labels : ['Group A', 'Group B', 'Group C']);
+          let series = Array.isArray(raw?.series) ? raw.series : [];
+          if (series.length === 0 && rawDatasets.length > 0) {
+            series = rawDatasets.map((ds, si) => ({
+              name: String(ds.name || ds.label || `Series ${si + 1}`),
+              color: ds.color || DI_COLOR_PALETTE[si % DI_COLOR_PALETTE.length],
+              values: (Array.isArray(ds.data) ? ds.data : []).map(v => Number(v) || 0)
+            }));
+          }
+          base.categories = cats.slice(0, 5);
+          base.series = (series.length > 0 ? series : [{ name: 'Metric A', values: cats.map(() => 50) }, { name: 'Metric B', values: cats.map(() => 35) }])
+            .slice(0, 3)
+            .map((s, si) => ({
+              name: String(s.name || `Series ${si + 1}`),
+              color: s.color || DI_COLOR_PALETTE[si % DI_COLOR_PALETTE.length],
+              values: base.categories.map((_, ci) => Number((s.values || s.data || [])[ci]) || 0)
+            }));
+        } else if (chartType === 'line') {
+          let series = Array.isArray(raw?.series) ? raw.series : [];
+          if (series.length === 0 && rawDatasets.length > 0 && labels.length > 0) {
+            series = rawDatasets.map((ds, si) => ({
+              name: String(ds.name || ds.label || `Series ${si + 1}`),
+              color: ds.color || DI_COLOR_PALETTE[si % DI_COLOR_PALETTE.length],
+              points: labels.map((lbl, idx) => ({ label: lbl, value: Number((ds.data || [])[idx]) || 0 }))
+            }));
+          }
+          base.series = (series.length > 0 ? series : [
+            { name: 'Trend A', color: DI_COLOR_PALETTE[0], points: [{ label: '2021', value: 20 }, { label: '2023', value: 45 }, { label: '2025', value: 70 }] },
+            { name: 'Trend B', color: DI_COLOR_PALETTE[1], points: [{ label: '2021', value: 35 }, { label: '2023', value: 30 }, { label: '2025', value: 25 }] }
+          ]).slice(0, 3).map((s, si) => ({
+            name: String(s.name || `Series ${si + 1}`),
+            color: s.color || DI_COLOR_PALETTE[si % DI_COLOR_PALETTE.length],
+            points: (Array.isArray(s.points) && s.points.length > 0
+              ? s.points
+              : labels.map((lbl, idx) => ({ label: lbl, value: Number((s.values || s.data || [])[idx]) || 0 }))
+            ).map(p => ({ label: String(p.label ?? ''), value: Number(p.value) || 0 }))
+          }));
+        } else if (chartType === 'single-line') {
+          let pts = Array.isArray(raw?.points) ? raw.points : [];
+          if (pts.length === 0 && labels.length > 0) {
+            pts = labels.map((lbl, idx) => ({ label: lbl, value: rawValues[idx] ?? 0 }));
+          }
+          base.color = raw?.color || DI_COLOR_PALETTE[0];
+          base.points = (pts.length > 0 ? pts : [{ label: '2020', value: 20 }, { label: '2023', value: 45 }, { label: '2025', value: 65 }])
+            .map(p => ({ label: String(p.label ?? ''), value: Number(p.value) || 0 }));
+        } else {
+          // 'bar' | 'horizontal-bar'
+          let data = Array.isArray(raw?.data) ? raw.data : [];
+          if (data.length === 0 && labels.length > 0) {
+            data = labels.map((lbl, i) => ({ label: lbl, value: rawValues[i] ?? 0 }));
+          }
+          base.data = (data.length > 0 ? data : [{ label: 'A', value: 45 }, { label: 'B', value: 30 }, { label: 'C', value: 15 }])
+            .slice(0, 6)
+            .map((d, i) => ({
+              label: String(d.label || `Item ${i + 1}`),
+              value: Number(d.value) || 0,
+              color: d.color || DI_COLOR_PALETTE[i % DI_COLOR_PALETTE.length]
+            }));
+        }
+
+        return base;
+      }
+
+      async function generateMoreDiWithAi() {
+        if (state.diAiGenerating) return;
+        state.diAiGenerating = true;
+        el.btnDiAiGenerate.disabled = true;
+        el.btnDiAiGenerate.classList.add('opacity-60');
+        showInlineStatus(el.diAiGenStatus, `Gemini AI (${state.geminiModel || 'gemini-4-hydrogen'})가 새 SVG 차트 문제 5개를 생성 중입니다...`, 'info');
+
+        const existingTitles = getDescribeImageList().slice(-15).map(q => q.title).join('\n');
+        const prompt = [
+          `You are a PTE Academic Describe Image designer.`,
+          `Generate exactly 5 NEW, realistic academic chart questions (1 bar, 1 grouped-bar, 1 line or single-line, 1 pie, 1 horizontal-bar or process) that do NOT duplicate these titles:\n${existingTitles}`,
+          `\nUse realistic academic/NZ/global numbers and respond strictly in JSON matching this schema:`,
+          `{`,
+          `  "charts": [`,
+          `    {`,
+          `      "title": "<concise English chart title>",`,
+          `      "chartType": "bar | grouped-bar | line | single-line | pie | horizontal-bar | process",`,
+          `      "subtitle": "<measurement description>",`,
+          `      "unit": "<e.g. %, k, M, B, or empty string>",`,
+          `      "data": [{"label":"A","value":45}],`,
+          `      "categories": ["Cat1","Cat2","Cat3","Cat4"],`,
+          `      "series": [{"name":"Series 1","values":[10,20,30,40]}],`,
+          `      "points": [{"label":"2020","value":12}],`,
+          `      "slices": [{"label":"Share A","value":40}],`,
+          `      "steps": [{"step":"1","title":"Step Name","detail":"Brief detail"}],`,
+          `      "modelAnswer": "<4-5 sentences PTE Describe Image model answer in English (~70 words)>",`,
+          `      "keyPoints": "핵심 포인트: <short Korean key-point summary>"`,
+          `    }`,
+          `  ]`,
+          `}`
+        ].join('\n');
+
+        try {
+          const result = await callGeminiApi([{ text: prompt }]);
+          const items = Array.isArray(result.charts) ? result.charts : [];
+          if (items.length === 0) {
+            throw new Error('AI가 유효한 차트 목록을 반환하지 않았습니다.');
+          }
+          const startNumber = DESCRIBE_IMAGE_QUESTIONS.length + state.customDiQuestions.length + 1;
+          const prevTotal = getDescribeImageList().length;
+          const formatted = items.slice(0, 5).map((item, idx) =>
+            normalizeDiQuestion(item, `DI-${startNumber + idx}`)
+          );
+
+          state.customDiQuestions = [...state.customDiQuestions, ...formatted];
+          saveStorage(STORAGE_KEYS.customDiQuestions, state.customDiQuestions);
+          updateDiBankSummaryUI();
+          showInlineStatus(
+            el.diAiGenStatus,
+            `✅ 새 차트 ${formatted.length}개(DI-${startNumber}~DI-${startNumber + formatted.length - 1})가 localStorage에 추가되었습니다!`,
+            'success'
+          );
+          if (state.mode === 'describe-image') {
+            selectQuestion(prevTotal);
+          }
+        } catch (err) {
+          if (err.isMissingKey) {
+            el.diAiGenStatus.classList.add('hidden');
+          } else {
+            showInlineStatus(el.diAiGenStatus, `⚠️ 차트 생성 실패: ${err.message || '오류가 발생했습니다.'}`, 'error');
+          }
+        } finally {
+          state.diAiGenerating = false;
+          el.btnDiAiGenerate.disabled = false;
+          el.btnDiAiGenerate.classList.remove('opacity-60');
+        }
       }
 
       async function generateMoreRsWithAi() {
@@ -5471,8 +6152,9 @@
         }
       }
 
-      // Bind RS AI Gen, YouTube RL & iOS Guide Listeners
+      // Bind RS & DI AI Gen, YouTube RL & iOS Guide Listeners
       el.btnRsAiGenerate.addEventListener('click', generateMoreRsWithAi);
+      el.btnDiAiGenerate.addEventListener('click', generateMoreDiWithAi);
       el.btnRlModeAcademic.addEventListener('click', () => switchRlSourceMode('academic'));
       el.btnRlModeYoutube.addEventListener('click', () => switchRlSourceMode('youtube'));
       el.btnRlYtExtract.addEventListener('click', extractYouTubeClipsWithAi);
@@ -5533,6 +6215,7 @@
       window.addEventListener('beforeunload', () => {
         clearTimerInterval();
         stopWritingTimer();
+        stopShadowingCompare(false);
         cancelSpeech();
         stopYouTubeClipPlayback();
         stopMediaRecording();
@@ -5561,6 +6244,7 @@
       updateAiHeaderUI();
       updateReviewTabBadge();
       updateRsBankSummaryUI();
+      updateDiBankSummaryUI();
       syncVoiceDropdowns();
       renderTabs();
       renderWorkspaceVisibility();

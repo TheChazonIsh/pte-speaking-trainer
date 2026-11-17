@@ -189,7 +189,7 @@ window.PTE_DATA = {
   ],
 
   // ==========================================================
-  // 2. Describe Image (15 Questions: Bar, Line, Grouped, Pie, Process, Horizontal)
+  // 2. Describe Image (30 Questions: Bar, Line, Grouped, Pie, Process, Horizontal)
   // ==========================================================
   DESCRIBE_IMAGE_QUESTIONS: [
     {
@@ -468,6 +468,279 @@ window.PTE_DATA = {
       ],
       modelAnswer: 'The given pie chart breaks down the New Zealand workforce across five major employment sectors in 2025, measured in percentage. The largest sector is services and retail, employing 45 percent of workers, followed by health and education at 23 percent. Construction accounts for 13 percent and manufacturing employs 11 percent, while agriculture represents the smallest share at 8 percent. Overall, service-oriented industries employ more than two-thirds of the national workforce.',
       keyPoints: '핵심 포인트: 파이 차트 · 최대(Services & Retail 45%) → 2위(Health & Education 23%) → 최소(Agriculture 8%)'
+    },
+    {
+      id: 'DI-16',
+      title: 'NZ Electric Vehicle Registrations by Region (2025)',
+      chartType: 'bar',
+      subtitle: 'Total registered light EVs by city/region',
+      unit: 'k',
+      data: [
+        { label: 'Auckland', value: 48, color: '#0284c7' },
+        { label: 'Wellington', value: 19, color: '#0d9488' },
+        { label: 'Canterbury', value: 17, color: '#2563eb' },
+        { label: 'Waikato', value: 9, color: '#6366f1' },
+        { label: 'Otago', value: 6, color: '#f59e0b' }
+      ],
+      modelAnswer: 'The given bar chart illustrates total electric vehicle registrations across five New Zealand regions in 2025, measured in thousands. Looking closely at the data, Auckland records by far the highest number at 48 thousand vehicles, more than double Wellington at 19 thousand and Canterbury at 17 thousand. Meanwhile, Waikato stands at 9 thousand, whereas Otago represents the lowest figure at just 6 thousand registrations. Overall, EV adoption is heavily concentrated in major urban centres.',
+      keyPoints: '핵심 포인트: 세로 막대 · 최대(Auckland 48k) → 중위(Wellington 19k, Canterbury 17k) → 최소(Otago 6k)'
+    },
+    {
+      id: 'DI-17',
+      title: 'Graduate Starting Salaries: Bachelor vs. Master (2025)',
+      chartType: 'grouped-bar',
+      subtitle: 'Median annual starting pay by discipline (NZD Thousands)',
+      unit: 'k',
+      categories: ['Engineering', 'IT & Data', 'Healthcare', 'Business'],
+      series: [
+        { name: 'Bachelor Degree', color: '#0284c7', values: [72, 70, 68, 59] },
+        { name: 'Master Degree', color: '#4f46e5', values: [86, 88, 79, 71] }
+      ],
+      modelAnswer: 'The given grouped bar chart compares median annual starting salaries for bachelor and master graduates across four fields in 2025, measured in thousands of New Zealand dollars. Across all disciplines, master degree holders earn noticeably more than bachelor graduates. The highest postgraduate pay appears in IT and data at 88 thousand dollars, closely followed by engineering at 86 thousand, whereas the lowest starting figure is 59 thousand for bachelor business graduates. Overall, postgraduate study adds a consistent salary premium.',
+      keyPoints: '핵심 포인트: 그룹 막대 · 전 분야 석사(Master) 급여 우위 · 최고(IT Master 88k) vs 최저(Business Bachelor 59k)'
+    },
+    {
+      id: 'DI-18',
+      title: 'National Solar Power Capacity Growth (2018–2026)',
+      chartType: 'single-line',
+      subtitle: 'Cumulative installed solar capacity across NZ (Megawatts)',
+      unit: 'MW',
+      points: [
+        { label: '2018', value: 95 },
+        { label: '2020', value: 145 },
+        { label: '2022', value: 260 },
+        { label: '2024', value: 480 },
+        { label: '2026', value: 820 }
+      ],
+      color: '#f59e0b',
+      modelAnswer: 'The given line graph depicts the rapid expansion of cumulative solar power capacity in New Zealand from 2018 to 2026, measured in megawatts. Capacity started at its lowest level of 95 megawatts in 2018 and rose gradually to 145 megawatts by 2020. Afterward, growth accelerated sharply to 480 megawatts in 2024 before surging to a peak of 820 megawatts in 2026. Overall, national solar capacity expanded nearly ninefold over the eight-year timeframe.',
+      keyPoints: '핵심 포인트: 단일 선형 급성장 · 2018년 최저 95MW → 2022년 이후 가속 → 2026년 최고 820MW'
+    },
+    {
+      id: 'DI-19',
+      title: 'Auckland Bus vs. Rail Annual Patronage (2020–2025)',
+      chartType: 'line',
+      subtitle: 'Total passenger boardings per year (Millions)',
+      unit: 'M',
+      series: [
+        {
+          name: 'Bus Network',
+          color: '#0284c7',
+          points: [
+            { label: '2020', value: 52 },
+            { label: '2021', value: 44 },
+            { label: '2022', value: 48 },
+            { label: '2023', value: 61 },
+            { label: '2024', value: 68 },
+            { label: '2025', value: 74 }
+          ]
+        },
+        {
+          name: 'Metro Rail',
+          color: '#16a34a',
+          points: [
+            { label: '2020', value: 16 },
+            { label: '2021', value: 12 },
+            { label: '2022', value: 14 },
+            { label: '2023', value: 19 },
+            { label: '2024', value: 22 },
+            { label: '2025', value: 26 }
+          ]
+        }
+      ],
+      modelAnswer: 'The given multi-line chart compares annual passenger boardings on Auckland bus and metro rail networks from 2020 to 2025, measured in millions. Both transport services dipped to their lowest levels in 2021 at 44 million bus trips and 12 million rail trips. From 2022 onward, patronage rebounded strongly to peaks of 74 million for buses and 26 million for trains in 2025. Overall, buses consistently carried nearly three times as many passengers as rail across the entire period.',
+      keyPoints: '핵심 포인트: 다중 선형 그래프 · 2021년 저점 후 동반 반등 → Bus(44M→74M)가 Rail(12M→26M)의 약 3배'
+    },
+    {
+      id: 'DI-20',
+      title: 'Typical NZ Household Monthly Energy Bill',
+      chartType: 'pie',
+      subtitle: 'Share of average home electricity expenditure (%)',
+      unit: '%',
+      slices: [
+        { label: 'Space Heating', value: 36, color: '#dc2626' },
+        { label: 'Hot Water', value: 27, color: '#0284c7' },
+        { label: 'Appliances & Tech', value: 18, color: '#4f46e5' },
+        { label: 'Cooking', value: 11, color: '#f59e0b' },
+        { label: 'Lighting', value: 8, color: '#10b981' }
+      ],
+      modelAnswer: 'The given pie chart breaks down a typical New Zealand household electricity bill across five domestic uses, measured in percentage. The largest share goes to space heating at 36 percent, closely followed by hot water systems at 27 percent. Everyday appliances and electronics account for 18 percent, while cooking represents 11 percent. Lighting consumes the smallest proportion at just 8 percent. Overall, thermal needs—heating and hot water combined—drive over three-fifths of household power costs.',
+      keyPoints: '핵심 포인트: 파이 차트 · 최대(Space Heating 36%) + 2위(Hot Water 27%) = 63% · 최소(Lighting 8%)'
+    },
+    {
+      id: 'DI-21',
+      title: 'Municipal Wastewater Purification Process',
+      chartType: 'process',
+      subtitle: 'Five-stage urban water treatment cycle',
+      steps: [
+        { step: '1', title: 'Screening', detail: 'Filter solid debris', color: '#64748b' },
+        { step: '2', title: 'Sedimentation', detail: 'Settle heavy sludge', color: '#0284c7' },
+        { step: '3', title: 'Aeration', detail: 'Bio-bacteria breakdown', color: '#0d9488' },
+        { step: '4', title: 'UV Disinfect', detail: 'Neutralize pathogens', color: '#4f46e5' },
+        { step: '5', title: 'Safe Release', detail: 'Clean river discharge', color: '#16a34a' }
+      ],
+      modelAnswer: 'The given process diagram outlines five sequential stages in purifying municipal wastewater before safe environmental discharge. In the first stage, incoming sewage passes through screens to remove large solid debris. Next, sedimentation tanks allow heavy sludge to settle at the bottom. During the third stage, aeration adds oxygen so beneficial bacteria break down organic waste, followed by ultraviolet disinfection to neutralize harmful pathogens. Finally, treated clean water is safely released into local waterways.',
+      keyPoints: '핵심 포인트: 정화 프로세스 · Screening → Sedimentation → Aeration → UV Disinfect → Safe Release'
+    },
+    {
+      id: 'DI-22',
+      title: 'Annual Visitor Arrivals to NZ by Origin (2025)',
+      chartType: 'horizontal-bar',
+      subtitle: 'Top international inbound visitor markets (Thousands)',
+      unit: 'k',
+      data: [
+        { label: 'Australia', value: 1380, color: '#0284c7' },
+        { label: 'United States', value: 390, color: '#2563eb' },
+        { label: 'China', value: 280, color: '#dc2626' },
+        { label: 'United Kingdom', value: 195, color: '#0d9488' },
+        { label: 'South Korea', value: 92, color: '#f59e0b' }
+      ],
+      modelAnswer: 'The given horizontal bar chart compares annual international visitor arrivals to New Zealand from five source countries in 2025, measured in thousands. Australia clearly dominates inbound tourism at 1,380 thousand arrivals, more than triple the second largest market, the United States, at 390 thousand. China ranks third at 280 thousand visitors, followed by the United Kingdom at 195 thousand, whereas South Korea records the lowest figure among the group at 92 thousand. Overall, trans-Tasman travellers drive the bulk of visitor numbers.',
+      keyPoints: '핵심 포인트: 가로 막대 · 1위(Australia 1,380k 압도적) → 2위(US 390k) → 최소(South Korea 92k)'
+    },
+    {
+      id: 'DI-23',
+      title: 'Daily Screen Time by Age Group (2025)',
+      chartType: 'grouped-bar',
+      subtitle: 'Average daily hours spent on Work/Study vs. Leisure',
+      unit: 'h',
+      categories: ['Teens (13-17)', 'Young Adults', 'Mid-Career', 'Seniors (65+)'],
+      series: [
+        { name: 'Work / Study', color: '#0d9488', values: [3.2, 5.8, 6.1, 1.4] },
+        { name: 'Leisure / Social', color: '#f59e0b', values: [4.6, 3.7, 2.5, 3.1] }
+      ],
+      modelAnswer: 'The given grouped bar chart compares average daily screen time for work or study versus leisure across four age groups in hours. Teenagers and seniors spend more screen hours on leisure than productivity, whereas working-age adults show the reverse pattern. Mid-career adults log the highest work-related screen time at 6.1 hours daily, while seniors record the lowest at 1.4 hours. Conversely, teenagers show the highest leisure screen usage at 4.6 hours per day. Overall, screen habits shift markedly with life stage.',
+      keyPoints: '핵심 포인트: 그룹 막대 · 업무 최고(Mid-Career 6.1h) vs 여가 최고(Teens 4.6h) · 연령대별 목적 반전'
+    },
+    {
+      id: 'DI-24',
+      title: 'Average Residential Fibre Speeds by City',
+      chartType: 'bar',
+      subtitle: 'Mean fixed broadband download speed (Mbps)',
+      unit: '',
+      data: [
+        { label: 'Auckland', value: 365, color: '#2563eb' },
+        { label: 'Wellington', value: 340, color: '#0284c7' },
+        { label: 'Christchurch', value: 315, color: '#0d9488' },
+        { label: 'Hamilton', value: 290, color: '#6366f1' },
+        { label: 'Rural Towns', value: 145, color: '#94a3b8' }
+      ],
+      modelAnswer: 'The given bar chart illustrates average residential broadband download speeds across five New Zealand urban and rural categories, measured in megabits per second. Auckland achieves the highest mean speed at 365 megabits per second, closely followed by Wellington at 340 and Christchurch at 315. Hamilton averages 290, whereas rural towns experience a substantially lower speed of just 145 megabits per second. Overall, urban centres enjoy more than double the connectivity speed of rural areas.',
+      keyPoints: '핵심 포인트: 세로 막대 · 최대(Auckland 365Mbps) vs 도농 격차(Rural Towns 145Mbps)'
+    },
+    {
+      id: 'DI-25',
+      title: 'Online Grocery vs. In-Store Shopping Growth (2019–2025)',
+      chartType: 'line',
+      subtitle: 'Annual consumer spending growth index (2019 = 100)',
+      unit: '',
+      series: [
+        {
+          name: 'Online Grocery',
+          color: '#4f46e5',
+          points: [
+            { label: '2019', value: 100 },
+            { label: '2020', value: 158 },
+            { label: '2021', value: 182 },
+            { label: '2022', value: 175 },
+            { label: '2023', value: 190 },
+            { label: '2025', value: 215 }
+          ]
+        },
+        {
+          name: 'Physical Supermarket',
+          color: '#64748b',
+          points: [
+            { label: '2019', value: 100 },
+            { label: '2020', value: 108 },
+            { label: '2021', value: 106 },
+            { label: '2022', value: 111 },
+            { label: '2023', value: 114 },
+            { label: '2025', value: 118 }
+          ]
+        }
+      ],
+      modelAnswer: 'The given multi-line graph tracks consumer spending growth indices for online grocery orders and physical supermarkets from 2019 to 2025, indexed at 100 in 2019. Starting from an equal baseline, online grocery demand jumped dramatically in 2020 to 158 and continued climbing—despite a brief dip in 2022—to peak at 215 in 2025. By contrast, physical supermarket growth remained modest throughout, reaching only 118 in 2025. Overall, e-commerce grocery adoption grew nearly twice as fast as traditional shopping.',
+      keyPoints: '핵심 포인트: 다중 선형 · 2019년 동일(100) → Online 급등(215) vs Physical 완만(118)'
+    },
+    {
+      id: 'DI-26',
+      title: 'University Research Grant Funding Sources',
+      chartType: 'pie',
+      subtitle: 'Distribution of total annual research revenue (%)',
+      unit: '%',
+      slices: [
+        { label: 'Gov Science Fund', value: 46, color: '#0284c7' },
+        { label: 'Industry Partners', value: 24, color: '#0d9488' },
+        { label: 'Philanthropic Trusts', value: 15, color: '#f59e0b' },
+        { label: 'Int. Collaborations', value: 10, color: '#6366f1' },
+        { label: 'Internal Endowment', value: 5, color: '#64748b' }
+      ],
+      modelAnswer: 'The given pie chart illustrates how university research funding is distributed across five income sources in percentage terms. Nearly half of all grants come from government science funds at 46 percent, followed by industry partnerships at 24 percent. Philanthropic trusts supply 15 percent and international collaborations add 10 percent, while internal university endowments represent the smallest share at just 5 percent. Overall, public funding and private industry together finance seven out of every ten research dollars.',
+      keyPoints: '핵심 포인트: 파이 차트 · 최대(정부 기금 46%) → 2위(산업계 24%) → 최소(내부 기금 5%)'
+    },
+    {
+      id: 'DI-27',
+      title: 'Academic Manuscript Peer-Review Workflow',
+      chartType: 'process',
+      subtitle: 'Five stages from paper submission to journal publication',
+      steps: [
+        { step: '1', title: 'Submission', detail: 'Format & scope check', color: '#0284c7' },
+        { step: '2', title: 'Editor Screen', detail: 'Assign specialist', color: '#4f46e5' },
+        { step: '3', title: 'Peer Review', detail: 'Double-blind critique', color: '#f59e0b' },
+        { step: '4', title: 'Revision', detail: 'Authors fix gaps', color: '#0d9488' },
+        { step: '5', title: 'Publication', detail: 'Online DOI release', color: '#16a34a' }
+      ],
+      modelAnswer: 'The given process diagram illustrates the five key stages of publishing an academic research paper through peer review. First, authors submit their manuscript for initial formatting and scope checks. Second, a journal editor screens the draft and assigns independent field specialists. Next, reviewers perform a double-blind evaluation to test methodology and claims, after which authors revise the paper to address critiques. Finally, once approved, the article receives a DOI and is published online.',
+      keyPoints: '핵심 포인트: 학술 출판 공정 · Submission → Editor Screen → Peer Review → Revision → Publication'
+    },
+    {
+      id: 'DI-28',
+      title: 'Annual Carbon Capture by NZ Forest Type',
+      chartType: 'horizontal-bar',
+      subtitle: 'Mean carbon dioxide absorption (Tonnes CO2 / hectare / year)',
+      unit: 't',
+      data: [
+        { label: 'Exotic Pine (Peak)', value: 32, color: '#16a34a' },
+        { label: 'Redwood Plantation', value: 28, color: '#0d9488' },
+        { label: 'Native Regenerating', value: 14, color: '#0284c7' },
+        { label: 'Mature Podocarp', value: 9, color: '#4f46e5' },
+        { label: 'Scrub & Tussock', value: 4, color: '#f59e0b' }
+      ],
+      modelAnswer: 'The given horizontal bar chart compares annual carbon dioxide absorption rates across five forest categories in New Zealand, measured in tonnes per hectare. Fast-growing exotic pine achieves the highest annual sequestration rate at 32 tonnes, closely followed by redwood plantations at 28 tonnes. By comparison, regenerating native forests capture 14 tonnes and mature podocarps store 9 tonnes, whereas scrub and tussock absorb the least at just 4 tonnes per hectare. Overall, young fast-growing plantations sequester carbon more rapidly per year.',
+      keyPoints: '핵심 포인트: 가로 막대 · 최대(Exotic Pine 32t) vs 2위(Redwood 28t) vs 최소(Scrub & Tussock 4t)'
+    },
+    {
+      id: 'DI-29',
+      title: 'Early Childhood Education Enrolment Rate in NZ (2015–2025)',
+      chartType: 'single-line',
+      subtitle: 'Share of children aged 3–4 attending licensed ECE centres (%)',
+      unit: '%',
+      points: [
+        { label: '2015', value: 89.2 },
+        { label: '2017', value: 91.5 },
+        { label: '2019', value: 93.8 },
+        { label: '2021', value: 92.4 },
+        { label: '2023', value: 95.1 },
+        { label: '2025', value: 96.8 }
+      ],
+      color: '#0d9488',
+      modelAnswer: 'The given line chart depicts the participation rate of three- and four-year-old children in licensed New Zealand early childhood education centres between 2015 and 2025. Participation began at its lowest level of 89.2 percent in 2015 and rose steadily to 93.8 percent in 2019. Following a slight dip to 92.4 percent in 2021, enrolment resumed its upward climb to reach a high of 96.8 percent in 2025. Overall, nearly every preschool-aged child now participates in early learning.',
+      keyPoints: '핵심 포인트: 단일 선형 · 2015년 89.2% → 2021년 소폭 하락(92.4%) → 2025년 최고 96.8%'
+    },
+    {
+      id: 'DI-30',
+      title: 'Elective Surgery Wait Times: Public vs. Private Clinics',
+      chartType: 'grouped-bar',
+      subtitle: 'Median days from specialist referral to procedure (Days)',
+      unit: 'd',
+      categories: ['Orthopaedics', 'Cardiology', 'Ophthalmology', 'ENT Surgery'],
+      series: [
+        { name: 'Public Hospital', color: '#dc2626', values: [148, 82, 115, 104] },
+        { name: 'Private Clinic', color: '#0284c7', values: [34, 19, 26, 24] }
+      ],
+      modelAnswer: 'The given grouped bar chart compares median waiting times for elective procedures across four medical specialties in public hospitals and private clinics, measured in days. In every specialty, public hospital wait times are more than four times longer than private clinics. Orthopaedics experiences the longest wait at 148 days in public care versus 34 days privately, while cardiology shows the shortest private wait at just 19 days. Overall, waiting times vary sharply between public and private systems.',
+      keyPoints: '핵심 포인트: 그룹 막대 · 공공 vs 민간 대기일수 4배 이상 격차 · 최대(Orthopaedics 148d) vs 최소(Cardiology Private 19d)'
     }
   ],
 
@@ -1741,6 +2014,379 @@ Yet language is far more than a utilitarian tool for transactions; it carries ce
 
 In conclusion, preserving endangered languages enriches cultural heritage and cognitive diversity while complementing, rather than obstructing, global communication skills.`,
       tip: '의견 제시형: 서론(소수·원주민 언어 보존 투자 적극 지지) → 본론1(경제 효율 논리의 반박) → 본론2(뉴질랜드 te reo Māori 부흥 사례 및 인지·문화적 가치) → 결론.'
+    }
+  ],
+
+  // ==========================================================
+  // 7. 1-Minute Impromptu Talk (20 Questions: NZ Life, ECE, Daily Life, Business)
+  // ==========================================================
+  IMPROMPTU_QUESTIONS: [
+    // --- New Zealand Life (IMP-1 .. IMP-5) ---
+    {
+      id: 'IMP-1',
+      title: 'Most Memorable Experience in New Zealand',
+      topic: 'New Zealand Life',
+      questionEn: 'Describe the most memorable experience you have had in New Zealand so far, and explain why it left a lasting impression on you.',
+      questionKo: '뉴질랜드에서 겪었던 가장 인상 깊었던 경험과, 그것이 왜 오래 기억에 남는지 설명해 보세요.',
+      guidePoints: [
+        '언제, 어디서 있었던 일인지 배경 소개 (예: 자연 풍경, 키위들의 친절)',
+        '구체적으로 인상적이었던 장면이나 대화 한 가지',
+        '그 경험을 통해 뉴질랜드에 대해 새롭게 느낀 점'
+      ],
+      sampleExpressions: [
+        'Looking back on my time here, what stands out the most is...',
+        'I was genuinely struck by how warm and welcoming people were.',
+        'It completely reshaped my perspective on work-life balance.'
+      ],
+      modelAnswer: 'Looking back on my time in New Zealand, what stands out the most was my first weekend hike near Lake Tekapo. Coming from a crowded city, I was genuinely struck by how quiet the trails were and how strangers greeted each other warmly along the path. That evening, looking up at the clear night sky without light pollution made me realize why New Zealanders treasure their natural environment. It gave me a deep appreciation for a slower, healthier pace of life.'
+    },
+    {
+      id: 'IMP-2',
+      title: 'Work-Life Balance in Kiwi Culture',
+      topic: 'New Zealand Life',
+      questionEn: 'How do you maintain a healthy work-life balance while studying or working in New Zealand, and why is it important?',
+      questionKo: '뉴질랜드에서 학업이나 일을 하면서 워라밸(일과 삶의 균형)을 어떻게 유지하고 있는지, 그리고 왜 중요하다고 생각하는지 말해 보세요.',
+      guidePoints: [
+        '퇴근·하교 후 시간을 분리하는 본인만의 루틴',
+        '야외 활동, 운동, 가족/친구와의 시간 예시',
+        '건강한 균형이 장기적 업무·학습 효율로 이어지는 이유'
+      ],
+      sampleExpressions: [
+        'To draw a clear boundary between work and personal time, I...',
+        'In Kiwi culture, clocking off on time is genuinely respected.',
+        'Stepping away from screens recharges my focus for the next day.'
+      ],
+      modelAnswer: 'In Kiwi culture, people genuinely value leaving work on time to spend evenings with family or outdoors, and I try to adopt that mindset myself. Once I finish studying or working at five, I turn off work notifications and go for a brisk walk around my neighborhood park. Drawing that clear boundary prevents burnout and keeps my energy steady throughout the week. When my mind feels refreshed, I actually solve problems much faster the next morning.'
+    },
+    {
+      id: 'IMP-3',
+      title: 'Small Talk & Friendly Kiwi Communication',
+      topic: 'New Zealand Life',
+      questionEn: 'In New Zealand, casual small talk with neighbours, coworkers, or baristas is very common. How do you start or respond to small talk naturally?',
+      questionKo: '뉴질랜드에서는 이웃이나 동료, 카페 직원과 가벼운 스몰토크(Small Talk)를 자주 나눕니다. 자연스럽게 대화를 시작하거나 이어가는 본인만의 방법은 무엇인가요?',
+      guidePoints: [
+        '날씨, 주말 계획, 상대방의 안부 등 부담 없는 첫 마디',
+        '단답으로 끝내지 않고 짧은 꼬리 질문 붙이기',
+        '영어가 완벽하지 않아도 미소와 리액션의 중요성'
+      ],
+      sampleExpressions: [
+        'A simple icebreaker I always rely on is asking about weekend plans.',
+        'Instead of just answering yes or no, I add a quick follow-up question.',
+        'Friendly body language bridges any minor language gap.'
+      ],
+      modelAnswer: 'At first, friendly Kiwi small talk at coffee shops or bus stops caught me off guard, but now I really enjoy it. My go-to strategy is keeping a couple of simple icebreakers ready, such as commenting on the unpredictable weather or asking how someone’s weekend went. Instead of stopping at a short one-word reply, I always add a follow-up question to keep the conversation flowing. I learned that genuine warmth and eye contact matter far more than speaking flawless grammar.'
+    },
+    {
+      id: 'IMP-4',
+      title: 'Eco-Friendly Daily Habits in Aotearoa',
+      topic: 'New Zealand Life',
+      questionEn: 'What everyday eco-friendly habits have you noticed or adopted while living in New Zealand?',
+      questionKo: '뉴질랜드 생활 속에서 관찰했거나 본인이 실천하고 있는 친환경 일상 습관에는 어떤 것들이 있나요?',
+      guidePoints: [
+        '다회용 쇼핑백, 킵컵(KeepCup), 분리수거/음식물 퇴비화 등',
+        '지역 마트나 카페에서 느낀 환경 인식 수준',
+        '작은 실천이 지역 사회와 자연에 미치는 긍정적 영향'
+      ],
+      sampleExpressions: [
+        'One habit that quickly became second nature to me is...',
+        'It is refreshing to see how seriously local communities treat sustainability.',
+        'Small daily choices add up to protect local waterways and wildlife.'
+      ],
+      modelAnswer: 'One eco-friendly habit that quickly became second nature to me in New Zealand is bringing a reusable coffee cup and cloth tote bags wherever I go. Because single-use plastic bags are banned and many cafes offer a small discount for keep-cups, it feels effortless to stay mindful of waste. I also appreciate how strictly households separate recycling and green organic bins. Seeing neighbors consistently care for clean streets reminds me how small individual choices protect Aotearoa’s fragile ecosystems.'
+    },
+    {
+      id: 'IMP-5',
+      title: 'Adapting to Regional Transport & Weather',
+      topic: 'New Zealand Life',
+      questionEn: 'Tell me about a time you had to adjust your plans because of New Zealand’s unpredictable weather or transport schedule.',
+      questionKo: '뉴질랜드의 변덕스러운 날씨나 대중교통 일정 때문에 계획을 변경하거나 적응해야 했던 경험을 이야기해 보세요.',
+      guidePoints: [
+        '"하루에 사계절이 있다"는 NZ 날씨 또는 버스/페리 지연 상황',
+        '당황하지 않고 대처했던 방식 (레이어링 옷차림, 대안 경로)',
+        '그 일로 얻은 생활의 여유나 실용적 교훈'
+      ],
+      sampleExpressions: [
+        'They often say you can experience four seasons in one day here.',
+        'Rather than getting frustrated, I shifted to a backup indoor plan.',
+        'Always packing a lightweight waterproof jacket saved me multiple times.'
+      ],
+      modelAnswer: 'People often say Auckland gives you four seasons in a single afternoon, and I learned that lesson early on. Last spring, I planned a ferry trip to Waiheke Island, only for sudden coastal gusts and rain squalls to cancel several morning sailings. Rather than letting the delay ruin my day, I ducked into an art gallery near the waterfront and caught an afternoon boat once the sky cleared. Since then, I always dress in layers and leave flexible time buffers in my weekend schedule.'
+    },
+
+    // --- Early Childhood Education / ECE (IMP-6 .. IMP-10) ---
+    {
+      id: 'IMP-6',
+      title: 'Mediating a Conflict Between Two Children',
+      topic: 'Early Childhood Education (ECE)',
+      questionEn: 'How would you step in and guide two young children who are arguing over the same toy at an early childhood center?',
+      questionKo: '유치원(ECE 센터)에서 두 아이가 같은 장난감을 두고 다툴 때 어떻게 개입하여 중재하시겠나요?',
+      guidePoints: [
+        '아이 눈높이에 맞춰 앉아 안전 확보 및 양쪽 감정 공감하기',
+        '단순히 빼앗거나 명령하지 않고 각자의 요구를 말로 표현하도록 돕기',
+        '타이머 활용·차례 기다리기·함께 놀기 등 해결책 함께 찾기'
+      ],
+      sampleExpressions: [
+        'First, I would kneel down to their eye level to help both children feel safe and heard.',
+        'I would validate their feelings before guiding them toward a fair solution.',
+        'Using a sand timer empowers children to take turns calmly.'
+      ],
+      modelAnswer: 'First, I would kneel down to the children’s eye level so my posture feels calm and supportive rather than intimidating. I would gently hold the toy if needed for safety, and validate both emotions by saying, "You really want a turn with the truck, and you aren’t finished playing yet." Next, I would encourage each child to use simple words to express what they want, and offer practical choices like using a two-minute sand timer or finding another truck to play alongside each other. This turns a conflict into a valuable social-learning moment.'
+    },
+    {
+      id: 'IMP-7',
+      title: 'Comforting a Child with Separation Anxiety',
+      topic: 'Early Childhood Education (ECE)',
+      questionEn: 'A new toddler cries every morning when their parents drop them off. How can an ECE teacher build trust and comfort the child?',
+      questionKo: '새로 등원한 유아가 매일 아침 부모와 떨어질 때 울음을 터뜨립니다. 교사로서 어떻게 신뢰를 쌓고 아이를 안심시킬 수 있을까요?',
+      guidePoints: [
+        '부모와의 일관된 짧은 작별 인사(안녕 의식) 권유 — 몰래 사라지지 않기',
+        '아이의 감정을 인정하고 좋아하는 놀이·책·교구로 부드럽게 전환',
+        '등원 후 안정된 사진이나 메시지를 부모에게 공유해 안심시키기'
+      ],
+      sampleExpressions: [
+        'Building a predictable morning drop-off routine gives the toddler emotional security.',
+        'I always advise parents to say a warm, brief goodbye instead of sneaking away.',
+        'Sharing a quick update with whānau later reassures both the child and family.'
+      ],
+      modelAnswer: 'Separation anxiety is completely natural for a new toddler, so my main goal is creating a predictable and warm transition routine. I would collaborate with the parents to establish a short, consistent goodbye ritual—like a hug at the window—and encourage them never to sneak out, which can erode trust. Right after the parent leaves, I would acknowledge the child’s sadness with a gentle cuddle and invite them toward a familiar comfort activity, such as water play or reading a favorite picture book. Later, sending parents a reassuring photo once their child settles strengthens our partnership.'
+    },
+    {
+      id: 'IMP-8',
+      title: 'Value of Play-Based Learning (Te Whāriki)',
+      topic: 'Early Childhood Education (ECE)',
+      questionEn: 'Some parents worry that play-based preschools do not teach enough academic skills. How would you explain the benefits of learning through play?',
+      questionKo: '놀이 중심 보육(Play-based learning)이 학습량이 부족할까 걱정하는 학부모에게, 놀이를 통한 배움의 장점을 어떻게 설명하시겠나요?',
+      guidePoints: [
+        '블록·모래·물놀이를 통해 자연스럽게 수학(크기·균형), 과학(원인·결과) 습득',
+        '역할 놀이를 통한 어휘력, 협동심, 문제 해결력 발달 강조',
+        '뉴질랜드 유아교육 과정(Te Whāriki)의 전인적 성장 철학 연결'
+      ],
+      sampleExpressions: [
+        'Play is actually the most effective engine for early brain development.',
+        'Through block building and messy play, children explore early math and physics naturally.',
+        'Under Te Whāriki, emotional confidence lays the strongest foundation for primary school.'
+      ],
+      modelAnswer: 'I completely understand why parents care deeply about school readiness, and I love showing them how rich learning happens inside play. When children build tall wooden block towers, they are actively experimenting with counting, spatial geometry, gravity, and resilience when a tower tumbles. Similarly, pretend bakery play strengthens early literacy, turn-taking, and expressive vocabulary far more effectively than sitting still with worksheets. Guided by New Zealand’s Te Whāriki framework, play nurtures curious, confident learners who transition smoothly into primary school.'
+    },
+    {
+      id: 'IMP-9',
+      title: 'Supporting Multicultural Inclusion in Preschool',
+      topic: 'Early Childhood Education (ECE)',
+      questionEn: 'In a culturally diverse early childhood classroom, how can teachers make children from different language backgrounds feel included?',
+      questionKo: '다문화 유아 교육 현장에서 서로 다른 언어와 문화적 배경을 가진 아이들이 소외감 없이 어울리도록 교사가 할 수 있는 방법은 무엇인가요?',
+      guidePoints: [
+        '가정에서 쓰는 인사말·노래·그림책을 교실 일상에 자연스럽게 반영',
+        '시각 자료(그림 카드)와 제스처를 활용해 언어 장벽 낮추기',
+        '가족(Whānau)을 초대해 명절·음식·전통 이야기를 함께 나누기'
+      ],
+      sampleExpressions: [
+        'Incorporating home-language greetings and visual cue cards helps every child belong.',
+        'Inviting families to share songs or cultural stories enriches the whole center.',
+        'Respecting a child’s identity boosts their confidence to try new friendships.'
+      ],
+      modelAnswer: 'In a diverse classroom, inclusion begins with celebrating each child’s cultural identity right from the front door. As a teacher, I would learn key greeting words and comfort phrases in each child’s home language while pairing spoken English with clear visual cards and gestures so nobody feels lost. I also love inviting parents and grandparents to share traditional songs, bilingual storybooks, or cooking activities with the group. When children see their home culture valued at kindergarten, they gain the belonging and confidence needed to build friendships.'
+    },
+    {
+      id: 'IMP-10',
+      title: 'Giving Constructive Daily Feedback to Parents',
+      topic: 'Early Childhood Education (ECE)',
+      questionEn: 'How should a teacher communicate a challenging behavior incident—such as biting or hitting—to parents at pickup time with empathy and professionalism?',
+      questionKo: '하원 시간에 아이가 다른 친구를 밀거나 물었던 행동 문제를 학부모에게 전달할 때, 공감과 전문성을 지키며 소통하는 방법을 설명해 보세요.',
+      guidePoints: [
+        '아이를 나쁜 아이로 낙인찍지 않고 객관적 행동 + 맥락 설명 (Privacy 보호: 다른 아이 실명 비공개)',
+        '먼저 아이의 긍정적인 순간을 전한 뒤, 사건 배경과 교사의 대처 공유',
+        '가정과 교실이 일관된 말로 아이를 도울 수 있도록 협력 제안'
+      ],
+      sampleExpressions: [
+        'I always separate the child’s worth from the specific challenging behavior.',
+        'Keeping privacy strictly confidential, I explain the trigger and how we supported the child.',
+        'Partnering calmly with parents ensures consistent guidance between home and center.'
+      ],
+      modelAnswer: 'Communicating a tough incident at pickup requires privacy, empathy, and clear facts rather than blame. I would speak with the parent in a quiet corner—never naming the other child involved—and start with something positive their child enjoyed earlier that day. Then I would objectively describe what triggered the frustration, explain that biting or hitting is often how pre-verbal toddlers communicate overwhelm, and share how I calmly intervened to keep everyone safe. Finally, I would suggest gentle phrases we can both use at home and the center to teach safer expression.'
+    },
+
+    // --- Daily Life & Self-Improvement (IMP-11 .. IMP-15) ---
+    {
+      id: 'IMP-11',
+      title: 'Your Favorite Stress-Relief Routine',
+      topic: 'Daily Life',
+      questionEn: 'When you feel overwhelmed by exams, work, or daily responsibilities, what practical routine helps you reset your mind?',
+      questionKo: '시험이나 업무, 일상으로 스트레스가 쌓였을 때 마음을 정리하고 회복하기 위해 실천하는 본인만의 방법은 무엇인가요?',
+      guidePoints: [
+        '스트레스를 알아차리는 순간과 멈추는 행동',
+        '구체적 활동(산책, 요리, 음악 감상, 일기 쓰기 등) 1~2가지',
+        '실천 후 기분과 집중력이 어떻게 바뀌는지'
+      ],
+      sampleExpressions: [
+        'Whenever mental fatigue builds up, my quickest reset is...',
+        'Breaking a giant task into three tiny steps immediately calms my anxiety.',
+        'Giving myself twenty screen-free minutes restores clarity.'
+      ],
+      modelAnswer: 'Whenever deadlines or exam pressure start piling up, sitting harder at my desk rarely works. Instead, my favorite reset routine is stepping outside for a twenty-minute brisk walk without my phone, listening only to ambient sounds or calm music. Physical movement burns off nervous tension and lets my brain organize scattered thoughts in the background. When I get back, I write down just three top priorities on a sticky note so the workload feels manageable again.'
+    },
+    {
+      id: 'IMP-12',
+      title: 'Overcoming an English Speaking Challenge',
+      topic: 'Daily Life & Learning',
+      questionEn: 'Describe a difficulty you faced when speaking English in real-life situations and how you worked to overcome it.',
+      questionKo: '실제 생활에서 영어로 말할 때 겪었던 어려움과, 이를 극복하기 위해 어떤 노력을 했는지 이야기해 보세요.',
+      guidePoints: [
+        '과거에 두려웠던 상황 (전화 통화, 빠른 원어민 속도, 실수 걱정)',
+        '구체적인 연습 방법 (섀도잉, 녹음해서 다시 듣기, 하루 한 문장 먼저 말 걸기)',
+        '완벽주의를 내려놓고 얻은 자신감 변화'
+      ],
+      sampleExpressions: [
+        'My biggest hurdle used to be freezing up on phone calls without visual cues.',
+        'Recording my own voice and shadowing native speakers made a huge difference.',
+        'I realized fluency grows from communicating clearly, not avoiding every mistake.'
+      ],
+      modelAnswer: 'Earlier in my English journey, phone calls terrified me because I could not rely on facial expressions or gestures, and I worried constantly about making grammar slips. To overcome that fear, I started recording one-minute voice memos daily and shadowing native podcast clips for ten minutes every morning. Hearing my own rhythm helped me fix awkward pauses and speak more smoothly. Most importantly, letting go of perfectionism allowed me to focus on getting my message across, which made real conversations feel natural.'
+    },
+    {
+      id: 'IMP-13',
+      title: 'A Skill You Would Love to Master Next',
+      topic: 'Daily Life',
+      questionEn: 'If you had extra free time over the next six months, what practical skill or hobby would you choose to learn and why?',
+      questionKo: '앞으로 6개월 동안 여유 시간이 주어진다면, 어떤 실용적인 기술이나 취미를 배워보고 싶은지 이유와 함께 말해 보세요.',
+      guidePoints: [
+        '배우고 싶은 기술/취미 한 가지 (베이킹, 목공, Te Reo Māori, 영상 편집, 수영 등)',
+        '그 기술을 선택하게 된 계기',
+        '배운 뒤 일상이나 주변 사람들과 나누고 싶은 목표'
+      ],
+      sampleExpressions: [
+        'If I had spare time over the next half year, I would love to pick up...',
+        'What draws me to it is the combination of creativity and practical usefulness.',
+        'Sharing the results with friends or colleagues would make the effort extra rewarding.'
+      ],
+      modelAnswer: 'If I had a few extra hours each week over the next six months, I would love to take a conversational course in te reo Māori alongside learning sourdough baking. As someone living in New Zealand, understanding basic Māori phrases, greetings, and place meanings would deepen my connection with the local community and workplace. At the same time, baking bread from scratch seems like a relaxing hands-on contrast to digital screen work—and sharing fresh loaves with neighbors would be a wonderful bonus.'
+    },
+    {
+      id: 'IMP-14',
+      title: 'Healthy Screen Time & Digital Detox',
+      topic: 'Daily Life & Health',
+      questionEn: 'Many adults spend hours scrolling smartphones before bed. What practical rule helps improve sleep and focus in a digital age?',
+      questionKo: '잠들기 전 스마트폰 사용으로 수면과 집중력이 떨어지는 현대인들이 실천할 수 있는 현실적인 디지털 습관 규칙을 제안해 보세요.',
+      guidePoints: [
+        '침실 밖 충전 또는 취침 1시간 전 흑백 모드/방해 금지 설정',
+        '대체 활동(종이책 읽기, 가벼운 스트레칭) 마련의 중요성',
+        '다음 날 아침 피로도와 집중력 개선 효과'
+      ],
+      sampleExpressions: [
+        'Out of sight really means out of mind when it comes to late-night scrolling.',
+        'Leaving my charger across the room transformed my sleep quality within days.',
+        'Replacing passive feeds with five pages of a book helps the brain wind down.'
+      ],
+      modelAnswer: 'Late-night scrolling happens mostly out of habit rather than real necessity, so changing the physical environment works far better than relying on willpower alone. The simplest rule I follow is charging my phone in the hallway rather than on my bedside table after nine-thirty. When the screen is out of arm’s reach, I naturally pick up a paper book or do five minutes of stretching instead. Within a week, I noticed I fell asleep faster and woke up feeling noticeably sharper.'
+    },
+    {
+      id: 'IMP-15',
+      title: 'What Makes a Truly Good Neighbor or Friend',
+      topic: 'Daily Life',
+      questionEn: 'In your opinion, what quality is most important in being a considerate neighbor or reliable friend?',
+      questionKo: '좋은 이웃이나 믿을 수 있는 친구가 되기 위해 가장 중요하다고 생각하는 자질 한 가지와 그 이유를 말해 보세요.',
+      guidePoints: [
+        '핵심 자질 (경청, 약속 준수, 작은 배려, 경계 존중 등)',
+        '일상 속 구체적인 작은 행동 예시',
+        '신뢰가 공동체를 따뜻하게 만드는 이유'
+      ],
+      sampleExpressions: [
+        'Above all, I believe consistency and quiet consideration define a great friend.',
+        'Checking in during tough moments speaks much louder than grand gestures.',
+        'Respecting personal space while staying approachable builds lasting neighborhood trust.'
+      ],
+      modelAnswer: 'In my view, the most valuable quality in both a friend and a neighbor is quiet reliability—showing up consistently in small moments without waiting to be asked. For example, bringing in a neighbor’s recycling bin when they are away, or remembering to text a friend before an important job interview, shows genuine care. At the same time, respecting each other’s privacy and quiet hours keeps relationships comfortable. Small, thoughtful acts like these turn an ordinary street into a supportive community.'
+    },
+
+    // --- Business & Workplace (IMP-16 .. IMP-20) ---
+    {
+      id: 'IMP-16',
+      title: 'Resolving a Disagreement Within a Team',
+      topic: 'Business & Workplace',
+      questionEn: 'Describe how you would handle a situation where two coworkers strongly disagree on how to complete a shared project.',
+      questionKo: '함께 진행하는 프로젝트 방향을 두고 팀원 또는 동료와 의견이 강하게 충돌할 때 어떻게 해결하시겠나요?',
+      guidePoints: [
+        '감정 대립을 피하고 공통의 목표(고객·마감·품질) 먼저 확인하기',
+        '상대 의견의 장점 인정 후 데이터나 구체적 기준을 바탕으로 비교하기',
+        '작은 시범 테스트(Pilot)나 절충안으로 합의 도출하기'
+      ],
+      sampleExpressions: [
+        'I prefer steering the conversation away from ego and back toward our shared goal.',
+        'Acknowledging the valid points in both proposals lowers tension immediately.',
+        'Running a small quick test lets real data guide the final decision.'
+      ],
+      modelAnswer: 'When two teammates disagree strongly, I find it helps to step back and remind everyone of our shared end goal, such as meeting the client deadline or ensuring quality. I would listen carefully and summarize each person’s strongest point so both feel respected rather than dismissed. Then, instead of debating abstract opinions, I would suggest comparing both ideas against clear practical criteria like cost, time, and risk—or testing one approach on a small pilot scale first. Keeping the discussion solution-focused protects both the project and team morale.'
+    },
+    {
+      id: 'IMP-17',
+      title: 'Prioritizing Multiple Urgent Deadlines',
+      topic: 'Business & Workplace',
+      questionEn: 'When several urgent tasks land on your desk at the same time, how do you decide what to tackle first and communicate with your manager?',
+      questionKo: '여러 긴급한 업무가 동시에 몰렸을 때 우선순위를 정하고 상사나 동료와 조율하는 본인만의 기준을 설명해 보세요.',
+      guidePoints: [
+        '긴급도(Deadline)와 중요도/영향력(Impact) 기준으로 분류',
+        '남에게 영향을 미치는 병목 작업 먼저 처리하거나 예상 시간 산정',
+        '무작정 다 하겠다고 하지 않고 상사에게 현실적 타임라인 선제 공유'
+      ],
+      sampleExpressions: [
+        'First, I distinguish tasks that are genuinely high-impact from noise that merely feels urgent.',
+        'Proactively flagging trade-offs with my manager avoids last-minute surprises.',
+        'Knocking out blocking tasks early keeps the rest of the team moving.'
+      ],
+      modelAnswer: 'When multiple urgent tasks hit at once, taking five minutes to triage saves hours of panic later. I quickly sort items by real impact and hard deadlines, tackling anything that blocks another colleague’s progress first. If two critical deliverables genuinely collide, I message my manager right away with a clear list—saying, "I can finish A by two o’clock and B tomorrow morning; would you prefer a different order?" Communicating trade-offs early builds trust and ensures expectations stay realistic.'
+    },
+    {
+      id: 'IMP-18',
+      title: 'Politely Declining an Extra Request at Work',
+      topic: 'Business & Workplace',
+      questionEn: 'How can you politely say no—or negotiate an alternative—when a colleague asks for help during your busiest hours?',
+      questionKo: '가장 바쁜 업무 시간대에 동료가 추가 도움을 요청했을 때, 관계를 해치지 않고 정중하게 거절하거나 대안을 제시하는 방법을 말해 보세요.',
+      guidePoints: [
+        '즉각적인 "안 돼요" 대신 상대 요청 공감 + 현재 우선순위 투명하게 공유',
+        '가능한 시간대나 더 간략한 대안("오후 4시 이후" 또는 "템플릿 공유") 제시',
+        '무리한 승낙으로 본업 실수가 나지 않도록 지키는 프로페셔널리즘'
+      ],
+      sampleExpressions: [
+        'I want to be helpful, yet overcommitting hurts the quality of my core deliverables.',
+        'Using a "yes, later" or "here is another option" framing keeps goodwill intact.',
+        'Being transparent about my current deadline makes boundaries easy to accept.'
+      ],
+      modelAnswer: 'Saying no politely at work comes down to showing willingness without hiding your current workload. Rather than giving a flat refusal, I thank my colleague for asking, briefly explain the deadline I am currently focused on, and offer a clear alternative. For instance, I might say, "I’m wrapping up a client report due at three, so I can’t review the whole deck right now—would it help if I share our template now and look at your draft after four?" People appreciate honesty paired with a practical workaround.'
+    },
+    {
+      id: 'IMP-19',
+      title: 'Hybrid Work vs. Full-Time Office Collaboration',
+      topic: 'Business & Workplace',
+      questionEn: 'In modern businesses, what do you think is the ideal balance between working from home and collaborating in the office?',
+      questionKo: '현대 직장에서 재택근무와 사무실 출근(대면 협업) 사이의 이상적인 균형은 어떤 모습이라고 생각하나요?',
+      guidePoints: [
+        '재택근무의 장점: 깊은 집중 작업(Deep work), 통근 시간·스트레스 절감',
+        '사무실 출근의 장점: 빠른 브레인스토밍, 신입 멘토링, 팀 유대감',
+        '주 2~3회 공통 출근일(Core office days) 제안'
+      ],
+      sampleExpressions: [
+        'Deep analytical work thrives in quiet home environments, while creative ideation shines in person.',
+        'Scheduling two or three shared anchor days gives teams predictability.',
+        'Hybrid policies attract diverse talent, including working parents.'
+      ],
+      modelAnswer: 'In my view, the healthiest modern workplace combines two or three predictable office days with remote flexibility on the remaining days. Quiet solo tasks like writing reports or analyzing spreadsheets happen much more efficiently at home without commute stress or constant desk interruptions. However, meeting in person on shared anchor days sparks spontaneous problem-solving, strengthens social trust, and helps new hires learn through informal mentoring. A structured hybrid rhythm captures the best of both worlds.'
+    },
+    {
+      id: 'IMP-20',
+      title: 'Adapting Quickly to a New Workplace Role',
+      topic: 'Business & Workplace',
+      questionEn: 'Imagine starting a new job or placement in New Zealand next week. What would you focus on during your first month to succeed?',
+      questionKo: '다음 주 뉴질랜드의 새로운 직장(또는 실습지)에 첫 출근을 한다면, 첫 한 달 동안 성공적으로 적응하기 위해 무엇에 집중할 건가요?',
+      guidePoints: [
+        '적극적인 경청·메모 습관과 팀 문화/암묵적 규칙 파악하기',
+        '모르는 점은 추측하지 말고 적절한 타이밍에 명확히 질문하기',
+        '작은 업무부터 꼼꼼히 완수해 초기 신뢰(Trust) 쌓기'
+      ],
+      sampleExpressions: [
+        'During my first month, listening actively and taking structured notes come first.',
+        'Asking thoughtful clarifying questions early prevents costly assumptions later.',
+        'Delivering small tasks reliably lays the groundwork for bigger responsibilities.'
+      ],
+      modelAnswer: 'During my first month in a new New Zealand workplace, my top priority would be observing the team culture closely and building quiet reliability. I would keep a dedicated notebook for internal processes, software tools, and local communication styles so I never have to ask the same question twice. Rather than trying to impress everyone with rushed changes, I would ask clarifying questions early, take full ownership of small everyday tasks, and invite brief feedback at the end of week two. Listening well first turns a newcomer into a trusted teammate quickly.'
     }
   ]
 };
