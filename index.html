@@ -96,6 +96,10 @@
           class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-medium bg-amber-500/20 hover:bg-amber-500/35 border border-amber-300/40 text-amber-100 transition cursor-pointer">
           <span>📱 iOS 오디오 안내</span>
         </button>
+        <button id="btn-data-sync" type="button" title="PC · 아이폰 · 지인 간 데이터 동기화 (내보내기/가져오기)"
+          class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-500/25 hover:bg-emerald-500/40 border border-emerald-300/40 text-emerald-50 transition cursor-pointer">
+          <span>🔄 기기 간 데이터 동기화</span>
+        </button>
         <button id="btn-ai-settings" type="button" title="Google AI Studio Gemini API 설정"
           class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-indigo-500/30 hover:bg-indigo-500/45 border border-indigo-300/40 text-white transition cursor-pointer">
           <span id="header-ai-dot" class="w-2 h-2 rounded-full bg-slate-300"></span>
@@ -1408,10 +1412,16 @@
             <h2 class="text-base sm:text-lg font-bold text-slate-900">📊 연습 기록 &amp; 영역별 누적 통계</h2>
             <p class="text-xs text-slate-500">스피킹 녹음 완료, 라이팅 완료 표시 및 AI 채점 결과가 자동 기록됩니다.</p>
           </div>
-          <button id="btn-clear-logs" type="button"
-            class="px-3 py-1.5 rounded-lg text-xs font-semibold border border-slate-200 bg-white hover:bg-rose-50 hover:text-rose-700 text-slate-600 transition cursor-pointer">
-            기록 초기화
-          </button>
+          <div class="flex flex-wrap items-center gap-2">
+            <button id="btn-review-data-sync" type="button"
+              class="px-3 py-1.5 rounded-lg text-xs font-bold border border-teal-200 bg-teal-50 hover:bg-teal-100 text-teal-800 transition cursor-pointer">
+              🔄 기기 간 데이터 동기화
+            </button>
+            <button id="btn-clear-logs" type="button"
+              class="px-3 py-1.5 rounded-lg text-xs font-semibold border border-slate-200 bg-white hover:bg-rose-50 hover:text-rose-700 text-slate-600 transition cursor-pointer">
+              기록 초기화
+            </button>
+          </div>
         </div>
 
         <!-- Summary KPI Cards -->
@@ -1690,6 +1700,86 @@
           </button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- Cross-Device Data Sync Modal (Export / Safe Merge Import) -->
+  <div id="data-sync-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-xs p-4" role="dialog" aria-modal="true" aria-labelledby="data-sync-modal-title">
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col overflow-hidden">
+      <div class="px-5 py-4 bg-gradient-to-r from-pte-navy to-teal-700 text-white flex items-center justify-between shrink-0">
+        <div>
+          <h2 id="data-sync-modal-title" class="text-base font-bold">🔄 기기 간 데이터 동기화 (내보내기 / 가져오기)</h2>
+          <p class="text-xs text-teal-100 mt-0.5">PC · 아이폰 · 지인 간에 유튜브 클립 및 학습 데이터를 안전하게 주고받으세요.</p>
+        </div>
+        <button id="btn-close-sync-modal" type="button" aria-label="닫기"
+          class="w-8 h-8 rounded-lg hover:bg-white/15 flex items-center justify-center text-lg cursor-pointer">×</button>
+      </div>
+
+      <div class="p-5 space-y-5 overflow-y-auto text-sm">
+        <!-- Security Banner -->
+        <div class="rounded-xl border border-emerald-200 bg-emerald-50/80 px-3.5 py-2.5 text-xs text-emerald-900 leading-relaxed">
+          🔒 <strong>보안 안내:</strong> 내보내기 데이터에는 사용자의 <strong>Gemini API 키(<code>pte_gemini_api_key</code>)가 절대 포함되지 않습니다.</strong> 지인에게 파일을 공유해도 안전합니다.
+        </div>
+
+        <!-- 1. Export Section -->
+        <div class="rounded-xl border border-slate-200 bg-slate-50/70 p-4 space-y-3">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <h3 class="text-sm font-extrabold text-slate-900">📤 데이터 내보내기 (Export)</h3>
+            <span id="sync-export-summary" class="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-sky-100 text-pte-blue">현재 기기 데이터 집계 중...</span>
+          </div>
+
+          <div class="flex flex-wrap gap-2">
+            <button id="btn-export-yt-copy" type="button"
+              class="px-3.5 py-2 rounded-xl text-xs font-bold text-white bg-rose-600 hover:bg-rose-700 shadow-xs transition cursor-pointer">
+              🎬 유튜브 클립만 복사하기
+            </button>
+            <button id="btn-export-all-download" type="button"
+              class="px-3.5 py-2 rounded-xl text-xs font-bold text-white bg-pte-blue hover:bg-sky-700 shadow-xs transition cursor-pointer">
+              💾 전체 학습 데이터 파일(.json) 다운로드
+            </button>
+            <button id="btn-export-all-copy" type="button"
+              class="px-3.5 py-2 rounded-xl text-xs font-bold text-slate-700 bg-white hover:bg-slate-100 border border-slate-300 transition cursor-pointer">
+              📋 전체 데이터 JSON 복사
+            </button>
+          </div>
+
+          <div class="space-y-1">
+            <label for="sync-export-textarea" class="block text-[11px] font-semibold text-slate-500">생성된 JSON 미리보기 (클립보드 복사가 막힌 환경에서도 전체 선택/복사 가능):</label>
+            <textarea id="sync-export-textarea" rows="3" readonly
+              placeholder="위 내보내기 버튼을 누르면 여기에 JSON 텍스트가 표시됩니다 (API 키 제외)."
+              class="w-full font-mono text-[11px] rounded-xl border border-slate-200 bg-white px-3 py-2 text-slate-700 focus:outline-none focus:ring-2 focus:ring-pte-blue"></textarea>
+          </div>
+        </div>
+
+        <!-- 2. Import (Safe Merge) Section -->
+        <div class="rounded-xl border border-indigo-200 bg-indigo-50/40 p-4 space-y-3">
+          <div>
+            <h3 class="text-sm font-extrabold text-indigo-950">📥 데이터 가져오기 (기존 데이터 유지 · 안전 병합 Merge)</h3>
+            <p class="text-xs text-slate-600 mt-0.5">현재 기기의 단어·클립·기록을 지우지 않고, <strong>중복 ID를 피해</strong> 새로운 항목만 안전하게 합칩니다.</p>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-2">
+            <label class="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-bold bg-white hover:bg-slate-50 border border-indigo-200 text-indigo-800 cursor-pointer">
+              <span>📂 .json 파일 선택</span>
+              <input id="sync-import-file" type="file" accept=".json,application/json" class="hidden" />
+            </label>
+            <span class="text-[11px] text-slate-500">또는 아래 입력란에 JSON 텍스트를 직접 붙여넣으세요.</span>
+          </div>
+
+          <textarea id="sync-import-textarea" rows="4"
+            placeholder='{"app":"nz-pte-trainer","data":{...}} 형태의 JSON을 붙여넣으세요...'
+            class="w-full font-mono text-[11px] rounded-xl border border-indigo-200 bg-white px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <button id="btn-import-merge" type="button"
+              class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-teal-600 to-indigo-600 hover:opacity-95 shadow-xs transition cursor-pointer">
+              📥 가져오기 (합치기)
+            </button>
+          </div>
+        </div>
+
+        <p id="sync-feedback-box" class="hidden text-xs font-semibold rounded-xl px-3.5 py-2.5 leading-relaxed"></p>
+      </div>
     </div>
   </div>
 
@@ -2491,7 +2581,22 @@
         quickVocabForm: document.getElementById('quick-vocab-form'),
         qvWord: document.getElementById('qv-word'),
         qvMeaning: document.getElementById('qv-meaning'),
-        qvExample: document.getElementById('qv-example')
+        qvExample: document.getElementById('qv-example'),
+
+        // Cross-Device Data Sync Modal Elements
+        btnDataSync: document.getElementById('btn-data-sync'),
+        btnReviewDataSync: document.getElementById('btn-review-data-sync'),
+        dataSyncModal: document.getElementById('data-sync-modal'),
+        btnCloseSyncModal: document.getElementById('btn-close-sync-modal'),
+        syncExportSummary: document.getElementById('sync-export-summary'),
+        btnExportYtCopy: document.getElementById('btn-export-yt-copy'),
+        btnExportAllDownload: document.getElementById('btn-export-all-download'),
+        btnExportAllCopy: document.getElementById('btn-export-all-copy'),
+        syncExportTextarea: document.getElementById('sync-export-textarea'),
+        syncImportFile: document.getElementById('sync-import-file'),
+        syncImportTextarea: document.getElementById('sync-import-textarea'),
+        btnImportMerge: document.getElementById('btn-import-merge'),
+        syncFeedbackBox: document.getElementById('sync-feedback-box')
       };
 
       // ==========================================
@@ -8836,6 +8941,501 @@
       if (el.btnYtsCancelRecord) el.btnYtsCancelRecord.addEventListener('click', () => stopYtsRecording(true));
       if (el.btnYtsCompare) el.btnYtsCompare.addEventListener('click', startYtsComparePlayback);
       if (el.btnYtsAiGrade) el.btnYtsAiGrade.addEventListener('click', gradeYtsWithAi);
+
+      // ==========================================
+      // 15. Cross-Device Data Sync (Export & Safe Merge Import)
+      // ==========================================
+      function updateSyncSummaryBadge() {
+        if (!el.syncExportSummary) return;
+        const rlCount = (state.ytClipSets || []).length;
+        const ytsCount = (state.ytShadowingSets || []).length;
+        const vocabCount = (state.vocabList || []).length;
+        const logCount = (state.practiceLogs || []).length;
+        const aiQCount = (state.customRsQuestions || []).length + (state.customDiQuestions || []).length;
+        el.syncExportSummary.textContent = `YT ${rlCount + ytsCount}세트 · 단어 ${vocabCount} · AI문제 ${aiQCount} · 기록 ${logCount}`;
+      }
+
+      function showSyncFeedback(msg, isError = false) {
+        if (!el.syncFeedbackBox) return;
+        el.syncFeedbackBox.textContent = msg;
+        el.syncFeedbackBox.className = isError
+          ? 'text-xs font-semibold rounded-xl px-3.5 py-2.5 leading-relaxed bg-rose-50 text-rose-800 border border-rose-200'
+          : 'text-xs font-semibold rounded-xl px-3.5 py-2.5 leading-relaxed bg-emerald-50 text-emerald-800 border border-emerald-200';
+      }
+
+      function openDataSyncModal() {
+        if (!el.dataSyncModal) return;
+        updateSyncSummaryBadge();
+        if (el.syncFeedbackBox) el.syncFeedbackBox.className = 'hidden';
+        el.dataSyncModal.classList.remove('hidden');
+      }
+
+      function closeDataSyncModal() {
+        if (!el.dataSyncModal) return;
+        el.dataSyncModal.classList.add('hidden');
+      }
+
+      function collectLocalDraftsByPrefix(prefix) {
+        const result = {};
+        try {
+          for (let i = 0; i < localStorage.length; i += 1) {
+            const k = localStorage.key(i);
+            if (!k || !k.startsWith(prefix)) continue;
+            if (/api.?key/i.test(k)) continue;
+            const v = localStorage.getItem(k);
+            if (v) result[k] = v;
+          }
+        } catch (e) {
+          // ignore storage errors
+        }
+        return result;
+      }
+
+      function buildExportPayload(exportMode = 'all') {
+        const ytOnly = {
+          pte_rl_yt_clip_sets: Array.isArray(state.ytClipSets) ? state.ytClipSets : [],
+          pte_yt_shadowing_sets: Array.isArray(state.ytShadowingSets) ? state.ytShadowingSets : []
+        };
+
+        const dataObj = exportMode === 'youtube'
+          ? ytOnly
+          : {
+              ...ytOnly,
+              pte_vocab_list: Array.isArray(state.vocabList) ? state.vocabList : [],
+              pte_bookmarks: Array.isArray(state.bookmarks) ? state.bookmarks : [],
+              pte_practice_logs: Array.isArray(state.practiceLogs) ? state.practiceLogs : [],
+              pte_solved_ids: state.solvedMap && typeof state.solvedMap === 'object' ? state.solvedMap : {},
+              pte_custom_rs_questions: Array.isArray(state.customRsQuestions) ? state.customRsQuestions : [],
+              pte_custom_di_questions: Array.isArray(state.customDiQuestions) ? state.customDiQuestions : [],
+              pte_weakness_logs: Array.isArray(state.weaknessLogs) ? state.weaknessLogs : [],
+              pte_weakness_drills: Array.isArray(state.weaknessDrills) ? state.weaknessDrills : [],
+              writingDrafts: collectLocalDraftsByPrefix('pte_writing_'),
+              rlNotes: collectLocalDraftsByPrefix('pte_rl_notes_')
+            };
+
+        // Hard security guarantee: strip API key if any object ever contained it
+        delete dataObj.pte_gemini_api_key;
+        delete dataObj.geminiApiKey;
+
+        return {
+          app: 'nz-pte-trainer',
+          exportType: exportMode === 'youtube' ? 'youtube-clips' : 'full-learning-data',
+          version: 1,
+          exportedAt: new Date().toISOString(),
+          data: dataObj
+        };
+      }
+
+      async function copyExportJson(text) {
+        if (el.syncExportTextarea) {
+          el.syncExportTextarea.value = text;
+        }
+        try {
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            await navigator.clipboard.writeText(text);
+            return true;
+          }
+        } catch (e) {
+          // Fallback to manual selection copy
+        }
+        if (el.syncExportTextarea) {
+          el.syncExportTextarea.focus();
+          el.syncExportTextarea.select();
+          try {
+            return document.execCommand('copy');
+          } catch (err) {
+            return false;
+          }
+        }
+        return false;
+      }
+
+      function generateUniqueSyncId(prefix, existingSet) {
+        let candidate = `${prefix}-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`;
+        while (existingSet.has(candidate)) {
+          candidate = `${prefix}-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
+        }
+        existingSet.add(candidate);
+        return candidate;
+      }
+
+      function mergeImportedData(rawText) {
+        let parsed;
+        try {
+          parsed = JSON.parse((rawText || '').trim());
+        } catch (e) {
+          showSyncFeedback('❌ 올바른 JSON 형식이 아닙니다. 파일이나 복사한 텍스트 전체를 다시 확인해주세요.', true);
+          return false;
+        }
+
+        if (!parsed || typeof parsed !== 'object') {
+          showSyncFeedback('❌ 가져올 수 있는 데이터 객체가 아닙니다.', true);
+          return false;
+        }
+
+        const src = (parsed.data && typeof parsed.data === 'object') ? parsed.data : parsed;
+        const stats = {
+          ytRlSets: 0,
+          ytShadowSets: 0,
+          vocab: 0,
+          bookmarks: 0,
+          logs: 0,
+          customQ: 0,
+          weaknesses: 0,
+          solved: 0
+        };
+
+        // 1. Merge Retell Lecture YouTube Clip Sets (pte_rl_yt_clip_sets)
+        const inRlSets = src.pte_rl_yt_clip_sets || src.ytClipSets;
+        if (Array.isArray(inRlSets)) {
+          if (!Array.isArray(state.ytClipSets)) state.ytClipSets = [];
+          const setIds = new Set(state.ytClipSets.map(s => s.id));
+          inRlSets.forEach(inSet => {
+            if (!inSet || typeof inSet !== 'object' || !Array.isArray(inSet.clips)) return;
+            const sameSet = state.ytClipSets.find(s => s.id === inSet.id);
+            if (sameSet && sameSet.videoId === inSet.videoId) {
+              const clipKeys = new Set((sameSet.clips || []).map(c => `${c.id}::${c.title}::${c.startSec}`));
+              inSet.clips.forEach(c => {
+                const k = `${c.id}::${c.title}::${c.startSec}`;
+                if (!clipKeys.has(k)) {
+                  sameSet.clips.push(c);
+                  clipKeys.add(k);
+                  stats.ytRlSets += 1;
+                }
+              });
+            } else {
+              const copy = JSON.parse(JSON.stringify(inSet));
+              if (!copy.id || setIds.has(copy.id)) {
+                copy.id = generateUniqueSyncId('yt-imp', setIds);
+              } else {
+                setIds.add(copy.id);
+              }
+              state.ytClipSets.push(copy);
+              stats.ytRlSets += 1;
+            }
+          });
+          saveStorage(STORAGE_KEYS.ytClipSets, state.ytClipSets);
+        }
+
+        // 2. Merge YouTube Shadowing Sets (pte_yt_shadowing_sets)
+        const inYtsSets = src.pte_yt_shadowing_sets || src.ytShadowingSets;
+        if (Array.isArray(inYtsSets)) {
+          if (!Array.isArray(state.ytShadowingSets)) state.ytShadowingSets = [];
+          const setIds = new Set(state.ytShadowingSets.map(s => s.id));
+          inYtsSets.forEach(inSet => {
+            if (!inSet || typeof inSet !== 'object' || !Array.isArray(inSet.sentences)) return;
+            const sameSet = state.ytShadowingSets.find(s => s.id === inSet.id);
+            if (sameSet && sameSet.videoId === inSet.videoId) {
+              const sentKeys = new Set((sameSet.sentences || []).map(x => String(x.enText || '').trim().toLowerCase()));
+              inSet.sentences.forEach(s => {
+                const k = String(s.enText || '').trim().toLowerCase();
+                if (k && !sentKeys.has(k)) {
+                  sameSet.sentences.push(s);
+                  sentKeys.add(k);
+                  stats.ytShadowSets += 1;
+                }
+              });
+            } else {
+              const copy = JSON.parse(JSON.stringify(inSet));
+              if (!copy.id || setIds.has(copy.id)) {
+                copy.id = generateUniqueSyncId('yts-imp', setIds);
+              } else {
+                setIds.add(copy.id);
+              }
+              state.ytShadowingSets.push(copy);
+              stats.ytShadowSets += 1;
+            }
+          });
+          saveStorage(STORAGE_KEYS.ytShadowingSets, state.ytShadowingSets);
+        }
+
+        // 3. Merge Vocabulary Bank (pte_vocab_list)
+        const inVocab = src.pte_vocab_list || src.vocabList;
+        if (Array.isArray(inVocab)) {
+          if (!Array.isArray(state.vocabList)) state.vocabList = [];
+          const existingIds = new Set(state.vocabList.map(v => v.id));
+          const wordMap = new Map(state.vocabList.map(v => [String(v.word || '').trim().toLowerCase(), v]));
+          inVocab.forEach(item => {
+            if (!item || !item.word) return;
+            const normWord = String(item.word).trim().toLowerCase();
+            if (!normWord) return;
+            const cur = wordMap.get(normWord);
+            if (cur) {
+              if (!cur.example && item.example) cur.example = String(item.example).trim();
+              return;
+            }
+            const newId = (!item.id || existingIds.has(item.id))
+              ? generateUniqueSyncId('voc', existingIds)
+              : (existingIds.add(item.id), item.id);
+            const entry = {
+              id: newId,
+              word: String(item.word).trim(),
+              meaning: String(item.meaning || '').trim() || '불러온 단어',
+              example: String(item.example || '').trim(),
+              memorized: Boolean(item.memorized),
+              createdAt: Number(item.createdAt) || Date.now()
+            };
+            state.vocabList.push(entry);
+            wordMap.set(normWord, entry);
+            stats.vocab += 1;
+          });
+          saveStorage(STORAGE_KEYS.vocabList, state.vocabList);
+        }
+
+        // 4. Merge Bookmarks (pte_bookmarks)
+        const inBookmarks = src.pte_bookmarks || src.bookmarks;
+        if (Array.isArray(inBookmarks)) {
+          if (!Array.isArray(state.bookmarks)) state.bookmarks = [];
+          const bmIds = new Set(state.bookmarks.map(b => b.id));
+          inBookmarks.forEach(bm => {
+            if (!bm || !bm.id || bmIds.has(bm.id)) return;
+            bmIds.add(bm.id);
+            state.bookmarks.push(bm);
+            stats.bookmarks += 1;
+          });
+          saveStorage(STORAGE_KEYS.bookmarks, state.bookmarks);
+        }
+
+        // 5. Merge Practice Logs (pte_practice_logs)
+        const inLogs = src.pte_practice_logs || src.practiceLogs;
+        if (Array.isArray(inLogs)) {
+          if (!Array.isArray(state.practiceLogs)) state.practiceLogs = [];
+          const logKeys = new Set(state.practiceLogs.map(l => l.id || `${l.qId}::${l.timestamp}`));
+          inLogs.forEach(lg => {
+            if (!lg || !lg.qId) return;
+            const key = lg.id || `${lg.qId}::${lg.timestamp}`;
+            if (logKeys.has(key)) return;
+            logKeys.add(key);
+            state.practiceLogs.push(lg);
+            stats.logs += 1;
+          });
+          state.practiceLogs.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+          if (state.practiceLogs.length > 300) state.practiceLogs.length = 300;
+          saveStorage(STORAGE_KEYS.practiceLogs, state.practiceLogs);
+        }
+
+        // 6. Merge Solved IDs (pte_solved_ids)
+        const inSolved = src.pte_solved_ids || src.solvedMap;
+        if (inSolved && typeof inSolved === 'object' && !Array.isArray(inSolved)) {
+          if (!state.solvedMap || typeof state.solvedMap !== 'object') state.solvedMap = {};
+          Object.keys(inSolved).forEach(qId => {
+            if (inSolved[qId] && !state.solvedMap[qId]) {
+              state.solvedMap[qId] = true;
+              stats.solved += 1;
+            }
+          });
+          saveStorage(STORAGE_KEYS.solved, state.solvedMap);
+        }
+
+        // 7. Merge AI Custom Repeat Sentence Questions (pte_custom_rs_questions)
+        const inRs = src.pte_custom_rs_questions || src.customRsQuestions;
+        if (Array.isArray(inRs)) {
+          if (!Array.isArray(state.customRsQuestions)) state.customRsQuestions = [];
+          const existingIds = new Set(state.customRsQuestions.map(q => q.id));
+          const textSet = new Set(state.customRsQuestions.map(q => String(q.text || '').trim().toLowerCase()));
+          inRs.forEach(q => {
+            const normText = String(q?.text || '').trim().toLowerCase();
+            if (!normText || textSet.has(normText)) return;
+            const id = (!q.id || existingIds.has(q.id))
+              ? generateUniqueSyncId('RS-IMP', existingIds)
+              : (existingIds.add(q.id), q.id);
+            state.customRsQuestions.push({ ...q, id });
+            textSet.add(normText);
+            stats.customQ += 1;
+          });
+          saveStorage(STORAGE_KEYS.customRsQuestions, state.customRsQuestions);
+        }
+
+        // 8. Merge AI Custom Describe Image Questions (pte_custom_di_questions)
+        const inDi = src.pte_custom_di_questions || src.customDiQuestions;
+        if (Array.isArray(inDi)) {
+          if (!Array.isArray(state.customDiQuestions)) state.customDiQuestions = [];
+          const existingIds = new Set(state.customDiQuestions.map(q => q.id));
+          const sigSet = new Set(state.customDiQuestions.map(q => `${q.title || ''}::${q.chartType || ''}`.toLowerCase()));
+          inDi.forEach(q => {
+            if (!q || !q.title || !q.chartType) return;
+            const sig = `${q.title}::${q.chartType}`.toLowerCase();
+            if (sigSet.has(sig)) return;
+            const id = (!q.id || existingIds.has(q.id))
+              ? generateUniqueSyncId('DI-IMP', existingIds)
+              : (existingIds.add(q.id), q.id);
+            state.customDiQuestions.push({ ...q, id });
+            sigSet.add(sig);
+            stats.customQ += 1;
+          });
+          saveStorage(STORAGE_KEYS.customDiQuestions, state.customDiQuestions);
+        }
+
+        // 9. Merge Weakness Logs & Drills (pte_weakness_logs, pte_weakness_drills)
+        const inWeak = src.pte_weakness_logs || src.weaknessLogs;
+        if (Array.isArray(inWeak)) {
+          if (!Array.isArray(state.weaknessLogs)) state.weaknessLogs = [];
+          const wkIds = new Set(state.weaknessLogs.map(w => w.id));
+          const keyMap = new Map(state.weaknessLogs.map(w => [w.key, w]));
+          inWeak.forEach(w => {
+            if (!w || !w.target) return;
+            const k = w.key || `${w.category || 'pronunciation'}::${String(w.target).trim().toLowerCase()}`;
+            const cur = keyMap.get(k);
+            if (cur) {
+              cur.count = Math.max(cur.count || 1, w.count || 1);
+              cur.lastSeen = Math.max(cur.lastSeen || 0, w.lastSeen || 0);
+            } else {
+              const id = (!w.id || wkIds.has(w.id))
+                ? generateUniqueSyncId('wk', wkIds)
+                : (wkIds.add(w.id), w.id);
+              const entry = { ...w, id, key: k };
+              state.weaknessLogs.push(entry);
+              keyMap.set(k, entry);
+              stats.weaknesses += 1;
+            }
+          });
+          saveStorage(STORAGE_KEYS.weaknessLogs, state.weaknessLogs);
+        }
+
+        const inDrills = src.pte_weakness_drills || src.weaknessDrills;
+        if (Array.isArray(inDrills)) {
+          if (!Array.isArray(state.weaknessDrills)) state.weaknessDrills = [];
+          const drillSet = new Set(state.weaknessDrills.map(d => String(d.sentence || '').trim().toLowerCase()));
+          inDrills.forEach(d => {
+            const norm = String(d?.sentence || '').trim().toLowerCase();
+            if (!norm || drillSet.has(norm)) return;
+            state.weaknessDrills.push(d);
+            drillSet.add(norm);
+          });
+          saveStorage(STORAGE_KEYS.weaknessDrills, state.weaknessDrills);
+        }
+
+        // 10. Non-destructive Writing Drafts & Retell Notes
+        if (src.writingDrafts && typeof src.writingDrafts === 'object') {
+          Object.entries(src.writingDrafts).forEach(([k, v]) => {
+            if (k.startsWith('pte_writing_') && typeof v === 'string' && v.trim()) {
+              try {
+                if (!localStorage.getItem(k)) localStorage.setItem(k, v);
+              } catch (e) {}
+            }
+          });
+        }
+        if (src.rlNotes && typeof src.rlNotes === 'object') {
+          Object.entries(src.rlNotes).forEach(([k, v]) => {
+            if (k.startsWith('pte_rl_notes_') && typeof v === 'string' && v.trim()) {
+              try {
+                if (!localStorage.getItem(k)) localStorage.setItem(k, v);
+              } catch (e) {}
+            }
+          });
+        }
+
+        // Refresh all UI views immediately
+        updateReviewTabBadge();
+        updateRsBankSummaryUI();
+        updateDiBankSummaryUI();
+        renderYtClipSetsAndClips();
+        renderYtsWorkspace();
+        renderReviewDashboard();
+        if (MODE_CONFIG[state.mode]) {
+          renderQuestionSelector();
+          renderQuestionContent();
+        }
+        updateSyncSummaryBadge();
+
+        const addedSummary = [
+          stats.ytRlSets > 0 ? `강의유튜브 ${stats.ytRlSets}` : '',
+          stats.ytShadowSets > 0 ? `쉐도잉세트 ${stats.ytShadowSets}` : '',
+          stats.vocab > 0 ? `단어 ${stats.vocab}` : '',
+          stats.bookmarks > 0 ? `오답 ${stats.bookmarks}` : '',
+          stats.customQ > 0 ? `AI문제 ${stats.customQ}` : '',
+          stats.logs > 0 ? `기록 ${stats.logs}` : '',
+          stats.weaknesses > 0 ? `약점 ${stats.weaknesses}` : '',
+          stats.solved > 0 ? `완료문제 ${stats.solved}` : ''
+        ].filter(Boolean).join(' · ');
+
+        showSyncFeedback(
+          addedSummary
+            ? `✅ 기존 데이터를 보존한 채 안전하게 병합 완료! 추가됨: ${addedSummary}`
+            : '✅ 병합 완료! 이미 동일한 항목이 모두 기기에 저장되어 있어 기존 데이터를 그대로 유지했습니다.'
+        );
+        return true;
+      }
+
+      // Data Sync Modal Event Listeners
+      if (el.btnDataSync) el.btnDataSync.addEventListener('click', openDataSyncModal);
+      if (el.btnReviewDataSync) el.btnReviewDataSync.addEventListener('click', openDataSyncModal);
+      if (el.btnCloseSyncModal) el.btnCloseSyncModal.addEventListener('click', closeDataSyncModal);
+      if (el.dataSyncModal) {
+        el.dataSyncModal.addEventListener('click', (e) => {
+          if (e.target === el.dataSyncModal) closeDataSyncModal();
+        });
+      }
+      if (el.btnExportYtCopy) {
+        el.btnExportYtCopy.addEventListener('click', async () => {
+          const payload = buildExportPayload('youtube');
+          const jsonText = JSON.stringify(payload, null, 2);
+          const copied = await copyExportJson(jsonText);
+          showSyncFeedback(
+            copied
+              ? '🎬 유튜브 클립/쉐도잉 데이터만 복사했습니다 (API 키 제외). 다른 기기에 붙여넣기 해주세요!'
+              : '🎬 유튜브 클립 JSON이 아래에 생성되었습니다. 전체 선택 후 복사해주세요 (API 키 제외).'
+          );
+        });
+      }
+      if (el.btnExportAllCopy) {
+        el.btnExportAllCopy.addEventListener('click', async () => {
+          const payload = buildExportPayload('all');
+          const jsonText = JSON.stringify(payload, null, 2);
+          const copied = await copyExportJson(jsonText);
+          showSyncFeedback(
+            copied
+              ? '📋 전체 학습 데이터 JSON을 클립보드에 복사했습니다 (API 키 제외)!'
+              : '📋 전체 학습 데이터 JSON이 아래에 생성되었습니다. 전체 선택 후 복사해주세요 (API 키 제외).'
+          );
+        });
+      }
+      if (el.btnExportAllDownload) {
+        el.btnExportAllDownload.addEventListener('click', () => {
+          const payload = buildExportPayload('all');
+          const jsonText = JSON.stringify(payload, null, 2);
+          if (el.syncExportTextarea) el.syncExportTextarea.value = jsonText;
+
+          const blob = new Blob([jsonText], { type: 'application/json;charset=utf-8' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          const dateTag = getTodayDateKey();
+          a.href = url;
+          a.download = `pte-trainer-backup-${dateTag}.json`;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          setTimeout(() => URL.revokeObjectURL(url), 1000);
+          showSyncFeedback(`💾 pte-trainer-backup-${dateTag}.json 파일을 다운로드했습니다 (API 키 제외)!`);
+        });
+      }
+      if (el.syncImportFile) {
+        el.syncImportFile.addEventListener('change', (e) => {
+          const file = e.target.files && e.target.files[0];
+          if (!file) return;
+          const reader = new FileReader();
+          reader.onload = () => {
+            if (el.syncImportTextarea) {
+              el.syncImportTextarea.value = String(reader.result || '');
+            }
+            showSyncFeedback(`📂 "${file.name}" 파일을 불러왔습니다. 아래 [가져오기 (합치기)]를 누르세요.`);
+          };
+          reader.onerror = () => {
+            showSyncFeedback('❌ 파일을 읽는 중 오류가 발생했습니다.', true);
+          };
+          reader.readAsText(file, 'utf-8');
+        });
+      }
+      if (el.btnImportMerge) {
+        el.btnImportMerge.addEventListener('click', () => {
+          const raw = (el.syncImportTextarea?.value || '').trim();
+          if (!raw) {
+            showSyncFeedback('⚠️ 먼저 가져올 JSON 텍스트를 붙여넣거나 .json 파일을 선택해주세요.', true);
+            return;
+          }
+          mergeImportedData(raw);
+        });
+      }
 
       // Clean up resources on page unload
       window.addEventListener('beforeunload', () => {
