@@ -1,10 +1,12 @@
-const CACHE_NAME = 'pte-trainer-v9';
+const CACHE_NAME = 'pte-trainer-v10';
 const PRECACHE_URLS = [
   './',
   './index.html',
   './data.js',
   './manifest.json',
-  './icon.svg'
+  './icon.svg',
+  './icon-180.png',
+  './icon-512.png'
 ];
 
 self.addEventListener('install', (event) => {

@@ -1,30 +1,99 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="NZ PTE Academic Trainer Icon">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="PTE & English Learning App Icon">
   <defs>
+    <!-- Deep Navy to Rich Teal-Navy Background -->
     <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#0f2942" />
-      <stop offset="100%" stop-color="#0066b2" />
+      <stop offset="0%" stop-color="#071426" />
+      <stop offset="52%" stop-color="#0f2942" />
+      <stop offset="100%" stop-color="#0b3b4c" />
     </linearGradient>
-    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#38bdf8" />
-      <stop offset="100%" stop-color="#14b8a6" />
+
+    <!-- Subtle Ambient Teal Glow -->
+    <radialGradient id="ambientGlow" cx="50%" cy="46%" r="54%">
+      <stop offset="0%" stop-color="#14b8a6" stop-opacity="0.34" />
+      <stop offset="60%" stop-color="#0ea5e9" stop-opacity="0.12" />
+      <stop offset="100%" stop-color="#071426" stop-opacity="0" />
+    </radialGradient>
+
+    <!-- App Store Style Glass Card -->
+    <linearGradient id="glassFill" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.13" />
+      <stop offset="55%" stop-color="#ffffff" stop-opacity="0.05" />
+      <stop offset="100%" stop-color="#14b8a6" stop-opacity="0.08" />
     </linearGradient>
+    <linearGradient id="glassStroke" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.42" />
+      <stop offset="50%" stop-color="#5eead4" stop-opacity="0.22" />
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.10" />
+    </linearGradient>
+
+    <!-- Open Book transforming into Wing / Wave Pages -->
+    <linearGradient id="pageLeftGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#cbd5e1" />
+      <stop offset="48%" stop-color="#f8fafc" />
+      <stop offset="100%" stop-color="#99f6e4" />
+    </linearGradient>
+    <linearGradient id="pageRightGrad" x1="100%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#94a3b8" />
+      <stop offset="50%" stop-color="#e2e8f0" />
+      <stop offset="100%" stop-color="#5eead4" />
+    </linearGradient>
+    <linearGradient id="waveAccent" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0d9488" />
+      <stop offset="55%" stop-color="#2dd4bf" />
+      <stop offset="100%" stop-color="#7dd3fc" />
+    </linearGradient>
+
+    <filter id="softShadow" x="-15%" y="-15%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#020813" flood-opacity="0.45" />
+    </filter>
   </defs>
+
+  <!-- Full Bleed Background -->
   <rect width="512" height="512" rx="112" fill="url(#bgGrad)" />
-  <rect x="28" y="28" width="456" height="456" rx="92" fill="none" stroke="#ffffff" stroke-opacity="0.14" stroke-width="6" />
+  <rect width="512" height="512" rx="112" fill="url(#ambientGlow)" />
 
-  <!-- Sound waves -->
-  <path d="M128 214c-18 24-18 58 0 82" fill="none" stroke="url(#accentGrad)" stroke-width="18" stroke-linecap="round" opacity="0.7" />
-  <path d="M384 214c18 24 18 58 0 82" fill="none" stroke="url(#accentGrad)" stroke-width="18" stroke-linecap="round" opacity="0.7" />
-  <path d="M92 184c-28 42-28 100 0 142" fill="none" stroke="url(#accentGrad)" stroke-width="14" stroke-linecap="round" opacity="0.4" />
-  <path d="M420 184c28 42 28 100 0 142" fill="none" stroke="url(#accentGrad)" stroke-width="14" stroke-linecap="round" opacity="0.4" />
+  <!-- Subtle Glassmorphism Container -->
+  <rect x="44" y="44" width="424" height="424" rx="92" fill="url(#glassFill)" stroke="url(#glassStroke)" stroke-width="3" />
+  <path d="M136 45.5 H376" stroke="#ffffff" stroke-opacity="0.35" stroke-width="2" stroke-linecap="round" />
 
-  <!-- Microphone -->
-  <rect x="210" y="106" width="92" height="154" rx="46" fill="url(#accentGrad)" />
-  <path d="M168 228v24c0 48.6 39.4 88 88 88s88-39.4 88-88v-24" fill="none" stroke="#ffffff" stroke-width="20" stroke-linecap="round" />
-  <line x1="256" y1="340" x2="256" y2="386" stroke="#ffffff" stroke-width="20" stroke-linecap="round" />
-  <line x1="204" y1="386" x2="308" y2="386" stroke="#ffffff" stroke-width="20" stroke-linecap="round" />
+  <!-- Acoustic Halo Arcs Above Open Book Spine -->
+  <g fill="none" stroke-linecap="round" opacity="0.88">
+    <path d="M188 164 C224 134, 288 134, 324 164" stroke="url(#waveAccent)" stroke-width="9" opacity="0.45" />
+    <path d="M214 190 C238 170, 274 170, 298 190" stroke="url(#waveAccent)" stroke-width="10" opacity="0.78" />
+  </g>
 
-  <!-- PTE Badge -->
-  <rect x="166" y="410" width="180" height="52" rx="26" fill="#0f2942" stroke="#38bdf8" stroke-width="4" />
-  <text x="256" y="445" text-anchor="middle" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="30" font-weight="800" letter-spacing="4" fill="#ffffff">PTE</text>
+  <!-- Main Symbol: Open Book Whose Pages Flow into Uplifted Wings / Waves -->
+  <g filter="url(#softShadow)">
+    <!-- Outer Teal Wing / Wave Pages -->
+    <path d="M256 356
+             C224 316, 174 282, 102 272
+             C94 238, 102 204, 124 182
+             C176 196, 224 230, 256 280
+             Z"
+          fill="url(#waveAccent)" opacity="0.92" />
+    <path d="M256 356
+             C288 316, 338 282, 410 272
+             C418 238, 410 204, 388 182
+             C336 196, 288 230, 256 280
+             Z"
+          fill="url(#waveAccent)" opacity="0.76" />
+
+    <!-- Inner Crisp Glass/Paper Pages Transforming into Flowing Curve -->
+    <path d="M256 364
+             C222 332, 174 312, 114 312
+             C108 282, 118 250, 144 230
+             C188 236, 230 264, 256 308
+             Z"
+          fill="url(#pageLeftGrad)" />
+    <path d="M256 364
+             C290 332, 338 312, 398 312
+             C404 282, 394 250, 368 230
+             C324 236, 282 264, 256 308
+             Z"
+          fill="url(#pageRightGrad)" />
+
+    <!-- Translucent Center Spine & Rising Sound Crest -->
+    <path d="M256 218 C256 218, 256 358, 256 364" stroke="#ffffff" stroke-width="6" stroke-linecap="round" opacity="0.9" />
+    <circle cx="256" cy="216" r="10" fill="#5eead4" />
+  </g>
 </svg>
