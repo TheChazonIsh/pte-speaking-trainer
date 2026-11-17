@@ -108,52 +108,73 @@
       </div>
     </div>
 
-    <!-- Navigation Tabs (6 Tabs) -->
+    <!-- Primary 3-Category Navigation + Focused Sub-Tabs -->
+    <div class="bg-slate-900/40 border-t border-white/10">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 py-2 flex items-center gap-2 overflow-x-auto whitespace-nowrap" role="navigation" aria-label="학습 영역 카테고리">
+        <button id="nav-group-pte" type="button" data-nav-group="pte"
+          class="shrink-0 px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-white text-pte-navy shadow-xs transition cursor-pointer flex items-center gap-1.5">
+          <span>🎓 PTE 시험 대비</span>
+          <span class="text-[10px] font-semibold px-1.5 py-0.5 rounded-full bg-sky-100 text-pte-blue">5파트</span>
+        </button>
+        <button id="nav-group-practical" type="button" data-nav-group="practical"
+          class="shrink-0 px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-200 hover:bg-white/10 transition cursor-pointer flex items-center gap-1.5">
+          <span>🗣️ 실전 영어·스피킹</span>
+          <span class="text-[10px] font-semibold px-1.5 py-0.5 rounded-full bg-white/15 text-teal-200">3파트</span>
+        </button>
+        <button id="nav-group-library" type="button" data-nav-group="library"
+          class="shrink-0 px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-200 hover:bg-white/10 transition cursor-pointer flex items-center gap-1.5">
+          <span>📚 내 학습실</span>
+          <span id="nav-library-count" class="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-white/15 text-slate-200">0</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Contextual Sub-Tabs Bar -->
     <div class="bg-white border-b border-slate-200 text-slate-700">
       <div class="max-w-6xl mx-auto px-4 sm:px-6 flex gap-1 sm:gap-2.5 overflow-x-auto whitespace-nowrap" role="tablist" aria-label="PTE 파트 선택">
         <button id="tab-read-aloud" type="button" role="tab" aria-selected="true"
-          class="tab-btn shrink-0 relative py-3 px-3 text-sm font-semibold border-b-2 border-pte-blue text-pte-blue flex items-center gap-1.5 transition cursor-pointer">
+          class="tab-btn shrink-0 relative py-2.5 px-3 text-sm font-semibold border-b-2 border-pte-blue text-pte-blue flex items-center gap-1.5 transition cursor-pointer">
           <span>Read Aloud</span>
           <span class="hidden lg:inline-block text-[11px] font-medium px-1.5 py-0.5 rounded-full bg-sky-100 text-pte-blue">35s/40s</span>
         </button>
         <button id="tab-describe-image" type="button" role="tab" aria-selected="false"
-          class="tab-btn shrink-0 relative py-3 px-3 text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-1.5 transition cursor-pointer">
+          class="tab-btn shrink-0 relative py-2.5 px-3 text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-1.5 transition cursor-pointer">
           <span>Describe Image</span>
           <span class="hidden lg:inline-block text-[11px] font-medium px-1.5 py-0.5 rounded-full bg-slate-100 text-slate-600">25s/40s</span>
         </button>
         <button id="tab-repeat-sentence" type="button" role="tab" aria-selected="false"
-          class="tab-btn shrink-0 relative py-3 px-3 text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-1.5 transition cursor-pointer">
+          class="tab-btn shrink-0 relative py-2.5 px-3 text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-1.5 transition cursor-pointer">
           <span>Repeat Sentence</span>
           <span class="hidden lg:inline-block text-[11px] font-medium px-1.5 py-0.5 rounded-full bg-slate-100 text-slate-600">3s/15s</span>
         </button>
         <button id="tab-retell-lecture" type="button" role="tab" aria-selected="false"
-          class="tab-btn shrink-0 relative py-3 px-3 text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-1.5 transition cursor-pointer">
+          class="tab-btn shrink-0 relative py-2.5 px-3 text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-1.5 transition cursor-pointer">
           <span>Retell Lecture (강의 요약)</span>
           <span class="hidden lg:inline-block text-[11px] font-medium px-1.5 py-0.5 rounded-full bg-slate-100 text-slate-600">10s/40s</span>
         </button>
+        <button id="tab-writing" type="button" role="tab" aria-selected="false"
+          class="tab-btn shrink-0 relative py-2.5 px-3 text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-1.5 transition cursor-pointer">
+          <span>Writing (SWT &amp; Essay)</span>
+          <span class="hidden lg:inline-block text-[11px] font-medium px-1.5 py-0.5 rounded-full bg-slate-100 text-slate-600">10m/20m</span>
+        </button>
         <button id="tab-impromptu" type="button" role="tab" aria-selected="false"
-          class="tab-btn shrink-0 relative py-3 px-3 text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-1.5 transition cursor-pointer">
+          class="tab-btn hidden shrink-0 relative py-2.5 px-3 text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-1.5 transition cursor-pointer">
           <span>⏱️ 1분 즉흥 말하기</span>
           <span class="hidden lg:inline-block text-[11px] font-medium px-1.5 py-0.5 rounded-full bg-slate-100 text-slate-600">15s/60s</span>
         </button>
         <button id="tab-roleplay" type="button" role="tab" aria-selected="false"
-          class="tab-btn shrink-0 relative py-3 px-3 text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-1.5 transition cursor-pointer">
-          <span>🎭 실전 AI 롤플레이</span>
+          class="tab-btn hidden shrink-0 relative py-2.5 px-3 text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-1.5 transition cursor-pointer">
+          <span>🎭 AI 롤플레이</span>
           <span class="hidden lg:inline-block text-[11px] font-medium px-1.5 py-0.5 rounded-full bg-slate-100 text-slate-600">NZ 회화</span>
         </button>
         <button id="tab-yt-shadowing" type="button" role="tab" aria-selected="false"
-          class="tab-btn shrink-0 relative py-3 px-3 text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-1.5 transition cursor-pointer">
+          class="tab-btn hidden shrink-0 relative py-2.5 px-3 text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-1.5 transition cursor-pointer">
           <span>🎬 유튜브 쉐도잉</span>
           <span class="hidden lg:inline-block text-[11px] font-medium px-1.5 py-0.5 rounded-full bg-slate-100 text-slate-600">구간반복</span>
         </button>
-        <button id="tab-writing" type="button" role="tab" aria-selected="false"
-          class="tab-btn shrink-0 relative py-3 px-3 text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-1.5 transition cursor-pointer">
-          <span>Writing (SWT &amp; Essay)</span>
-          <span class="hidden lg:inline-block text-[11px] font-medium px-1.5 py-0.5 rounded-full bg-slate-100 text-slate-600">10m/20m</span>
-        </button>
         <button id="tab-review" type="button" role="tab" aria-selected="false"
-          class="tab-btn shrink-0 relative py-3 px-3 text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-1.5 transition cursor-pointer">
-          <span>📚 단어장 &amp; 오답노트</span>
+          class="tab-btn hidden shrink-0 relative py-2.5 px-3 text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-1.5 transition cursor-pointer">
+          <span>📚 단어장 · 오답노트 · 취약점 리포트</span>
           <span id="tab-review-count" class="text-[11px] font-medium px-1.5 py-0.5 rounded-full bg-slate-100 text-slate-600">0</span>
         </button>
       </div>
@@ -161,33 +182,33 @@
   </header>
 
   <!-- Main Content -->
-  <main class="flex-1 max-w-6xl w-full min-w-0 mx-auto px-4 sm:px-6 py-5 sm:py-7 space-y-5">
+  <main class="flex-1 max-w-6xl w-full min-w-0 mx-auto px-4 sm:px-6 py-4 sm:py-6 space-y-4">
 
-    <!-- SPEAKING: Question Selector, Random & Unsolved-First Bar -->
-    <section id="speaking-selector-bar" class="bg-white rounded-xl border border-slate-200 shadow-sm p-3.5 sm:p-4 space-y-3 min-w-0 max-w-full">
-      <div class="flex flex-wrap items-center justify-between gap-2.5 min-w-0">
-        <div class="flex items-center gap-2 flex-wrap min-w-0 max-w-full">
+    <!-- Focused 3-Step Learning Progress Stepper -->
+    <section id="study-stepper-bar" class="bg-white rounded-2xl border border-slate-200 shadow-xs px-4 py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 min-w-0">
+      <div class="flex items-center gap-1.5 sm:gap-2 overflow-x-auto whitespace-nowrap text-xs">
+        <span id="step-indicator-1" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full font-bold bg-pte-blue text-white shadow-2xs">
+          <span>1. 준비 / 듣기</span>
+        </span>
+        <span class="text-slate-300 font-bold" aria-hidden="true">→</span>
+        <span id="step-indicator-2" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full font-medium bg-slate-100 text-slate-500">
+          <span>2. 말하기 / 작성</span>
+        </span>
+        <span class="text-slate-300 font-bold" aria-hidden="true">→</span>
+        <span id="step-indicator-3" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full font-medium bg-slate-100 text-slate-500">
+          <span>3. 확인 / AI 채점</span>
+        </span>
+      </div>
+      <p id="step-next-action-hint" class="text-xs font-semibold text-pte-blue truncate">다음 단계: 지문을 훑어보고 아래 [실전 연습 시작]을 누르세요</p>
+    </section>
+
+    <!-- SPEAKING: Focused Question Bar + Collapsible Secondary Tools -->
+    <section id="speaking-selector-bar" class="bg-white rounded-xl border border-slate-200 shadow-sm p-3 sm:p-4 space-y-3 min-w-0 max-w-full">
+      <div class="flex flex-wrap items-center justify-between gap-2 min-w-0">
+        <div class="flex items-center gap-2 flex-wrap min-w-0">
           <span id="solved-progress-badge" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-sky-50 text-pte-blue border border-sky-200">
             풀이 완료: 0 / 20
           </span>
-          <select id="question-select" aria-label="문제 빠르게 선택"
-            class="rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1.5 text-xs font-semibold text-slate-700 w-full sm:w-auto max-w-full sm:max-w-[290px] min-w-0 focus:outline-none focus:ring-2 focus:ring-pte-blue">
-          </select>
-          <button id="btn-toggle-solved" type="button"
-            class="px-2.5 py-1.5 rounded-lg text-xs font-semibold border border-slate-200 bg-white hover:bg-emerald-50 text-slate-600 transition cursor-pointer">
-            ✓ 완료 표시
-          </button>
-        </div>
-
-        <div class="flex items-center gap-2 flex-wrap ml-auto">
-          <label class="inline-flex items-center gap-1.5 text-xs font-medium text-slate-600 cursor-pointer select-none px-2 py-1 rounded-lg hover:bg-slate-50">
-            <input id="chk-unsolved-first" type="checkbox" checked class="rounded border-slate-300 text-pte-blue focus:ring-pte-blue" />
-            <span>안 푼 문제 우선</span>
-          </label>
-          <button id="btn-random-q" type="button"
-            class="px-3 py-1.5 text-xs font-bold rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 transition cursor-pointer">
-            🎲 랜덤 문제
-          </button>
           <button id="btn-prev-q" type="button"
             class="px-2.5 py-1.5 text-xs font-medium rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 disabled:opacity-40 transition cursor-pointer">
             ← 이전
@@ -196,10 +217,39 @@
             class="px-2.5 py-1.5 text-xs font-medium rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 disabled:opacity-40 transition cursor-pointer">
             다음 →
           </button>
+          <button id="btn-random-q" type="button"
+            class="px-3 py-1.5 text-xs font-bold rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 transition cursor-pointer">
+            🎲 랜덤 문제
+          </button>
         </div>
+
+        <button id="btn-toggle-speaking-tools" type="button" aria-expanded="false"
+          class="px-3 py-1.5 text-xs font-bold rounded-lg border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700 transition cursor-pointer flex items-center gap-1.5 ml-auto shrink-0">
+          <span>⚙️ 문제 선택 · 음성 설정 열기</span>
+        </button>
       </div>
 
-      <div id="question-pills" class="flex items-center gap-1.5 overflow-x-auto pb-1"></div>
+      <!-- Collapsible Secondary Controls Drawer (collapsed by default) -->
+      <div id="speaking-tools-drawer" class="hidden pt-3 border-t border-slate-100 space-y-3 min-w-0">
+        <div class="flex flex-wrap items-center justify-between gap-2.5 min-w-0">
+          <div class="flex items-center gap-2 flex-wrap min-w-0 max-w-full">
+            <select id="question-select" aria-label="문제 빠르게 선택"
+              class="rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1.5 text-xs font-semibold text-slate-700 w-full sm:w-auto max-w-full sm:max-w-[290px] min-w-0 focus:outline-none focus:ring-2 focus:ring-pte-blue">
+            </select>
+            <button id="btn-toggle-solved" type="button"
+              class="px-2.5 py-1.5 rounded-lg text-xs font-semibold border border-slate-200 bg-white hover:bg-emerald-50 text-slate-600 transition cursor-pointer">
+              ✓ 완료 표시
+            </button>
+          </div>
+
+          <label class="inline-flex items-center gap-1.5 text-xs font-medium text-slate-600 cursor-pointer select-none px-2 py-1 rounded-lg hover:bg-slate-50">
+            <input id="chk-unsolved-first" type="checkbox" checked class="rounded border-slate-300 text-pte-blue focus:ring-pte-blue" />
+            <span>안 푼 문제 우선</span>
+          </label>
+        </div>
+
+        <div id="question-pills" class="flex items-center gap-1.5 overflow-x-auto pb-1"></div>
+      </div>
     </section>
 
     <!-- Collapsible iOS Safari / PWA Earphone & High-Quality Voice Guide -->
@@ -330,80 +380,87 @@
           </div>
 
           <!-- 3) Repeat Sentence Container -->
-          <div id="panel-repeat-sentence" class="hidden p-5 sm:p-6 space-y-5">
-            <!-- RS Question Bank & AI Sentence Generator Bar -->
-            <div class="space-y-2">
-              <div class="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-indigo-200 bg-indigo-50/50 px-3.5 py-2.5">
-                <div class="flex items-center gap-2 flex-wrap text-xs">
-                  <span class="font-bold text-indigo-900">📚 Repeat Sentence 문제 은행</span>
-                  <span id="rs-bank-summary-badge" class="px-2 py-0.5 rounded-full font-bold bg-white text-indigo-700 border border-indigo-200">기본 100문항 + AI 추가 0문항</span>
-                </div>
-                <button id="btn-rs-ai-generate" type="button"
-                  class="px-3 py-1.5 rounded-lg text-xs font-bold text-white bg-gradient-to-r from-indigo-600 to-pte-blue hover:from-indigo-700 hover:to-sky-700 shadow-xs transition cursor-pointer">
-                  ✨ AI 새 문장 10개 추가 생성
-                </button>
+          <div id="panel-repeat-sentence" class="hidden p-5 sm:p-6 space-y-4">
+            <!-- Collapsible RS Voice & AI Generator Drawer -->
+            <div class="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-slate-200 bg-slate-50/70 px-3.5 py-2">
+              <div class="flex items-center gap-2 flex-wrap text-xs">
+                <span id="rs-bank-summary-badge" class="px-2 py-0.5 rounded-full font-bold bg-white text-indigo-700 border border-indigo-200">기본 100문항 + AI 추가 0문항</span>
+                <span id="rs-gemini-tts-badge" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800">키 미등록 → 브라우저 음성 자동 폴백</span>
+                <span id="rs-tts-cache-badge" class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-slate-200/80 text-slate-700 tabular-nums">캐시 0건</span>
               </div>
-              <p id="rs-ai-gen-status" class="hidden text-xs font-semibold rounded-lg px-3 py-2"></p>
+              <button type="button" data-toggle-speaking-tools="1"
+                class="px-2.5 py-1 rounded-lg text-[11px] font-bold text-slate-700 bg-white hover:bg-slate-100 border border-slate-200 transition cursor-pointer">
+                ⚙️ 음성 · AI 문장 설정 열기/닫기
+              </button>
             </div>
 
-            <!-- Shared Neural Voice Controls -->
-            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
-              <!-- Gemini 3.8 Flash TTS Toggle Bar -->
-              <div class="flex flex-wrap items-center justify-between gap-2 pb-2.5 border-b border-slate-200/80">
-                <label class="inline-flex items-center gap-2.5 cursor-pointer select-none min-w-0">
-                  <span class="relative inline-flex items-center shrink-0">
-                    <input id="chk-rs-gemini-tts" type="checkbox" checked class="sr-only peer" />
-                    <span class="w-9 h-5 bg-slate-300 rounded-full peer peer-checked:bg-indigo-600 transition-colors after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-4"></span>
-                  </span>
-                  <span class="text-xs font-bold text-slate-800">🔊 AI 자연스러운 원어민 음성 사용 (Gemini TTS)</span>
-                </label>
-                <div class="flex items-center gap-1.5 flex-wrap">
-                  <span id="rs-gemini-tts-badge" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800">키 미등록 → 브라우저 음성 자동 폴백</span>
-                  <span id="rs-tts-cache-badge" class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-slate-200/80 text-slate-700 tabular-nums">캐시 0건</span>
-                </div>
-              </div>
-
-              <div class="flex items-center justify-between gap-2 flex-wrap">
-                <div class="flex items-center gap-1.5 flex-wrap">
-                  <span class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
-                    <span>🎙️ 뉴럴 원어민 음성 설정</span>
-                    <span id="rs-voice-quality-badge" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-sky-100 text-pte-blue">자동 최적화</span>
-                  </span>
-                  <button type="button" data-toggle-ios-guide="1"
-                    class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 hover:bg-amber-200 text-amber-800 border border-amber-200 transition cursor-pointer">
-                    📱 아이폰 무음·고품질 음성 팁
+            <div id="rs-voice-settings-drawer" class="hidden space-y-3">
+              <!-- RS Question Bank & AI Sentence Generator Bar -->
+              <div class="space-y-2">
+                <div class="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-indigo-200 bg-indigo-50/50 px-3.5 py-2.5">
+                  <span class="text-xs font-bold text-indigo-900">📚 Repeat Sentence AI 문장 확장</span>
+                  <button id="btn-rs-ai-generate" type="button"
+                    class="px-3 py-1.5 rounded-lg text-xs font-bold text-white bg-gradient-to-r from-indigo-600 to-pte-blue hover:from-indigo-700 hover:to-sky-700 shadow-xs transition cursor-pointer">
+                    ✨ AI 새 문장 10개 추가 생성
                   </button>
                 </div>
-                <button id="btn-rs-listen-only" type="button"
-                  class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-white hover:bg-sky-50 text-pte-blue border border-sky-200 transition cursor-pointer">
-                  🔊 선택 음성 미리듣기
-                </button>
+                <p id="rs-ai-gen-status" class="hidden text-xs font-semibold rounded-lg px-3 py-2"></p>
               </div>
-              <div class="grid grid-cols-1 sm:grid-cols-12 gap-2.5">
-                <div class="sm:col-span-4">
-                  <label for="rs-accent-select" class="block text-[11px] font-semibold text-slate-500 mb-1">억양 필터</label>
-                  <select id="rs-accent-select"
-                    class="w-full rounded-lg border border-slate-300 bg-white px-2.5 py-2 text-xs sm:text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-pte-blue">
-                    <option value="all">전체 영어 (All)</option>
-                    <option value="en-AU">호주/뉴질랜드 (AU/NZ)</option>
-                    <option value="en-GB">영국 억양 (UK)</option>
-                    <option value="en-US">미국 억양 (US)</option>
-                  </select>
+
+              <!-- Shared Neural Voice Controls -->
+              <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+                <div class="flex flex-wrap items-center justify-between gap-2 pb-2.5 border-b border-slate-200/80">
+                  <label class="inline-flex items-center gap-2.5 cursor-pointer select-none min-w-0">
+                    <span class="relative inline-flex items-center shrink-0">
+                      <input id="chk-rs-gemini-tts" type="checkbox" checked class="sr-only peer" />
+                      <span class="w-9 h-5 bg-slate-300 rounded-full peer peer-checked:bg-indigo-600 transition-colors after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-4"></span>
+                    </span>
+                    <span class="text-xs font-bold text-slate-800">🔊 AI 자연스러운 원어민 음성 사용 (Gemini TTS)</span>
+                  </label>
+                  <button id="btn-rs-listen-only" type="button"
+                    class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-white hover:bg-sky-50 text-pte-blue border border-sky-200 transition cursor-pointer">
+                    🔊 선택 음성 미리듣기
+                  </button>
                 </div>
-                <div class="sm:col-span-5">
-                  <label for="rs-voice-select" class="block text-[11px] font-semibold text-slate-500 mb-1">음성 선택 (Natural/Google 우선)</label>
-                  <select id="rs-voice-select"
-                    class="w-full rounded-lg border border-slate-300 bg-white px-2.5 py-2 text-xs sm:text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-pte-blue">
-                  </select>
+
+                <div class="flex items-center justify-between gap-2 flex-wrap">
+                  <div class="flex items-center gap-1.5 flex-wrap">
+                    <span class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+                      <span>🎙️ 뉴럴 원어민 음성 설정</span>
+                      <span id="rs-voice-quality-badge" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-sky-100 text-pte-blue">자동 최적화</span>
+                    </span>
+                    <button type="button" data-toggle-ios-guide="1"
+                      class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 hover:bg-amber-200 text-amber-800 border border-amber-200 transition cursor-pointer">
+                      📱 아이폰 무음·고품질 음성 팁
+                    </button>
+                  </div>
                 </div>
-                <div class="sm:col-span-3">
-                  <label for="rs-rate-select" class="block text-[11px] font-semibold text-slate-500 mb-1">속도</label>
-                  <select id="rs-rate-select"
-                    class="w-full rounded-lg border border-slate-300 bg-white px-2.5 py-2 text-xs sm:text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-pte-blue">
-                    <option value="0.9">0.9x</option>
-                    <option value="1.0" selected>1.0x (실전)</option>
-                    <option value="1.1">1.1x</option>
-                  </select>
+                <div class="grid grid-cols-1 sm:grid-cols-12 gap-2.5">
+                  <div class="sm:col-span-4">
+                    <label for="rs-accent-select" class="block text-[11px] font-semibold text-slate-500 mb-1">억양 필터</label>
+                    <select id="rs-accent-select"
+                      class="w-full rounded-lg border border-slate-300 bg-white px-2.5 py-2 text-xs sm:text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-pte-blue">
+                      <option value="all">전체 영어 (All)</option>
+                      <option value="en-AU">호주/뉴질랜드 (AU/NZ)</option>
+                      <option value="en-GB">영국 억양 (UK)</option>
+                      <option value="en-US">미국 억양 (US)</option>
+                    </select>
+                  </div>
+                  <div class="sm:col-span-5">
+                    <label for="rs-voice-select" class="block text-[11px] font-semibold text-slate-500 mb-1">음성 선택 (Natural/Google 우선)</label>
+                    <select id="rs-voice-select"
+                      class="w-full rounded-lg border border-slate-300 bg-white px-2.5 py-2 text-xs sm:text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-pte-blue">
+                    </select>
+                  </div>
+                  <div class="sm:col-span-3">
+                    <label for="rs-rate-select" class="block text-[11px] font-semibold text-slate-500 mb-1">속도</label>
+                    <select id="rs-rate-select"
+                      class="w-full rounded-lg border border-slate-300 bg-white px-2.5 py-2 text-xs sm:text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-pte-blue">
+                      <option value="0.9">0.9x</option>
+                      <option value="1.0" selected>1.0x (실전)</option>
+                      <option value="1.1">1.1x</option>
+                    </select>
+                  </div>
                 </div>
               </div>
             </div>
@@ -473,10 +530,21 @@
             </div>
 
             <!-- Academic TTS Mode Box -->
-            <div id="rl-academic-mode-box" class="space-y-5">
-              <!-- Shared Neural Voice Controls -->
-              <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
-                <!-- Gemini 3.8 Flash TTS Toggle Bar -->
+            <div id="rl-academic-mode-box" class="space-y-4">
+              <!-- Compact Voice Summary Bar -->
+              <div class="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-slate-200 bg-slate-50/70 px-3.5 py-2">
+                <div class="flex items-center gap-1.5 flex-wrap text-xs">
+                  <span id="rl-gemini-tts-badge" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800">키 미등록 → 브라우저 음성 자동 폴백</span>
+                  <span id="rl-tts-cache-badge" class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-slate-200/80 text-slate-700 tabular-nums">캐시 0건</span>
+                </div>
+                <button type="button" data-toggle-speaking-tools="1"
+                  class="px-2.5 py-1 rounded-lg text-[11px] font-bold text-slate-700 bg-white hover:bg-slate-100 border border-slate-200 transition cursor-pointer">
+                  ⚙️ 강의 음성 세부 설정 열기/닫기
+                </button>
+              </div>
+
+              <!-- Collapsible Shared Neural Voice Controls -->
+              <div id="rl-voice-settings-drawer" class="hidden bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
                 <div class="flex flex-wrap items-center justify-between gap-2 pb-2.5 border-b border-slate-200/80">
                   <label class="inline-flex items-center gap-2.5 cursor-pointer select-none min-w-0">
                     <span class="relative inline-flex items-center shrink-0">
@@ -485,10 +553,10 @@
                     </span>
                     <span class="text-xs font-bold text-slate-800">🔊 AI 자연스러운 원어민 음성 사용 (Gemini TTS)</span>
                   </label>
-                  <div class="flex items-center gap-1.5 flex-wrap">
-                    <span id="rl-gemini-tts-badge" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800">키 미등록 → 브라우저 음성 자동 폴백</span>
-                    <span id="rl-tts-cache-badge" class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-slate-200/80 text-slate-700 tabular-nums">캐시 0건</span>
-                  </div>
+                  <button id="btn-rl-listen-only" type="button"
+                    class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-white hover:bg-sky-50 text-pte-blue border border-sky-200 transition cursor-pointer">
+                    🔊 강의 음성 미리듣기
+                  </button>
                 </div>
 
                 <div class="flex items-center justify-between gap-2 flex-wrap">
@@ -502,10 +570,6 @@
                       📱 아이폰 무음·고품질 음성 팁
                     </button>
                   </div>
-                  <button id="btn-rl-listen-only" type="button"
-                    class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-white hover:bg-sky-50 text-pte-blue border border-sky-200 transition cursor-pointer">
-                    🔊 강의 음성 미리듣기
-                  </button>
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-12 gap-2.5">
                   <div class="sm:col-span-4">
@@ -925,24 +989,6 @@
             <span id="writing-solved-badge" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-sky-50 text-pte-blue border border-sky-200">
               풀이 완료: 0 / 10
             </span>
-            <button id="btn-writing-toggle-solved" type="button"
-              class="px-2.5 py-1.5 rounded-lg text-xs font-semibold border border-slate-200 bg-white hover:bg-emerald-50 text-slate-600 transition cursor-pointer">
-              ✓ 완료 표시
-            </button>
-            <label class="inline-flex items-center gap-1.5 text-xs font-medium text-slate-600 cursor-pointer select-none px-2 py-1 rounded-lg hover:bg-slate-50">
-              <input id="chk-writing-unsolved-first" type="checkbox" checked class="rounded border-slate-300 text-pte-blue focus:ring-pte-blue" />
-              <span>안 푼 문제 우선</span>
-            </label>
-            <button id="btn-writing-random-q" type="button"
-              class="px-3 py-1.5 text-xs font-bold rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 transition cursor-pointer">
-              🎲 랜덤 문제
-            </button>
-          </div>
-        </div>
-
-        <div class="flex items-center justify-between gap-2 flex-wrap">
-          <div id="writing-question-pills" class="flex items-center gap-1.5 overflow-x-auto pb-1"></div>
-          <div class="flex items-center gap-1.5 ml-auto">
             <button id="btn-writing-prev-q" type="button"
               class="px-2.5 py-1.5 text-xs font-medium rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 disabled:opacity-40 transition cursor-pointer">
               ← 이전
@@ -951,7 +997,29 @@
               class="px-2.5 py-1.5 text-xs font-medium rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 disabled:opacity-40 transition cursor-pointer">
               다음 →
             </button>
+            <button id="btn-writing-random-q" type="button"
+              class="px-3 py-1.5 text-xs font-bold rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 transition cursor-pointer">
+              🎲 랜덤 문제
+            </button>
+            <button id="btn-toggle-writing-tools" type="button" aria-expanded="false"
+              class="px-3 py-1.5 text-xs font-bold rounded-lg border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700 transition cursor-pointer">
+              ⚙️ 문제 목록 · 필터 열기
+            </button>
           </div>
+        </div>
+
+        <div id="writing-tools-drawer" class="hidden pt-3 border-t border-slate-100 space-y-2.5">
+          <div class="flex items-center justify-between gap-2 flex-wrap">
+            <button id="btn-writing-toggle-solved" type="button"
+              class="px-2.5 py-1.5 rounded-lg text-xs font-semibold border border-slate-200 bg-white hover:bg-emerald-50 text-slate-600 transition cursor-pointer">
+              ✓ 완료 표시
+            </button>
+            <label class="inline-flex items-center gap-1.5 text-xs font-medium text-slate-600 cursor-pointer select-none px-2 py-1 rounded-lg hover:bg-slate-50">
+              <input id="chk-writing-unsolved-first" type="checkbox" checked class="rounded border-slate-300 text-pte-blue focus:ring-pte-blue" />
+              <span>안 푼 문제 우선</span>
+            </label>
+          </div>
+          <div id="writing-question-pills" class="flex items-center gap-1.5 overflow-x-auto pb-1"></div>
         </div>
       </div>
 
@@ -1225,8 +1293,8 @@
         <!-- Collapsible AI Extractor Box -->
         <div id="yts-extractor-box" class="hidden rounded-xl border border-indigo-200 bg-indigo-50/50 p-4 space-y-3">
           <div class="flex flex-wrap items-center justify-between gap-2">
-            <h3 class="text-xs sm:text-sm font-extrabold text-indigo-900">🤖 Gemini AI 유튜브 · 쇼츠 핵심 문장(6~10개) 자동 추출</h3>
-            <span class="text-[11px] text-indigo-700 font-medium">3~8초 길이 · 해석 &amp; 강세·연음 팁 포함</span>
+            <h3 class="text-xs sm:text-sm font-extrabold text-indigo-900">🤖 Gemini AI 유튜브 · 쇼츠 실전 문장(12~20개) 자동 추출</h3>
+            <span class="text-[11px] text-indigo-700 font-medium">3~8초 길이 · 상황태그 · 해석 &amp; 강세·연음 팁 포함</span>
           </div>
           <div class="rounded-lg border border-amber-200 bg-amber-50/90 px-3 py-2 text-[11px] font-semibold text-amber-900">
             💡 유튜브 쇼츠 등 자막 복사가 안 되는 영상은 링크만 넣고 추출 버튼을 누르세요! (공개 영상만 지원)
@@ -1240,14 +1308,14 @@
             <div>
               <label for="yts-transcript-input" class="block text-xs font-semibold text-slate-700 mb-1">영상 자막 / 스크립트 붙여넣기 <span class="font-normal text-indigo-700">(선택 사항 — 비워두면 영상 직접 분석)</span></label>
               <textarea id="yts-transcript-input" rows="4"
-                placeholder="(선택 사항) 비워두면 Gemini가 유튜브·쇼츠 오디오를 직접 분석해 문장/구간을 추출합니다. 자막을 넣으면 토큰을 절약해 더 빠르게 추출합니다."
+                placeholder="(선택 사항) 비워두면 Gemini가 유튜브·쇼츠 오디오를 직접 분석해 실전 회화 문장 12~20개를 추출합니다. 자막을 넣으면 토큰을 절약해 더 빠르게 추출합니다."
                 class="w-full min-w-0 px-3 py-2 text-xs sm:text-sm rounded-xl border border-slate-200 bg-white focus:ring-2 focus:ring-indigo-500 outline-none"></textarea>
             </div>
             <div class="flex flex-wrap items-center justify-between gap-2">
               <p id="yts-extract-status" class="text-xs text-indigo-800 font-medium"></p>
               <button id="btn-yts-extract" type="button"
                 class="px-4 py-2 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-indigo-600 to-pte-blue hover:opacity-95 shadow-xs transition cursor-pointer shrink-0">
-                ✨ AI 쉐도잉 6~10문장 추출 및 저장
+                ✨ AI 쉐도잉 12~20문장 추출 및 저장
               </button>
             </div>
           </div>
@@ -1275,18 +1343,29 @@
               <div id="yts-player" class="w-full h-full"></div>
             </div>
 
-            <div class="flex flex-wrap items-center justify-between gap-2">
-              <span id="yts-player-status" class="text-xs font-medium text-slate-600 truncate min-w-0">문장을 선택하고 ▶️ 구간 재생을 누르세요.</span>
+            <div class="flex flex-wrap items-center justify-between gap-2 min-w-0">
+              <div class="flex items-center gap-2 min-w-0">
+                <div id="yts-wave-bars" class="hidden items-end gap-0.5 h-4 shrink-0" aria-hidden="true">
+                  <span class="sound-wave-bar w-1 h-3 bg-emerald-500 rounded-full" style="animation-delay:0ms"></span>
+                  <span class="sound-wave-bar w-1 h-4 bg-teal-500 rounded-full" style="animation-delay:150ms"></span>
+                  <span class="sound-wave-bar w-1 h-3 bg-sky-500 rounded-full" style="animation-delay:300ms"></span>
+                </div>
+                <span id="yts-player-status" class="text-xs font-medium text-slate-600 truncate min-w-0">문장을 선택하고 ▶️ 구간 재생 또는 🔊 AI 성우로 바로 들으세요.</span>
+              </div>
               <span id="yts-time-save-badge" class="hidden px-2 py-0.5 rounded-md text-[11px] font-bold bg-emerald-100 text-emerald-800 shrink-0">✓ 구간 저장됨</span>
             </div>
 
-            <!-- Play / Pause / Speed / Loop Row -->
+            <!-- Play / AI TTS / Pause / Speed / Loop Row -->
             <div class="flex flex-wrap items-center justify-between gap-2 pt-1">
               <div class="flex flex-wrap items-center gap-2">
                 <button id="btn-yts-play" type="button"
-                  class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-white bg-pte-blue hover:bg-sky-700 shadow-xs transition cursor-pointer flex items-center gap-1.5">
+                  class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold text-white bg-pte-blue hover:bg-sky-700 shadow-xs transition cursor-pointer flex items-center gap-1.5">
                   <span>▶️</span>
                   <span>구간 재생</span>
+                </button>
+                <button id="btn-yts-tts-play" type="button"
+                  class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:opacity-95 shadow-xs transition cursor-pointer flex items-center gap-1.5">
+                  <span>🔊 AI 성우로 바로 듣기(광고 0초)</span>
                 </button>
                 <button id="btn-yts-pause" type="button"
                   class="px-3 py-2 rounded-xl text-xs font-semibold border border-slate-200 bg-white hover:bg-slate-100 text-slate-700 transition cursor-pointer">
@@ -1337,7 +1416,10 @@
           <!-- Active Sentence Card + Recording + Comparison -->
           <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-5 space-y-4 min-w-0">
             <div class="flex flex-wrap items-center justify-between gap-2">
-              <span id="yts-active-badge" class="px-2.5 py-1 rounded-full text-xs font-bold bg-indigo-100 text-indigo-800">문장 1 / 1</span>
+              <div class="flex flex-wrap items-center gap-1.5">
+                <span id="yts-active-badge" class="px-2.5 py-1 rounded-full text-xs font-bold bg-indigo-100 text-indigo-800">문장 1 / 1</span>
+                <span id="yts-active-situation-badge" class="hidden px-2.5 py-1 rounded-full text-xs font-bold bg-teal-100 text-teal-800"></span>
+              </div>
               <div class="flex items-center gap-1.5">
                 <button id="btn-yts-prev" type="button"
                   class="px-2.5 py-1 rounded-lg text-xs font-semibold border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 cursor-pointer">← 이전</button>
@@ -1842,7 +1924,7 @@
       const DEFAULT_YT_SHADOWING_SETS = [
         {
           id: 'yts-default-neural',
-          title: '[샘플] AI Neural Networks — 7문장 핵심 쉐도잉',
+          title: '[샘플] AI Neural Networks & Practical Phrases — 12문장 실전 쉐도잉',
           videoId: 'aircAruvnKk',
           url: 'https://www.youtube.com/watch?v=aircAruvnKk',
           createdAt: 1700000000000,
@@ -1850,6 +1932,7 @@
             {
               startSec: 15,
               endSec: 21,
+              situationTag: '상황묘사',
               enText: 'Here is a three, written negligently on a very low-resolution grid of pixels.',
               koMeaning: '매우 낮은 해상도의 픽셀 격자 위에 대충 쓰인 숫자 3이 여기 있습니다.',
               stressAndLinkingTip: 'written negligently의 [n] 연음과 low-resolution의 첫 강세에 집중하세요.'
@@ -1857,6 +1940,7 @@
             {
               startSec: 21,
               endSec: 27,
+              situationTag: '일상설명',
               enText: 'Your brain has no trouble recognizing it as a three.',
               koMeaning: '여러분의 뇌는 이것을 숫자 3으로 인식하는 데 아무런 어려움이 없습니다.',
               stressAndLinkingTip: 'recognizing it as a three를 "레커그나이징-잇-애즈-어 뜨리"처럼 자연스럽게 이어 읽으세요.'
@@ -1864,6 +1948,7 @@
             {
               startSec: 31,
               endSec: 38,
+              situationTag: '의견제시',
               enText: 'Even though the specific pixel values are completely different every time.',
               koMeaning: '매번 구체적인 픽셀 값들이 완전히 다른데도 말입니다.',
               stressAndLinkingTip: 'Even though에서 살짝 띄고, completely different의 강한 강세를 살려주세요.'
@@ -1871,6 +1956,7 @@
             {
               startSec: 44,
               endSec: 51,
+              situationTag: '핵심요약',
               enText: 'Inside a neural network, each neuron simply holds a number between zero and one.',
               koMeaning: '신경망 내부에서 각 뉴런은 단순히 0과 1 사이의 숫자를 담고 있습니다.',
               stressAndLinkingTip: 'holds a number (홀즈-어 넘버) 연음과 zero and one 리듬을 유지하세요.'
@@ -1878,13 +1964,39 @@
             {
               startSec: 53,
               endSec: 60,
+              situationTag: '수치전달',
               enText: 'Twenty-eight by twenty-eight pixels add up to seven hundred eighty-four neurons.',
               koMeaning: '가로세로 28픽셀을 모두 합치면 총 784개의 입력 뉴런이 됩니다.',
               stressAndLinkingTip: '숫자 단위(twenty-eight, seven hundred eighty-four)를 또렷하고 끊어 읽지 않게 연습하세요.'
             },
             {
+              startSec: 72,
+              endSec: 78,
+              situationTag: '개념설명',
+              enText: 'Those first-layer neurons light up depending on how bright each pixel is.',
+              koMeaning: '첫 번째 층의 뉴런들은 각 픽셀이 얼마나 밝은지에 따라 켜집니다.',
+              stressAndLinkingTip: 'light up (라잇 업) 플랩 사운드와 depending on 연결 발음을 살려보세요.'
+            },
+            {
+              startSec: 84,
+              endSec: 90,
+              situationTag: '과정설명',
+              enText: 'Activations in one layer determine the activations in the very next layer.',
+              koMeaning: '한 층에서의 활성화가 바로 다음 층의 활성화를 결정합니다.',
+              stressAndLinkingTip: 'determine의 두 번째 음절 강세와 very next layer의 억양 하강에 주의하세요.'
+            },
+            {
+              startSec: 112,
+              endSec: 118,
+              situationTag: '질문제시',
+              enText: 'Why do we place multiple hidden layers in between the input and output?',
+              koMeaning: '왜 입력과 출력 사이에 여러 개의 은닉층을 배치하는 걸까요?',
+              stressAndLinkingTip: 'Why do we에서 리듬감 있게 올라간 뒤 multiple에 강세를 두세요.'
+            },
+            {
               startSec: 131,
               endSec: 138,
+              situationTag: '논리연결',
               enText: 'Ideally, the hidden layers break down complex shapes into smaller components.',
               koMeaning: '이상적으로는 은닉층들이 복잡한 형태를 더 작은 구성 요소들로 분해합니다.',
               stressAndLinkingTip: 'Ideally 뒤에 짧은 호흡(pause), break down complex shapes를 한 호흡에 연결하세요.'
@@ -1892,9 +2004,26 @@
             {
               startSec: 141,
               endSec: 148,
+              situationTag: '핵심강조',
               enText: 'Recognizing tiny edges helps the system generalize across unfamiliar images.',
               koMeaning: '작은 모서리들을 인식하면 시스템이 낯선 이미지에서도 일반화할 수 있습니다.',
               stressAndLinkingTip: 'unfamiliar(언퍼밀리어) 강세와 across_unfamiliar 연음을 주의하세요.'
+            },
+            {
+              startSec: 155,
+              endSec: 162,
+              situationTag: '일상비유',
+              enText: 'It works a lot like how we group small letters together to read full words.',
+              koMeaning: '마치 우리가 작은 글자들을 묶어 완전한 단어를 읽는 방식과 매우 비슷합니다.',
+              stressAndLinkingTip: 'works a lot like를 뭉치지 말고 경쾌하게 이어 읽으세요.'
+            },
+            {
+              startSec: 170,
+              endSec: 177,
+              situationTag: '정리제안',
+              enText: 'Let us take a closer look at how those weighted connections are actually learned.',
+              koMeaning: '이제 가중치가 부여된 연결들이 실제로 어떻게 학습되는지 자세히 살펴봅시다.',
+              stressAndLinkingTip: 'take a closer look at how를 한 호흡으로 매끄럽게 연결하세요.'
             }
           ]
         }
@@ -2196,13 +2325,28 @@
         // YouTube Sentence Shadowing Studio
         ytShadowingSets: (() => {
           const loaded = loadJsonStorage(STORAGE_KEYS.ytShadowingSets, null);
-          return Array.isArray(loaded) && loaded.length > 0 ? loaded : DEFAULT_YT_SHADOWING_SETS;
+          if (!Array.isArray(loaded) || loaded.length === 0) return DEFAULT_YT_SHADOWING_SETS;
+          const defSet = DEFAULT_YT_SHADOWING_SETS[0];
+          return loaded.map(set => {
+            if (!set || set.id !== defSet.id || !Array.isArray(set.sentences)) return set;
+            const merged = set.sentences.map((s, i) => {
+              const defItem = defSet.sentences[i];
+              return (!s.situationTag && defItem?.situationTag)
+                ? { ...s, situationTag: defItem.situationTag }
+                : s;
+            });
+            for (let i = merged.length; i < defSet.sentences.length; i += 1) {
+              merged.push(defSet.sentences[i]);
+            }
+            return { ...set, sentences: merged };
+          });
         })(),
         ytsActiveSetId: '',
         ytsSentenceIndex: 0,
         ytsRate: 1.0,
         ytsLoop: false,
         ytsPlayer: null,
+        ytsLoadedVideoId: '',
         ytsWatchTimerId: null,
         ytsExtracting: false,
         ytsIsRecording: false,
@@ -2215,7 +2359,16 @@
         ytsRecordedMime: 'audio/webm',
         ytsRecordedUrl: '',
         ytsAiGrading: false,
-        ytsCompareActive: false
+        ytsCompareActive: false,
+
+        // Study-Focused UI Controls
+        speakingToolsOpen: false,
+        writingToolsOpen: false,
+        lastModeByCategory: {
+          pte: 'read-aloud',
+          practical: 'impromptu',
+          library: 'review'
+        }
       };
       if (state.ytShadowingSets.length > 0 && !state.ytsActiveSetId) {
         state.ytsActiveSetId = state.ytShadowingSets[0].id;
@@ -2237,6 +2390,24 @@
       // 2. DOM References
       // ==========================================
       const el = {
+        navGroupPte: document.getElementById('nav-group-pte'),
+        navGroupPractical: document.getElementById('nav-group-practical'),
+        navGroupLibrary: document.getElementById('nav-group-library'),
+        navLibraryCount: document.getElementById('nav-library-count'),
+
+        studyStepperBar: document.getElementById('study-stepper-bar'),
+        stepIndicator1: document.getElementById('step-indicator-1'),
+        stepIndicator2: document.getElementById('step-indicator-2'),
+        stepIndicator3: document.getElementById('step-indicator-3'),
+        stepNextActionHint: document.getElementById('step-next-action-hint'),
+
+        btnToggleSpeakingTools: document.getElementById('btn-toggle-speaking-tools'),
+        speakingToolsDrawer: document.getElementById('speaking-tools-drawer'),
+        rsVoiceSettingsDrawer: document.getElementById('rs-voice-settings-drawer'),
+        rlVoiceSettingsDrawer: document.getElementById('rl-voice-settings-drawer'),
+        btnToggleWritingTools: document.getElementById('btn-toggle-writing-tools'),
+        writingToolsDrawer: document.getElementById('writing-tools-drawer'),
+
         tabReadAloud: document.getElementById('tab-read-aloud'),
         tabDescribeImage: document.getElementById('tab-describe-image'),
         tabRepeatSentence: document.getElementById('tab-repeat-sentence'),
@@ -2518,9 +2689,11 @@
         btnYtsExtract: document.getElementById('btn-yts-extract'),
         ytsSentenceCountBadge: document.getElementById('yts-sentence-count-badge'),
         ytsSentenceList: document.getElementById('yts-sentence-list'),
+        ytsWaveBars: document.getElementById('yts-wave-bars'),
         ytsPlayerStatus: document.getElementById('yts-player-status'),
         ytsTimeSaveBadge: document.getElementById('yts-time-save-badge'),
         btnYtsPlay: document.getElementById('btn-yts-play'),
+        btnYtsTtsPlay: document.getElementById('btn-yts-tts-play'),
         btnYtsPause: document.getElementById('btn-yts-pause'),
         btnYtsLoop: document.getElementById('btn-yts-loop'),
         btnYtsRate08: document.getElementById('btn-yts-rate-08'),
@@ -2532,6 +2705,7 @@
         btnYtsEndMinus: document.getElementById('btn-yts-end-minus'),
         btnYtsEndPlus: document.getElementById('btn-yts-end-plus'),
         ytsActiveBadge: document.getElementById('yts-active-badge'),
+        ytsActiveSituationBadge: document.getElementById('yts-active-situation-badge'),
         btnYtsPrev: document.getElementById('btn-yts-prev'),
         btnYtsNext: document.getElementById('btn-yts-next'),
         btnYtsVocab: document.getElementById('btn-yts-vocab'),
@@ -3008,6 +3182,19 @@
             browserSuffix: '',
             geminiPrefix: '🔊 Gemini AI 교정 문장 재생 중',
             geminiSuffix: ''
+          };
+        }
+        if (targetMode === 'yt-shadowing') {
+          return {
+            isRL: false,
+            isRS: false,
+            waveBars: el.ytsWaveBars,
+            statusLabel: el.ytsPlayerStatus,
+            doneText: '✅ AI 성우 원어민 발음 재생 완료 · 바로 따라 말해보세요 (광고 0초)',
+            browserPrefix: '🔊 AI/브라우저 성우 재생 중',
+            browserSuffix: ' (광고 0초)',
+            geminiPrefix: '🔊 Gemini 3.8 Flash 성우 재생 중',
+            geminiSuffix: ' (광고 0초)'
           };
         }
         return {
@@ -3944,34 +4131,176 @@
         return pool[Math.floor(Math.random() * pool.length)];
       }
 
+      function getCategoryForMode(mode = state.mode) {
+        if (mode === 'impromptu' || mode === 'roleplay' || mode === 'yt-shadowing') return 'practical';
+        if (mode === 'review') return 'library';
+        return 'pte';
+      }
+
+      function applyToolsDrawerUI() {
+        const open = Boolean(state.speakingToolsOpen);
+        if (el.speakingToolsDrawer) el.speakingToolsDrawer.classList.toggle('hidden', !open);
+        if (el.rsVoiceSettingsDrawer) el.rsVoiceSettingsDrawer.classList.toggle('hidden', !open);
+        if (el.rlVoiceSettingsDrawer) el.rlVoiceSettingsDrawer.classList.toggle('hidden', !open);
+        if (el.btnToggleSpeakingTools) {
+          el.btnToggleSpeakingTools.setAttribute('aria-expanded', String(open));
+          el.btnToggleSpeakingTools.innerHTML = open
+            ? '<span>⚙️ 문제 선택 · 음성 설정 닫기</span>'
+            : '<span>⚙️ 문제 선택 · 음성 설정 열기</span>';
+        }
+      }
+
+      function toggleSpeakingToolsDrawer() {
+        state.speakingToolsOpen = !state.speakingToolsOpen;
+        applyToolsDrawerUI();
+      }
+
+      function toggleWritingToolsDrawer() {
+        state.writingToolsOpen = !state.writingToolsOpen;
+        const open = Boolean(state.writingToolsOpen);
+        if (el.writingToolsDrawer) el.writingToolsDrawer.classList.toggle('hidden', !open);
+        if (el.btnToggleWritingTools) {
+          el.btnToggleWritingTools.setAttribute('aria-expanded', String(open));
+          el.btnToggleWritingTools.textContent = open
+            ? '⚙️ 문제 목록 · 필터 닫기'
+            : '⚙️ 문제 목록 · 필터 열기';
+        }
+      }
+
+      function renderStudyStepper() {
+        if (!el.studyStepperBar) return;
+        const hideStepper = state.mode === 'review';
+        el.studyStepperBar.classList.toggle('hidden', hideStepper);
+        if (hideStepper) return;
+
+        let activeStep = 1;
+        let hintText = '다음 단계: 준비 및 내용을 먼저 확인하세요';
+
+        if (MODE_CONFIG[state.mode]) {
+          if (state.phase === 'recording') {
+            activeStep = 2;
+            hintText = '진행 중: 마이크에 또렷하게 말하세요 (조기 완료 버튼으로 바로 마칠 수 있어요)';
+          } else if (state.phase === 'done') {
+            activeStep = 3;
+            hintText = '완료! 내 발음을 다시 듣고 ✨ AI 발음·유창성 채점을 받아보세요';
+          } else if (state.phase === 'prep' || state.phase === 'playing-audio') {
+            activeStep = 1;
+            hintText = state.phase === 'playing-audio'
+              ? '음성 듣는 중: 집중해서 들은 뒤 준비 카운트다운으로 이어집니다'
+              : '준비 카운트다운 중: 핵심 키워드와 첫 문장을 떠올려 보세요';
+          } else {
+            activeStep = 1;
+            hintText = '다음 할 일: 아래 [실전 연습 시작] 버튼을 눌러 연습을 시작하세요';
+          }
+        } else if (state.mode === 'yt-shadowing') {
+          if (state.ytsIsRecording) {
+            activeStep = 2;
+            hintText = '진행 중: 문장을 소리 내어 따라 말한 뒤 [⏹️ 녹음 완료]를 누르세요';
+          } else if (state.ytsRecordedBlob) {
+            activeStep = 3;
+            hintText = '완료! [🔄 유튜브 원어민 → 내 발음 비교] 및 ✨ AI 채점을 받아보세요';
+          } else {
+            activeStep = 1;
+            hintText = '다음 할 일: ▶️ 구간 재생 또는 🔊 AI 성우 듣기 후 🎤 따라 말해보세요';
+          }
+        } else if (state.mode === 'roleplay') {
+          const userCount = (state.rpMessages || []).filter(m => m.role === 'user').length;
+          if (state.rpIsRecording) {
+            activeStep = 2;
+            hintText = '진행 중: 영어로 답변한 뒤 [⏹️ 녹음 완료 및 AI에게 전송]을 누르세요';
+          } else if (!state.rpActive && userCount > 0) {
+            activeStep = 3;
+            hintText = '롤플레이 종료! 종합 피드백과 추천 표현을 단어장에 저장하세요';
+          } else if (state.rpActive) {
+            activeStep = 2;
+            hintText = '다음 할 일: 상대방 질문을 들은 뒤 [🎤 내 답변 녹음하기]를 누르세요';
+          } else {
+            activeStep = 1;
+            hintText = '다음 할 일: 뉴질랜드 상황을 고르고 [▶️ 대화 시작]을 누르세요';
+          }
+        } else if (state.mode === 'writing') {
+          const hasResult = el.writingAiResult && !el.writingAiResult.classList.contains('hidden');
+          const wordCount = countWords((el.writingTextarea?.value || '').trim());
+          if (hasResult) {
+            activeStep = 3;
+            hintText = '채점 완료! 문장별 교정과 고득점 표현 3가지를 복습하세요';
+          } else if (state.writingTimerRunning || wordCount >= 5) {
+            activeStep = 2;
+            hintText = '작성 중: 목표 단어 수에 맞춰 작성한 뒤 [✨ AI 채점 받기]를 누르세요';
+          } else {
+            activeStep = 1;
+            hintText = '다음 할 일: 지문을 읽고 에디터에 바로 작성하거나 타이머를 시작하세요';
+          }
+        }
+
+        const steps = [el.stepIndicator1, el.stepIndicator2, el.stepIndicator3];
+        steps.forEach((stepEl, idx) => {
+          if (!stepEl) return;
+          const stepNum = idx + 1;
+          if (stepNum < activeStep) {
+            stepEl.className = 'inline-flex items-center gap-1.5 px-3 py-1 rounded-full font-bold bg-emerald-100 text-emerald-800 border border-emerald-200';
+          } else if (stepNum === activeStep) {
+            stepEl.className = 'inline-flex items-center gap-1.5 px-3 py-1 rounded-full font-bold bg-pte-blue text-white shadow-xs ring-2 ring-sky-200';
+          } else {
+            stepEl.className = 'inline-flex items-center gap-1.5 px-3 py-1 rounded-full font-medium bg-slate-100 text-slate-500';
+          }
+        });
+
+        if (el.stepNextActionHint) {
+          el.stepNextActionHint.textContent = hintText;
+        }
+      }
+
       function renderTabs() {
+        const activeCategory = getCategoryForMode(state.mode);
+        state.lastModeByCategory[activeCategory] = state.mode;
+
+        const categoryBtns = [
+          { el: el.navGroupPte, cat: 'pte' },
+          { el: el.navGroupPractical, cat: 'practical' },
+          { el: el.navGroupLibrary, cat: 'library' }
+        ];
+        categoryBtns.forEach(({ el: btn, cat }) => {
+          if (!btn) return;
+          const active = activeCategory === cat;
+          btn.setAttribute('aria-pressed', String(active));
+          btn.className = active
+            ? 'shrink-0 px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-white text-pte-navy shadow-xs transition cursor-pointer flex items-center gap-1.5'
+            : 'shrink-0 px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-200 hover:bg-white/10 transition cursor-pointer flex items-center gap-1.5';
+        });
+
         const tabs = [
-          { el: el.tabReadAloud, mode: 'read-aloud' },
-          { el: el.tabDescribeImage, mode: 'describe-image' },
-          { el: el.tabRepeatSentence, mode: 'repeat-sentence' },
-          { el: el.tabRetellLecture, mode: 'retell-lecture' },
-          { el: el.tabImpromptu, mode: 'impromptu' },
-          { el: el.tabRoleplay, mode: 'roleplay' },
-          { el: el.tabYtShadowing, mode: 'yt-shadowing' },
-          { el: el.tabWriting, mode: 'writing' },
-          { el: el.tabReview, mode: 'review' }
+          { el: el.tabReadAloud, mode: 'read-aloud', cat: 'pte' },
+          { el: el.tabDescribeImage, mode: 'describe-image', cat: 'pte' },
+          { el: el.tabRepeatSentence, mode: 'repeat-sentence', cat: 'pte' },
+          { el: el.tabRetellLecture, mode: 'retell-lecture', cat: 'pte' },
+          { el: el.tabWriting, mode: 'writing', cat: 'pte' },
+          { el: el.tabImpromptu, mode: 'impromptu', cat: 'practical' },
+          { el: el.tabRoleplay, mode: 'roleplay', cat: 'practical' },
+          { el: el.tabYtShadowing, mode: 'yt-shadowing', cat: 'practical' },
+          { el: el.tabReview, mode: 'review', cat: 'library' }
         ];
 
-        tabs.forEach(({ el: btn, mode }) => {
+        tabs.forEach(({ el: btn, mode, cat }) => {
+          if (!btn) return;
+          const inGroup = cat === activeCategory;
           const active = state.mode === mode;
           btn.setAttribute('aria-selected', String(active));
+          const visibilityCls = inGroup ? 'flex' : 'hidden';
           btn.className = active
-            ? 'tab-btn shrink-0 relative py-3 px-3 text-sm font-semibold border-b-2 border-pte-blue text-pte-blue flex items-center gap-1.5 transition cursor-pointer'
-            : 'tab-btn shrink-0 relative py-3 px-3 text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-1.5 transition cursor-pointer';
+            ? `tab-btn shrink-0 relative py-2.5 px-3 text-sm font-semibold border-b-2 border-pte-blue text-pte-blue ${visibilityCls} items-center gap-1.5 transition cursor-pointer`
+            : `tab-btn shrink-0 relative py-2.5 px-3 text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 ${visibilityCls} items-center gap-1.5 transition cursor-pointer`;
 
           const badge = btn.querySelector('span:nth-child(2)');
           if (badge) {
-            const visibility = mode === 'review' ? '' : 'hidden lg:inline-block ';
+            const badgeVisibility = mode === 'review' ? '' : 'hidden lg:inline-block ';
             badge.className = active
-              ? `${visibility}text-[11px] font-semibold px-1.5 py-0.5 rounded-full bg-sky-100 text-pte-blue`
-              : `${visibility}text-[11px] font-medium px-1.5 py-0.5 rounded-full bg-slate-100 text-slate-600`;
+              ? `${badgeVisibility}text-[11px] font-semibold px-1.5 py-0.5 rounded-full bg-sky-100 text-pte-blue`
+              : `${badgeVisibility}text-[11px] font-medium px-1.5 py-0.5 rounded-full bg-slate-100 text-slate-600`;
           }
         });
+
+        renderStudyStepper();
       }
 
       function renderWorkspaceVisibility() {
@@ -4343,6 +4672,17 @@
 
         if (state.mode === 'repeat-sentence') renderRepeatSentenceScriptUI();
         if (state.mode === 'retell-lecture') renderRetellLectureRevealUI();
+
+        // Emphasize primary action button for current step
+        if (el.btnStart) {
+          el.btnStart.classList.toggle('ring-2', state.phase === 'idle');
+          el.btnStart.classList.toggle('ring-sky-300', state.phase === 'idle');
+        }
+        if (el.btnAiGradeSpeaking) {
+          el.btnAiGradeSpeaking.classList.toggle('ring-2', state.phase === 'done');
+          el.btnAiGradeSpeaking.classList.toggle('ring-indigo-300', state.phase === 'done');
+        }
+        renderStudyStepper();
       }
 
       function clearTimerInterval() {
@@ -4626,6 +4966,7 @@
           el.btnWritingTimerToggle.textContent = '타이머 시작';
           el.btnWritingTimerToggle.className = 'px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-white bg-pte-blue hover:bg-sky-700 transition cursor-pointer';
         }
+        renderStudyStepper();
       }
 
       function validateAndUpdateWritingStats() {
@@ -4850,6 +5191,29 @@
           renderQuestionSelector();
           renderQuestionContent();
         }
+      }
+
+      // Category group switcher
+      [
+        { el: el.navGroupPte, cat: 'pte', fallback: 'read-aloud' },
+        { el: el.navGroupPractical, cat: 'practical', fallback: 'impromptu' },
+        { el: el.navGroupLibrary, cat: 'library', fallback: 'review' }
+      ].forEach(({ el: btn, cat, fallback }) => {
+        if (!btn) return;
+        btn.addEventListener('click', () => {
+          const targetMode = (state.lastModeByCategory && state.lastModeByCategory[cat]) || fallback;
+          switchMode(targetMode);
+        });
+      });
+
+      if (el.btnToggleSpeakingTools) {
+        el.btnToggleSpeakingTools.addEventListener('click', toggleSpeakingToolsDrawer);
+      }
+      document.querySelectorAll('[data-toggle-speaking-tools]').forEach(btn => {
+        btn.addEventListener('click', toggleSpeakingToolsDrawer);
+      });
+      if (el.btnToggleWritingTools) {
+        el.btnToggleWritingTools.addEventListener('click', toggleWritingToolsDrawer);
       }
 
       // Tabs
@@ -5272,6 +5636,9 @@
         const totalItems = (state.bookmarks?.length || 0) + (state.vocabList?.length || 0);
         if (el.tabReviewCount) {
           el.tabReviewCount.textContent = String(totalItems);
+        }
+        if (el.navLibraryCount) {
+          el.navLibraryCount.textContent = String(totalItems);
         }
       }
 
@@ -7193,6 +7560,7 @@
         if (statusMsg && el.rpRecordStatus) {
           el.rpRecordStatus.textContent = statusMsg;
         }
+        renderStudyStepper();
       }
 
       function renderRoleplayPresets() {
@@ -8332,24 +8700,32 @@
         el.ytsSentenceList.innerHTML = set.sentences.map((s, i) => {
           const active = i === idx;
           const dur = Math.max(1, Math.round((Number(s.endSec) || 0) - (Number(s.startSec) || 0)));
+          const sitTag = (s.situationTag || '').trim();
           return `
-            <button type="button" data-yts-idx="${i}"
-              class="w-full text-left rounded-xl border p-3 transition cursor-pointer space-y-1 ${
+            <div role="button" tabindex="0" data-yts-idx="${i}"
+              class="w-full text-left rounded-xl border p-3 transition cursor-pointer space-y-1.5 ${
                 active
                   ? 'border-pte-blue bg-sky-50/85 ring-1 ring-pte-blue/40 shadow-xs'
                   : 'border-slate-200 bg-slate-50/60 hover:bg-white hover:border-slate-300'
               }">
-              <div class="flex items-center justify-between gap-2">
-                <span class="px-2 py-0.5 rounded-md text-[10px] font-bold ${active ? 'bg-pte-blue text-white' : 'bg-slate-200 text-slate-700'}">
-                  문장 ${i + 1}
-                </span>
-                <span class="text-[11px] font-bold tabular-nums text-slate-600">
-                  ${escapeHtml(formatMMSS(s.startSec))} ~ ${escapeHtml(formatMMSS(s.endSec))} (${dur}s)
-                </span>
+              <div class="flex flex-wrap items-center justify-between gap-1.5">
+                <div class="flex flex-wrap items-center gap-1.5 min-w-0">
+                  <span class="px-2 py-0.5 rounded-md text-[10px] font-bold ${active ? 'bg-pte-blue text-white' : 'bg-slate-200 text-slate-700'}">
+                    문장 ${i + 1}
+                  </span>
+                  ${sitTag ? `<span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-teal-100 text-teal-800">${escapeHtml(sitTag)}</span>` : ''}
+                  <span class="text-[11px] font-bold tabular-nums text-slate-500">
+                    ${escapeHtml(formatMMSS(s.startSec))}~${escapeHtml(formatMMSS(s.endSec))} (${dur}s)
+                  </span>
+                </div>
+                <button type="button" data-yts-tts="${i}"
+                  class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 transition cursor-pointer shrink-0">
+                  🔊 AI 성우
+                </button>
               </div>
               <p class="text-xs sm:text-sm font-bold text-slate-900 leading-snug line-clamp-2">${escapeHtml(s.enText || '')}</p>
               ${s.koMeaning ? `<p class="text-[11px] text-slate-500 truncate">${escapeHtml(s.koMeaning)}</p>` : ''}
-            </button>
+            </div>
           `;
         }).join('');
       }
@@ -8366,6 +8742,11 @@
         if (el.ytsEndTimeLabel) el.ytsEndTimeLabel.textContent = `${formatMMSS(end)} (${end}s)`;
         if (el.ytsActiveBadge) {
           el.ytsActiveBadge.textContent = `문장 ${idx + 1} / ${set.sentences.length} · ${dur}초 (${formatMMSS(start)}~${formatMMSS(end)})`;
+        }
+        if (el.ytsActiveSituationBadge) {
+          const sit = (sentence.situationTag || '').trim();
+          el.ytsActiveSituationBadge.textContent = sit;
+          el.ytsActiveSituationBadge.classList.toggle('hidden', !sit);
         }
         if (el.ytsActiveEn) el.ytsActiveEn.textContent = sentence.enText || '';
         if (el.ytsActiveKo) el.ytsActiveKo.textContent = sentence.koMeaning || '';
@@ -8536,21 +8917,29 @@
             }, 120);
           };
 
-          if (state.ytsPlayer && typeof state.ytsPlayer.loadVideoById === 'function') {
+          if (state.ytsPlayer && typeof state.ytsPlayer.seekTo === 'function' && state.ytsLoadedVideoId === videoId) {
+            // Do not call loadVideoById for the same videoId — seek directly to minimize YouTube ad re-triggers
+            if (typeof state.ytsPlayer.setPlaybackRate === 'function') {
+              try { state.ytsPlayer.setPlaybackRate(state.ytsRate); } catch (e) {}
+            }
+            state.ytsPlayer.seekTo(startSec, true);
+            state.ytsPlayer.playVideo();
+            startWatcher(state.ytsPlayer);
+          } else if (state.ytsPlayer && typeof state.ytsPlayer.loadVideoById === 'function') {
+            state.ytsLoadedVideoId = videoId;
             state.ytsPlayer.loadVideoById({
               videoId,
-              startSeconds: startSec,
-              endSeconds: endSec + 2
+              startSeconds: startSec
             });
             startWatcher(state.ytsPlayer);
           } else {
+            state.ytsLoadedVideoId = videoId;
             state.ytsPlayer = new YT.Player('yts-player', {
               videoId,
               width: '100%',
               height: '100%',
               playerVars: {
                 start: startSec,
-                end: endSec + 2,
                 rel: 0,
                 modestbranding: 1,
                 playsinline: 1
@@ -8580,6 +8969,23 @@
         }
       }
 
+      function speakYtsSentenceWithAiTts(sentenceIdx = state.ytsSentenceIndex) {
+        const set = getActiveYtsSet();
+        if (!set || !Array.isArray(set.sentences) || set.sentences.length === 0) return;
+        const safeIdx = Math.max(0, Math.min(sentenceIdx, set.sentences.length - 1));
+        if (safeIdx !== state.ytsSentenceIndex) {
+          selectYtsSentence(safeIdx);
+        }
+        const sentence = set.sentences[safeIdx];
+        if (!sentence || !sentence.enText) return;
+
+        ensureAudioContext();
+        stopYtsComparePlayback(true);
+        stopYtsPlayback();
+        releaseMicrophoneStream();
+        speakText(sentence.enText, { targetMode: 'yt-shadowing' });
+      }
+
       function setYtsRecordingUI(isRec, msg = '') {
         state.ytsIsRecording = Boolean(isRec);
         if (!el.btnYtsRecord) return;
@@ -8598,6 +9004,7 @@
           el.ytsRecordTimer.textContent = '00:00';
         }
         if (msg && el.ytsRecordStatus) el.ytsRecordStatus.textContent = msg;
+        renderStudyStepper();
       }
 
       function stopYtsRecording(discard = false) {
@@ -8684,6 +9091,7 @@
             if (el.ytsRecordStatus) {
               el.ytsRecordStatus.textContent = '녹음 완료 (마이크 즉시 해제됨) · 비교 듣기 또는 AI 채점을 실행하세요.';
             }
+            renderStudyStepper();
           };
 
           state.ytsMediaRecorder = recorder;
@@ -8842,7 +9250,7 @@
 
         const hasTranscript = transcript.length >= 20;
         const schemaText = [
-          `Extract 6 to 10 high-utility English sentences suitable for spoken shadowing practice (roughly 3 to 8 seconds per sentence).`,
+          `Extract 12 to 20 high-utility, practical everyday, workplace, or New Zealand life spoken English sentences suitable for shadowing practice (roughly 3 to 8 seconds per sentence). If it is a short YouTube Short under 60 seconds, extract all meaningful spoken sentences while filtering out filler noise, music, or laughter.`,
           `\nRespond strictly in JSON matching this exact schema:`,
           `{`,
           `  "setTitle": "<short Korean+English title for this shadowing set>",`,
@@ -8850,6 +9258,7 @@
           `    {`,
           `      "startSec": <integer start seconds>,`,
           `      "endSec": <integer end seconds, startSec + 3 to startSec + 8>,`,
+          `      "situationTag": "<short 2-4 char Korean situation tag e.g. 감정표현, 부탁, 스몰토크, 의견제시, 일상설명, 업무대화>",`,
           `      "enText": "<exact English sentence spoken in this segment>",`,
           `      "koMeaning": "<natural Korean translation>",`,
           `      "stressAndLinkingTip": "<concise Korean tip on word stress, pauses, or linking sounds>"`,
@@ -8862,7 +9271,7 @@
           ? [{
               text: [
                 `Analyze the YouTube transcript below (Video ID: ${videoId}, URL: ${canonicalWatchUrl}).`,
-                `Transcript:\n${transcript.slice(0, 12000)}`,
+                `Transcript:\n${transcript.slice(0, 14000)}`,
                 schemaText
               ].join('\n')
             }]
@@ -8871,7 +9280,7 @@
               {
                 text: [
                   `Listen carefully to the actual audio of the attached YouTube video (${canonicalWatchUrl}).`,
-                  `Transcribe spoken lines with accurate integer timestamps (startSec and endSec, 3-8 seconds each) in the video.`,
+                  `Transcribe practical spoken lines (12-20 sentences, or all meaningful sentences for a Short) with accurate integer timestamps (startSec and endSec, 3-8 seconds each), skipping filler noise.`,
                   schemaText
                 ].join('\n')
               }
@@ -8884,13 +9293,13 @@
         }
         if (el.ytsExtractStatus) {
           el.ytsExtractStatus.textContent = hasTranscript
-            ? '⏳ 입력한 자막에서 Gemini AI가 핵심 쉐도잉 문장 6~10개를 추출 중입니다...'
-            : `⏳ 자막 없이 영상 오디오를 직접 분석 중입니다 (${canonicalWatchUrl})...`;
+            ? '⏳ 입력한 자막에서 Gemini AI가 실전 회화 문장 12~20개를 추출 중입니다...'
+            : `⏳ 자막 없이 영상 오디오를 직접 분석해 실전 문장 12~20개를 추출 중입니다 (${canonicalWatchUrl})...`;
         }
 
         try {
           const result = await callGeminiApi(parts);
-          const rawSentences = Array.isArray(result?.sentences) ? result.sentences.slice(0, 10) : [];
+          const rawSentences = Array.isArray(result?.sentences) ? result.sentences.slice(0, 20) : [];
           const normalized = rawSentences
             .map(s => {
               const startSec = Math.max(0, Math.round(Number(s.startSec) || 0));
@@ -8898,6 +9307,7 @@
               return {
                 startSec,
                 endSec,
+                situationTag: String(s.situationTag || '실전회화').trim(),
                 enText: String(s.enText || '').trim(),
                 koMeaning: String(s.koMeaning || '').trim(),
                 stressAndLinkingTip: String(s.stressAndLinkingTip || '').trim()
@@ -8977,6 +9387,13 @@
       }
       if (el.ytsSentenceList) {
         el.ytsSentenceList.addEventListener('click', (e) => {
+          const ttsBtn = e.target.closest('[data-yts-tts]');
+          if (ttsBtn) {
+            e.stopPropagation();
+            const ttsIdx = parseInt(ttsBtn.dataset.ytsTts, 10);
+            if (!Number.isNaN(ttsIdx)) speakYtsSentenceWithAiTts(ttsIdx);
+            return;
+          }
           const btn = e.target.closest('[data-yts-idx]');
           if (!btn) return;
           const idx = parseInt(btn.dataset.ytsIdx, 10);
@@ -8987,6 +9404,11 @@
         el.btnYtsPlay.addEventListener('click', () => {
           stopYtsComparePlayback(true);
           playYtsSegment({ oneShot: false });
+        });
+      }
+      if (el.btnYtsTtsPlay) {
+        el.btnYtsTtsPlay.addEventListener('click', () => {
+          speakYtsSentenceWithAiTts(state.ytsSentenceIndex);
         });
       }
       if (el.btnYtsPause) {
@@ -9555,6 +9977,7 @@
       }
 
       // Initial render
+      applyToolsDrawerUI();
       updateAiHeaderUI();
       updateReviewTabBadge();
       updateRsBankSummaryUI();
@@ -9568,6 +9991,7 @@
       renderQuestionSelector();
       renderQuestionContent();
       resetPractice(true);
+      renderStudyStepper();
     })();
   </script>
 </body>
