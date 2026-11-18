@@ -1,7 +1,7 @@
 {
-  "name": "NZ PTE Academic 실전 연습 (Speaking & Writing)",
-  "short_name": "PTE 연습",
-  "description": "뉴질랜드 PTE Academic 스피킹(RA, DI, RS, RL, 임프롬투), 롤플레이, 유튜브 쉐도잉 및 라이팅 실전 연습 웹앱",
+  "name": "English Lab — NZ 실전 영어 · PTE 트레이너",
+  "short_name": "English Lab",
+  "description": "English Lab — NZ 실전 영어 · PTE Academic 트레이너 (스피킹, 즉흥 말하기, 롤플레이, 유튜브 쉐도잉, 라이팅)",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",

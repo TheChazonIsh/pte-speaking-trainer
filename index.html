@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NZ PTE Academic 실전 연습 | Speaking &amp; Writing</title>
+  <title>English Lab — NZ 실전 영어 · PTE 트레이너</title>
 
   <!-- PWA & Apple Mobile Web App Meta Tags -->
-  <meta name="description" content="뉴질랜드 PTE Academic 스피킹(RA, DI, RS, RL) 및 라이팅(SWT, Essay) 실전 타이머 연습 웹앱" />
+  <meta name="description" content="English Lab — NZ 실전 영어 · PTE Academic 트레이너 (스피킹, 즉흥 말하기, 롤플레이, 유튜브 쉐도잉, 라이팅)" />
   <meta name="theme-color" content="#0f2942" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="PTE 연습" />
+  <meta name="apple-mobile-web-app-title" content="English Lab" />
   <link rel="manifest" href="./manifest.json" />
   <link rel="icon" type="image/svg+xml" href="./icon.svg" />
   <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png" />
@@ -62,46 +62,45 @@
 
   <!-- Top Header -->
   <header class="bg-pte-navy text-white shadow-md sticky top-0 z-30">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-3.5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-      <div class="flex items-center gap-3">
-        <div class="w-9 h-9 rounded-lg bg-sky-500/20 border border-sky-400/40 flex items-center justify-center shrink-0">
-          <svg class="w-5 h-5 text-sky-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 006-6v-1.5m-6 7.5a6 6 0 01-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 01-3-3V4.5a3 3 0 116 0v8.25a3 3 0 01-3 3z" />
-          </svg>
-        </div>
-        <div>
-          <div class="flex items-center gap-2">
-            <h1 class="text-base sm:text-lg font-bold tracking-tight">PTE Academic 실전 연습</h1>
-            <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-teal-500/20 text-teal-200 border border-teal-400/30">NZ 대비</span>
+    <div class="max-w-6xl mx-auto px-3.5 sm:px-6 py-2 sm:py-2.5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+      <div class="flex items-center justify-between gap-2.5 min-w-0">
+        <div class="flex items-center gap-2.5 min-w-0">
+          <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-teal-400/15 border border-teal-300/30 flex items-center justify-center shrink-0">
+            <svg class="w-4 h-4 sm:w-5 sm:h-5 text-teal-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 006-6v-1.5m-6 7.5a6 6 0 01-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 01-3-3V4.5a3 3 0 116 0v8.25a3 3 0 01-3 3z" />
+            </svg>
           </div>
-          <p class="text-xs text-slate-300">Speaking · Impromptu Talk · Writing · 215문제 + AI 섀도잉 &amp; 원어민 교정</p>
+          <div class="min-w-0">
+            <h1 class="text-base sm:text-lg font-extrabold tracking-tight leading-tight truncate">English Lab</h1>
+            <p class="text-[11px] sm:text-xs text-slate-300 leading-tight truncate">NZ 실전 영어 · PTE 트레이너</p>
+          </div>
         </div>
       </div>
 
-      <!-- Microphone, Beep, iOS Tip & AI Settings Quick Status -->
-      <div class="flex items-center gap-2 flex-wrap self-start sm:self-auto">
+      <!-- Microphone, Beep, Audio Tip & AI Settings Quick Status -->
+      <div class="flex items-center gap-1 sm:gap-1.5 overflow-x-auto whitespace-nowrap w-full sm:w-auto pb-0.5 sm:pb-0">
         <button id="btn-mic-connect" type="button"
-          class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium bg-white/10 hover:bg-white/20 border border-white/15 transition cursor-pointer">
+          class="shrink-0 inline-flex items-center gap-1 px-2 sm:px-2.5 py-1 rounded-lg text-[11px] sm:text-xs font-medium bg-white/10 hover:bg-white/20 border border-white/15 transition cursor-pointer">
           <span id="header-mic-dot" class="w-2 h-2 rounded-full bg-amber-400"></span>
-          <span id="header-mic-label">마이크 연결 확인</span>
+          <span id="header-mic-label">마이크</span>
         </button>
         <button id="btn-test-beep" type="button" title="비프음 볼륨 확인"
-          class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-white/10 hover:bg-white/20 border border-white/15 transition cursor-pointer">
-          <svg class="w-3.5 h-3.5 text-sky-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          class="shrink-0 inline-flex items-center gap-1 px-2 sm:px-2.5 py-1 rounded-lg text-[11px] sm:text-xs font-medium bg-white/10 hover:bg-white/20 border border-white/15 transition cursor-pointer">
+          <svg class="w-3 h-3 sm:w-3.5 sm:h-3.5 text-sky-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75z" />
           </svg>
-          <span>Beep 테스트</span>
+          <span>Beep</span>
         </button>
         <button id="btn-ios-audio-guide-header" type="button" data-toggle-ios-guide="1" title="아이폰 Safari/PWA 무음·이어폰·고품질 음성 안내"
-          class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-medium bg-amber-500/20 hover:bg-amber-500/35 border border-amber-300/40 text-amber-100 transition cursor-pointer">
-          <span>📱 iOS 오디오 안내</span>
+          class="shrink-0 inline-flex items-center gap-1 px-2 sm:px-2.5 py-1 rounded-lg text-[11px] sm:text-xs font-medium bg-amber-500/20 hover:bg-amber-500/35 border border-amber-300/35 text-amber-100 transition cursor-pointer">
+          <span>오디오</span>
         </button>
         <button id="btn-data-sync" type="button" title="PC · 아이폰 · 지인 간 데이터 동기화 (내보내기/가져오기)"
-          class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-500/25 hover:bg-emerald-500/40 border border-emerald-300/40 text-emerald-50 transition cursor-pointer">
-          <span>🔄 기기 간 데이터 동기화</span>
+          class="shrink-0 inline-flex items-center gap-1 px-2 sm:px-2.5 py-1 rounded-lg text-[11px] sm:text-xs font-semibold bg-teal-500/25 hover:bg-teal-500/40 border border-teal-300/35 text-teal-50 transition cursor-pointer">
+          <span>🔄 동기화</span>
         </button>
         <button id="btn-ai-settings" type="button" title="Google AI Studio Gemini API 설정"
-          class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-indigo-500/30 hover:bg-indigo-500/45 border border-indigo-300/40 text-white transition cursor-pointer">
+          class="shrink-0 inline-flex items-center gap-1 px-2 sm:px-2.5 py-1 rounded-lg text-[11px] sm:text-xs font-semibold bg-indigo-500/35 hover:bg-indigo-500/50 border border-indigo-300/35 text-white transition cursor-pointer">
           <span id="header-ai-dot" class="w-2 h-2 rounded-full bg-slate-300"></span>
           <span id="header-ai-label">⚙️ AI 설정</span>
         </button>
@@ -109,20 +108,18 @@
     </div>
 
     <!-- Primary 3-Category Navigation + Focused Sub-Tabs -->
-    <div class="bg-slate-900/40 border-t border-white/10">
-      <div class="max-w-6xl mx-auto px-4 sm:px-6 py-2 flex items-center gap-2 overflow-x-auto whitespace-nowrap" role="navigation" aria-label="학습 영역 카테고리">
+    <div class="bg-slate-900/45 border-t border-white/10">
+      <div class="max-w-6xl mx-auto px-3.5 sm:px-6 py-1.5 flex items-center gap-1.5 sm:gap-2 overflow-x-auto whitespace-nowrap" role="navigation" aria-label="학습 영역 카테고리">
         <button id="nav-group-pte" type="button" data-nav-group="pte"
-          class="shrink-0 px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-white text-pte-navy shadow-xs transition cursor-pointer flex items-center gap-1.5">
+          class="shrink-0 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-white text-pte-navy shadow-xs transition cursor-pointer flex items-center gap-1.5">
           <span>🎓 PTE 시험 대비</span>
-          <span class="text-[10px] font-semibold px-1.5 py-0.5 rounded-full bg-sky-100 text-pte-blue">5파트</span>
         </button>
         <button id="nav-group-practical" type="button" data-nav-group="practical"
-          class="shrink-0 px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-200 hover:bg-white/10 transition cursor-pointer flex items-center gap-1.5">
+          class="shrink-0 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-200 hover:bg-white/10 transition cursor-pointer flex items-center gap-1.5">
           <span>🗣️ 실전 영어·스피킹</span>
-          <span class="text-[10px] font-semibold px-1.5 py-0.5 rounded-full bg-white/15 text-teal-200">4파트</span>
         </button>
         <button id="nav-group-library" type="button" data-nav-group="library"
-          class="shrink-0 px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-200 hover:bg-white/10 transition cursor-pointer flex items-center gap-1.5">
+          class="shrink-0 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-200 hover:bg-white/10 transition cursor-pointer flex items-center gap-1.5">
           <span>📚 내 학습실</span>
           <span id="nav-library-count" class="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-white/15 text-slate-200">0</span>
         </button>
@@ -131,54 +128,54 @@
 
     <!-- Contextual Sub-Tabs Bar -->
     <div class="bg-white border-b border-slate-200 text-slate-700">
-      <div class="max-w-6xl mx-auto px-4 sm:px-6 flex gap-1 sm:gap-2.5 overflow-x-auto whitespace-nowrap" role="tablist" aria-label="PTE 파트 선택">
+      <div class="max-w-6xl mx-auto px-3.5 sm:px-6 flex gap-1 sm:gap-2.5 overflow-x-auto whitespace-nowrap" role="tablist" aria-label="PTE 파트 선택">
         <button id="tab-read-aloud" type="button" role="tab" aria-selected="true"
-          class="tab-btn shrink-0 relative py-2.5 px-3 text-sm font-semibold border-b-2 border-pte-blue text-pte-blue flex items-center gap-1.5 transition cursor-pointer">
+          class="tab-btn shrink-0 relative py-2 px-3 text-xs sm:text-sm font-semibold border-b-2 border-pte-blue text-pte-blue flex items-center gap-1.5 transition cursor-pointer">
           <span>Read Aloud</span>
           <span class="hidden lg:inline-block text-[11px] font-medium px-1.5 py-0.5 rounded-full bg-sky-100 text-pte-blue">35s/40s</span>
         </button>
         <button id="tab-describe-image" type="button" role="tab" aria-selected="false"
-          class="tab-btn shrink-0 relative py-2.5 px-3 text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-1.5 transition cursor-pointer">
+          class="tab-btn shrink-0 relative py-2 px-3 text-xs sm:text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-1.5 transition cursor-pointer">
           <span>Describe Image</span>
           <span class="hidden lg:inline-block text-[11px] font-medium px-1.5 py-0.5 rounded-full bg-slate-100 text-slate-600">25s/40s</span>
         </button>
         <button id="tab-repeat-sentence" type="button" role="tab" aria-selected="false"
-          class="tab-btn shrink-0 relative py-2.5 px-3 text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-1.5 transition cursor-pointer">
+          class="tab-btn shrink-0 relative py-2 px-3 text-xs sm:text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-1.5 transition cursor-pointer">
           <span>Repeat Sentence</span>
           <span class="hidden lg:inline-block text-[11px] font-medium px-1.5 py-0.5 rounded-full bg-slate-100 text-slate-600">3s/15s</span>
         </button>
         <button id="tab-retell-lecture" type="button" role="tab" aria-selected="false"
-          class="tab-btn shrink-0 relative py-2.5 px-3 text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-1.5 transition cursor-pointer">
+          class="tab-btn shrink-0 relative py-2 px-3 text-xs sm:text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-1.5 transition cursor-pointer">
           <span>Retell Lecture (강의 요약)</span>
           <span class="hidden lg:inline-block text-[11px] font-medium px-1.5 py-0.5 rounded-full bg-slate-100 text-slate-600">10s/40s</span>
         </button>
         <button id="tab-writing" type="button" role="tab" aria-selected="false"
-          class="tab-btn shrink-0 relative py-2.5 px-3 text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-1.5 transition cursor-pointer">
+          class="tab-btn shrink-0 relative py-2 px-3 text-xs sm:text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-1.5 transition cursor-pointer">
           <span>Writing (SWT &amp; Essay)</span>
           <span class="hidden lg:inline-block text-[11px] font-medium px-1.5 py-0.5 rounded-full bg-slate-100 text-slate-600">10m/20m</span>
         </button>
         <button id="tab-impromptu" type="button" role="tab" aria-selected="false"
-          class="tab-btn hidden shrink-0 relative py-2.5 px-3 text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-1.5 transition cursor-pointer">
+          class="tab-btn hidden shrink-0 relative py-2 px-3 text-xs sm:text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-1.5 transition cursor-pointer">
           <span>⏱️ 1분 즉흥 말하기</span>
           <span class="hidden lg:inline-block text-[11px] font-medium px-1.5 py-0.5 rounded-full bg-slate-100 text-slate-600">15s/60s</span>
         </button>
         <button id="tab-roleplay" type="button" role="tab" aria-selected="false"
-          class="tab-btn hidden shrink-0 relative py-2.5 px-3 text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-1.5 transition cursor-pointer">
+          class="tab-btn hidden shrink-0 relative py-2 px-3 text-xs sm:text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-1.5 transition cursor-pointer">
           <span>🎭 AI 롤플레이</span>
           <span class="hidden lg:inline-block text-[11px] font-medium px-1.5 py-0.5 rounded-full bg-slate-100 text-slate-600">NZ 회화</span>
         </button>
         <button id="tab-yt-shadowing" type="button" role="tab" aria-selected="false"
-          class="tab-btn hidden shrink-0 relative py-2.5 px-3 text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-1.5 transition cursor-pointer">
+          class="tab-btn hidden shrink-0 relative py-2 px-3 text-xs sm:text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-1.5 transition cursor-pointer">
           <span>🎬 유튜브 쉐도잉</span>
           <span class="hidden lg:inline-block text-[11px] font-medium px-1.5 py-0.5 rounded-full bg-slate-100 text-slate-600">구간반복</span>
         </button>
         <button id="tab-brain-pattern" type="button" role="tab" aria-selected="false"
-          class="tab-btn hidden shrink-0 relative py-2.5 px-3 text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-1.5 transition cursor-pointer">
+          class="tab-btn hidden shrink-0 relative py-2 px-3 text-xs sm:text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-1.5 transition cursor-pointer">
           <span>🧠 영어 뇌 패턴 훈련</span>
           <span class="hidden lg:inline-block text-[11px] font-medium px-1.5 py-0.5 rounded-full bg-slate-100 text-slate-600">인출·응용</span>
         </button>
         <button id="tab-review" type="button" role="tab" aria-selected="false"
-          class="tab-btn hidden shrink-0 relative py-2.5 px-3 text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-1.5 transition cursor-pointer">
+          class="tab-btn hidden shrink-0 relative py-2 px-3 text-xs sm:text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-1.5 transition cursor-pointer">
           <span>📚 단어장 · 오답노트 · 취약점 리포트</span>
           <span id="tab-review-count" class="text-[11px] font-medium px-1.5 py-0.5 rounded-full bg-slate-100 text-slate-600">0</span>
         </button>
@@ -187,10 +184,10 @@
   </header>
 
   <!-- Main Content -->
-  <main class="flex-1 max-w-6xl w-full min-w-0 mx-auto px-4 sm:px-6 py-4 sm:py-6 space-y-4">
+  <main class="flex-1 max-w-6xl w-full min-w-0 mx-auto px-3.5 sm:px-6 py-3 sm:py-5 space-y-3">
 
     <!-- Focused 3-Step Learning Progress Stepper -->
-    <section id="study-stepper-bar" class="bg-white rounded-2xl border border-slate-200 shadow-xs px-4 py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 min-w-0">
+    <section id="study-stepper-bar" class="bg-white rounded-2xl border border-slate-200 shadow-xs px-3.5 py-2 flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 min-w-0">
       <div class="flex items-center gap-1.5 sm:gap-2 overflow-x-auto whitespace-nowrap text-xs">
         <span id="step-indicator-1" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full font-bold bg-pte-blue text-white shadow-2xs">
           <span>1. 준비 / 듣기</span>
@@ -321,7 +318,7 @@
                 <span id="ra-audio-status" class="text-xs font-semibold text-slate-700 truncate">원어민 모범 읽기를 먼저 듣고 섀도잉으로 발음을 다듬어 보세요</span>
               </div>
               <button id="btn-ra-listen-model" type="button"
-                class="shrink-0 px-3 py-1.5 rounded-lg text-xs font-bold text-pte-blue bg-white hover:bg-sky-100 border border-sky-300 shadow-2xs transition cursor-pointer">
+                class="shrink-0 min-h-[44px] px-3.5 py-2 rounded-xl text-xs font-bold text-pte-blue bg-white hover:bg-sky-100 border border-sky-300 shadow-2xs transition inline-flex items-center justify-center cursor-pointer">
                 🔊 원어민 모범 읽기 먼저 듣기
               </button>
             </div>
@@ -391,7 +388,7 @@
               <div class="flex items-center gap-2 flex-wrap text-xs">
                 <span id="rs-bank-summary-badge" class="px-2 py-0.5 rounded-full font-bold bg-white text-indigo-700 border border-indigo-200">기본 100문항 + AI 추가 0문항</span>
                 <span id="rs-gemini-tts-badge" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800">키 미등록 → 브라우저 음성 자동 폴백</span>
-                <span id="rs-tts-cache-badge" class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-slate-200/80 text-slate-700 tabular-nums">캐시 0건</span>
+                <span id="rs-tts-cache-badge" class="hidden px-2 py-0.5 rounded-full text-[10px] font-semibold bg-slate-200/80 text-slate-700 tabular-nums">캐시 0건</span>
               </div>
               <button type="button" data-toggle-speaking-tools="1"
                 class="px-2.5 py-1 rounded-lg text-[11px] font-bold text-slate-700 bg-white hover:bg-slate-100 border border-slate-200 transition cursor-pointer">
@@ -540,7 +537,7 @@
               <div class="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-slate-200 bg-slate-50/70 px-3.5 py-2">
                 <div class="flex items-center gap-1.5 flex-wrap text-xs">
                   <span id="rl-gemini-tts-badge" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800">키 미등록 → 브라우저 음성 자동 폴백</span>
-                  <span id="rl-tts-cache-badge" class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-slate-200/80 text-slate-700 tabular-nums">캐시 0건</span>
+                  <span id="rl-tts-cache-badge" class="hidden px-2 py-0.5 rounded-full text-[10px] font-semibold bg-slate-200/80 text-slate-700 tabular-nums">캐시 0건</span>
                 </div>
                 <button type="button" data-toggle-speaking-tools="1"
                   class="px-2.5 py-1 rounded-lg text-[11px] font-bold text-slate-700 bg-white hover:bg-slate-100 border border-slate-200 transition cursor-pointer">
@@ -899,7 +896,7 @@
           <div class="space-y-1.5">
             <div class="flex items-center justify-between text-xs">
               <span class="font-medium text-slate-600">마이크 입력 레벨</span>
-              <span id="mic-status-detail" class="text-slate-500">대기 중 (녹음 시 자동 연결 · 이어폰 음질 보호)</span>
+              <span id="mic-status-detail" class="text-slate-500">대기 중</span>
             </div>
             <div class="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden border border-slate-200">
               <div id="mic-level-bar" class="h-full w-0 bg-emerald-500 transition-all duration-75 rounded-full"></div>
@@ -910,7 +907,7 @@
           <!-- Primary Controls -->
           <div class="grid grid-cols-2 gap-2.5 pt-1">
             <button id="btn-start" type="button"
-              class="col-span-2 py-3 px-4 rounded-xl text-sm sm:text-base font-bold text-white bg-pte-blue hover:bg-sky-700 active:scale-[0.99] shadow-sm transition flex items-center justify-center gap-2 cursor-pointer">
+              class="col-span-2 min-h-[46px] py-3 px-4 rounded-xl text-sm sm:text-base font-bold text-white bg-pte-blue hover:bg-sky-700 active:scale-[0.99] shadow-sm transition flex items-center justify-center gap-2 cursor-pointer">
               <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M8 5v14l11-7z"/>
               </svg>
@@ -918,12 +915,12 @@
             </button>
 
             <button id="btn-skip-prep" type="button" disabled
-              class="py-2.5 px-3 rounded-xl text-xs sm:text-sm font-semibold border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 disabled:opacity-40 disabled:cursor-not-allowed transition cursor-pointer">
+              class="min-h-[44px] py-2.5 px-3 rounded-xl text-xs sm:text-sm font-semibold border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 disabled:opacity-40 disabled:cursor-not-allowed transition cursor-pointer">
               준비 건너뛰기 → Beep
             </button>
 
             <button id="btn-reset" type="button"
-              class="py-2.5 px-3 rounded-xl text-xs sm:text-sm font-semibold border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 transition cursor-pointer">
+              class="min-h-[44px] py-2.5 px-3 rounded-xl text-xs sm:text-sm font-semibold border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 transition cursor-pointer">
               초기화 (Reset)
             </button>
           </div>
@@ -956,12 +953,12 @@
               </a>
             </div>
             <button id="btn-shadowing-compare" type="button"
-              class="hidden w-full py-2.5 px-4 rounded-xl text-xs sm:text-sm font-bold text-teal-900 bg-teal-50 hover:bg-teal-100 border border-teal-300 shadow-2xs transition flex items-center justify-center gap-2 cursor-pointer">
+              class="hidden w-full min-h-[44px] py-2.5 px-4 rounded-xl text-xs sm:text-sm font-bold text-teal-900 bg-teal-50 hover:bg-teal-100 border border-teal-300 shadow-2xs transition flex items-center justify-center gap-2 cursor-pointer">
               <span>🔄 원어민 → 내 발음 연속 비교 듣기</span>
             </button>
             <p id="shadowing-compare-status" class="hidden text-xs font-semibold rounded-lg px-3 py-2 bg-teal-50 text-teal-800 border border-teal-200 text-center"></p>
             <button id="btn-ai-grade-speaking" type="button"
-              class="w-full py-2.5 px-4 rounded-xl text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-indigo-600 to-pte-blue hover:from-indigo-700 hover:to-sky-700 shadow-xs transition flex items-center justify-center gap-2 cursor-pointer">
+              class="w-full min-h-[44px] py-2.5 px-4 rounded-xl text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-indigo-600 to-pte-blue hover:from-indigo-700 hover:to-sky-700 shadow-xs transition flex items-center justify-center gap-2 cursor-pointer">
               <span id="btn-ai-grade-speaking-label">✨ AI 발음·유창성 채점</span>
             </button>
           </div>
@@ -1108,11 +1105,11 @@
           <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-5 space-y-3">
             <div class="flex flex-wrap items-center justify-between gap-2">
               <label for="writing-textarea" class="text-sm font-bold text-slate-800">답안 작성란 (Response Box)</label>
-              <span id="writing-save-status" class="text-[11px] font-medium text-emerald-600">자동 저장 대기 (localStorage)</span>
+              <span id="writing-save-status" class="text-[11px] font-medium text-emerald-600">자동 저장 대기</span>
             </div>
 
             <textarea id="writing-textarea" rows="12" spellcheck="true"
-              placeholder="여기에 영어로 답안을 작성하세요. 입력한 내용은 브라우저 localStorage에 자동 저장됩니다..."
+              placeholder="여기에 영어로 답안을 작성하세요. 작성 중인 내용은 자동으로 저장됩니다..."
               class="w-full rounded-xl border border-slate-300 bg-slate-50/50 focus:bg-white p-4 text-sm sm:text-base leading-relaxed text-slate-900 focus:outline-none focus:ring-2 focus:ring-pte-blue resize-y"></textarea>
 
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5 pt-1">
@@ -1125,7 +1122,7 @@
 
               <div class="flex items-center gap-2 flex-wrap">
                 <button id="btn-ai-grade-writing" type="button"
-                  class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-indigo-600 to-pte-blue hover:from-indigo-700 hover:to-sky-700 shadow-xs transition cursor-pointer">
+                  class="min-h-[44px] px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-indigo-600 to-pte-blue hover:from-indigo-700 hover:to-sky-700 shadow-xs transition cursor-pointer inline-flex items-center justify-center">
                   ✨ AI 채점 및 첨삭 받기
                 </button>
                 <button id="btn-copy-writing" type="button"
@@ -1159,17 +1156,14 @@
         <div class="flex flex-wrap items-start justify-between gap-3">
           <div class="min-w-0">
             <div class="flex flex-wrap items-center gap-2 mb-1">
-              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-fuchsia-100 text-fuchsia-800">NZ Life &amp; Work</span>
-              <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                📱 iOS 이어폰 안전 모드 · 재생 중 마이크 차단
-              </span>
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-teal-100 text-teal-800">NZ Life &amp; Work</span>
             </div>
             <h2 class="text-base sm:text-lg font-extrabold text-slate-900">🎭 뉴질랜드 실전 AI 롤플레이 (면접 · 생활 회화)</h2>
-            <p class="text-xs text-slate-500 mt-0.5">상대방 음성이 재생될 때는 마이크가 열리지 않으며, <strong>내 답변 녹음하기</strong>를 누를 때만 마이크가 켜지고 전송 즉시 해제됩니다.</p>
+            <p class="text-xs text-slate-500 mt-0.5">상황을 선택한 뒤 <strong>대화 시작</strong>을 누르고 영어로 자연스럽게 답변해 보세요.</p>
           </div>
           <div class="flex items-center gap-2 shrink-0">
             <button id="btn-rp-reset" type="button"
-              class="px-3 py-1.5 rounded-lg text-xs font-semibold border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 transition cursor-pointer">
+              class="min-h-[40px] px-3 py-1.5 rounded-xl text-xs font-semibold border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 transition cursor-pointer">
               🔄 대화 초기화
             </button>
           </div>
@@ -1179,11 +1173,11 @@
         <div id="rp-preset-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5"></div>
 
         <!-- Custom Scenario Input (visible when preset 6 'custom' selected) -->
-        <div id="rp-custom-box" class="hidden rounded-xl border border-fuchsia-200 bg-fuchsia-50/50 p-3.5 space-y-2">
-          <label for="rp-custom-input" class="block text-xs font-bold text-fuchsia-900">✏️ 직접 상황 &amp; 상대방 역할 입력</label>
+        <div id="rp-custom-box" class="hidden rounded-xl border border-indigo-200 bg-indigo-50/50 p-3.5 space-y-2">
+          <label for="rp-custom-input" class="block text-xs font-bold text-indigo-900">✏️ 직접 상황 &amp; 상대방 역할 입력</label>
           <input id="rp-custom-input" type="text"
             placeholder="예: 오클랜드 임대 주택 뷰잉에서 부동산 에이전트와 집 컨디션/주차 문의하기"
-            class="w-full px-3 py-2 text-xs sm:text-sm rounded-lg border border-fuchsia-200 bg-white focus:ring-2 focus:ring-fuchsia-500 focus:border-fuchsia-500 outline-none" />
+            class="w-full px-3 py-2 text-xs sm:text-sm rounded-lg border border-indigo-200 bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none" />
         </div>
 
         <!-- Active Scenario Controls & TTS Audio Status Bar -->
@@ -1206,12 +1200,12 @@
           </div>
           <div class="flex flex-wrap items-center gap-2 shrink-0">
             <button id="btn-rp-start" type="button"
-              class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-white bg-pte-blue hover:bg-sky-700 shadow-xs transition cursor-pointer flex items-center gap-1.5">
+              class="min-h-[44px] px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-white bg-pte-blue hover:bg-sky-700 shadow-xs transition cursor-pointer inline-flex items-center justify-center gap-1.5">
               <span>▶️</span>
               <span>대화 시작</span>
             </button>
             <button id="btn-rp-end" type="button" disabled
-              class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold text-fuchsia-800 bg-fuchsia-100 hover:bg-fuchsia-200 border border-fuchsia-200 transition cursor-pointer disabled:opacity-45 disabled:cursor-not-allowed flex items-center gap-1.5">
+              class="min-h-[44px] px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold text-slate-800 bg-slate-200/80 hover:bg-slate-200 border border-slate-300 transition cursor-pointer disabled:opacity-45 disabled:cursor-not-allowed inline-flex items-center justify-center gap-1.5">
               <span>🏁</span>
               <span>대화 종료 및 종합 피드백</span>
             </button>
@@ -1222,11 +1216,11 @@
       <!-- Conversation Timeline & Interactive Mic Bar -->
       <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
         <!-- Pinned Roleplay Mission Expressions Bar (from Brain Pattern Training) -->
-        <div id="rp-mission-bar" class="hidden border-b border-fuchsia-200 bg-fuchsia-50/85 px-4 py-3 space-y-2">
+        <div id="rp-mission-bar" class="hidden border-b border-indigo-200 bg-indigo-50/75 px-4 py-3 space-y-2">
           <div class="flex flex-wrap items-center justify-between gap-2">
-            <span class="text-xs font-extrabold text-fuchsia-900">🎯 오늘의 미션 표현 (대화에서 직접 써보세요!)</span>
+            <span class="text-xs font-extrabold text-indigo-950">🎯 오늘의 미션 표현 (대화에서 직접 써보세요!)</span>
             <button id="btn-rp-clear-mission" type="button"
-              class="text-[11px] font-semibold text-fuchsia-700 hover:underline cursor-pointer">미션 닫기</button>
+              class="text-[11px] font-semibold text-indigo-700 hover:underline cursor-pointer">미션 닫기</button>
           </div>
           <div id="rp-mission-chips" class="flex flex-wrap gap-2"></div>
         </div>
@@ -1240,12 +1234,12 @@
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div class="flex flex-wrap items-center gap-2.5">
               <button id="btn-rp-record" type="button" disabled
-                class="px-5 py-2.5 rounded-xl text-sm font-bold text-white bg-rose-600 hover:bg-rose-700 shadow-sm transition cursor-pointer disabled:opacity-45 disabled:cursor-not-allowed flex items-center gap-2">
+                class="min-h-[44px] px-5 py-2.5 rounded-xl text-sm font-bold text-white bg-rose-600 hover:bg-rose-700 shadow-sm transition cursor-pointer disabled:opacity-45 disabled:cursor-not-allowed flex items-center justify-center gap-2">
                 <span id="rp-record-dot" class="w-2.5 h-2.5 rounded-full bg-white/90"></span>
                 <span id="rp-record-btn-label">🎤 내 답변 녹음하기</span>
               </button>
               <button id="btn-rp-cancel-record" type="button"
-                class="hidden px-3 py-2 rounded-xl text-xs font-semibold border border-slate-300 bg-white hover:bg-slate-100 text-slate-700 transition cursor-pointer">
+                class="hidden min-h-[44px] px-3.5 py-2 rounded-xl text-xs font-semibold border border-slate-300 bg-white hover:bg-slate-100 text-slate-700 transition cursor-pointer">
                 녹음 취소
               </button>
               <span id="rp-record-timer" class="hidden px-2.5 py-1 rounded-lg bg-rose-50 border border-rose-200 text-xs font-extrabold text-rose-700 tabular-nums">00:00</span>
@@ -1257,9 +1251,9 @@
           <div class="flex flex-col sm:flex-row gap-2 pt-2 border-t border-slate-100">
             <input id="rp-text-input" type="text" disabled
               placeholder="마이크 사용이 어려울 때는 영어로 직접 입력해 보낼 수도 있습니다..."
-              class="flex-1 min-w-0 px-3 py-2 rounded-xl border border-slate-200 bg-slate-50 text-xs sm:text-sm focus:bg-white focus:ring-2 focus:ring-pte-blue outline-none disabled:opacity-50" />
+              class="flex-1 min-w-0 min-h-[44px] px-3 py-2 rounded-xl border border-slate-200 bg-slate-50 text-xs sm:text-sm focus:bg-white focus:ring-2 focus:ring-pte-blue outline-none disabled:opacity-50" />
             <button id="btn-rp-send-text" type="button" disabled
-              class="px-3.5 py-2 rounded-xl text-xs font-bold border border-slate-200 bg-slate-100 hover:bg-slate-200 text-slate-700 transition cursor-pointer disabled:opacity-45 disabled:cursor-not-allowed shrink-0">
+              class="min-h-[44px] px-3.5 py-2 rounded-xl text-xs font-bold border border-slate-200 bg-slate-100 hover:bg-slate-200 text-slate-700 transition cursor-pointer disabled:opacity-45 disabled:cursor-not-allowed shrink-0">
               텍스트로 답장 전송
             </button>
           </div>
@@ -1267,7 +1261,7 @@
       </div>
 
       <!-- End-of-Conversation Comprehensive Feedback Card -->
-      <div id="rp-summary-box" class="hidden bg-white rounded-2xl border border-fuchsia-200 shadow-sm p-5 sm:p-6 space-y-4">
+      <div id="rp-summary-box" class="hidden bg-white rounded-2xl border border-indigo-200 shadow-sm p-5 sm:p-6 space-y-4">
       </div>
     </section>
 
@@ -1280,9 +1274,6 @@
           <div class="min-w-0">
             <div class="flex flex-wrap items-center gap-2 mb-1">
               <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-rose-100 text-rose-800">YouTube Shadowing</span>
-              <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                📱 재생 중 마이크 차단 · iOS 이어폰 안전 모드
-              </span>
             </div>
             <h2 class="text-base sm:text-lg font-extrabold text-slate-900">🎬 유튜브 쉐도잉 (문장별 구간 반복 &amp; 따라 말하기)</h2>
             <p class="text-xs text-slate-500 mt-0.5">핵심 3~8초 문장 구간만 반복 청취하고 시작/종료 시간을 ±1초 미세 조정해 내 발음과 바로 비교하세요.</p>
@@ -1294,13 +1285,15 @@
         </div>
 
         <!-- Set Selector Row -->
-        <div class="flex flex-wrap items-center gap-2.5 pt-2 border-t border-slate-100 min-w-0">
-          <label for="yts-set-select" class="text-xs font-bold text-slate-600 shrink-0">저장된 세트:</label>
-          <select id="yts-set-select"
-            class="flex-1 min-w-0 max-w-full sm:max-w-md px-3 py-2 text-xs sm:text-sm rounded-xl border border-slate-200 bg-slate-50 font-semibold text-slate-800 focus:ring-2 focus:ring-pte-blue outline-none">
-          </select>
+        <div class="flex flex-wrap items-center gap-2 pt-2 border-t border-slate-100 min-w-0">
+          <div class="flex items-center gap-2 basis-full sm:basis-auto sm:flex-1 min-w-0">
+            <label for="yts-set-select" class="text-xs font-bold text-slate-600 shrink-0">저장된 세트:</label>
+            <select id="yts-set-select"
+              class="flex-1 w-full min-w-0 max-w-full sm:max-w-md min-h-[42px] px-3 py-2 text-xs sm:text-sm rounded-xl border border-slate-200 bg-slate-50 font-semibold text-slate-800 focus:ring-2 focus:ring-pte-blue outline-none">
+            </select>
+          </div>
           <button id="btn-yts-delete-set" type="button"
-            class="px-3 py-2 rounded-xl text-xs font-semibold border border-slate-200 bg-white hover:bg-rose-50 hover:text-rose-700 text-slate-600 transition cursor-pointer shrink-0">
+            class="min-h-[42px] px-3 py-2 rounded-xl text-xs font-semibold border border-slate-200 bg-white hover:bg-rose-50 hover:text-rose-700 text-slate-600 transition cursor-pointer shrink-0">
             선택 세트 삭제
           </button>
         </div>
@@ -1374,20 +1367,20 @@
             <div class="flex flex-wrap items-center justify-between gap-2 pt-1">
               <div class="flex flex-wrap items-center gap-2">
                 <button id="btn-yts-play" type="button"
-                  class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold text-white bg-pte-blue hover:bg-sky-700 shadow-xs transition cursor-pointer flex items-center gap-1.5">
+                  class="min-h-[44px] px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-white bg-pte-blue hover:bg-sky-700 shadow-xs transition cursor-pointer inline-flex items-center justify-center gap-1.5">
                   <span>▶️</span>
                   <span>구간 재생</span>
                 </button>
                 <button id="btn-yts-tts-play" type="button"
-                  class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:opacity-95 shadow-xs transition cursor-pointer flex items-center gap-1.5">
+                  class="min-h-[44px] px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:opacity-95 shadow-xs transition cursor-pointer inline-flex items-center justify-center gap-1.5">
                   <span>🔊 AI 성우로 바로 듣기(광고 0초)</span>
                 </button>
                 <button id="btn-yts-pause" type="button"
-                  class="px-3 py-2 rounded-xl text-xs font-semibold border border-slate-200 bg-white hover:bg-slate-100 text-slate-700 transition cursor-pointer">
+                  class="min-h-[44px] px-3.5 py-2 rounded-xl text-xs font-semibold border border-slate-200 bg-white hover:bg-slate-100 text-slate-700 transition cursor-pointer inline-flex items-center justify-center">
                   ⏸️ 정지
                 </button>
                 <button id="btn-yts-loop" type="button" aria-pressed="false"
-                  class="px-3 py-2 rounded-xl text-xs font-bold border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700 transition cursor-pointer">
+                  class="min-h-[44px] px-3.5 py-2 rounded-xl text-xs font-bold border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700 transition cursor-pointer inline-flex items-center justify-center">
                   🔁 구간 반복: OFF
                 </button>
               </div>
@@ -1456,22 +1449,22 @@
               <div id="yts-active-tip" class="rounded-xl border border-amber-200 bg-amber-50/80 px-3.5 py-2.5 text-xs text-amber-900 leading-relaxed"></div>
             </div>
 
-            <!-- Record Shadowing Response Bar (iOS safe) -->
+            <!-- Record Shadowing Response Bar -->
             <div class="pt-3 border-t border-slate-100 space-y-3">
               <div class="flex flex-wrap items-center justify-between gap-2.5">
                 <div class="flex flex-wrap items-center gap-2">
                   <button id="btn-yts-record" type="button"
-                    class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-white bg-rose-600 hover:bg-rose-700 shadow-xs transition cursor-pointer flex items-center gap-2">
+                    class="min-h-[44px] px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-white bg-rose-600 hover:bg-rose-700 shadow-xs transition cursor-pointer flex items-center justify-center gap-2">
                     <span id="yts-record-dot" class="w-2.5 h-2.5 rounded-full bg-white/90"></span>
                     <span id="yts-record-btn-label">🎤 이 문장 따라 말하기</span>
                   </button>
                   <button id="btn-yts-cancel-record" type="button"
-                    class="hidden px-3 py-2 rounded-xl text-xs font-semibold border border-slate-300 bg-white hover:bg-slate-100 text-slate-700 cursor-pointer">
+                    class="hidden min-h-[44px] px-3.5 py-2 rounded-xl text-xs font-semibold border border-slate-300 bg-white hover:bg-slate-100 text-slate-700 cursor-pointer">
                     녹음 취소
                   </button>
                   <span id="yts-record-timer" class="hidden px-2.5 py-1 rounded-lg bg-rose-50 border border-rose-200 text-xs font-extrabold text-rose-700 tabular-nums">00:00</span>
                 </div>
-                <p id="yts-record-status" class="text-xs text-slate-500">유튜브 재생 중에는 마이크가 닫혀 있습니다. 녹음 시에만 켜집니다.</p>
+                <p id="yts-record-status" class="text-xs text-slate-500">문장을 들은 뒤 따라 말하고 녹음해 보세요.</p>
               </div>
 
               <!-- Post-Recording Playback, Compare, AI Grade & Vocab Box -->
@@ -1483,11 +1476,11 @@
                 <audio id="yts-audio-playback" controls preload="metadata" class="w-full h-9 rounded-lg"></audio>
                 <div class="flex flex-wrap items-center gap-2">
                   <button id="btn-yts-compare" type="button"
-                    class="px-3.5 py-2 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-pte-blue to-teal-600 hover:opacity-95 shadow-xs transition cursor-pointer">
+                    class="min-h-[44px] px-4 py-2 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-pte-blue to-teal-600 hover:opacity-95 shadow-xs transition cursor-pointer inline-flex items-center justify-center">
                     🔄 유튜브 원어민 → 내 발음 비교 듣기
                   </button>
                   <button id="btn-yts-ai-grade" type="button"
-                    class="px-3.5 py-2 rounded-xl text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 shadow-xs transition cursor-pointer">
+                    class="min-h-[44px] px-4 py-2 rounded-xl text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 shadow-xs transition cursor-pointer inline-flex items-center justify-center">
                     ✨ AI 발음·유창성 채점
                   </button>
                   <button id="btn-yts-post-vocab" type="button"
@@ -1507,19 +1500,16 @@
     </section>
 
     <!-- ENGLISH BRAIN PATTERN TRAINING WORKSPACE -->
-    <section id="brain-pattern-workspace" class="hidden space-y-5">
+    <section id="brain-pattern-workspace" class="hidden space-y-4">
 
       <!-- Top Bar: Set Selector, YouTube Source & AI Note/Video Importer -->
-      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-6 space-y-4 min-w-0">
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-5 space-y-3.5 min-w-0">
         <div class="flex flex-wrap items-start justify-between gap-3">
           <div class="min-w-0">
             <div class="flex flex-wrap items-center gap-2 mb-1">
               <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-100 text-indigo-800">Brain Pattern Drill</span>
-              <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                📱 iOS 이어폰 안전 모드 · 녹음 시에만 마이크 활성화
-              </span>
             </div>
-            <h2 class="text-base sm:text-lg font-extrabold text-slate-900">🧠 영어 뇌 패턴 훈련 (직역 탈출 · 1초 인출 · 실전 응용)</h2>
+            <h2 class="text-base sm:text-lg font-extrabold text-slate-900">🧠 영어 뇌 패턴 훈련</h2>
             <div class="flex items-center gap-2 mt-1 min-w-0">
               <div id="bp-wave-bars" class="hidden items-end gap-0.5 h-4 shrink-0" aria-hidden="true">
                 <span class="sound-wave-bar w-1 h-3 bg-indigo-500 rounded-full" style="animation-delay:0ms"></span>
@@ -1531,23 +1521,25 @@
           </div>
 
           <button id="btn-bp-open-generator" type="button"
-            class="px-3.5 py-2 rounded-xl text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 shadow-xs transition cursor-pointer shrink-0">
+            class="min-h-[44px] px-3.5 py-2 rounded-xl text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 shadow-xs transition cursor-pointer shrink-0">
             + 새 강의/노트 추가
           </button>
         </div>
 
         <!-- Set Selector & YouTube Source Row -->
-        <div class="flex flex-wrap items-center gap-2.5 pt-2 border-t border-slate-100 min-w-0">
-          <label for="bp-set-select" class="text-xs font-bold text-slate-600 shrink-0">학습 세트:</label>
-          <select id="bp-set-select"
-            class="flex-1 min-w-0 max-w-full sm:max-w-md px-3 py-2 text-xs sm:text-sm rounded-xl border border-slate-200 bg-slate-50 font-semibold text-slate-800 focus:ring-2 focus:ring-pte-blue outline-none">
-          </select>
+        <div class="flex flex-wrap items-center gap-2 pt-2 border-t border-slate-100 min-w-0">
+          <div class="flex items-center gap-2 basis-full sm:basis-auto sm:flex-1 min-w-0">
+            <label for="bp-set-select" class="text-xs font-bold text-slate-600 shrink-0">학습 세트:</label>
+            <select id="bp-set-select"
+              class="flex-1 w-full min-w-0 max-w-full sm:max-w-md min-h-[42px] px-3 py-2 text-xs sm:text-sm rounded-xl border border-slate-200 bg-slate-50 font-semibold text-slate-800 focus:ring-2 focus:ring-pte-blue outline-none">
+            </select>
+          </div>
           <a id="bp-yt-link" href="https://youtu.be/nyfJHf_skAU" target="_blank" rel="noopener noreferrer"
-            class="px-3 py-2 rounded-xl text-xs font-bold border border-rose-200 bg-rose-50 hover:bg-rose-100 text-rose-700 transition shrink-0">
+            class="min-h-[42px] px-3 py-2 rounded-xl text-xs font-bold border border-rose-200 bg-rose-50 hover:bg-rose-100 text-rose-700 transition inline-flex items-center shrink-0">
             📺 원본 영상 보기
           </a>
           <button id="btn-bp-delete-set" type="button"
-            class="px-3 py-2 rounded-xl text-xs font-semibold border border-slate-200 bg-white hover:bg-rose-50 hover:text-rose-700 text-slate-600 transition cursor-pointer shrink-0">
+            class="min-h-[42px] px-3 py-2 rounded-xl text-xs font-semibold border border-slate-200 bg-white hover:bg-rose-50 hover:text-rose-700 text-slate-600 transition cursor-pointer shrink-0">
             세트 삭제
           </button>
         </div>
@@ -1573,7 +1565,7 @@
             <div class="flex flex-wrap items-center justify-between gap-2">
               <p id="bp-gen-status" class="text-xs font-medium text-indigo-800"></p>
               <button id="btn-bp-generate-set" type="button"
-                class="px-4 py-2 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-indigo-600 to-pte-blue hover:opacity-95 shadow-xs transition cursor-pointer shrink-0">
+                class="min-h-[44px] px-4 py-2 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-indigo-600 to-pte-blue hover:opacity-95 shadow-xs transition cursor-pointer shrink-0">
                 ✨ AI 패턴 훈련 세트 생성 및 저장
               </button>
             </div>
@@ -1581,69 +1573,103 @@
         </div>
       </div>
 
-      <!-- Section A: Literal Konglish vs Native Nuance Comparison (Collapsible) -->
-      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-6 space-y-4 min-w-0">
-        <div class="flex flex-wrap items-center justify-between gap-2">
-          <div>
-            <span class="text-[11px] font-bold uppercase tracking-wider text-rose-600">Step A · Nuance Check</span>
-            <h3 class="text-sm sm:text-base font-extrabold text-slate-900">💡 직역 vs 원어민 뉘앙스 비교</h3>
-          </div>
-          <button id="btn-bp-toggle-nuance" type="button" aria-expanded="true"
-            class="px-3 py-1.5 rounded-lg text-xs font-bold border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700 transition cursor-pointer">
-            뉘앙스 비교 접기 ▲
-          </button>
-        </div>
-        <div id="bp-nuance-list" class="grid grid-cols-1 md:grid-cols-2 gap-3 min-w-0"></div>
+      <!-- 3-Step Segmented Flow Navigation -->
+      <div class="bg-slate-200/75 p-1.5 rounded-2xl border border-slate-200 grid grid-cols-3 gap-1.5" role="tablist" aria-label="영어 뇌 패턴 훈련 단계">
+        <button id="btn-bp-step-1" type="button" role="tab" aria-selected="true" data-bp-step="1"
+          class="min-h-[44px] px-2 sm:px-3 py-2 rounded-xl text-[11px] sm:text-xs font-bold bg-white text-pte-navy shadow-xs transition cursor-pointer text-center leading-tight">
+          1. 뉘앙스 비교
+        </button>
+        <button id="btn-bp-step-2" type="button" role="tab" aria-selected="false" data-bp-step="2"
+          class="min-h-[44px] px-2 sm:px-3 py-2 rounded-xl text-[11px] sm:text-xs font-semibold text-slate-600 hover:text-slate-900 transition cursor-pointer text-center leading-tight">
+          2. 1초 인출 훈련
+        </button>
+        <button id="btn-bp-step-3" type="button" role="tab" aria-selected="false" data-bp-step="3"
+          class="min-h-[44px] px-2 sm:px-3 py-2 rounded-xl text-[11px] sm:text-xs font-semibold text-slate-600 hover:text-slate-900 transition cursor-pointer text-center leading-tight">
+          3. 내 문장 &amp; 롤플레이
+        </button>
       </div>
 
-      <!-- Section B: 1-Second KR->EN Retrieval & 3x Shadowing -->
-      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-6 space-y-4 min-w-0">
-        <div class="flex flex-wrap items-center justify-between gap-3">
-          <div>
-            <span class="text-[11px] font-bold uppercase tracking-wider text-pte-blue">Step B · Instant Retrieval &amp; Shadowing</span>
-            <div class="flex flex-wrap items-center gap-2">
-              <h3 class="text-sm sm:text-base font-extrabold text-slate-900">🗣️ 1초 한영 인출 &amp; 3회 쉐도잉</h3>
-              <span id="bp-progress-badge" class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-sky-100 text-pte-blue">0 / 0 완료</span>
+      <!-- STAGE 1: Literal Konglish vs Native Nuance Comparison -->
+      <div id="bp-stage-1" class="space-y-4">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-6 space-y-4 min-w-0">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <span class="text-[11px] font-bold uppercase tracking-wider text-indigo-700">Step 1 · Nuance Check</span>
+              <h3 class="text-sm sm:text-base font-extrabold text-slate-900">💡 직역 vs 원어민 뉘앙스 비교</h3>
             </div>
+            <button id="btn-bp-toggle-nuance" type="button" aria-expanded="true"
+              class="min-h-[40px] px-3 py-1.5 rounded-xl text-xs font-bold border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700 transition cursor-pointer">
+              뉘앙스 비교 접기 ▲
+            </button>
           </div>
-          <button id="btn-bp-blind-toggle" type="button" aria-pressed="false"
-            class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold border border-indigo-200 bg-indigo-50 hover:bg-indigo-100 text-indigo-800 shadow-2xs transition cursor-pointer shrink-0">
-            👁️ 영어 가리기 (1초 인출 모드): OFF
-          </button>
+          <div id="bp-nuance-list" class="grid grid-cols-1 md:grid-cols-2 gap-3 min-w-0"></div>
+          <div class="pt-2 border-t border-slate-100 flex justify-end">
+            <button type="button" data-bp-goto-step="2"
+              class="min-h-[44px] w-full sm:w-auto px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-white bg-pte-navy hover:bg-slate-800 shadow-xs transition cursor-pointer">
+              다음 단계: 2. 1초 인출 훈련 →
+            </button>
+          </div>
         </div>
-
-        <div id="bp-item-list" class="space-y-3.5 min-w-0"></div>
       </div>
 
-      <!-- Section C: Make Your Own Personal Sentence Practice -->
-      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-6 space-y-4 min-w-0">
-        <div>
-          <span class="text-[11px] font-bold uppercase tracking-wider text-teal-700">Step C · Personalization (NZ Context)</span>
-          <h3 class="text-sm sm:text-base font-extrabold text-slate-900">✍️ 나만의 문장 응용하기 (Make Your Own)</h3>
-          <p class="text-xs text-slate-500 mt-0.5">핵심 패턴으로 내 상황(뉴질랜드 일상·유아교육·직장)을 직접 말하거나 써보고 AI 교정을 받아보세요.</p>
+      <!-- STAGE 2: 1-Second KR->EN Retrieval & 3x Shadowing -->
+      <div id="bp-stage-2" class="hidden space-y-4">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-6 space-y-4 min-w-0">
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <span class="text-[11px] font-bold uppercase tracking-wider text-pte-blue">Step 2 · Instant Retrieval &amp; Shadowing</span>
+              <div class="flex flex-wrap items-center gap-2">
+                <h3 class="text-sm sm:text-base font-extrabold text-slate-900">🗣️ 1초 한영 인출 &amp; 3회 쉐도잉</h3>
+                <span id="bp-progress-badge" class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-sky-100 text-pte-blue">0 / 0 완료</span>
+              </div>
+            </div>
+            <button id="btn-bp-blind-toggle" type="button" aria-pressed="false"
+              class="min-h-[44px] px-4 py-2 rounded-xl text-xs sm:text-sm font-bold border border-indigo-200 bg-indigo-50 hover:bg-indigo-100 text-indigo-800 shadow-2xs transition cursor-pointer shrink-0">
+              👁️ 영어 가리기 (1초 인출 모드): OFF
+            </button>
+          </div>
+
+          <div id="bp-item-list" class="space-y-3.5 min-w-0"></div>
+
+          <div class="pt-2 border-t border-slate-100 flex justify-end">
+            <button type="button" data-bp-goto-step="3"
+              class="min-h-[44px] w-full sm:w-auto px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-white bg-pte-navy hover:bg-slate-800 shadow-xs transition cursor-pointer">
+              다음 단계: 3. 내 문장 &amp; 롤플레이 →
+            </button>
+          </div>
         </div>
-        <div id="bp-myo-list" class="space-y-3 min-w-0"></div>
       </div>
 
-      <!-- Section D: Launch Roleplay with Mission Expressions -->
-      <div class="bg-gradient-to-br from-fuchsia-50 to-indigo-50 rounded-2xl border border-fuchsia-200 shadow-sm p-4 sm:p-6 space-y-4 min-w-0">
-        <div class="flex flex-wrap items-start justify-between gap-3">
+      <!-- STAGE 3: Make Your Own + Launch Roleplay with Mission Expressions -->
+      <div id="bp-stage-3" class="hidden space-y-5">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-6 space-y-4 min-w-0">
           <div>
-            <span class="text-[11px] font-bold uppercase tracking-wider text-fuchsia-700">Step D · Real-Life Transfer</span>
-            <h3 class="text-sm sm:text-base font-extrabold text-slate-900">🎭 실전 롤플레이 미션 연동</h3>
-            <p class="text-xs text-slate-600 mt-0.5">오늘 익힌 표현 중 <strong>2~3개</strong>를 체크하고 AI 롤플레이 대화 속에서 자연스럽게 써먹어 보세요!</p>
+            <span class="text-[11px] font-bold uppercase tracking-wider text-teal-700">Step 3-A · Personalization (NZ Context)</span>
+            <h3 class="text-sm sm:text-base font-extrabold text-slate-900">✍️ 나만의 문장 응용하기 (Make Your Own)</h3>
+            <p class="text-xs text-slate-500 mt-0.5">핵심 패턴으로 내 상황(뉴질랜드 일상·유아교육·직장)을 직접 말하거나 써보고 AI 교정을 받아보세요.</p>
           </div>
-          <span id="bp-mission-count-badge" class="px-2.5 py-1 rounded-full text-xs font-bold bg-white border border-fuchsia-200 text-fuchsia-800">0개 선택됨</span>
+          <div id="bp-myo-list" class="space-y-3 min-w-0"></div>
         </div>
 
-        <div id="bp-mission-list" class="grid grid-cols-1 sm:grid-cols-2 gap-2 min-w-0"></div>
+        <div class="bg-gradient-to-br from-slate-50 via-indigo-50/60 to-teal-50/50 rounded-2xl border border-indigo-200 shadow-sm p-4 sm:p-6 space-y-4 min-w-0">
+          <div class="flex flex-wrap items-start justify-between gap-3">
+            <div>
+              <span class="text-[11px] font-bold uppercase tracking-wider text-indigo-700">Step 3-B · Real-Life Transfer</span>
+              <h3 class="text-sm sm:text-base font-extrabold text-slate-900">🎭 실전 롤플레이 미션 연동</h3>
+              <p class="text-xs text-slate-600 mt-0.5">오늘 익힌 표현 중 <strong>2~3개</strong>를 체크하고 AI 롤플레이 대화 속에서 자연스럽게 써먹어 보세요!</p>
+            </div>
+            <span id="bp-mission-count-badge" class="px-2.5 py-1 rounded-full text-xs font-bold bg-white border border-indigo-200 text-indigo-800">0개 선택됨</span>
+          </div>
 
-        <div class="flex flex-wrap items-center justify-between gap-2 pt-1">
-          <p id="bp-mission-status" class="text-xs font-medium text-fuchsia-900"></p>
-          <button id="btn-bp-start-mission" type="button"
-            class="px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-fuchsia-600 to-indigo-600 hover:opacity-95 shadow-sm transition cursor-pointer shrink-0">
-            🎭 이 표현들로 롤플레이 시작
-          </button>
+          <div id="bp-mission-list" class="grid grid-cols-1 sm:grid-cols-2 gap-2 min-w-0"></div>
+
+          <div class="flex flex-wrap items-center justify-between gap-2 pt-1">
+            <p id="bp-mission-status" class="text-xs font-medium text-indigo-900"></p>
+            <button id="btn-bp-start-mission" type="button"
+              class="min-h-[44px] w-full sm:w-auto px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-white bg-pte-navy hover:bg-slate-800 shadow-sm transition cursor-pointer shrink-0">
+              🎭 이 표현들로 롤플레이 시작
+            </button>
+          </div>
         </div>
       </div>
     </section>
@@ -2031,8 +2057,8 @@
 
   <footer class="bg-white border-t border-slate-200 mt-auto">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-slate-500">
-      <span>NZ PTE Academic Trainer · RA (30) · DI (30+AI) · RS (100+AI) · RL (15+YT) · Impromptu (20) · Writing (20)</span>
-      <span>API 키·녹음·단어장·연습 기록은 사용자 브라우저에만 저장됩니다.</span>
+      <span>English Lab · NZ 실전 영어 &amp; PTE Academic 트레이너</span>
+      <span>학습 기록과 개인 설정은 이 기기에만 안전하게 저장됩니다.</span>
     </div>
   </footer>
 
@@ -2452,7 +2478,7 @@
         {
           id: 'custom',
           badge: '자유 주제',
-          badgeCls: 'bg-fuchsia-100 text-fuchsia-800',
+          badgeCls: 'bg-indigo-100 text-indigo-800',
           title: '(6) 자유 주제 (직접 상황 입력)',
           partnerName: 'AI Conversation Partner',
           partnerVoiceHint: 'Adaptable New Zealand English conversation partner matching user custom scenario',
@@ -2755,6 +2781,7 @@
         })(),
         bpBlindMode: false,
         bpNuanceOpen: true,
+        bpActiveStep: 1,
         bpRevealedItems: {},
         bpItemFeedbackMap: {},
         bpItemRecordingIdx: null,
@@ -3080,6 +3107,12 @@
         btnRpClearMission: document.getElementById('btn-rp-clear-mission'),
 
         // Brain Pattern Training Elements
+        btnBpStep1: document.getElementById('btn-bp-step-1'),
+        btnBpStep2: document.getElementById('btn-bp-step-2'),
+        btnBpStep3: document.getElementById('btn-bp-step-3'),
+        bpStage1: document.getElementById('bp-stage-1'),
+        bpStage2: document.getElementById('bp-stage-2'),
+        bpStage3: document.getElementById('bp-stage-3'),
         bpWaveBars: document.getElementById('bp-wave-bars'),
         bpTtsStatus: document.getElementById('bp-tts-status'),
         btnBpOpenGenerator: document.getElementById('btn-bp-open-generator'),
@@ -3590,9 +3623,9 @@
             statusLabel: el.rpAudioStatus,
             doneText: '상대방 발화 재생 완료 · 🎤 내 답변 녹음하기를 눌러 말해보세요',
             browserPrefix: '🔊 상대방 음성 재생 중',
-            browserSuffix: ' (마이크 차단됨)',
+            browserSuffix: '',
             geminiPrefix: '🔊 Gemini AI 상대방 음성 재생 중',
-            geminiSuffix: ' (마이크 차단됨)'
+            geminiSuffix: ''
           };
         }
         if (targetMode === 'weakness-drill') {
@@ -3962,8 +3995,8 @@
         const micLive = Boolean(state.micStream && state.micStream.active);
         if (state.micStatus === 'ready') {
           el.headerMicDot.className = 'w-2 h-2 rounded-full bg-emerald-400';
-          el.headerMicLabel.textContent = micLive ? '마이크 녹음 활성화' : '마이크 준비됨';
-          el.micStatusDetail.textContent = message || (micLive ? '마이크 입력 활성 중' : '대기 중 (녹음 시에만 활성화 · 이어폰 보호)');
+          el.headerMicLabel.textContent = micLive ? '마이크 켜짐' : '마이크 준비';
+          el.micStatusDetail.textContent = message || (micLive ? '마이크 입력 활성 중' : '녹음 대기 중');
           el.micStatusDetail.className = 'text-emerald-600 font-medium';
         } else if (state.micStatus === 'denied' || state.micStatus === 'unsupported') {
           el.headerMicDot.className = 'w-2 h-2 rounded-full bg-rose-400';
@@ -3972,8 +4005,8 @@
           el.micStatusDetail.className = 'text-amber-600 font-medium';
         } else {
           el.headerMicDot.className = 'w-2 h-2 rounded-full bg-amber-400';
-          el.headerMicLabel.textContent = '마이크 연결 확인';
-          el.micStatusDetail.textContent = message || '대기 중 (녹음 시 자동 연결 · 이어폰 음질 보호)';
+          el.headerMicLabel.textContent = '마이크';
+          el.micStatusDetail.textContent = message || '대기 중';
           el.micStatusDetail.className = 'text-slate-500';
         }
 
@@ -4003,7 +4036,7 @@
           el.micLevelBar.style.width = '0%';
         }
         if (state.micStatus === 'ready') {
-          updateMicUI('대기 중 (녹음 종료 즉시 마이크 해제 · 이어폰 보호)');
+          updateMicUI('대기 중');
         }
       }
 
@@ -4656,15 +4689,15 @@
             hintText = '다음 할 일: 뉴질랜드 상황을 고르고 [▶️ 대화 시작]을 누르세요';
           }
         } else if (state.mode === 'brain-pattern') {
+          activeStep = state.bpActiveStep || 1;
           if (state.bpItemRecordingIdx !== null || state.bpMyoVoiceIdx !== null) {
-            activeStep = 2;
             hintText = '녹음 중: 한국어 상황을 영어로 직접 말한 뒤 정지 버튼을 누르세요';
-          } else if (Object.keys(state.bpItemFeedbackMap || {}).length > 0) {
-            activeStep = 3;
-            hintText = '피드백 확인 완료! 나만의 문장 응용하기와 롤플레이 미션으로 이어가세요';
+          } else if (activeStep === 3) {
+            hintText = '3단계: 나만의 문장 응용 및 롤플레이 미션 표현으로 실전에 연결하세요';
+          } else if (activeStep === 2) {
+            hintText = '2단계: [👁️ 영어 가리기]를 켜고 1초 만에 입으로 인출해 보세요';
           } else {
-            activeStep = 1;
-            hintText = '다음 할 일: 직역 비교 확인 후 [👁️ 영어 가리기]를 켜고 1초 만에 인출해 보세요';
+            hintText = '1단계: 직역 vs 원어민 뉘앙스를 비교한 뒤 2단계로 넘어가세요';
           }
         } else if (state.mode === 'writing') {
           const hasResult = el.writingAiResult && !el.writingAiResult.classList.contains('hidden');
@@ -4713,8 +4746,8 @@
           const active = activeCategory === cat;
           btn.setAttribute('aria-pressed', String(active));
           btn.className = active
-            ? 'shrink-0 px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-white text-pte-navy shadow-xs transition cursor-pointer flex items-center gap-1.5'
-            : 'shrink-0 px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-200 hover:bg-white/10 transition cursor-pointer flex items-center gap-1.5';
+            ? 'shrink-0 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-white text-pte-navy shadow-xs transition cursor-pointer flex items-center gap-1.5'
+            : 'shrink-0 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-200 hover:bg-white/10 transition cursor-pointer flex items-center gap-1.5';
         });
 
         const tabs = [
@@ -4737,8 +4770,8 @@
           btn.setAttribute('aria-selected', String(active));
           const visibilityCls = inGroup ? 'flex' : 'hidden';
           btn.className = active
-            ? `tab-btn shrink-0 relative py-2.5 px-3 text-sm font-semibold border-b-2 border-pte-blue text-pte-blue ${visibilityCls} items-center gap-1.5 transition cursor-pointer`
-            : `tab-btn shrink-0 relative py-2.5 px-3 text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 ${visibilityCls} items-center gap-1.5 transition cursor-pointer`;
+            ? `tab-btn shrink-0 relative py-2 px-3 text-xs sm:text-sm font-semibold border-b-2 border-pte-blue text-pte-blue ${visibilityCls} items-center gap-1.5 transition cursor-pointer`
+            : `tab-btn shrink-0 relative py-2 px-3 text-xs sm:text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 ${visibilityCls} items-center gap-1.5 transition cursor-pointer`;
 
           const badge = btn.querySelector('span:nth-child(2)');
           if (badge) {
@@ -5573,8 +5606,8 @@
         }
         el.writingTextarea.value = saved;
         el.writingSaveStatus.textContent = saved
-          ? '저장된 답안 불러옴 (localStorage)'
-          : '자동 저장 대기 (localStorage)';
+          ? '저장된 답안 불러옴'
+          : '자동 저장 대기';
 
         validateAndUpdateWritingStats();
       }
@@ -5911,9 +5944,9 @@
         if (!q) return;
         try {
           localStorage.setItem(getWritingStorageKey(q.id), el.writingTextarea.value);
-          el.writingSaveStatus.textContent = '자동 저장됨 (localStorage)';
+          el.writingSaveStatus.textContent = '자동 저장됨';
         } catch (e) {
-          el.writingSaveStatus.textContent = '저장 실패 (localStorage 제한)';
+          el.writingSaveStatus.textContent = '저장 공간 부족';
         }
         validateAndUpdateWritingStats();
       });
@@ -5978,8 +6011,8 @@
             label: '실전 AI 롤플레이 (NZ 회화)',
             short: 'RP',
             filterGroup: 'roleplay',
-            badgeCls: 'bg-fuchsia-100 text-fuchsia-800',
-            barCls: 'bg-fuchsia-500',
+            badgeCls: 'bg-indigo-100 text-indigo-800',
+            barCls: 'bg-indigo-600',
             getList: () => []
           };
         }
@@ -7389,7 +7422,7 @@
           updateDiBankSummaryUI();
           showInlineStatus(
             el.diAiGenStatus,
-            `✅ 새 차트 ${formatted.length}개(DI-${startNumber}~DI-${startNumber + formatted.length - 1})가 localStorage에 추가되었습니다!`,
+            `✅ 새 차트 ${formatted.length}개(DI-${startNumber}~DI-${startNumber + formatted.length - 1})가 추가되었습니다!`,
             'success'
           );
           if (state.mode === 'describe-image') {
@@ -7465,7 +7498,7 @@
           updateRsBankSummaryUI();
           showInlineStatus(
             el.rsAiGenStatus,
-            `✅ 새 문장 ${formatted.length}개(RS-${startNumber}~RS-${startNumber + formatted.length - 1})가 localStorage에 추가되었습니다!`,
+            `✅ 새 문장 ${formatted.length}개(RS-${startNumber}~RS-${startNumber + formatted.length - 1})가 추가되었습니다!`,
             'success'
           );
           if (state.mode === 'repeat-sentence') {
@@ -8010,13 +8043,13 @@
         el.btnRpRecord.disabled = !canRespond && !isRec;
 
         if (isRec) {
-          el.btnRpRecord.className = 'px-5 py-2.5 rounded-xl text-sm font-bold text-white bg-slate-900 hover:bg-slate-800 shadow-sm transition cursor-pointer flex items-center gap-2 ring-2 ring-rose-400';
+          el.btnRpRecord.className = 'min-h-[44px] px-5 py-2.5 rounded-xl text-sm font-bold text-white bg-slate-900 hover:bg-slate-800 shadow-sm transition cursor-pointer flex items-center justify-center gap-2 ring-2 ring-rose-400';
           el.rpRecordDot.className = 'w-2.5 h-2.5 rounded-full bg-rose-500 animate-ping';
           el.rpRecordBtnLabel.textContent = '⏹️ 녹음 완료 및 AI에게 전송';
           el.btnRpCancelRecord.classList.remove('hidden');
           el.rpRecordTimer.classList.remove('hidden');
         } else {
-          el.btnRpRecord.className = 'px-5 py-2.5 rounded-xl text-sm font-bold text-white bg-rose-600 hover:bg-rose-700 shadow-sm transition cursor-pointer disabled:opacity-45 disabled:cursor-not-allowed flex items-center gap-2';
+          el.btnRpRecord.className = 'min-h-[44px] px-5 py-2.5 rounded-xl text-sm font-bold text-white bg-rose-600 hover:bg-rose-700 shadow-sm transition cursor-pointer disabled:opacity-45 disabled:cursor-not-allowed flex items-center justify-center gap-2';
           el.rpRecordDot.className = 'w-2.5 h-2.5 rounded-full bg-white/90';
           el.rpRecordBtnLabel.textContent = '🎤 내 답변 녹음하기';
           el.btnRpCancelRecord.classList.add('hidden');
@@ -8044,12 +8077,12 @@
             <button type="button" data-rp-preset="${escapeHtml(p.id)}"
               class="text-left rounded-xl border p-3 transition cursor-pointer min-w-0 ${
                 active
-                  ? 'border-fuchsia-400 bg-fuchsia-50/70 ring-1 ring-fuchsia-300 shadow-xs'
+                  ? 'border-indigo-400 bg-indigo-50/70 ring-1 ring-indigo-300 shadow-xs'
                   : 'border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50'
               }">
               <div class="flex items-center justify-between gap-2 mb-1">
                 <span class="px-2 py-0.5 rounded-md text-[10px] font-bold ${p.badgeCls}">${escapeHtml(p.badge)}</span>
-                ${active ? '<span class="text-[11px] font-bold text-fuchsia-700">선택됨 ✓</span>' : ''}
+                ${active ? '<span class="text-[11px] font-bold text-indigo-700">선택됨 ✓</span>' : ''}
               </div>
               <p class="text-xs sm:text-sm font-bold text-slate-900 leading-snug">${escapeHtml(p.title)}</p>
               <p class="text-[11px] text-slate-500 truncate mt-0.5">${escapeHtml(p.partnerName)}</p>
@@ -8081,7 +8114,7 @@
               <p class="text-sm font-bold text-slate-800">${escapeHtml(preset.title)} 준비 완료</p>
               <p class="text-xs text-slate-500 leading-relaxed">
                 위 <strong>▶️ 대화 시작</strong> 버튼을 누르면 상대방(<strong>${escapeHtml(preset.partnerName)}</strong>)이 첫 질문을 음성으로 건넵니다.<br />
-                음성 재생 중에는 마이크가 차단되어 블루투스/아이폰 이어폰 음질이 유지됩니다.
+                마이크로 직접 말하거나 아래 입력창에 영어로 입력해 대화를 이어갈 수 있습니다.
               </p>
             </div>
           `;
@@ -8485,8 +8518,8 @@
         setRoleplayRecordingUI(false, '종합 회화 피드백을 생성 중입니다...');
         el.rpSummaryBox.classList.remove('hidden');
         el.rpSummaryBox.innerHTML = `
-          <div class="flex items-center gap-3 text-fuchsia-800 py-2">
-            <span class="w-5 h-5 rounded-full border-2 border-fuchsia-200 border-t-fuchsia-600 animate-spin shrink-0"></span>
+          <div class="flex items-center gap-3 text-indigo-800 py-2">
+            <span class="w-5 h-5 rounded-full border-2 border-indigo-200 border-t-indigo-600 animate-spin shrink-0"></span>
             <p class="text-sm font-bold">대화 내용을 바탕으로 종합 피드백 리포트를 작성 중입니다...</p>
           </div>
         `;
@@ -8540,19 +8573,19 @@
           state.rpBusy = false;
           state.rpActive = false;
           el.rpStatusBadge.textContent = '종료 및 피드백 완료';
-          el.rpStatusBadge.className = 'px-2 py-0.5 rounded-md text-[11px] font-bold bg-fuchsia-100 text-fuchsia-800';
+          el.rpStatusBadge.className = 'px-2 py-0.5 rounded-md text-[11px] font-bold bg-indigo-100 text-indigo-800';
           if (el.rpAudioStatus) {
             el.rpAudioStatus.textContent = '대화가 종료되고 종합 피드백 리포트가 생성되었습니다.';
           }
           setRoleplayRecordingUI(false, '대화가 종료되었습니다. 다시 연습하려면 ▶️ 대화 시작을 누르세요.');
 
           el.rpSummaryBox.innerHTML = `
-            <div class="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-fuchsia-100">
+            <div class="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-indigo-100">
               <div>
-                <span class="text-xs font-bold uppercase tracking-wider text-fuchsia-700">Roleplay Summary</span>
+                <span class="text-xs font-bold uppercase tracking-wider text-indigo-700">Roleplay Summary</span>
                 <h3 class="text-base font-extrabold text-slate-900">🏁 종합 회화 피드백 리포트</h3>
               </div>
-              <div class="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-fuchsia-600 to-indigo-600 text-white text-center shadow-xs">
+              <div class="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-pte-navy to-indigo-600 text-white text-center shadow-xs">
                 <span class="block text-[10px] opacity-85">회화 점수</span>
                 <span class="text-xl font-extrabold tabular-nums">${score}<span class="text-xs font-normal opacity-80">/90</span></span>
               </div>
@@ -9199,7 +9232,7 @@
                   </span>
                 </div>
                 <button type="button" data-yts-tts="${i}"
-                  class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 transition cursor-pointer shrink-0">
+                  class="min-h-[34px] px-2.5 py-1 rounded-lg text-[11px] font-bold bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 transition cursor-pointer shrink-0">
                   🔊 AI 성우
                 </button>
               </div>
@@ -9259,7 +9292,7 @@
           el.ytsAiResult.innerHTML = '';
         }
         if (el.ytsRecordStatus) {
-          el.ytsRecordStatus.textContent = '유튜브 재생 중에는 마이크가 닫혀 있습니다. 녹음 시에만 켜집니다.';
+          el.ytsRecordStatus.textContent = '문장을 들은 뒤 따라 말하고 녹음해 보세요.';
         }
       }
 
@@ -9470,13 +9503,13 @@
         state.ytsIsRecording = Boolean(isRec);
         if (!el.btnYtsRecord) return;
         if (isRec) {
-          el.btnYtsRecord.className = 'px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-white bg-slate-900 hover:bg-slate-800 shadow-xs transition cursor-pointer flex items-center gap-2 ring-2 ring-rose-400';
+          el.btnYtsRecord.className = 'min-h-[44px] px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-white bg-slate-900 hover:bg-slate-800 shadow-xs transition cursor-pointer flex items-center justify-center gap-2 ring-2 ring-rose-400';
           el.ytsRecordDot.className = 'w-2.5 h-2.5 rounded-full bg-rose-500 animate-ping';
           el.ytsRecordBtnLabel.textContent = '⏹️ 녹음 완료';
           el.btnYtsCancelRecord.classList.remove('hidden');
           el.ytsRecordTimer.classList.remove('hidden');
         } else {
-          el.btnYtsRecord.className = 'px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-white bg-rose-600 hover:bg-rose-700 shadow-xs transition cursor-pointer flex items-center gap-2';
+          el.btnYtsRecord.className = 'min-h-[44px] px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-white bg-rose-600 hover:bg-rose-700 shadow-xs transition cursor-pointer flex items-center justify-center gap-2';
           el.ytsRecordDot.className = 'w-2.5 h-2.5 rounded-full bg-white/90';
           el.ytsRecordBtnLabel.textContent = '🎤 이 문장 따라 말하기';
           el.btnYtsCancelRecord.classList.add('hidden');
@@ -9569,7 +9602,7 @@
             }
             if (el.ytsPlaybackBox) el.ytsPlaybackBox.classList.remove('hidden');
             if (el.ytsRecordStatus) {
-              el.ytsRecordStatus.textContent = '녹음 완료 (마이크 즉시 해제됨) · 비교 듣기 또는 AI 채점을 실행하세요.';
+              el.ytsRecordStatus.textContent = '녹음 완료 · 비교 듣기 또는 AI 채점을 실행하세요.';
             }
             renderStudyStepper();
           };
@@ -10498,7 +10531,7 @@
           <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border ${
             m.completed
               ? 'bg-emerald-100 text-emerald-800 border-emerald-300'
-              : 'bg-white text-fuchsia-900 border-fuchsia-300'
+              : 'bg-white text-indigo-900 border-indigo-300'
           }" title="${escapeHtml(m.en || '')}">
             <span>${m.completed ? '✓' : '🎯'}</span>
             <span>${escapeHtml(m.pattern)}</span>
@@ -10583,7 +10616,7 @@
             <div class="flex flex-wrap items-center justify-between gap-2">
               <span class="px-2 py-0.5 rounded-md font-bold bg-rose-100 text-rose-800">❌ 직역 / 콩글리시</span>
               <button type="button" data-bp-speak-nuance="${idx}"
-                class="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-white hover:bg-sky-50 text-pte-blue border border-sky-200 transition cursor-pointer">
+                class="min-h-[44px] px-3.5 py-2 rounded-xl text-xs font-bold bg-white hover:bg-sky-50 text-pte-blue border border-sky-200 transition cursor-pointer inline-flex items-center justify-center">
                 🔊 비교 듣기
               </button>
             </div>
@@ -10605,10 +10638,10 @@
           el.btnBpBlindToggle.setAttribute('aria-pressed', String(state.bpBlindMode));
           if (state.bpBlindMode) {
             el.btnBpBlindToggle.textContent = '👁️ 영어 가리기 (1초 인출 모드): ON';
-            el.btnBpBlindToggle.className = 'px-4 py-2 rounded-xl text-xs sm:text-sm font-bold border border-indigo-700 bg-indigo-600 text-white shadow-xs transition cursor-pointer shrink-0';
+            el.btnBpBlindToggle.className = 'min-h-[44px] px-4 py-2 rounded-xl text-xs sm:text-sm font-bold border border-indigo-700 bg-indigo-600 text-white shadow-xs transition cursor-pointer shrink-0';
           } else {
             el.btnBpBlindToggle.textContent = '👁️ 영어 가리기 (1초 인출 모드): OFF';
-            el.btnBpBlindToggle.className = 'px-4 py-2 rounded-xl text-xs sm:text-sm font-bold border border-indigo-200 bg-indigo-50 hover:bg-indigo-100 text-indigo-800 shadow-2xs transition cursor-pointer shrink-0';
+            el.btnBpBlindToggle.className = 'min-h-[44px] px-4 py-2 rounded-xl text-xs sm:text-sm font-bold border border-indigo-200 bg-indigo-50 hover:bg-indigo-100 text-indigo-800 shadow-2xs transition cursor-pointer shrink-0';
           }
         }
 
@@ -10641,13 +10674,13 @@
                   <span class="px-2 py-0.5 rounded-md text-[11px] font-extrabold bg-indigo-600 text-white">Q${idx + 1}</span>
                   <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-sky-100 text-pte-navy">${escapeHtml(it.pattern || '')}</span>
                 </div>
-                <div class="flex flex-wrap items-center gap-1.5 shrink-0">
+                <div class="flex flex-wrap items-center gap-2 shrink-0">
                   <button type="button" data-bp-speak-item="${idx}"
-                    class="px-2.5 py-1 rounded-lg text-xs font-bold bg-white hover:bg-sky-50 text-pte-blue border border-sky-200 transition cursor-pointer">
+                    class="min-h-[44px] px-3.5 py-2 rounded-xl text-xs font-bold bg-white hover:bg-sky-50 text-pte-blue border border-sky-200 transition cursor-pointer inline-flex items-center justify-center">
                     🔊 듣기
                   </button>
                   <button type="button" data-bp-record-item="${idx}"
-                    class="px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer ${
+                    class="min-h-[44px] px-3.5 py-2 rounded-xl text-xs font-bold transition cursor-pointer inline-flex items-center justify-center ${
                       isRec
                         ? 'bg-slate-900 text-white ring-2 ring-rose-400'
                         : 'bg-rose-600 hover:bg-rose-700 text-white'
@@ -10658,7 +10691,7 @@
                     data-ai-vocab-word="${escapeHtml(it.en || it.pattern)}"
                     data-ai-vocab-meaning="${escapeHtml(it.kr || '')}"
                     data-ai-vocab-example="${escapeHtml(it.pattern || '')}"
-                    class="px-2.5 py-1 rounded-lg text-xs font-bold bg-teal-600 hover:bg-teal-700 text-white transition cursor-pointer">
+                    class="min-h-[44px] px-3.5 py-2 rounded-xl text-xs font-bold bg-teal-600 hover:bg-teal-700 text-white transition cursor-pointer inline-flex items-center justify-center">
                     + 단어장
                   </button>
                 </div>
@@ -10672,7 +10705,7 @@
                 <div class="rounded-xl border border-dashed border-indigo-300 bg-indigo-50/70 px-4 py-3 flex flex-wrap items-center justify-between gap-2">
                   <span class="text-xs font-semibold text-indigo-800">👁️ 1초 인출 모드: 영어를 보지 말고 먼저 입으로 내뱉어 보세요!</span>
                   <button type="button" data-bp-reveal-item="${idx}"
-                    class="px-3 py-1 rounded-lg text-xs font-bold bg-white hover:bg-indigo-100 text-indigo-700 border border-indigo-200 transition cursor-pointer shrink-0">
+                    class="min-h-[44px] px-3.5 py-2 rounded-xl text-xs font-bold bg-white hover:bg-indigo-100 text-indigo-700 border border-indigo-200 transition cursor-pointer inline-flex items-center justify-center shrink-0">
                     👀 정답 보기
                   </button>
                 </div>
@@ -10769,16 +10802,16 @@
               <div class="flex flex-col sm:flex-row gap-2">
                 <input type="text" data-bp-myo-input="${idx}" value="${escapeHtml(userVal)}"
                   placeholder="위 패턴을 활용해 나만의 영어 문장을 입력하거나 음성으로 말해보세요..."
-                  class="flex-1 min-w-0 px-3 py-2 rounded-xl border border-slate-300 bg-white text-xs sm:text-sm focus:ring-2 focus:ring-teal-500 outline-none" />
-                <div class="flex items-center gap-1.5 shrink-0">
+                  class="flex-1 min-w-0 min-h-[44px] px-3 py-2 rounded-xl border border-slate-300 bg-white text-xs sm:text-sm focus:ring-2 focus:ring-teal-500 outline-none" />
+                <div class="flex items-center gap-2 shrink-0">
                   <button type="button" data-bp-myo-voice="${idx}"
-                    class="px-3 py-2 rounded-xl text-xs font-bold transition cursor-pointer ${
+                    class="min-h-[44px] px-3.5 py-2 rounded-xl text-xs font-bold transition cursor-pointer inline-flex items-center justify-center ${
                       isVoice ? 'bg-slate-900 text-white ring-2 ring-rose-400' : 'bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200'
                     }">
                     ${isVoice ? '⏹️ 정지' : '🎤 음성 입력'}
                   </button>
                   <button type="button" data-bp-myo-grade="${idx}" ${isBusy ? 'disabled' : ''}
-                    class="px-3.5 py-2 rounded-xl text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 transition cursor-pointer disabled:opacity-50">
+                    class="min-h-[44px] px-4 py-2 rounded-xl text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 transition cursor-pointer inline-flex items-center justify-center disabled:opacity-50">
                     ${isBusy ? '교정 중...' : '✨ AI 원어민 교정'}
                   </button>
                 </div>
@@ -10834,11 +10867,11 @@
         el.bpMissionList.innerHTML = items.map(it => {
           const isChecked = selected.has(it.id);
           return `
-            <label class="flex items-start gap-2 rounded-xl border p-2.5 cursor-pointer transition text-xs ${
-              isChecked ? 'border-fuchsia-400 bg-white shadow-2xs' : 'border-fuchsia-200/70 bg-white/60 hover:bg-white'
+            <label class="flex items-start gap-2 rounded-xl border p-3 cursor-pointer transition text-xs ${
+              isChecked ? 'border-indigo-400 bg-white shadow-2xs ring-1 ring-indigo-200' : 'border-indigo-200/70 bg-white/70 hover:bg-white'
             }">
               <input type="checkbox" data-bp-mission-id="${escapeHtml(it.id)}" ${isChecked ? 'checked' : ''}
-                class="mt-0.5 rounded border-fuchsia-300 text-fuchsia-600 focus:ring-fuchsia-500" />
+                class="mt-0.5 rounded border-indigo-300 text-indigo-600 focus:ring-indigo-500" />
               <div class="min-w-0">
                 <p class="font-bold text-slate-900 truncate">${escapeHtml(it.pattern)}</p>
                 <p class="text-[11px] text-slate-500 truncate">${escapeHtml(it.kr)}</p>
@@ -10846,6 +10879,38 @@
             </label>
           `;
         }).join('');
+      }
+
+      function renderBpStepTabs() {
+        const activeStep = [1, 2, 3].includes(state.bpActiveStep) ? state.bpActiveStep : 1;
+        state.bpActiveStep = activeStep;
+        const stages = [
+          { step: 1, btn: el.btnBpStep1, panel: el.bpStage1 },
+          { step: 2, btn: el.btnBpStep2, panel: el.bpStage2 },
+          { step: 3, btn: el.btnBpStep3, panel: el.bpStage3 }
+        ];
+        stages.forEach(({ step, btn, panel }) => {
+          const isActive = step === activeStep;
+          if (panel) panel.classList.toggle('hidden', !isActive);
+          if (btn) {
+            btn.setAttribute('aria-selected', String(isActive));
+            btn.className = isActive
+              ? 'min-h-[44px] px-2 sm:px-3 py-2 rounded-xl text-[11px] sm:text-xs font-bold bg-white text-pte-navy shadow-xs transition cursor-pointer text-center leading-tight'
+              : 'min-h-[44px] px-2 sm:px-3 py-2 rounded-xl text-[11px] sm:text-xs font-semibold text-slate-600 hover:text-slate-900 transition cursor-pointer text-center leading-tight';
+          }
+        });
+      }
+
+      function setBpStep(step) {
+        const nextStep = Number(step);
+        if (![1, 2, 3].includes(nextStep)) return;
+        state.bpActiveStep = nextStep;
+        if (nextStep === 1) {
+          state.bpNuanceOpen = true;
+          renderBpNuanceList(getActiveBpSet());
+        }
+        renderBpStepTabs();
+        renderStudyStepper();
       }
 
       function renderBpWorkspace() {
@@ -10872,6 +10937,7 @@
           el.btnBpDeleteSet.classList.toggle('opacity-45', isOnlyDefault);
         }
 
+        renderBpStepTabs();
         renderBpNuanceList(set);
         renderBpItemList(set);
         renderBpMyoList(set);
@@ -11257,6 +11323,23 @@
       }
 
       // Brain Pattern & Roleplay Mission Event Listeners
+      const bpWorkspaceEl = document.getElementById('brain-pattern-workspace');
+      if (bpWorkspaceEl) {
+        bpWorkspaceEl.addEventListener('click', (e) => {
+          const stepTab = e.target.closest('[data-bp-step]');
+          if (stepTab) {
+            const targetStep = parseInt(stepTab.dataset.bpStep, 10);
+            setBpStep(targetStep);
+            return;
+          }
+          const gotoBtn = e.target.closest('[data-bp-goto-step]');
+          if (gotoBtn) {
+            const targetStep = parseInt(gotoBtn.dataset.bpGotoStep, 10);
+            setBpStep(targetStep);
+            bpWorkspaceEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        });
+      }
       if (el.btnRpClearMission) {
         el.btnRpClearMission.addEventListener('click', () => {
           state.rpMissionTargets = [];
