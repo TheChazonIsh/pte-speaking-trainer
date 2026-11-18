@@ -119,7 +119,7 @@
         <button id="nav-group-practical" type="button" data-nav-group="practical"
           class="shrink-0 px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-200 hover:bg-white/10 transition cursor-pointer flex items-center gap-1.5">
           <span>🗣️ 실전 영어·스피킹</span>
-          <span class="text-[10px] font-semibold px-1.5 py-0.5 rounded-full bg-white/15 text-teal-200">3파트</span>
+          <span class="text-[10px] font-semibold px-1.5 py-0.5 rounded-full bg-white/15 text-teal-200">4파트</span>
         </button>
         <button id="nav-group-library" type="button" data-nav-group="library"
           class="shrink-0 px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-200 hover:bg-white/10 transition cursor-pointer flex items-center gap-1.5">
@@ -171,6 +171,11 @@
           class="tab-btn hidden shrink-0 relative py-2.5 px-3 text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-1.5 transition cursor-pointer">
           <span>🎬 유튜브 쉐도잉</span>
           <span class="hidden lg:inline-block text-[11px] font-medium px-1.5 py-0.5 rounded-full bg-slate-100 text-slate-600">구간반복</span>
+        </button>
+        <button id="tab-brain-pattern" type="button" role="tab" aria-selected="false"
+          class="tab-btn hidden shrink-0 relative py-2.5 px-3 text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-1.5 transition cursor-pointer">
+          <span>🧠 영어 뇌 패턴 훈련</span>
+          <span class="hidden lg:inline-block text-[11px] font-medium px-1.5 py-0.5 rounded-full bg-slate-100 text-slate-600">인출·응용</span>
         </button>
         <button id="tab-review" type="button" role="tab" aria-selected="false"
           class="tab-btn hidden shrink-0 relative py-2.5 px-3 text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-1.5 transition cursor-pointer">
@@ -1216,6 +1221,16 @@
 
       <!-- Conversation Timeline & Interactive Mic Bar -->
       <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
+        <!-- Pinned Roleplay Mission Expressions Bar (from Brain Pattern Training) -->
+        <div id="rp-mission-bar" class="hidden border-b border-fuchsia-200 bg-fuchsia-50/85 px-4 py-3 space-y-2">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <span class="text-xs font-extrabold text-fuchsia-900">🎯 오늘의 미션 표현 (대화에서 직접 써보세요!)</span>
+            <button id="btn-rp-clear-mission" type="button"
+              class="text-[11px] font-semibold text-fuchsia-700 hover:underline cursor-pointer">미션 닫기</button>
+          </div>
+          <div id="rp-mission-chips" class="flex flex-wrap gap-2"></div>
+        </div>
+
         <!-- Conversation Log -->
         <div id="rp-chat-log" class="p-4 sm:p-6 space-y-4 min-h-[280px] max-h-[540px] overflow-y-auto bg-slate-50/40">
         </div>
@@ -1487,6 +1502,148 @@
               </div>
             </div>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ENGLISH BRAIN PATTERN TRAINING WORKSPACE -->
+    <section id="brain-pattern-workspace" class="hidden space-y-5">
+
+      <!-- Top Bar: Set Selector, YouTube Source & AI Note/Video Importer -->
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-6 space-y-4 min-w-0">
+        <div class="flex flex-wrap items-start justify-between gap-3">
+          <div class="min-w-0">
+            <div class="flex flex-wrap items-center gap-2 mb-1">
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-100 text-indigo-800">Brain Pattern Drill</span>
+              <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                📱 iOS 이어폰 안전 모드 · 녹음 시에만 마이크 활성화
+              </span>
+            </div>
+            <h2 class="text-base sm:text-lg font-extrabold text-slate-900">🧠 영어 뇌 패턴 훈련 (직역 탈출 · 1초 인출 · 실전 응용)</h2>
+            <div class="flex items-center gap-2 mt-1 min-w-0">
+              <div id="bp-wave-bars" class="hidden items-end gap-0.5 h-4 shrink-0" aria-hidden="true">
+                <span class="sound-wave-bar w-1 h-3 bg-indigo-500 rounded-full" style="animation-delay:0ms"></span>
+                <span class="sound-wave-bar w-1 h-4 bg-teal-500 rounded-full" style="animation-delay:150ms"></span>
+                <span class="sound-wave-bar w-1 h-3 bg-sky-500 rounded-full" style="animation-delay:300ms"></span>
+              </div>
+              <span id="bp-tts-status" class="text-xs text-slate-500 truncate">원어민 뉘앙스를 비교한 뒤 영어를 가리고 1초 만에 입으로 인출해 보세요.</span>
+            </div>
+          </div>
+
+          <button id="btn-bp-open-generator" type="button"
+            class="px-3.5 py-2 rounded-xl text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 shadow-xs transition cursor-pointer shrink-0">
+            + 새 강의/노트 추가
+          </button>
+        </div>
+
+        <!-- Set Selector & YouTube Source Row -->
+        <div class="flex flex-wrap items-center gap-2.5 pt-2 border-t border-slate-100 min-w-0">
+          <label for="bp-set-select" class="text-xs font-bold text-slate-600 shrink-0">학습 세트:</label>
+          <select id="bp-set-select"
+            class="flex-1 min-w-0 max-w-full sm:max-w-md px-3 py-2 text-xs sm:text-sm rounded-xl border border-slate-200 bg-slate-50 font-semibold text-slate-800 focus:ring-2 focus:ring-pte-blue outline-none">
+          </select>
+          <a id="bp-yt-link" href="https://youtu.be/nyfJHf_skAU" target="_blank" rel="noopener noreferrer"
+            class="px-3 py-2 rounded-xl text-xs font-bold border border-rose-200 bg-rose-50 hover:bg-rose-100 text-rose-700 transition shrink-0">
+            📺 원본 영상 보기
+          </a>
+          <button id="btn-bp-delete-set" type="button"
+            class="px-3 py-2 rounded-xl text-xs font-semibold border border-slate-200 bg-white hover:bg-rose-50 hover:text-rose-700 text-slate-600 transition cursor-pointer shrink-0">
+            세트 삭제
+          </button>
+        </div>
+
+        <!-- Collapsible AI Set Generator (YouTube URL / Study Note) -->
+        <div id="bp-generator-box" class="hidden rounded-xl border border-indigo-200 bg-indigo-50/50 p-4 space-y-3">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <h3 class="text-xs sm:text-sm font-extrabold text-indigo-950">✨ 새 강의 영상 / 필기 노트로 패턴 훈련 세트 자동 생성</h3>
+            <span class="text-[11px] font-medium text-indigo-700">유튜브 URL(공개) 또는 공부 노트 붙여넣기 모두 지원</span>
+          </div>
+          <div class="space-y-2.5">
+            <div>
+              <label for="bp-gen-url-input" class="block text-xs font-semibold text-slate-700 mb-1">유튜브 URL (선택 — 노트 없이 링크만 넣으면 Gemini가 영상 직접 분석)</label>
+              <input id="bp-gen-url-input" type="url" placeholder="https://youtu.be/... 또는 https://www.youtube.com/watch?v=..."
+                class="w-full min-w-0 px-3 py-2 text-xs sm:text-sm rounded-xl border border-slate-200 bg-white focus:ring-2 focus:ring-indigo-500 outline-none" />
+            </div>
+            <div>
+              <label for="bp-gen-notes-input" class="block text-xs font-semibold text-slate-700 mb-1">강의 필기 노트 / 예문 텍스트 (선택 — 직접 붙여넣으면 토큰 절약)</label>
+              <textarea id="bp-gen-notes-input" rows="4"
+                placeholder="유튜브 강의에서 정리한 패턴·직역 비교·예문을 붙여넣거나, 위 유튜브 URL만 입력한 채 생성 버튼을 누르세요..."
+                class="w-full min-w-0 px-3 py-2 text-xs sm:text-sm rounded-xl border border-slate-200 bg-white focus:ring-2 focus:ring-indigo-500 outline-none"></textarea>
+            </div>
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <p id="bp-gen-status" class="text-xs font-medium text-indigo-800"></p>
+              <button id="btn-bp-generate-set" type="button"
+                class="px-4 py-2 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-indigo-600 to-pte-blue hover:opacity-95 shadow-xs transition cursor-pointer shrink-0">
+                ✨ AI 패턴 훈련 세트 생성 및 저장
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section A: Literal Konglish vs Native Nuance Comparison (Collapsible) -->
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-6 space-y-4 min-w-0">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <span class="text-[11px] font-bold uppercase tracking-wider text-rose-600">Step A · Nuance Check</span>
+            <h3 class="text-sm sm:text-base font-extrabold text-slate-900">💡 직역 vs 원어민 뉘앙스 비교</h3>
+          </div>
+          <button id="btn-bp-toggle-nuance" type="button" aria-expanded="true"
+            class="px-3 py-1.5 rounded-lg text-xs font-bold border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700 transition cursor-pointer">
+            뉘앙스 비교 접기 ▲
+          </button>
+        </div>
+        <div id="bp-nuance-list" class="grid grid-cols-1 md:grid-cols-2 gap-3 min-w-0"></div>
+      </div>
+
+      <!-- Section B: 1-Second KR->EN Retrieval & 3x Shadowing -->
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-6 space-y-4 min-w-0">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <span class="text-[11px] font-bold uppercase tracking-wider text-pte-blue">Step B · Instant Retrieval &amp; Shadowing</span>
+            <div class="flex flex-wrap items-center gap-2">
+              <h3 class="text-sm sm:text-base font-extrabold text-slate-900">🗣️ 1초 한영 인출 &amp; 3회 쉐도잉</h3>
+              <span id="bp-progress-badge" class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-sky-100 text-pte-blue">0 / 0 완료</span>
+            </div>
+          </div>
+          <button id="btn-bp-blind-toggle" type="button" aria-pressed="false"
+            class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold border border-indigo-200 bg-indigo-50 hover:bg-indigo-100 text-indigo-800 shadow-2xs transition cursor-pointer shrink-0">
+            👁️ 영어 가리기 (1초 인출 모드): OFF
+          </button>
+        </div>
+
+        <div id="bp-item-list" class="space-y-3.5 min-w-0"></div>
+      </div>
+
+      <!-- Section C: Make Your Own Personal Sentence Practice -->
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-6 space-y-4 min-w-0">
+        <div>
+          <span class="text-[11px] font-bold uppercase tracking-wider text-teal-700">Step C · Personalization (NZ Context)</span>
+          <h3 class="text-sm sm:text-base font-extrabold text-slate-900">✍️ 나만의 문장 응용하기 (Make Your Own)</h3>
+          <p class="text-xs text-slate-500 mt-0.5">핵심 패턴으로 내 상황(뉴질랜드 일상·유아교육·직장)을 직접 말하거나 써보고 AI 교정을 받아보세요.</p>
+        </div>
+        <div id="bp-myo-list" class="space-y-3 min-w-0"></div>
+      </div>
+
+      <!-- Section D: Launch Roleplay with Mission Expressions -->
+      <div class="bg-gradient-to-br from-fuchsia-50 to-indigo-50 rounded-2xl border border-fuchsia-200 shadow-sm p-4 sm:p-6 space-y-4 min-w-0">
+        <div class="flex flex-wrap items-start justify-between gap-3">
+          <div>
+            <span class="text-[11px] font-bold uppercase tracking-wider text-fuchsia-700">Step D · Real-Life Transfer</span>
+            <h3 class="text-sm sm:text-base font-extrabold text-slate-900">🎭 실전 롤플레이 미션 연동</h3>
+            <p class="text-xs text-slate-600 mt-0.5">오늘 익힌 표현 중 <strong>2~3개</strong>를 체크하고 AI 롤플레이 대화 속에서 자연스럽게 써먹어 보세요!</p>
+          </div>
+          <span id="bp-mission-count-badge" class="px-2.5 py-1 rounded-full text-xs font-bold bg-white border border-fuchsia-200 text-fuchsia-800">0개 선택됨</span>
+        </div>
+
+        <div id="bp-mission-list" class="grid grid-cols-1 sm:grid-cols-2 gap-2 min-w-0"></div>
+
+        <div class="flex flex-wrap items-center justify-between gap-2 pt-1">
+          <p id="bp-mission-status" class="text-xs font-medium text-fuchsia-900"></p>
+          <button id="btn-bp-start-mission" type="button"
+            class="px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-fuchsia-600 to-indigo-600 hover:opacity-95 shadow-sm transition cursor-pointer shrink-0">
+            🎭 이 표현들로 롤플레이 시작
+          </button>
         </div>
       </div>
     </section>
@@ -1917,9 +2074,216 @@
         customDiQuestions: 'pte_custom_di_questions',
         ytClipSets: 'pte_rl_yt_clip_sets',
         ytShadowingSets: 'pte_yt_shadowing_sets',
+        liveAcademySets: 'pte_live_academy_sets',
+        liveAcademyProgress: 'pte_live_academy_progress',
         weaknessLogs: 'pte_weakness_logs',
         weaknessDrills: 'pte_weakness_drills'
       };
+
+      const DEFAULT_LIVE_ACADEMY_SETS = [
+        {
+          id: 'la-set-1',
+          title: '영어 뇌 만들기 문장 5개',
+          youtubeUrl: 'https://youtu.be/nyfJHf_skAU',
+          createdAt: 1700000000001,
+          nuanceComparisons: [
+            {
+              literal: 'I want to stop stressing over this.',
+              native: "I'm tired of stressing over stuff like this.",
+              noteKo: '단순히 "멈추고 싶다"가 아니라 감정적으로 지긋지긋하고 진절머리가 나는 피로감을 살리려면 be tired of ~ing를 씁니다.'
+            },
+            {
+              literal: "It's my first time waiting this long.",
+              native: "I've never waited this long for a food delivery.",
+              noteKo: "It's my first time...은 긍정적 기대·설렘 뉘앙스인 반면, 부정적·극단적 첫 경험에는 I've never [p.p] this...를 씁니다."
+            },
+            {
+              literal: 'She only worked for 10 years.',
+              native: 'She did nothing but work for almost 10 years.',
+              noteKo: 'only worked for 10 years는 "고작 10년 일했다"로 오해될 수 있고, 다른 건 안 하고 일만 했다는 뜻은 did nothing but [동사원형]입니다.'
+            },
+            {
+              literal: 'save money',
+              native: 'have money saved up',
+              noteKo: 'save money는 돈을 모으는 행위 자체이고, 현재 시점에 모아둔 여유 자금이 있는 상태는 have money saved up으로 표현합니다.'
+            }
+          ],
+          items: [
+            {
+              id: 'la1-q1',
+              pattern: "I'm tired of ~ing",
+              kr: '이런 일로 그만 좀 스트레스 받고 싶다.',
+              en: "I'm (just so) tired of stressing over stuff like this.",
+              variants: ["I'm tired of dealing with stuff like this."]
+            },
+            {
+              id: 'la1-q2',
+              pattern: "I've never [p.p] this [adj/adv]",
+              kr: '음식 배달을 이렇게 오래 기다려 보는 건 처음이네.',
+              en: "I've never waited this long for a food delivery.",
+              variants: [
+                "This is the longest I've ever waited for a food delivery.",
+                "I've never had a food delivery take this long."
+              ]
+            },
+            {
+              id: 'la1-q3',
+              pattern: 'do nothing but [verb]',
+              kr: '걔 졸업하고 거의 10년 동안 딴 거 안 하고 계속 일만 했어.',
+              en: 'She did nothing but work for almost 10 years after she graduated.',
+              variants: []
+            },
+            {
+              id: 'la1-q4',
+              pattern: 'have money saved up',
+              kr: '걔가 모아놓은 돈이 있는지 모르겠네.',
+              en: "I don't know if she has any money saved up.",
+              variants: []
+            },
+            {
+              id: 'la1-q5',
+              pattern: 'commit (to something)',
+              kr: '나 이번에는 제대로 마음 잡고 살 빼려고.',
+              en: "I'm really gonna commit this time and get in (better) shape.",
+              variants: ["I'm really gonna commit to losing weight this time."]
+            }
+          ],
+          makeYourOwnPrompts: [
+            {
+              id: 'la1-myo-1',
+              pattern: "I'm tired of ~ing",
+              promptKo: '내가 요즘 지긋지긋한 것 영작하기'
+            },
+            {
+              id: 'la1-myo-2',
+              pattern: "I've never [p.p] this [형용사]",
+              promptKo: '최근 겪은 극단적인 상황 영작하기'
+            },
+            {
+              id: 'la1-myo-3',
+              pattern: 'do nothing but ~',
+              promptKo: '주말에 한 일 영작하기'
+            }
+          ]
+        },
+        {
+          id: 'la-set-2',
+          title: 'PART 6 : 영어 뇌 만들기 문장 10개',
+          youtubeUrl: 'https://youtu.be/j5QXDsW-Yf0',
+          createdAt: 1700000000002,
+          nuanceComparisons: [
+            {
+              literal: 'study well in school',
+              native: 'do well in school / get good grades',
+              noteKo: '한국어 "공부 잘했다"의 직역인 study well 대신, 성적·학업을 잘해냈다는 자연스러운 표현은 do well in school입니다.'
+            },
+            {
+              literal: 'get lost on our way here',
+              native: 'take a wrong turn on our way here',
+              noteKo: 'get lost는 완전히 길을 잃어 헤매는 느낌이고, 내비게이션을 보다가 잠깐 한 번 잘못 들어선 경우는 take a wrong turn을 씁니다.'
+            },
+            {
+              literal: "I wasn't there for a few days.",
+              native: 'I was there for only a few days.',
+              noteKo: '직역 부정문(wasn\'t there)은 "며칠 동안 거기에 없었다"라는 반대 뜻이 됩니다. 긍정문 + only a few days로 짧았음을 말하세요.'
+            },
+            {
+              literal: "I didn't mean to say that.",
+              native: "I didn't mean to say it like that. / That came out wrong.",
+              noteKo: "didn't mean to say that은 내용 자체를 말할 의도가 아니었다는 뜻이고, 말투/표현이 잘못 나갔을 때는 like that / came out wrong을 씁니다."
+            }
+          ],
+          items: [
+            {
+              id: 'la2-q1',
+              pattern: "You haven't already left, have you?",
+              kr: '야, 너 벌써 출발한 건 아니지?',
+              en: "You haven't already left, have you?",
+              variants: ["You're not already on your way, are you?"]
+            },
+            {
+              id: 'la2-q2',
+              pattern: 'a well-made movie',
+              kr: '정말 잘 만든 영화야.',
+              en: "It's a very well-made movie.",
+              variants: []
+            },
+            {
+              id: 'la2-q3',
+              pattern: "You're gonna hurt somebody (like that)",
+              kr: '야 너 그러다가 누구 다쳐.',
+              en: "Hey, you're gonna hurt somebody (like that).",
+              variants: []
+            },
+            {
+              id: 'la2-q4',
+              pattern: 'do well in school',
+              kr: '걔 학교 때 의외로 공부 잘했어.',
+              en: 'She did surprisingly well in school.',
+              variants: ['She got surprisingly good grades in school.']
+            },
+            {
+              id: 'la2-q5',
+              pattern: 'take a wrong turn',
+              kr: '우리 오는 길에 길을 한번 잘못 들었어.',
+              en: 'We took a wrong turn on our way here.',
+              variants: []
+            },
+            {
+              id: 'la2-q6',
+              pattern: 'for only a few days',
+              kr: '나 거기 며칠 안 있었어.',
+              en: 'I was there for only a few days.',
+              variants: []
+            },
+            {
+              id: 'la2-q7',
+              pattern: 'do a thorough job',
+              kr: '그분들이 일을 아주 꼼꼼하게 잘해 주셨더라고요.',
+              en: 'They did a very thorough job.',
+              variants: []
+            },
+            {
+              id: 'la2-q8',
+              pattern: 'say something stupid',
+              kr: '아 너 지난번처럼 말 실수하면 안 된다.',
+              en: 'You better not say anything stupid like last time.',
+              variants: []
+            },
+            {
+              id: 'la2-q9',
+              pattern: 'that came out wrong',
+              kr: '미안 말이 잘못 나왔어.',
+              en: 'Sorry, that came out wrong.',
+              variants: ["I didn't mean to say it like that."]
+            },
+            {
+              id: 'la2-q10',
+              pattern: 'more than we originally talked about',
+              kr: '잠깐만요, 처음에 얘기했던 것보다 금액이 크잖아요.',
+              en: 'Wait, this is more than we originally talked about.',
+              variants: []
+            }
+          ],
+          makeYourOwnPrompts: [
+            {
+              id: 'la2-myo-1',
+              pattern: 'do a thorough job / do well in ~',
+              promptKo: '일이나 학업에서 꼼꼼하게 해낸 경험 영작하기'
+            },
+            {
+              id: 'la2-myo-2',
+              pattern: 'take a wrong turn',
+              promptKo: '운전·이동 중 길을 잘못 들었던 상황 영작하기'
+            },
+            {
+              id: 'la2-myo-3',
+              pattern: 'that came out wrong',
+              promptKo: '말실수 후 뉘앙스를 바로잡는 문장 영작하기'
+            }
+          ]
+        }
+      ];
 
       const DEFAULT_YT_SHADOWING_SETS = [
         {
@@ -2368,8 +2732,40 @@
           pte: 'read-aloud',
           practical: 'impromptu',
           library: 'review'
-        }
+        },
+
+        // Roleplay Mission Integration (from Brain Pattern Training)
+        rpMissionTargets: [],
+
+        // Live Academy Brain Pattern Training
+        liveAcademySets: (() => {
+          const loaded = loadJsonStorage(STORAGE_KEYS.liveAcademySets, null);
+          return Array.isArray(loaded) && loaded.length > 0 ? loaded : DEFAULT_LIVE_ACADEMY_SETS;
+        })(),
+        bpActiveSetId: '',
+        bpProgress: (() => {
+          const loaded = loadJsonStorage(STORAGE_KEYS.liveAcademyProgress, null);
+          return (loaded && typeof loaded === 'object')
+            ? {
+                checks: loaded.checks && typeof loaded.checks === 'object' ? loaded.checks : {},
+                myoDrafts: loaded.myoDrafts && typeof loaded.myoDrafts === 'object' ? loaded.myoDrafts : {},
+                selectedMissions: loaded.selectedMissions && typeof loaded.selectedMissions === 'object' ? loaded.selectedMissions : {}
+              }
+            : { checks: {}, myoDrafts: {}, selectedMissions: {} };
+        })(),
+        bpBlindMode: false,
+        bpNuanceOpen: true,
+        bpRevealedItems: {},
+        bpItemFeedbackMap: {},
+        bpItemRecordingIdx: null,
+        bpMyoVoiceIdx: null,
+        bpMediaRecorder: null,
+        bpAudioChunks: [],
+        bpGenerating: false
       };
+      if (state.liveAcademySets.length > 0 && !state.bpActiveSetId) {
+        state.bpActiveSetId = state.liveAcademySets[0].id;
+      }
       if (state.ytShadowingSets.length > 0 && !state.ytsActiveSetId) {
         state.ytsActiveSetId = state.ytShadowingSets[0].id;
       }
@@ -2415,6 +2811,7 @@
         tabImpromptu: document.getElementById('tab-impromptu'),
         tabRoleplay: document.getElementById('tab-roleplay'),
         tabYtShadowing: document.getElementById('tab-yt-shadowing'),
+        tabBrainPattern: document.getElementById('tab-brain-pattern'),
         tabWriting: document.getElementById('tab-writing'),
         tabReview: document.getElementById('tab-review'),
         tabReviewCount: document.getElementById('tab-review-count'),
@@ -2428,6 +2825,7 @@
         writingWorkspace: document.getElementById('writing-workspace'),
         roleplayWorkspace: document.getElementById('roleplay-workspace'),
         ytShadowingWorkspace: document.getElementById('yt-shadowing-workspace'),
+        brainPatternWorkspace: document.getElementById('brain-pattern-workspace'),
         reviewWorkspace: document.getElementById('review-workspace'),
 
         btnBookmarkSpeaking: document.getElementById('btn-bookmark-speaking'),
@@ -2677,6 +3075,32 @@
         rpTextInput: document.getElementById('rp-text-input'),
         btnRpSendText: document.getElementById('btn-rp-send-text'),
         rpSummaryBox: document.getElementById('rp-summary-box'),
+        rpMissionBar: document.getElementById('rp-mission-bar'),
+        rpMissionChips: document.getElementById('rp-mission-chips'),
+        btnRpClearMission: document.getElementById('btn-rp-clear-mission'),
+
+        // Brain Pattern Training Elements
+        bpWaveBars: document.getElementById('bp-wave-bars'),
+        bpTtsStatus: document.getElementById('bp-tts-status'),
+        btnBpOpenGenerator: document.getElementById('btn-bp-open-generator'),
+        bpSetSelect: document.getElementById('bp-set-select'),
+        bpYtLink: document.getElementById('bp-yt-link'),
+        btnBpDeleteSet: document.getElementById('btn-bp-delete-set'),
+        bpGeneratorBox: document.getElementById('bp-generator-box'),
+        bpGenUrlInput: document.getElementById('bp-gen-url-input'),
+        bpGenNotesInput: document.getElementById('bp-gen-notes-input'),
+        bpGenStatus: document.getElementById('bp-gen-status'),
+        btnBpGenerateSet: document.getElementById('btn-bp-generate-set'),
+        btnBpToggleNuance: document.getElementById('btn-bp-toggle-nuance'),
+        bpNuanceList: document.getElementById('bp-nuance-list'),
+        bpProgressBadge: document.getElementById('bp-progress-badge'),
+        btnBpBlindToggle: document.getElementById('btn-bp-blind-toggle'),
+        bpItemList: document.getElementById('bp-item-list'),
+        bpMyoList: document.getElementById('bp-myo-list'),
+        bpMissionCountBadge: document.getElementById('bp-mission-count-badge'),
+        bpMissionList: document.getElementById('bp-mission-list'),
+        bpMissionStatus: document.getElementById('bp-mission-status'),
+        btnBpStartMission: document.getElementById('btn-bp-start-mission'),
 
         // YouTube Shadowing Studio Elements
         btnYtsToggleExtractor: document.getElementById('btn-yts-toggle-extractor'),
@@ -3195,6 +3619,19 @@
             browserSuffix: ' (광고 0초)',
             geminiPrefix: '🔊 Gemini 3.8 Flash 성우 재생 중',
             geminiSuffix: ' (광고 0초)'
+          };
+        }
+        if (targetMode === 'brain-pattern') {
+          return {
+            isRL: false,
+            isRS: false,
+            waveBars: el.bpWaveBars,
+            statusLabel: el.bpTtsStatus,
+            doneText: '✅ 원어민 뉘앙스 발음 재생 완료 · 영어를 가리고 직접 말해보세요',
+            browserPrefix: '🔊 원어민 음성 재생 중',
+            browserSuffix: '',
+            geminiPrefix: '🔊 Gemini 3.8 Flash 원어민 재생 중',
+            geminiSuffix: ''
           };
         }
         return {
@@ -4132,7 +4569,7 @@
       }
 
       function getCategoryForMode(mode = state.mode) {
-        if (mode === 'impromptu' || mode === 'roleplay' || mode === 'yt-shadowing') return 'practical';
+        if (mode === 'impromptu' || mode === 'roleplay' || mode === 'yt-shadowing' || mode === 'brain-pattern') return 'practical';
         if (mode === 'review') return 'library';
         return 'pte';
       }
@@ -4218,6 +4655,17 @@
             activeStep = 1;
             hintText = '다음 할 일: 뉴질랜드 상황을 고르고 [▶️ 대화 시작]을 누르세요';
           }
+        } else if (state.mode === 'brain-pattern') {
+          if (state.bpItemRecordingIdx !== null || state.bpMyoVoiceIdx !== null) {
+            activeStep = 2;
+            hintText = '녹음 중: 한국어 상황을 영어로 직접 말한 뒤 정지 버튼을 누르세요';
+          } else if (Object.keys(state.bpItemFeedbackMap || {}).length > 0) {
+            activeStep = 3;
+            hintText = '피드백 확인 완료! 나만의 문장 응용하기와 롤플레이 미션으로 이어가세요';
+          } else {
+            activeStep = 1;
+            hintText = '다음 할 일: 직역 비교 확인 후 [👁️ 영어 가리기]를 켜고 1초 만에 인출해 보세요';
+          }
         } else if (state.mode === 'writing') {
           const hasResult = el.writingAiResult && !el.writingAiResult.classList.contains('hidden');
           const wordCount = countWords((el.writingTextarea?.value || '').trim());
@@ -4278,6 +4726,7 @@
           { el: el.tabImpromptu, mode: 'impromptu', cat: 'practical' },
           { el: el.tabRoleplay, mode: 'roleplay', cat: 'practical' },
           { el: el.tabYtShadowing, mode: 'yt-shadowing', cat: 'practical' },
+          { el: el.tabBrainPattern, mode: 'brain-pattern', cat: 'practical' },
           { el: el.tabReview, mode: 'review', cat: 'library' }
         ];
 
@@ -4308,7 +4757,8 @@
         const isReview = state.mode === 'review';
         const isRoleplay = state.mode === 'roleplay';
         const isYtShadowing = state.mode === 'yt-shadowing';
-        const isSpeaking = !isWriting && !isReview && !isRoleplay && !isYtShadowing;
+        const isBrainPattern = state.mode === 'brain-pattern';
+        const isSpeaking = !isWriting && !isReview && !isRoleplay && !isYtShadowing && !isBrainPattern;
 
         el.speakingSelectorBar.classList.toggle('hidden', !isSpeaking);
         el.speakingWorkspace.classList.toggle('hidden', !isSpeaking);
@@ -4317,6 +4767,9 @@
         }
         if (el.ytShadowingWorkspace) {
           el.ytShadowingWorkspace.classList.toggle('hidden', !isYtShadowing);
+        }
+        if (el.brainPatternWorkspace) {
+          el.brainPatternWorkspace.classList.toggle('hidden', !isBrainPattern);
         }
         el.writingWorkspace.classList.toggle('hidden', !isWriting);
         el.reviewWorkspace.classList.toggle('hidden', !isReview);
@@ -5165,6 +5618,10 @@
           stopYtsPlayback();
           cancelSpeech();
           releaseMicrophoneStream();
+        } else if (state.mode === 'brain-pattern') {
+          stopBpRecording(true);
+          cancelSpeech();
+          releaseMicrophoneStream();
         } else if (state.mode === 'review') {
           stopDrillRecording(true);
           cancelSpeech();
@@ -5184,6 +5641,8 @@
           renderRoleplayWorkspace();
         } else if (newMode === 'yt-shadowing') {
           renderYtsWorkspace();
+        } else if (newMode === 'brain-pattern') {
+          renderBpWorkspace();
         } else if (newMode === 'review') {
           renderReviewDashboard();
         } else {
@@ -5224,6 +5683,7 @@
       el.tabImpromptu.addEventListener('click', () => switchMode('impromptu'));
       el.tabRoleplay.addEventListener('click', () => switchMode('roleplay'));
       el.tabYtShadowing.addEventListener('click', () => switchMode('yt-shadowing'));
+      if (el.tabBrainPattern) el.tabBrainPattern.addEventListener('click', () => switchMode('brain-pattern'));
       el.tabWriting.addEventListener('click', () => switchMode('writing'));
       el.tabReview.addEventListener('click', () => switchMode('review'));
 
@@ -5531,6 +5991,17 @@
             filterGroup: 'yt-shadowing',
             badgeCls: 'bg-rose-100 text-rose-800',
             barCls: 'bg-rose-500',
+            getList: () => []
+          };
+        }
+        if (sectionKey === 'brain-pattern') {
+          return {
+            key: 'brain-pattern',
+            label: '영어 뇌 패턴 훈련',
+            short: 'BP',
+            filterGroup: 'brain-pattern',
+            badgeCls: 'bg-indigo-100 text-indigo-800',
+            barCls: 'bg-indigo-500',
             getList: () => []
           };
         }
@@ -6640,8 +7111,8 @@
         renderReviewDashboard();
       });
 
-      // Shared delegation for AI result, Roleplay, Weakness Drill, and YouTube Shadowing containers (+ 단어장 추가 / settings shortcut)
-      [el.writingAiResult, el.speakingAiResult, el.roleplayWorkspace, el.weaknessReportCard, el.ytShadowingWorkspace].filter(Boolean).forEach(container => {
+      // Shared delegation for AI result, Roleplay, Weakness Drill, YouTube Shadowing, and Brain Pattern containers (+ 단어장 추가 / settings shortcut)
+      [el.writingAiResult, el.speakingAiResult, el.roleplayWorkspace, el.weaknessReportCard, el.ytShadowingWorkspace, el.brainPatternWorkspace].filter(Boolean).forEach(container => {
         container.addEventListener('click', (e) => {
           const addBtn = e.target.closest('[data-ai-vocab-word]');
           if (addBtn) {
@@ -7682,6 +8153,7 @@
 
       function renderRoleplayWorkspace() {
         renderRoleplayPresets();
+        renderRoleplayMissionBar();
         renderRoleplayChatLog();
         setRoleplayRecordingUI(
           state.rpIsRecording,
@@ -7901,6 +8373,9 @@
         state.rpBusy = true;
         setRoleplayRecordingUI(false, 'AI가 방금 답변을 듣고 다음 질문과 1줄 표현 팁을 작성 중입니다...');
         if (el.rpAudioStatus) el.rpAudioStatus.textContent = '🤖 AI 응답 및 1줄 팁 생성 중...';
+        if (textFallback) {
+          checkAndCompleteRoleplayMissions(textFallback);
+        }
         renderRoleplayChatLog();
 
         const historyLines = state.rpMessages.slice(0, userMsgIndex).map(m => {
@@ -7908,9 +8383,12 @@
           return `User: ${m.transcript || '(voice reply)'}`;
         }).join('\n');
 
+        const activeMissionList = (state.rpMissionTargets || []).filter(m => !m.completed).map(m => m.pattern).join(', ');
+
         const prompt = [
           `You are roleplaying as "${preset.partnerName}" (${preset.partnerVoiceHint}) in a New Zealand real-life scenario.`,
           `Scenario: ${scenarioDesc}`,
+          activeMissionList ? `Target expressions the learner is practicing today: ${activeMissionList} (subtly steer conversation toward natural opportunities for these when appropriate).` : '',
           `\nConversation so far:\n${historyLines}`,
           audioBlob
             ? `\nListen carefully to the attached user audio reply, transcribe it verbatim, give ONE concise natural expression upgrade tip for how they phrased it, and reply naturally in-character to continue the conversation (2-3 sentences max).`
@@ -7942,6 +8420,8 @@
           msg.pending = false;
           msg.transcript = result.userTranscript || textFallback || '(인식된 발화)';
           msg.oneLineTip = result.oneLineTip || null;
+
+          checkAndCompleteRoleplayMissions(msg.transcript);
 
           if (result.oneLineTip && result.oneLineTip.betterExpression) {
             recordWeaknessEntry({
@@ -9505,6 +9985,8 @@
               pte_custom_di_questions: Array.isArray(state.customDiQuestions) ? state.customDiQuestions : [],
               pte_weakness_logs: Array.isArray(state.weaknessLogs) ? state.weaknessLogs : [],
               pte_weakness_drills: Array.isArray(state.weaknessDrills) ? state.weaknessDrills : [],
+              pte_live_academy_sets: Array.isArray(state.liveAcademySets) ? state.liveAcademySets : [],
+              pte_live_academy_progress: state.bpProgress && typeof state.bpProgress === 'object' ? state.bpProgress : { checks: {}, myoDrafts: {}, selectedMissions: {} },
               writingDrafts: collectLocalDraftsByPrefix('pte_writing_'),
               rlNotes: collectLocalDraftsByPrefix('pte_rl_notes_')
             };
@@ -9801,6 +10283,41 @@
           saveStorage(STORAGE_KEYS.weaknessDrills, state.weaknessDrills);
         }
 
+        // 9.5 Merge Brain Pattern Sets & Progress (pte_live_academy_sets, pte_live_academy_progress)
+        const inLaSets = src.pte_live_academy_sets || src.liveAcademySets;
+        if (Array.isArray(inLaSets)) {
+          if (!Array.isArray(state.liveAcademySets)) state.liveAcademySets = [];
+          const laIds = new Set(state.liveAcademySets.map(s => s.id));
+          inLaSets.forEach(s => {
+            if (!s || !s.title || !Array.isArray(s.items)) return;
+            if (!s.id || laIds.has(s.id)) return;
+            laIds.add(s.id);
+            state.liveAcademySets.push(s);
+          });
+          saveStorage(STORAGE_KEYS.liveAcademySets, state.liveAcademySets);
+        }
+
+        const inLaProg = src.pte_live_academy_progress || src.bpProgress;
+        if (inLaProg && typeof inLaProg === 'object') {
+          if (!state.bpProgress) state.bpProgress = { checks: {}, myoDrafts: {}, selectedMissions: {} };
+          if (inLaProg.checks && typeof inLaProg.checks === 'object') {
+            Object.entries(inLaProg.checks).forEach(([k, v]) => {
+              const cur = state.bpProgress.checks[k] || {};
+              state.bpProgress.checks[k] = {
+                s1: Boolean(cur.s1 || v?.s1),
+                s2: Boolean(cur.s2 || v?.s2),
+                s3: Boolean(cur.s3 || v?.s3)
+              };
+            });
+          }
+          if (inLaProg.myoDrafts && typeof inLaProg.myoDrafts === 'object') {
+            Object.entries(inLaProg.myoDrafts).forEach(([k, v]) => {
+              if (!state.bpProgress.myoDrafts[k] && v) state.bpProgress.myoDrafts[k] = v;
+            });
+          }
+          saveStorage(STORAGE_KEYS.liveAcademyProgress, state.bpProgress);
+        }
+
         // 10. Non-destructive Writing Drafts & Retell Notes
         if (src.writingDrafts && typeof src.writingDrafts === 'object') {
           Object.entries(src.writingDrafts).forEach(([k, v]) => {
@@ -9827,6 +10344,7 @@
         updateDiBankSummaryUI();
         renderYtClipSetsAndClips();
         renderYtsWorkspace();
+        renderBpWorkspace();
         renderReviewDashboard();
         if (MODE_CONFIG[state.mode]) {
           renderQuestionSelector();
@@ -9933,6 +10451,982 @@
         });
       }
 
+      // ==========================================
+      // 16. English Brain Pattern Training & Roleplay Mission Linking
+      // ==========================================
+      function getActiveBpSet() {
+        const sets = Array.isArray(state.liveAcademySets) && state.liveAcademySets.length > 0
+          ? state.liveAcademySets
+          : DEFAULT_LIVE_ACADEMY_SETS;
+        return sets.find(s => s.id === state.bpActiveSetId) || sets[0];
+      }
+
+      function saveBpProgress() {
+        saveStorage(STORAGE_KEYS.liveAcademyProgress, state.bpProgress);
+      }
+
+      function getBpItemChecks(setId, itemId) {
+        const key = `${setId}::${itemId}`;
+        const cur = state.bpProgress?.checks?.[key];
+        return {
+          s1: Boolean(cur?.s1),
+          s2: Boolean(cur?.s2),
+          s3: Boolean(cur?.s3)
+        };
+      }
+
+      function cleanTtsPhrase(rawText) {
+        return String(rawText || '')
+          .split('/')[0]
+          .replace(/\([^)]*\)/g, '')
+          .replace(/\[[^\]]*\]/g, '')
+          .replace(/~/g, '')
+          .replace(/\s+/g, ' ')
+          .trim();
+      }
+
+      function renderRoleplayMissionBar() {
+        if (!el.rpMissionBar || !el.rpMissionChips) return;
+        const missions = Array.isArray(state.rpMissionTargets) ? state.rpMissionTargets : [];
+        if (missions.length === 0) {
+          el.rpMissionBar.classList.add('hidden');
+          el.rpMissionChips.innerHTML = '';
+          return;
+        }
+        el.rpMissionBar.classList.remove('hidden');
+        el.rpMissionChips.innerHTML = missions.map(m => `
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border ${
+            m.completed
+              ? 'bg-emerald-100 text-emerald-800 border-emerald-300'
+              : 'bg-white text-fuchsia-900 border-fuchsia-300'
+          }" title="${escapeHtml(m.en || '')}">
+            <span>${m.completed ? '✓' : '🎯'}</span>
+            <span>${escapeHtml(m.pattern)}</span>
+            ${m.completed ? '<span class="text-[10px] font-extrabold text-emerald-700">완료</span>' : ''}
+          </span>
+        `).join('');
+      }
+
+      function buildMissionMatcherTokens(patternText, enText) {
+        const cleanPattern = String(patternText || '')
+          .toLowerCase()
+          .replace(/\[[^\]]*\]/g, ' ')
+          .replace(/\([^)]*\)/g, ' ')
+          .replace(/~ing\b/g, ' ')
+          .replace(/~/g, ' ')
+          .replace(/[^a-z0-9\s']/g, ' ')
+          .replace(/\s+/g, ' ')
+          .trim();
+
+        const stop = new Set(['something', 'verb', 'adj', 'adv', 'pp', 'p', 'a', 'the', 'to', 'for', 'of', 'in', 'on', 'with', 'this', 'that', 'you', 'i', 'she', 'he', 'it', 'they', 'we', 'are', 'is', 'am', 'be', 'do']);
+        const patternWords = cleanPattern.split(' ').filter(w => w.length >= 2 && !stop.has(w));
+        const cleanEnWords = String(enText || '')
+          .toLowerCase()
+          .replace(/[^a-z0-9\s']/g, ' ')
+          .split(/\s+/)
+          .filter(w => w.length >= 3 && !stop.has(w));
+
+        return {
+          cleanPattern,
+          keywords: patternWords.length >= 2 ? patternWords : cleanEnWords.slice(0, 3)
+        };
+      }
+
+      function checkAndCompleteRoleplayMissions(userText) {
+        if (!Array.isArray(state.rpMissionTargets) || state.rpMissionTargets.length === 0) return;
+        const norm = String(userText || '')
+          .toLowerCase()
+          .replace(/[^a-z0-9\s']/g, ' ')
+          .replace(/\s+/g, ' ')
+          .trim();
+        if (!norm) return;
+
+        let changed = false;
+        state.rpMissionTargets.forEach(m => {
+          if (m.completed) return;
+          const { cleanPattern, keywords } = buildMissionMatcherTokens(m.pattern, m.en);
+          if (cleanPattern && cleanPattern.length >= 5 && norm.includes(cleanPattern)) {
+            m.completed = true;
+            changed = true;
+            return;
+          }
+          if (keywords.length > 0) {
+            const matchedCount = keywords.filter(kw => norm.includes(kw)).length;
+            const threshold = keywords.length <= 2 ? keywords.length : Math.max(2, Math.ceil(keywords.length * 0.65));
+            if (matchedCount >= threshold) {
+              m.completed = true;
+              changed = true;
+            }
+          }
+        });
+
+        if (changed) {
+          renderRoleplayMissionBar();
+        }
+      }
+
+      function renderBpNuanceList(set) {
+        if (!el.bpNuanceList || !el.btnBpToggleNuance) return;
+        const open = Boolean(state.bpNuanceOpen);
+        el.bpNuanceList.classList.toggle('hidden', !open);
+        el.btnBpToggleNuance.setAttribute('aria-expanded', String(open));
+        el.btnBpToggleNuance.textContent = open ? '뉘앙스 비교 접기 ▲' : '뉘앙스 비교 펼치기 ▼';
+
+        const pairs = Array.isArray(set?.nuanceComparisons) ? set.nuanceComparisons : [];
+        if (pairs.length === 0) {
+          el.bpNuanceList.innerHTML = '<p class="text-xs text-slate-500">이 세트에는 등록된 뉘앙스 비교 카드가 없습니다.</p>';
+          return;
+        }
+
+        el.bpNuanceList.innerHTML = pairs.map((n, idx) => `
+          <div class="rounded-xl border border-slate-200 bg-slate-50/70 p-3.5 space-y-2.5 text-xs">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <span class="px-2 py-0.5 rounded-md font-bold bg-rose-100 text-rose-800">❌ 직역 / 콩글리시</span>
+              <button type="button" data-bp-speak-nuance="${idx}"
+                class="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-white hover:bg-sky-50 text-pte-blue border border-sky-200 transition cursor-pointer">
+                🔊 비교 듣기
+              </button>
+            </div>
+            <p class="text-slate-600 line-through font-medium">${escapeHtml(n.literal || '')}</p>
+            <div class="space-y-1">
+              <span class="inline-block px-2 py-0.5 rounded-md font-bold bg-emerald-100 text-emerald-800">✅ 원어민 표현</span>
+              <p class="text-sm font-extrabold text-emerald-950">${escapeHtml(n.native || '')}</p>
+            </div>
+            ${n.noteKo ? `<p class="text-slate-600 leading-relaxed border-t border-slate-200/70 pt-2">${escapeHtml(n.noteKo)}</p>` : ''}
+          </div>
+        `).join('');
+      }
+
+      function renderBpItemList(set) {
+        if (!el.bpItemList) return;
+        const items = Array.isArray(set?.items) ? set.items : [];
+
+        if (el.btnBpBlindToggle) {
+          el.btnBpBlindToggle.setAttribute('aria-pressed', String(state.bpBlindMode));
+          if (state.bpBlindMode) {
+            el.btnBpBlindToggle.textContent = '👁️ 영어 가리기 (1초 인출 모드): ON';
+            el.btnBpBlindToggle.className = 'px-4 py-2 rounded-xl text-xs sm:text-sm font-bold border border-indigo-700 bg-indigo-600 text-white shadow-xs transition cursor-pointer shrink-0';
+          } else {
+            el.btnBpBlindToggle.textContent = '👁️ 영어 가리기 (1초 인출 모드): OFF';
+            el.btnBpBlindToggle.className = 'px-4 py-2 rounded-xl text-xs sm:text-sm font-bold border border-indigo-200 bg-indigo-50 hover:bg-indigo-100 text-indigo-800 shadow-2xs transition cursor-pointer shrink-0';
+          }
+        }
+
+        let completedCount = 0;
+        items.forEach(it => {
+          const chk = getBpItemChecks(set.id, it.id);
+          if (chk.s1 && chk.s2 && chk.s3) completedCount += 1;
+        });
+        if (el.bpProgressBadge) {
+          el.bpProgressBadge.textContent = `${completedCount} / ${items.length} 완료`;
+        }
+
+        if (items.length === 0) {
+          el.bpItemList.innerHTML = '<p class="text-xs text-slate-500">이 세트에 문장이 없습니다.</p>';
+          return;
+        }
+
+        el.bpItemList.innerHTML = items.map((it, idx) => {
+          const key = `${set.id}::${it.id}`;
+          const isMasked = state.bpBlindMode && !state.bpRevealedItems[key];
+          const chk = getBpItemChecks(set.id, it.id);
+          const isRec = state.bpItemRecordingIdx === idx;
+          const fb = state.bpItemFeedbackMap[key];
+          const variants = Array.isArray(it.variants) ? it.variants : [];
+
+          return `
+            <div class="rounded-2xl border border-slate-200 bg-slate-50/50 p-4 space-y-3">
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <div class="flex flex-wrap items-center gap-1.5 min-w-0">
+                  <span class="px-2 py-0.5 rounded-md text-[11px] font-extrabold bg-indigo-600 text-white">Q${idx + 1}</span>
+                  <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-sky-100 text-pte-navy">${escapeHtml(it.pattern || '')}</span>
+                </div>
+                <div class="flex flex-wrap items-center gap-1.5 shrink-0">
+                  <button type="button" data-bp-speak-item="${idx}"
+                    class="px-2.5 py-1 rounded-lg text-xs font-bold bg-white hover:bg-sky-50 text-pte-blue border border-sky-200 transition cursor-pointer">
+                    🔊 듣기
+                  </button>
+                  <button type="button" data-bp-record-item="${idx}"
+                    class="px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer ${
+                      isRec
+                        ? 'bg-slate-900 text-white ring-2 ring-rose-400'
+                        : 'bg-rose-600 hover:bg-rose-700 text-white'
+                    }">
+                    ${isRec ? '⏹️ 녹음 완료' : '🎤 영어로 말하기'}
+                  </button>
+                  <button type="button"
+                    data-ai-vocab-word="${escapeHtml(it.en || it.pattern)}"
+                    data-ai-vocab-meaning="${escapeHtml(it.kr || '')}"
+                    data-ai-vocab-example="${escapeHtml(it.pattern || '')}"
+                    class="px-2.5 py-1 rounded-lg text-xs font-bold bg-teal-600 hover:bg-teal-700 text-white transition cursor-pointer">
+                    + 단어장
+                  </button>
+                </div>
+              </div>
+
+              <!-- Korean Prompt -->
+              <p class="text-sm sm:text-base font-extrabold text-slate-900 leading-snug">${escapeHtml(it.kr || '')}</p>
+
+              <!-- English Model Box (Masked in 1-Second Retrieval Mode unless revealed) -->
+              ${isMasked ? `
+                <div class="rounded-xl border border-dashed border-indigo-300 bg-indigo-50/70 px-4 py-3 flex flex-wrap items-center justify-between gap-2">
+                  <span class="text-xs font-semibold text-indigo-800">👁️ 1초 인출 모드: 영어를 보지 말고 먼저 입으로 내뱉어 보세요!</span>
+                  <button type="button" data-bp-reveal-item="${idx}"
+                    class="px-3 py-1 rounded-lg text-xs font-bold bg-white hover:bg-indigo-100 text-indigo-700 border border-indigo-200 transition cursor-pointer shrink-0">
+                    👀 정답 보기
+                  </button>
+                </div>
+              ` : `
+                <div class="rounded-xl border border-emerald-200 bg-white p-3.5 space-y-1.5">
+                  <p class="text-sm sm:text-base font-bold text-emerald-950">${escapeHtml(it.en || '')}</p>
+                  ${variants.length > 0 ? `
+                    <div class="pt-1 border-t border-slate-100 space-y-0.5 text-xs text-slate-600">
+                      ${variants.map(v => `<p>• ${escapeHtml(v)}</p>`).join('')}
+                    </div>
+                  ` : ''}
+                </div>
+              `}
+
+              <!-- 3 Persistent Progress Checkboxes -->
+              <div class="flex flex-wrap items-center gap-3 pt-1 text-xs text-slate-700">
+                <label class="inline-flex items-center gap-1.5 cursor-pointer select-none">
+                  <input type="checkbox" data-bp-check-item="${idx}" data-bp-check-step="s1" ${chk.s1 ? 'checked' : ''}
+                    class="rounded border-slate-300 text-pte-blue focus:ring-pte-blue" />
+                  <span class="font-semibold">1회 읽기</span>
+                </label>
+                <label class="inline-flex items-center gap-1.5 cursor-pointer select-none">
+                  <input type="checkbox" data-bp-check-item="${idx}" data-bp-check-step="s2" ${chk.s2 ? 'checked' : ''}
+                    class="rounded border-slate-300 text-pte-blue focus:ring-pte-blue" />
+                  <span class="font-semibold">2회 읽기</span>
+                </label>
+                <label class="inline-flex items-center gap-1.5 cursor-pointer select-none">
+                  <input type="checkbox" data-bp-check-item="${idx}" data-bp-check-step="s3" ${chk.s3 ? 'checked' : ''}
+                    class="rounded border-slate-300 text-emerald-600 focus:ring-emerald-600" />
+                  <span class="font-bold text-emerald-800">3회 보지 않고 말하기</span>
+                </label>
+              </div>
+
+              <!-- Spoken Attempt AI Evaluation & Audio Playback -->
+              ${fb ? `
+                <div class="rounded-xl border border-indigo-200 bg-white p-3.5 space-y-2 text-xs">
+                  ${fb.audioUrl ? `<audio controls preload="metadata" src="${escapeHtml(fb.audioUrl)}" class="w-full h-8 rounded-lg"></audio>` : ''}
+                  ${fb.loading ? `
+                    <p class="text-indigo-700 font-bold animate-pulse">🤖 Gemini AI가 직역 여부와 원어민 뉘앙스를 분석 중입니다...</p>
+                  ` : fb.error ? `
+                    <p class="text-rose-700 font-semibold">${escapeHtml(fb.error)}</p>
+                  ` : `
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                      <span class="px-2 py-0.5 rounded-full text-[11px] font-bold ${fb.matchedNativeNuance ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">
+                        ${fb.matchedNativeNuance ? '✅ 원어민 뉘앙스 적중!' : '💡 직역 탈출 코칭'}
+                      </span>
+                      ${fb.transcript ? `<span class="text-slate-500">내 발화: "${escapeHtml(fb.transcript)}"</span>` : ''}
+                    </div>
+                    <p class="text-slate-800 leading-relaxed font-medium">${escapeHtml(fb.feedbackKo || '')}</p>
+                    ${fb.naturalUpgrade ? `
+                      <div class="flex flex-wrap items-center justify-between gap-2 rounded-lg bg-emerald-50 border border-emerald-200 px-3 py-2">
+                        <span class="font-bold text-emerald-900">추천 표현: ${escapeHtml(fb.naturalUpgrade)}</span>
+                        <button type="button"
+                          data-ai-vocab-word="${escapeHtml(fb.naturalUpgrade)}"
+                          data-ai-vocab-meaning="${escapeHtml(it.kr || '원어민 패턴 교정')}"
+                          data-ai-vocab-example=""
+                          class="px-2 py-0.5 rounded text-[11px] font-bold bg-teal-600 hover:bg-teal-700 text-white cursor-pointer">
+                          + 단어장
+                        </button>
+                      </div>
+                    ` : ''}
+                  `}
+                </div>
+              ` : ''}
+            </div>
+          `;
+        }).join('');
+      }
+
+      function renderBpMyoList(set) {
+        if (!el.bpMyoList) return;
+        const prompts = Array.isArray(set?.makeYourOwnPrompts) ? set.makeYourOwnPrompts : [];
+        if (prompts.length === 0) {
+          el.bpMyoList.innerHTML = '<p class="text-xs text-slate-500">등록된 응용 영작 프롬프트가 없습니다.</p>';
+          return;
+        }
+
+        el.bpMyoList.innerHTML = prompts.map((p, idx) => {
+          const key = `${set.id}::${p.id || idx}`;
+          const draft = state.bpProgress?.myoDrafts?.[key] || {};
+          const userVal = draft.userText || '';
+          const ai = draft.aiResult || null;
+          const isVoice = state.bpMyoVoiceIdx === idx;
+          const isBusy = Boolean(draft.loading);
+
+          return `
+            <div class="rounded-xl border border-slate-200 bg-slate-50/70 p-4 space-y-2.5 text-xs">
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <div class="flex flex-wrap items-center gap-2">
+                  <span class="px-2.5 py-0.5 rounded-full font-bold bg-teal-100 text-teal-800">${escapeHtml(p.pattern || '')}</span>
+                  <span class="font-bold text-slate-800 text-xs sm:text-sm">${escapeHtml(p.promptKo || '')}</span>
+                </div>
+              </div>
+              <div class="flex flex-col sm:flex-row gap-2">
+                <input type="text" data-bp-myo-input="${idx}" value="${escapeHtml(userVal)}"
+                  placeholder="위 패턴을 활용해 나만의 영어 문장을 입력하거나 음성으로 말해보세요..."
+                  class="flex-1 min-w-0 px-3 py-2 rounded-xl border border-slate-300 bg-white text-xs sm:text-sm focus:ring-2 focus:ring-teal-500 outline-none" />
+                <div class="flex items-center gap-1.5 shrink-0">
+                  <button type="button" data-bp-myo-voice="${idx}"
+                    class="px-3 py-2 rounded-xl text-xs font-bold transition cursor-pointer ${
+                      isVoice ? 'bg-slate-900 text-white ring-2 ring-rose-400' : 'bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200'
+                    }">
+                    ${isVoice ? '⏹️ 정지' : '🎤 음성 입력'}
+                  </button>
+                  <button type="button" data-bp-myo-grade="${idx}" ${isBusy ? 'disabled' : ''}
+                    class="px-3.5 py-2 rounded-xl text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 transition cursor-pointer disabled:opacity-50">
+                    ${isBusy ? '교정 중...' : '✨ AI 원어민 교정'}
+                  </button>
+                </div>
+              </div>
+              ${draft.error ? `<p class="text-rose-700 font-semibold">${escapeHtml(draft.error)}</p>` : ''}
+              ${ai && ai.correctedEn ? `
+                <div class="rounded-xl border border-emerald-200 bg-white p-3 space-y-1.5">
+                  <div class="flex flex-wrap items-center justify-between gap-2">
+                    <span class="font-bold text-emerald-800">✅ 원어민 (NZ 실생활/직장) 추천 문장</span>
+                    <div class="flex items-center gap-1.5 shrink-0">
+                      <button type="button" data-bp-speak-text="${escapeHtml(ai.correctedEn)}"
+                        class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-sky-50 hover:bg-sky-100 text-pte-blue border border-sky-200 cursor-pointer">
+                        🔊 듣기
+                      </button>
+                      <button type="button"
+                        data-ai-vocab-word="${escapeHtml(ai.correctedEn)}"
+                        data-ai-vocab-meaning="${escapeHtml(ai.meaningKo || p.promptKo || '')}"
+                        data-ai-vocab-example="${escapeHtml(p.pattern || '')}"
+                        class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-teal-600 hover:bg-teal-700 text-white cursor-pointer">
+                        + 단어장 저장
+                      </button>
+                    </div>
+                  </div>
+                  <p class="text-sm font-bold text-slate-900">${escapeHtml(ai.correctedEn)}</p>
+                  ${ai.explanationKo ? `<p class="text-slate-600 leading-relaxed">${escapeHtml(ai.explanationKo)}</p>` : ''}
+                </div>
+              ` : ''}
+            </div>
+          `;
+        }).join('');
+      }
+
+      function getBpSelectedMissionIds(set) {
+        if (!state.bpProgress.selectedMissions) state.bpProgress.selectedMissions = {};
+        let selected = state.bpProgress.selectedMissions[set.id];
+        if (!Array.isArray(selected)) {
+          selected = (set.items || []).slice(0, 2).map(it => it.id);
+          state.bpProgress.selectedMissions[set.id] = selected;
+          saveBpProgress();
+        }
+        return selected;
+      }
+
+      function renderBpMissionList(set) {
+        if (!el.bpMissionList) return;
+        const items = Array.isArray(set?.items) ? set.items : [];
+        const selected = new Set(getBpSelectedMissionIds(set));
+
+        if (el.bpMissionCountBadge) {
+          el.bpMissionCountBadge.textContent = `${selected.size}개 선택됨`;
+        }
+
+        el.bpMissionList.innerHTML = items.map(it => {
+          const isChecked = selected.has(it.id);
+          return `
+            <label class="flex items-start gap-2 rounded-xl border p-2.5 cursor-pointer transition text-xs ${
+              isChecked ? 'border-fuchsia-400 bg-white shadow-2xs' : 'border-fuchsia-200/70 bg-white/60 hover:bg-white'
+            }">
+              <input type="checkbox" data-bp-mission-id="${escapeHtml(it.id)}" ${isChecked ? 'checked' : ''}
+                class="mt-0.5 rounded border-fuchsia-300 text-fuchsia-600 focus:ring-fuchsia-500" />
+              <div class="min-w-0">
+                <p class="font-bold text-slate-900 truncate">${escapeHtml(it.pattern)}</p>
+                <p class="text-[11px] text-slate-500 truncate">${escapeHtml(it.kr)}</p>
+              </div>
+            </label>
+          `;
+        }).join('');
+      }
+
+      function renderBpWorkspace() {
+        const sets = Array.isArray(state.liveAcademySets) && state.liveAcademySets.length > 0
+          ? state.liveAcademySets
+          : DEFAULT_LIVE_ACADEMY_SETS;
+        const set = getActiveBpSet();
+        if (set) state.bpActiveSetId = set.id;
+
+        if (el.bpSetSelect) {
+          el.bpSetSelect.innerHTML = sets.map(s => `
+            <option value="${escapeHtml(s.id)}" ${s.id === state.bpActiveSetId ? 'selected' : ''}>
+              ${escapeHtml(s.title)} (${(s.items || []).length}문장)
+            </option>
+          `).join('');
+        }
+        if (el.bpYtLink) {
+          el.bpYtLink.href = set.youtubeUrl || '#';
+          el.bpYtLink.classList.toggle('hidden', !set.youtubeUrl);
+        }
+        if (el.btnBpDeleteSet) {
+          const isOnlyDefault = sets.length <= DEFAULT_LIVE_ACADEMY_SETS.length && String(set.id || '').startsWith('la-set-');
+          el.btnBpDeleteSet.disabled = isOnlyDefault;
+          el.btnBpDeleteSet.classList.toggle('opacity-45', isOnlyDefault);
+        }
+
+        renderBpNuanceList(set);
+        renderBpItemList(set);
+        renderBpMyoList(set);
+        renderBpMissionList(set);
+        renderStudyStepper();
+      }
+
+      function stopBpRecording(discard = false) {
+        if (state.bpMediaRecorder && state.bpMediaRecorder.state !== 'inactive') {
+          state._bpDiscard = Boolean(discard);
+          try {
+            state.bpMediaRecorder.stop();
+          } catch (e) {
+            releaseMicrophoneStream();
+            state.bpItemRecordingIdx = null;
+            state.bpMyoVoiceIdx = null;
+          }
+        } else {
+          if (discard) releaseMicrophoneStream();
+          state.bpItemRecordingIdx = null;
+          state.bpMyoVoiceIdx = null;
+        }
+        renderStudyStepper();
+      }
+
+      async function toggleBpItemRecording(idx) {
+        if (state.bpItemRecordingIdx === idx) {
+          stopBpRecording(false);
+          return;
+        }
+        stopBpRecording(true);
+        ensureAudioContext();
+        cancelSpeech();
+
+        const set = getActiveBpSet();
+        const item = set?.items?.[idx];
+        if (!item) return;
+
+        if (el.bpTtsStatus) el.bpTtsStatus.textContent = `마이크 연결 중... (Q${idx + 1})`;
+        const ok = await requestMicrophone();
+        if (!ok || !state.micStream || state.mode !== 'brain-pattern') {
+          releaseMicrophoneStream();
+          if (el.bpTtsStatus) el.bpTtsStatus.textContent = '마이크 권한이 없거나 장치를 찾을 수 없습니다.';
+          return;
+        }
+
+        try {
+          state.bpAudioChunks = [];
+          state._bpDiscard = false;
+          const mime = pickSupportedMimeType();
+          const options = mime ? { mimeType: mime } : undefined;
+          const recorder = new MediaRecorder(state.micStream, options);
+          const actualMime = (recorder.mimeType || mime || 'audio/webm').split(';')[0];
+
+          recorder.ondataavailable = (ev) => {
+            if (ev.data && ev.data.size > 0) state.bpAudioChunks.push(ev.data);
+          };
+
+          recorder.onstop = () => {
+            // Strictly release microphone immediately so iOS earphones return to Media mode
+            releaseMicrophoneStream();
+            state.bpMediaRecorder = null;
+            const prevIdx = state.bpItemRecordingIdx;
+            state.bpItemRecordingIdx = null;
+            const discard = state._bpDiscard;
+            state._bpDiscard = false;
+
+            if (discard || prevIdx === null || state.bpAudioChunks.length === 0) {
+              state.bpAudioChunks = [];
+              renderBpWorkspace();
+              return;
+            }
+
+            const blob = new Blob(state.bpAudioChunks, { type: actualMime });
+            state.bpAudioChunks = [];
+            evaluateBpItemAudio(set, prevIdx, blob, actualMime);
+          };
+
+          state.bpMediaRecorder = recorder;
+          state.bpItemRecordingIdx = idx;
+          recorder.start();
+          if (el.bpTtsStatus) el.bpTtsStatus.textContent = `🔴 Q${idx + 1} 녹음 중... 완료되면 [⏹️ 녹음 완료]를 누르세요.`;
+          renderBpWorkspace();
+        } catch (err) {
+          releaseMicrophoneStream();
+          state.bpItemRecordingIdx = null;
+          renderBpWorkspace();
+        }
+      }
+
+      async function evaluateBpItemAudio(set, idx, blob, mimeType) {
+        const item = set?.items?.[idx];
+        if (!item) return;
+        const key = `${set.id}::${item.id}`;
+        const prevUrl = state.bpItemFeedbackMap[key]?.audioUrl;
+        if (prevUrl) { try { URL.revokeObjectURL(prevUrl); } catch (e) {} }
+        const audioUrl = URL.createObjectURL(blob);
+
+        state.bpRevealedItems[key] = true;
+        state.bpItemFeedbackMap[key] = { audioUrl, loading: true };
+        renderBpWorkspace();
+
+        const prompt = [
+          `You are a native English speaking coach focusing on Korean-to-English nuance and avoiding literal Konglish translation.`,
+          `Korean Prompt: "${item.kr}"`,
+          `Target Pattern: "${item.pattern}"`,
+          `Native Model Sentence: "${item.en}"${Array.isArray(item.variants) && item.variants.length ? ` (Variants: ${item.variants.join(' | ')})` : ''}`,
+          `\nListen carefully to the learner's recorded English speech.`,
+          `1) Transcribe what they said.`,
+          `2) Check if they fell into awkward literal Korean-English translation or missed the native nuance/pattern.`,
+          `3) Give concise 1-2 sentence Korean feedback + a natural correction if needed.`,
+          `Respond strictly in JSON:`,
+          `{`,
+          `  "transcript": "<what the learner said>",`,
+          `  "matchedNativeNuance": <true or false>,`,
+          `  "feedbackKo": "<1-2 concise Korean sentences explaining literal vs native nuance feedback>",`,
+          `  "naturalUpgrade": "<natural native English sentence if needed, or the best phrasing>",`,
+          `  "weaknessTarget": "<specific Konglish phrase or mispronounced word if any, else empty string>",`,
+          `  "weaknessCategory": "<konglish or pronunciation>"`,
+          `}`
+        ].join('\n');
+
+        try {
+          const base64Audio = await blobToBase64(blob);
+          const res = await callGeminiApi([
+            { text: prompt },
+            { inlineData: { mimeType, data: base64Audio } }
+          ]);
+
+          state.bpItemFeedbackMap[key] = {
+            audioUrl,
+            loading: false,
+            transcript: res.transcript || '',
+            matchedNativeNuance: Boolean(res.matchedNativeNuance),
+            feedbackKo: res.feedbackKo || '',
+            naturalUpgrade: res.naturalUpgrade || ''
+          };
+
+          if (res.weaknessTarget || res.matchedNativeNuance === false) {
+            recordWeaknessEntry({
+              target: res.weaknessTarget || res.transcript || item.pattern,
+              correction: res.naturalUpgrade || item.en,
+              category: res.weaknessCategory === 'pronunciation' ? 'pronunciation' : 'konglish',
+              sourceMode: 'brain-pattern'
+            });
+          }
+        } catch (err) {
+          state.bpItemFeedbackMap[key] = {
+            audioUrl,
+            loading: false,
+            error: err.isMissingKey
+              ? '⚙️ 상단 [AI 설정]에서 Gemini API 키를 저장하면 음성 뉘앙스 채점이 실행됩니다.'
+              : (err.message || '채점 중 오류가 발생했습니다.')
+          };
+        }
+        renderBpWorkspace();
+      }
+
+      async function gradeBpMyoItem(idx, { audioBlob = null, mimeType = 'audio/webm' } = {}) {
+        const set = getActiveBpSet();
+        const promptObj = set?.makeYourOwnPrompts?.[idx];
+        if (!promptObj) return;
+        const key = `${set.id}::${promptObj.id || idx}`;
+        if (!state.bpProgress.myoDrafts) state.bpProgress.myoDrafts = {};
+        const draft = state.bpProgress.myoDrafts[key] || { userText: '' };
+        const userText = (draft.userText || '').trim();
+
+        if (!audioBlob && userText.length < 3) {
+          draft.error = '영어 문장을 작성하거나 [🎤 음성 입력]으로 말한 뒤 AI 교정을 요청하세요.';
+          state.bpProgress.myoDrafts[key] = draft;
+          renderBpMyoList(set);
+          return;
+        }
+
+        draft.loading = true;
+        draft.error = '';
+        state.bpProgress.myoDrafts[key] = draft;
+        renderBpMyoList(set);
+
+        const prompt = [
+          `You are a New Zealand daily life & early childhood education (ECE) workplace English coach.`,
+          `Target Pattern: "${promptObj.pattern}"`,
+          `Task Prompt (Korean): "${promptObj.promptKo}"`,
+          audioBlob
+            ? `Listen to the attached audio sentence created by the learner, transcribe it, and refine it into natural New Zealand English.`
+            : `Refine the learner sentence below so it sounds completely natural in New Zealand everyday/workplace life while using the target pattern:\n"${userText}"`,
+          `Respond strictly in JSON:`,
+          `{`,
+          `  "userTranscript": "<learner English sentence>",`,
+          `  "correctedEn": "<polished natural NZ English sentence>",`,
+          `  "meaningKo": "<short Korean meaning>",`,
+          `  "explanationKo": "<concise Korean feedback on naturalness and NZ nuance>"`,
+          `}`
+        ].join('\n');
+
+        try {
+          const parts = [{ text: prompt }];
+          if (audioBlob) {
+            const base64Audio = await blobToBase64(audioBlob);
+            parts.push({ inlineData: { mimeType, data: base64Audio } });
+          }
+          const res = await callGeminiApi(parts);
+          draft.loading = false;
+          if (res.userTranscript) draft.userText = res.userTranscript;
+          draft.aiResult = {
+            correctedEn: res.correctedEn || '',
+            meaningKo: res.meaningKo || promptObj.promptKo,
+            explanationKo: res.explanationKo || ''
+          };
+          state.bpProgress.myoDrafts[key] = draft;
+          saveBpProgress();
+        } catch (err) {
+          draft.loading = false;
+          draft.error = err.isMissingKey
+            ? '⚙️ AI 설정에서 Gemini API 키를 입력하면 원어민 교정 결과를 받을 수 있습니다.'
+            : (err.message || '교정 중 오류가 발생했습니다.');
+          state.bpProgress.myoDrafts[key] = draft;
+        }
+        renderBpMyoList(set);
+      }
+
+      async function toggleBpMyoVoiceInput(idx) {
+        if (state.bpMyoVoiceIdx === idx) {
+          stopBpRecording(false);
+          return;
+        }
+        stopBpRecording(true);
+        ensureAudioContext();
+        cancelSpeech();
+
+        const set = getActiveBpSet();
+        const promptObj = set?.makeYourOwnPrompts?.[idx];
+        if (!promptObj) return;
+
+        const ok = await requestMicrophone();
+        if (!ok || !state.micStream || state.mode !== 'brain-pattern') {
+          releaseMicrophoneStream();
+          return;
+        }
+
+        try {
+          state.bpAudioChunks = [];
+          state._bpDiscard = false;
+          const mime = pickSupportedMimeType();
+          const options = mime ? { mimeType: mime } : undefined;
+          const recorder = new MediaRecorder(state.micStream, options);
+          const actualMime = (recorder.mimeType || mime || 'audio/webm').split(';')[0];
+
+          recorder.ondataavailable = (ev) => {
+            if (ev.data && ev.data.size > 0) state.bpAudioChunks.push(ev.data);
+          };
+          recorder.onstop = () => {
+            releaseMicrophoneStream();
+            state.bpMediaRecorder = null;
+            const prevIdx = state.bpMyoVoiceIdx;
+            state.bpMyoVoiceIdx = null;
+            const discard = state._bpDiscard;
+            state._bpDiscard = false;
+
+            if (discard || prevIdx === null || state.bpAudioChunks.length === 0) {
+              state.bpAudioChunks = [];
+              renderBpWorkspace();
+              return;
+            }
+            const blob = new Blob(state.bpAudioChunks, { type: actualMime });
+            state.bpAudioChunks = [];
+            gradeBpMyoItem(prevIdx, { audioBlob: blob, mimeType: actualMime });
+          };
+
+          state.bpMediaRecorder = recorder;
+          state.bpMyoVoiceIdx = idx;
+          recorder.start();
+          renderBpWorkspace();
+        } catch (e) {
+          releaseMicrophoneStream();
+          state.bpMyoVoiceIdx = null;
+          renderBpWorkspace();
+        }
+      }
+
+      async function generateBpSetWithAi() {
+        if (state.bpGenerating) return;
+        const urlInput = (el.bpGenUrlInput?.value || '').trim();
+        const notesInput = (el.bpGenNotesInput?.value || '').trim();
+        const videoId = urlInput ? parseYouTubeVideoId(urlInput) : '';
+        const canonicalWatchUrl = videoId ? toCanonicalWatchUrl(videoId) : '';
+
+        if (!canonicalWatchUrl && notesInput.length < 20) {
+          if (el.bpGenStatus) el.bpGenStatus.textContent = '⚠️ 유튜브 URL을 입력하거나 강의 필기 노트를 20자 이상 붙여넣어 주세요.';
+          return;
+        }
+
+        const schemaText = [
+          `Create an English Brain Pattern Training study set matching this exact JSON schema:`,
+          `{`,
+          `  "title": "<concise Korean/English set title>",`,
+          `  "nuanceComparisons": [`,
+          `    { "literal": "<Konglish or literal mistake>", "native": "<natural native English>", "noteKo": "<Korean nuance explanation>" }`,
+          `  ],`,
+          `  "items": [`,
+          `    { "pattern": "<reusable core pattern>", "kr": "<natural Korean prompt>", "en": "<natural native English sentence>", "variants": ["<optional alternative phrasing>"] }`,
+          `  ],`,
+          `  "makeYourOwnPrompts": [`,
+          `    { "pattern": "<pattern>", "promptKo": "<Korean personalized writing task>" }`,
+          `  ]`,
+          `}`
+        ].join('\n');
+
+        const parts = notesInput.length >= 20
+          ? [{
+              text: [
+                `Convert the English study notes / transcript below into a structured pattern training set (4-10 items, 3-4 nuance comparisons, 3 Make-Your-Own prompts).`,
+                notesInput.slice(0, 14000),
+                schemaText
+              ].join('\n')
+            }]
+          : [
+              { fileData: { fileUri: canonicalWatchUrl } },
+              {
+                text: [
+                  `Analyze the attached English learning YouTube lesson (${canonicalWatchUrl}) and build a structured 4-step pattern training set (5-10 core sentence patterns, 3-4 literal vs native nuance comparisons, and 3 Make-Your-Own prompts).`,
+                  schemaText
+                ].join('\n')
+              }
+            ];
+
+        state.bpGenerating = true;
+        if (el.btnBpGenerateSet) {
+          el.btnBpGenerateSet.disabled = true;
+          el.btnBpGenerateSet.classList.add('opacity-60');
+        }
+        if (el.bpGenStatus) {
+          el.bpGenStatus.textContent = notesInput.length >= 20
+            ? '⏳ 강의 노트로 패턴 훈련 세트를 생성 중입니다...'
+            : `⏳ 유튜브 영상(${canonicalWatchUrl})에서 패턴 훈련 세트를 생성 중입니다...`;
+        }
+
+        try {
+          const result = await callGeminiApi(parts);
+          const itemsRaw = Array.isArray(result?.items) ? result.items : [];
+          const stamp = Date.now();
+          const newSet = {
+            id: `la-custom-${stamp}`,
+            title: String(result?.title || '새 패턴 훈련 세트').trim(),
+            youtubeUrl: canonicalWatchUrl || urlInput || '',
+            createdAt: stamp,
+            nuanceComparisons: Array.isArray(result?.nuanceComparisons) ? result.nuanceComparisons : [],
+            items: itemsRaw.map((it, i) => ({
+              id: `la-${stamp}-q${i + 1}`,
+              pattern: String(it.pattern || '').trim(),
+              kr: String(it.kr || '').trim(),
+              en: String(it.en || '').trim(),
+              variants: Array.isArray(it.variants) ? it.variants.map(v => String(v).trim()).filter(Boolean) : []
+            })).filter(it => it.kr && it.en),
+            makeYourOwnPrompts: (Array.isArray(result?.makeYourOwnPrompts) ? result.makeYourOwnPrompts : []).map((p, i) => ({
+              id: `la-${stamp}-myo-${i + 1}`,
+              pattern: String(p.pattern || '').trim(),
+              promptKo: String(p.promptKo || '').trim()
+            }))
+          };
+
+          if (newSet.items.length === 0) {
+            throw new Error('생성된 패턴 문장이 없습니다. 입력 내용을 확인해주세요.');
+          }
+
+          state.liveAcademySets.unshift(newSet);
+          saveStorage(STORAGE_KEYS.liveAcademySets, state.liveAcademySets);
+          state.bpActiveSetId = newSet.id;
+          if (el.bpGeneratorBox) el.bpGeneratorBox.classList.add('hidden');
+          if (el.bpGenStatus) el.bpGenStatus.textContent = `✅ '${newSet.title}' 세트가 저장되었습니다!`;
+          renderBpWorkspace();
+        } catch (err) {
+          if (el.bpGenStatus && !err.isMissingKey) {
+            el.bpGenStatus.textContent = '❌ ' + formatYouTubeDirectAiError(err, notesInput.length < 20);
+          }
+        } finally {
+          state.bpGenerating = false;
+          if (el.btnBpGenerateSet) {
+            el.btnBpGenerateSet.disabled = false;
+            el.btnBpGenerateSet.classList.remove('opacity-60');
+          }
+        }
+      }
+
+      // Brain Pattern & Roleplay Mission Event Listeners
+      if (el.btnRpClearMission) {
+        el.btnRpClearMission.addEventListener('click', () => {
+          state.rpMissionTargets = [];
+          renderRoleplayMissionBar();
+        });
+      }
+      if (el.btnBpOpenGenerator) {
+        el.btnBpOpenGenerator.addEventListener('click', () => {
+          el.bpGeneratorBox?.classList.toggle('hidden');
+        });
+      }
+      if (el.bpSetSelect) {
+        el.bpSetSelect.addEventListener('change', (e) => {
+          stopBpRecording(true);
+          cancelSpeech();
+          state.bpActiveSetId = e.target.value;
+          renderBpWorkspace();
+        });
+      }
+      if (el.btnBpDeleteSet) {
+        el.btnBpDeleteSet.addEventListener('click', () => {
+          const sets = Array.isArray(state.liveAcademySets) ? state.liveAcademySets : [];
+          if (sets.length <= 1) return;
+          stopBpRecording(true);
+          const remaining = sets.filter(s => s.id !== state.bpActiveSetId);
+          state.liveAcademySets = remaining.length > 0 ? remaining : DEFAULT_LIVE_ACADEMY_SETS;
+          saveStorage(STORAGE_KEYS.liveAcademySets, state.liveAcademySets);
+          state.bpActiveSetId = state.liveAcademySets[0].id;
+          renderBpWorkspace();
+        });
+      }
+      if (el.btnBpGenerateSet) {
+        el.btnBpGenerateSet.addEventListener('click', generateBpSetWithAi);
+      }
+      if (el.btnBpToggleNuance) {
+        el.btnBpToggleNuance.addEventListener('click', () => {
+          state.bpNuanceOpen = !state.bpNuanceOpen;
+          renderBpNuanceList(getActiveBpSet());
+        });
+      }
+      if (el.btnBpBlindToggle) {
+        el.btnBpBlindToggle.addEventListener('click', () => {
+          state.bpBlindMode = !state.bpBlindMode;
+          if (state.bpBlindMode) state.bpRevealedItems = {};
+          renderBpItemList(getActiveBpSet());
+        });
+      }
+      if (el.bpNuanceList) {
+        el.bpNuanceList.addEventListener('click', (e) => {
+          const btn = e.target.closest('[data-bp-speak-nuance]');
+          if (!btn) return;
+          const idx = parseInt(btn.dataset.bpSpeakNuance, 10);
+          const n = getActiveBpSet()?.nuanceComparisons?.[idx];
+          if (n && n.native) {
+            speakText(cleanTtsPhrase(n.native), { targetMode: 'brain-pattern' });
+          }
+        });
+      }
+      if (el.bpItemList) {
+        el.bpItemList.addEventListener('click', (e) => {
+          const speakBtn = e.target.closest('[data-bp-speak-item]');
+          if (speakBtn) {
+            const idx = parseInt(speakBtn.dataset.bpSpeakItem, 10);
+            const it = getActiveBpSet()?.items?.[idx];
+            if (it && it.en) speakText(cleanTtsPhrase(it.en), { targetMode: 'brain-pattern' });
+            return;
+          }
+          const revealBtn = e.target.closest('[data-bp-reveal-item]');
+          if (revealBtn) {
+            const set = getActiveBpSet();
+            const idx = parseInt(revealBtn.dataset.bpRevealItem, 10);
+            const it = set?.items?.[idx];
+            if (set && it) {
+              state.bpRevealedItems[`${set.id}::${it.id}`] = true;
+              renderBpItemList(set);
+            }
+            return;
+          }
+          const recBtn = e.target.closest('[data-bp-record-item]');
+          if (recBtn) {
+            const idx = parseInt(recBtn.dataset.bpRecordItem, 10);
+            if (!Number.isNaN(idx)) toggleBpItemRecording(idx);
+          }
+        });
+        el.bpItemList.addEventListener('change', (e) => {
+          const chk = e.target.closest('[data-bp-check-item]');
+          if (!chk) return;
+          const set = getActiveBpSet();
+          const idx = parseInt(chk.dataset.bpCheckItem, 10);
+          const stepKey = chk.dataset.bpCheckStep;
+          const it = set?.items?.[idx];
+          if (!set || !it || !stepKey) return;
+          const key = `${set.id}::${it.id}`;
+          if (!state.bpProgress.checks) state.bpProgress.checks = {};
+          const cur = getBpItemChecks(set.id, it.id);
+          cur[stepKey] = Boolean(chk.checked);
+          state.bpProgress.checks[key] = cur;
+          saveBpProgress();
+          renderBpItemList(set);
+        });
+      }
+      if (el.bpMyoList) {
+        el.bpMyoList.addEventListener('input', (e) => {
+          const inp = e.target.closest('[data-bp-myo-input]');
+          if (!inp) return;
+          const set = getActiveBpSet();
+          const idx = parseInt(inp.dataset.bpMyoInput, 10);
+          const promptObj = set?.makeYourOwnPrompts?.[idx];
+          if (!set || !promptObj) return;
+          const key = `${set.id}::${promptObj.id || idx}`;
+          if (!state.bpProgress.myoDrafts) state.bpProgress.myoDrafts = {};
+          const cur = state.bpProgress.myoDrafts[key] || {};
+          cur.userText = inp.value;
+          state.bpProgress.myoDrafts[key] = cur;
+          saveBpProgress();
+        });
+        el.bpMyoList.addEventListener('click', (e) => {
+          const voiceBtn = e.target.closest('[data-bp-myo-voice]');
+          if (voiceBtn) {
+            const idx = parseInt(voiceBtn.dataset.bpMyoVoice, 10);
+            if (!Number.isNaN(idx)) toggleBpMyoVoiceInput(idx);
+            return;
+          }
+          const gradeBtn = e.target.closest('[data-bp-myo-grade]');
+          if (gradeBtn) {
+            const idx = parseInt(gradeBtn.dataset.bpMyoGrade, 10);
+            if (!Number.isNaN(idx)) gradeBpMyoItem(idx);
+            return;
+          }
+          const speakBtn = e.target.closest('[data-bp-speak-text]');
+          if (speakBtn) {
+            speakText(cleanTtsPhrase(speakBtn.dataset.bpSpeakText), { targetMode: 'brain-pattern' });
+          }
+        });
+      }
+      if (el.bpMissionList) {
+        el.bpMissionList.addEventListener('change', (e) => {
+          const chk = e.target.closest('[data-bp-mission-id]');
+          if (!chk) return;
+          const set = getActiveBpSet();
+          const id = chk.dataset.bpMissionId;
+          if (!set || !id) return;
+          const cur = getBpSelectedMissionIds(set).filter(x => x !== id);
+          if (chk.checked) cur.push(id);
+          state.bpProgress.selectedMissions[set.id] = cur;
+          saveBpProgress();
+          renderBpMissionList(set);
+        });
+      }
+      if (el.btnBpStartMission) {
+        el.btnBpStartMission.addEventListener('click', () => {
+          const set = getActiveBpSet();
+          const selectedIds = getBpSelectedMissionIds(set);
+          const chosen = (set.items || []).filter(it => selectedIds.includes(it.id));
+          if (chosen.length === 0) {
+            if (el.bpMissionStatus) el.bpMissionStatus.textContent = '⚠️ 롤플레이에서 연습할 표현을 1개 이상 선택해주세요.';
+            return;
+          }
+          state.rpMissionTargets = chosen.map(it => ({
+            id: it.id,
+            pattern: it.pattern,
+            en: it.en,
+            kr: it.kr,
+            completed: false
+          }));
+          if (el.bpMissionStatus) el.bpMissionStatus.textContent = '';
+          switchMode('roleplay');
+        });
+      }
+
       // Clean up resources on page unload
       window.addEventListener('beforeunload', () => {
         clearTimerInterval();
@@ -9940,6 +11434,7 @@
         stopShadowingCompare(false);
         stopRoleplayRecording(true);
         stopDrillRecording(true);
+        stopBpRecording(true);
         stopYtsComparePlayback(false);
         stopYtsRecording(true);
         stopYtsPlayback();
@@ -9952,6 +11447,11 @@
         }
         if (state.ytsRecordedUrl) {
           try { URL.revokeObjectURL(state.ytsRecordedUrl); } catch (e) {}
+        }
+        if (state.bpItemFeedbackMap) {
+          Object.values(state.bpItemFeedbackMap).forEach(v => {
+            if (v && v.audioUrl) { try { URL.revokeObjectURL(v.audioUrl); } catch (e) {} }
+          });
         }
         if (Array.isArray(state.rpBlobUrls)) {
           state.rpBlobUrls.forEach(u => { try { URL.revokeObjectURL(u); } catch (e) {} });
@@ -9984,6 +11484,7 @@
       updateDiBankSummaryUI();
       renderRoleplayWorkspace();
       renderYtsWorkspace();
+      renderBpWorkspace();
       renderWeaknessReport();
       syncVoiceDropdowns();
       renderTabs();
