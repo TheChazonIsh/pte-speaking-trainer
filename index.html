@@ -4234,50 +4234,93 @@
       function renderSvgChart(q) {
         const W = 640;
         const H = 350;
-        const escapeHtml = (str) => String(str)
+        const escapeHtml = (str) => String(str ?? '')
           .replace(/&/g, '&amp;')
           .replace(/</g, '&lt;')
-          .replace(/>/g, '&gt;');
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+
+        const ALLOWED_SVG_NAMED_COLORS = new Set([
+          'black', 'white', 'gray', 'grey', 'red', 'blue', 'green', 'yellow',
+          'orange', 'purple', 'pink', 'teal', 'cyan', 'indigo', 'navy', 'slate',
+          'emerald', 'amber', 'rose', 'sky', 'violet', 'none', 'transparent', 'currentcolor'
+        ]);
+        const sanitizeSvgColor = (color, fallback = '#0284c7') => {
+          const raw = String(color ?? '').trim();
+          if (/^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(raw)) return raw;
+          if (/^var\(--[a-zA-Z0-9_-]+\)$/.test(raw)) return raw;
+          if (ALLOWED_SVG_NAMED_COLORS.has(raw.toLowerCase())) return raw;
+          return fallback;
+        };
+        const toFiniteNum = (val, fallback = 0) => {
+          const n = Number(val);
+          return Number.isFinite(n) ? n : fallback;
+        };
+        const renderEmptyChart = (msg = '표시할 차트 데이터가 없습니다.') => {
+          const safeTitle = escapeHtml(q?.title || 'Describe Image Chart');
+          const safeSubtitle = escapeHtml(q?.subtitle || '');
+          return `<svg viewBox="0 0 ${W} ${H}" class="w-full max-w-[640px] h-auto rounded-lg border border-slate-200 bg-white shadow-xs" role="img" aria-label="${safeTitle}">
+            <rect x="0" y="0" width="${W}" height="${H}" rx="12" fill="#ffffff" />
+            <text x="${W / 2}" y="26" text-anchor="middle" font-size="15" font-weight="700" fill="#0f172a">${safeTitle}</text>
+            ${safeSubtitle ? `<text x="${W / 2}" y="43" text-anchor="middle" font-size="11.5" fill="#64748b">${safeSubtitle}</text>` : ''}
+            <rect x="60" y="76" width="${W - 120}" height="${H - 116}" rx="12" fill="#f8fafc" stroke="#cbd5e1" stroke-dasharray="6 4" />
+            <text x="${W / 2}" y="${H / 2 + 16}" text-anchor="middle" font-size="13.5" font-weight="600" fill="#64748b">${escapeHtml(msg)}</text>
+          </svg>`;
+        };
+
+        if (!q || typeof q !== 'object') {
+          return renderEmptyChart();
+        }
 
         let inner = `
           <rect x="0" y="0" width="${W}" height="${H}" rx="12" fill="#ffffff" />
-          <text x="${W / 2}" y="26" text-anchor="middle" font-size="15" font-weight="700" fill="#0f172a">${escapeHtml(q.title)}</text>
-          <text x="${W / 2}" y="43" text-anchor="middle" font-size="11.5" fill="#64748b">${escapeHtml(q.subtitle)}</text>
+          <text x="${W / 2}" y="26" text-anchor="middle" font-size="15" font-weight="700" fill="#0f172a">${escapeHtml(q.title || '')}</text>
+          <text x="${W / 2}" y="43" text-anchor="middle" font-size="11.5" fill="#64748b">${escapeHtml(q.subtitle || '')}</text>
         `;
 
         if (q.chartType === 'pie') {
+          const slices = Array.isArray(q.slices) ? q.slices.filter(s => s && typeof s === 'object') : [];
+          if (slices.length === 0) return renderEmptyChart();
+
           const cx = 195;
           const cy = 198;
           const r = 112;
-          const total = q.slices.reduce((sum, s) => sum + s.value, 0) || 100;
+          const total = slices.reduce((sum, s) => sum + Math.max(0, toFiniteNum(s.value, 0)), 0);
+          if (!(total > 0)) return renderEmptyChart();
           let startAngle = -Math.PI / 2;
 
-          q.slices.forEach((s, idx) => {
-            const sliceAngle = (s.value / total) * Math.PI * 2;
+          slices.forEach((s, idx) => {
+            const val = Math.max(0, toFiniteNum(s.value, 0));
+            const color = sanitizeSvgColor(s.color, DI_COLOR_PALETTE[idx % DI_COLOR_PALETTE.length]);
+            const sliceAngle = (val / total) * Math.PI * 2;
             const endAngle = startAngle + sliceAngle;
             const midAngle = startAngle + sliceAngle / 2;
 
-            const x1 = cx + r * Math.cos(startAngle);
-            const y1 = cy + r * Math.sin(startAngle);
-            const x2 = cx + r * Math.cos(endAngle);
-            const y2 = cy + r * Math.sin(endAngle);
-            const largeArc = sliceAngle > Math.PI ? 1 : 0;
-
-            inner += `<path d="M ${cx} ${cy} L ${x1.toFixed(1)} ${y1.toFixed(1)} A ${r} ${r} 0 ${largeArc} 1 ${x2.toFixed(1)} ${y2.toFixed(1)} Z" fill="${s.color}" stroke="#ffffff" stroke-width="2" />`;
+            if (sliceAngle >= Math.PI * 1.9999) {
+              inner += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${color}" stroke="#ffffff" stroke-width="2" />`;
+            } else if (sliceAngle > 0) {
+              const x1 = cx + r * Math.cos(startAngle);
+              const y1 = cy + r * Math.sin(startAngle);
+              const x2 = cx + r * Math.cos(endAngle);
+              const y2 = cy + r * Math.sin(endAngle);
+              const largeArc = sliceAngle > Math.PI ? 1 : 0;
+              inner += `<path d="M ${cx} ${cy} L ${x1.toFixed(1)} ${y1.toFixed(1)} A ${r} ${r} 0 ${largeArc} 1 ${x2.toFixed(1)} ${y2.toFixed(1)} Z" fill="${color}" stroke="#ffffff" stroke-width="2" />`;
+            }
 
             // Percentage text inside slice
-            const labelR = s.value >= 12 ? r * 0.65 : r * 0.78;
+            const labelR = val >= 12 ? r * 0.65 : r * 0.78;
             const lx = cx + labelR * Math.cos(midAngle);
             const ly = cy + labelR * Math.sin(midAngle);
-            inner += `<text x="${lx.toFixed(1)}" y="${(ly + 4).toFixed(1)}" text-anchor="middle" font-size="11.5" font-weight="800" fill="#ffffff">${s.value}%</text>`;
+            inner += `<text x="${lx.toFixed(1)}" y="${(ly + 4).toFixed(1)}" text-anchor="middle" font-size="11.5" font-weight="800" fill="#ffffff">${val}%</text>`;
 
             // Right-side legend
             const legX = 365;
             const legY = 108 + idx * 42;
             inner += `
-              <rect x="${legX}" y="${legY}" width="16" height="16" rx="4" fill="${s.color}" />
-              <text x="${legX + 26}" y="${legY + 13}" font-size="13" font-weight="600" fill="#1e293b">${escapeHtml(s.label)}</text>
-              <text x="${W - 36}" y="${legY + 13}" text-anchor="end" font-size="13" font-weight="700" fill="${s.color}">${s.value}%</text>
+              <rect x="${legX}" y="${legY}" width="16" height="16" rx="4" fill="${color}" />
+              <text x="${legX + 26}" y="${legY + 13}" font-size="13" font-weight="600" fill="#1e293b">${escapeHtml(s.label || '')}</text>
+              <text x="${W - 36}" y="${legY + 13}" text-anchor="end" font-size="13" font-weight="700" fill="${color}">${val}%</text>
             `;
 
             startAngle = endAngle;
@@ -4287,10 +4330,13 @@
           inner += `<circle cx="${cx}" cy="${cy}" r="34" fill="#ffffff" />`;
           inner += `<text x="${cx}" y="${cy + 4}" text-anchor="middle" font-size="11" font-weight="700" fill="#64748b">100%</text>`;
 
-          return `<svg viewBox="0 0 ${W} ${H}" class="w-full max-w-[640px] h-auto rounded-lg border border-slate-200 bg-white shadow-xs" role="img" aria-label="${escapeHtml(q.title)}">${inner}</svg>`;
+          return `<svg viewBox="0 0 ${W} ${H}" class="w-full max-w-[640px] h-auto rounded-lg border border-slate-200 bg-white shadow-xs" role="img" aria-label="${escapeHtml(q.title || '')}">${inner}</svg>`;
         }
 
         if (q.chartType === 'process') {
+          const steps = Array.isArray(q.steps) ? q.steps.filter(st => st && typeof st === 'object') : [];
+          if (steps.length === 0) return renderEmptyChart();
+
           // 3 cards on top row, 2 centered cards on bottom row with crisp connecting arrows
           const boxW = 166;
           const boxH = 88;
@@ -4317,81 +4363,106 @@
           inner += `<path d="M ${440 + boxW / 2} ${78 + boxH + 4} L ${440 + boxW / 2} 192 L ${135 + boxW / 2} 192 L ${135 + boxW / 2} ${218 - 6}" fill="none" stroke="#64748b" stroke-width="2.2" marker-end="url(#proc-arrow)" />`;
           inner += `<line x1="${135 + boxW + 4}" y1="${218 + boxH / 2}" x2="${345 - 6}" y2="${218 + boxH / 2}" stroke="#64748b" stroke-width="2.2" marker-end="url(#proc-arrow)" />`;
 
-          q.steps.forEach((st, idx) => {
+          steps.forEach((st, idx) => {
             const pos = positions[idx];
             if (!pos) return;
+            const color = sanitizeSvgColor(st.color, DI_COLOR_PALETTE[idx % DI_COLOR_PALETTE.length]);
             inner += `
-              <rect x="${pos.x}" y="${pos.y}" width="${boxW}" height="${boxH}" rx="12" fill="#f8fafc" stroke="${st.color}" stroke-width="2.2" />
-              <rect x="${pos.x + 10}" y="${pos.y + 10}" width="52" height="20" rx="10" fill="${st.color}" />
-              <text x="${pos.x + 36}" y="${pos.y + 24}" text-anchor="middle" font-size="10.5" font-weight="700" fill="#ffffff">Step ${escapeHtml(st.step)}</text>
-              <text x="${pos.x + boxW / 2}" y="${pos.y + 52}" text-anchor="middle" font-size="13.5" font-weight="800" fill="#0f172a">${escapeHtml(st.title)}</text>
-              <text x="${pos.x + boxW / 2}" y="${pos.y + 72}" text-anchor="middle" font-size="11" fill="#475569">${escapeHtml(st.detail)}</text>
+              <rect x="${pos.x}" y="${pos.y}" width="${boxW}" height="${boxH}" rx="12" fill="#f8fafc" stroke="${color}" stroke-width="2.2" />
+              <rect x="${pos.x + 10}" y="${pos.y + 10}" width="52" height="20" rx="10" fill="${color}" />
+              <text x="${pos.x + 36}" y="${pos.y + 24}" text-anchor="middle" font-size="10.5" font-weight="700" fill="#ffffff">Step ${escapeHtml(st.step ?? idx + 1)}</text>
+              <text x="${pos.x + boxW / 2}" y="${pos.y + 52}" text-anchor="middle" font-size="13.5" font-weight="800" fill="#0f172a">${escapeHtml(st.title || '')}</text>
+              <text x="${pos.x + boxW / 2}" y="${pos.y + 72}" text-anchor="middle" font-size="11" fill="#475569">${escapeHtml(st.detail || '')}</text>
             `;
           });
 
-          return `<svg viewBox="0 0 ${W} ${H}" class="w-full max-w-[640px] h-auto rounded-lg border border-slate-200 bg-white shadow-xs" role="img" aria-label="${escapeHtml(q.title)}">${inner}</svg>`;
+          return `<svg viewBox="0 0 ${W} ${H}" class="w-full max-w-[640px] h-auto rounded-lg border border-slate-200 bg-white shadow-xs" role="img" aria-label="${escapeHtml(q.title || '')}">${inner}</svg>`;
         }
 
         if (q.chartType === 'horizontal-bar') {
+          const data = Array.isArray(q.data) ? q.data.filter(d => d && typeof d === 'object') : [];
+          if (data.length === 0) return renderEmptyChart();
+
           const pad = { top: 66, right: 64, bottom: 36, left: 132 };
           const plotW = W - pad.left - pad.right;
           const plotH = H - pad.top - pad.bottom;
-          const maxVal = Math.max(...q.data.map(d => d.value));
+          const maxVal = Math.max(0, ...data.map(d => Math.max(0, toFiniteNum(d.value, 0))));
           const niceStep = maxVal > 2000 ? 1500 : maxVal > 50 ? 20 : 5;
-          const xMax = Math.ceil((maxVal * 1.1) / niceStep) * niceStep;
+          const xMax = Math.max(1, Math.ceil((maxVal * 1.1) / niceStep) * niceStep);
+          const safeUnit = escapeHtml(String(q.unit ?? ''));
 
           // Vertical gridlines
           for (let i = 0; i <= 4; i++) {
             const val = Math.round(((xMax / 4) * i) * 10) / 10;
             const x = pad.left + (val / xMax) * plotW;
-            const lbl = q.unit === 'B' ? `$${val}B` : `${val}${q.unit}`;
+            const lbl = q.unit === 'B' ? `$${val}B` : `${val}${safeUnit}`;
             inner += `
               <line x1="${x}" y1="${pad.top}" x2="${x}" y2="${pad.top + plotH}" stroke="${i === 0 ? '#94a3b8' : '#e2e8f0'}" stroke-width="${i === 0 ? 1.5 : 1}" />
               <text x="${x}" y="${pad.top + plotH + 18}" text-anchor="middle" font-size="11" fill="#64748b">${lbl}</text>
             `;
           }
 
-          const rowH = plotH / q.data.length;
+          const rowH = plotH / data.length;
           const barH = Math.min(32, rowH * 0.58);
 
-          q.data.forEach((d, idx) => {
+          data.forEach((d, idx) => {
+            const val = Math.max(0, toFiniteNum(d.value, 0));
+            const color = sanitizeSvgColor(d.color, DI_COLOR_PALETTE[idx % DI_COLOR_PALETTE.length]);
             const y = pad.top + idx * rowH + (rowH - barH) / 2;
-            const w = (d.value / xMax) * plotW;
-            const valLabel = q.unit === 'B' ? `$${d.value}B` : `${d.value.toLocaleString()}${q.unit}`;
+            const w = (val / xMax) * plotW;
+            const valLabel = q.unit === 'B' ? `$${val}B` : `${val.toLocaleString()}${safeUnit}`;
             inner += `
-              <text x="${pad.left - 10}" y="${y + barH / 2 + 4}" text-anchor="end" font-size="12" font-weight="600" fill="#334155">${escapeHtml(d.label)}</text>
-              <rect x="${pad.left}" y="${y}" width="${w}" height="${barH}" rx="4" fill="${d.color}" />
+              <text x="${pad.left - 10}" y="${y + barH / 2 + 4}" text-anchor="end" font-size="12" font-weight="600" fill="#334155">${escapeHtml(d.label || '')}</text>
+              <rect x="${pad.left}" y="${y}" width="${w}" height="${barH}" rx="4" fill="${color}" />
               <text x="${pad.left + w + 7}" y="${y + barH / 2 + 4}" font-size="11.5" font-weight="700" fill="#0f172a">${valLabel}</text>
             `;
           });
 
-          return `<svg viewBox="0 0 ${W} ${H}" class="w-full max-w-[640px] h-auto rounded-lg border border-slate-200 bg-white shadow-xs" role="img" aria-label="${escapeHtml(q.title)}">${inner}</svg>`;
+          return `<svg viewBox="0 0 ${W} ${H}" class="w-full max-w-[640px] h-auto rounded-lg border border-slate-200 bg-white shadow-xs" role="img" aria-label="${escapeHtml(q.title || '')}">${inner}</svg>`;
         }
 
         // Standard Cartesian charts (bar, grouped-bar, line, single-line)
+        const supportedCartesian = ['bar', 'grouped-bar', 'line', 'single-line'];
+        if (!supportedCartesian.includes(q.chartType)) {
+          return renderEmptyChart();
+        }
+
         const pad = { top: 52, right: 28, bottom: 52, left: 58 };
         const plotW = W - pad.left - pad.right;
         const plotH = H - pad.top - pad.bottom;
 
         let maxVal = 0;
         if (q.chartType === 'bar') {
-          maxVal = Math.max(...q.data.map(d => d.value));
+          const data = Array.isArray(q.data) ? q.data.filter(d => d && typeof d === 'object') : [];
+          if (data.length === 0) return renderEmptyChart();
+          maxVal = Math.max(0, ...data.map(d => Math.max(0, toFiniteNum(d.value, 0))));
         } else if (q.chartType === 'line') {
-          maxVal = Math.max(...q.series.flatMap(s => s.points.map(p => p.value)));
+          const series = Array.isArray(q.series) ? q.series.filter(s => s && typeof s === 'object') : [];
+          const allPts = series.flatMap(s => Array.isArray(s.points) ? s.points : []);
+          if (series.length === 0 || allPts.length === 0) return renderEmptyChart();
+          maxVal = Math.max(0, ...allPts.map(p => Math.max(0, toFiniteNum(p?.value, 0))));
         } else if (q.chartType === 'grouped-bar') {
-          maxVal = Math.max(...q.series.flatMap(s => s.values));
+          const cats = Array.isArray(q.categories) ? q.categories : [];
+          const series = Array.isArray(q.series) ? q.series.filter(s => s && typeof s === 'object') : [];
+          if (cats.length === 0 || series.length === 0) return renderEmptyChart();
+          const allVals = series.flatMap(s => Array.isArray(s.values) ? s.values : [0]);
+          maxVal = Math.max(0, ...allVals.map(v => Math.max(0, toFiniteNum(v, 0))));
         } else if (q.chartType === 'single-line') {
-          maxVal = Math.max(...q.points.map(p => p.value));
+          const pts = Array.isArray(q.points) ? q.points.filter(p => p && typeof p === 'object') : [];
+          if (pts.length === 0) return renderEmptyChart();
+          maxVal = Math.max(0, ...pts.map(p => Math.max(0, toFiniteNum(p.value, 0))));
         }
 
         const niceStep = maxVal > 800 ? 300 : maxVal > 300 ? 100 : maxVal > 60 ? 20 : maxVal > 15 ? 10 : 3;
-        const yMax = Math.ceil((maxVal * 1.12) / niceStep) * niceStep;
+        const yMax = Math.max(1, Math.ceil((maxVal * 1.12) / niceStep) * niceStep);
         const ticks = 5;
 
         const formatChartVal = (val, unit) => {
-          if (unit === '$') return `$${val}`;
-          if (unit === 'B') return `$${val}B`;
-          return unit ? `${val}${unit}` : `${val}`;
+          const safeNum = toFiniteNum(val, 0);
+          const safeUnit = escapeHtml(String(unit ?? ''));
+          if (unit === '$') return `$${safeNum}`;
+          if (unit === 'B') return `$${safeNum}B`;
+          return safeUnit ? `${safeNum}${safeUnit}` : `${safeNum}`;
         };
 
         for (let i = 0; i <= ticks; i++) {
@@ -4407,113 +4478,130 @@
         inner += `<line x1="${pad.left}" y1="${pad.top}" x2="${pad.left}" y2="${pad.top + plotH}" stroke="#94a3b8" stroke-width="1.5" />`;
 
         if (q.chartType === 'bar') {
-          const count = q.data.length;
+          const data = q.data.filter(d => d && typeof d === 'object');
+          const count = data.length;
           const slotW = plotW / count;
           const barW = Math.min(58, slotW * 0.56);
 
-          q.data.forEach((d, idx) => {
-            const barH = (d.value / yMax) * plotH;
+          data.forEach((d, idx) => {
+            const val = Math.max(0, toFiniteNum(d.value, 0));
+            const color = sanitizeSvgColor(d.color, DI_COLOR_PALETTE[idx % DI_COLOR_PALETTE.length]);
+            const barH = (val / yMax) * plotH;
             const x = pad.left + idx * slotW + (slotW - barW) / 2;
             const y = pad.top + plotH - barH;
-            const valLabel = formatChartVal(d.value, q.unit);
+            const valLabel = formatChartVal(val, q.unit);
             inner += `
-              <rect x="${x}" y="${y}" width="${barW}" height="${barH}" rx="4" fill="${d.color}" />
+              <rect x="${x}" y="${y}" width="${barW}" height="${barH}" rx="4" fill="${color}" />
               <text x="${x + barW / 2}" y="${y - 6}" text-anchor="middle" font-size="11.5" font-weight="700" fill="#1e293b">${valLabel}</text>
-              <text x="${x + barW / 2}" y="${pad.top + plotH + 20}" text-anchor="middle" font-size="11.5" font-weight="600" fill="#334155">${escapeHtml(d.label)}</text>
+              <text x="${x + barW / 2}" y="${pad.top + plotH + 20}" text-anchor="middle" font-size="11.5" font-weight="600" fill="#334155">${escapeHtml(d.label || '')}</text>
             `;
           });
         } else if (q.chartType === 'grouped-bar') {
-          const count = q.categories.length;
+          const cats = q.categories;
+          const series = q.series.filter(s => s && typeof s === 'object');
+          const count = cats.length;
           const slotW = plotW / Math.max(1, count);
-          const seriesCount = Math.max(1, q.series.length);
+          const seriesCount = Math.max(1, series.length);
           const barW = Math.min(34, (slotW * 0.7) / seriesCount);
           const gap = 6;
 
-          q.series.forEach((s, si) => {
+          series.forEach((s, si) => {
             const lx = pad.left + 12 + si * 165;
+            const color = sanitizeSvgColor(s.color, DI_COLOR_PALETTE[si % DI_COLOR_PALETTE.length]);
             inner += `
-              <rect x="${lx}" y="${pad.top - 2}" width="11" height="11" rx="2" fill="${s.color}" />
-              <text x="${lx + 16}" y="${pad.top + 8}" font-size="11" font-weight="600" fill="#334155">${escapeHtml(s.name)}</text>
+              <rect x="${lx}" y="${pad.top - 2}" width="11" height="11" rx="2" fill="${color}" />
+              <text x="${lx + 16}" y="${pad.top + 8}" font-size="11" font-weight="600" fill="#334155">${escapeHtml(s.name || '')}</text>
             `;
           });
 
-          q.categories.forEach((cat, idx) => {
+          cats.forEach((cat, idx) => {
             const centerX = pad.left + idx * slotW + slotW / 2;
             const totalGroupW = barW * seriesCount + gap * Math.max(0, seriesCount - 1);
-            q.series.forEach((s, si) => {
-              const val = s.values[idx] ?? 0;
+            series.forEach((s, si) => {
+              const rawV = Array.isArray(s.values) ? s.values[idx] : 0;
+              const val = Math.max(0, toFiniteNum(rawV, 0));
+              const color = sanitizeSvgColor(s.color, DI_COLOR_PALETTE[si % DI_COLOR_PALETTE.length]);
               const barH = (val / yMax) * plotH;
               const x = centerX - totalGroupW / 2 + si * (barW + gap);
               const y = pad.top + plotH - barH;
               const valLabel = formatChartVal(val, q.unit);
               inner += `
-                <rect x="${x}" y="${y}" width="${barW}" height="${barH}" rx="3" fill="${s.color}" />
+                <rect x="${x}" y="${y}" width="${barW}" height="${barH}" rx="3" fill="${color}" />
                 <text x="${x + barW / 2}" y="${y - 5}" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1e293b">${valLabel}</text>
               `;
             });
             inner += `<text x="${centerX}" y="${pad.top + plotH + 20}" text-anchor="middle" font-size="11.5" font-weight="600" fill="#334155">${escapeHtml(cat)}</text>`;
           });
         } else if (q.chartType === 'line') {
-          const labels = (q.series[0]?.points || []).map(p => p.label);
-          const stepX = plotW / Math.max(1, labels.length - 1);
+          const series = q.series.filter(s => s && typeof s === 'object' && Array.isArray(s.points) && s.points.length > 0);
+          if (series.length === 0) return renderEmptyChart();
+          const labels = series[0].points.map(p => String(p?.label ?? ''));
+          const stepX = labels.length > 1 ? plotW / (labels.length - 1) : 0;
 
-          q.series.forEach((s, si) => {
+          series.forEach((s, si) => {
             const lx = pad.left + 12 + si * 145;
+            const color = sanitizeSvgColor(s.color, DI_COLOR_PALETTE[si % DI_COLOR_PALETTE.length]);
             inner += `
-              <line x1="${lx}" y1="${pad.top + 4}" x2="${lx + 18}" y2="${pad.top + 4}" stroke="${s.color}" stroke-width="3" />
-              <circle cx="${lx + 9}" cy="${pad.top + 4}" r="3.5" fill="${s.color}" />
-              <text x="${lx + 24}" y="${pad.top + 8}" font-size="11" font-weight="600" fill="#334155">${escapeHtml(s.name)}</text>
+              <line x1="${lx}" y1="${pad.top + 4}" x2="${lx + 18}" y2="${pad.top + 4}" stroke="${color}" stroke-width="3" />
+              <circle cx="${lx + 9}" cy="${pad.top + 4}" r="3.5" fill="${color}" />
+              <text x="${lx + 24}" y="${pad.top + 8}" font-size="11" font-weight="600" fill="#334155">${escapeHtml(s.name || '')}</text>
             `;
           });
 
           labels.forEach((lbl, idx) => {
-            const x = pad.left + idx * stepX;
+            const x = labels.length > 1 ? pad.left + idx * stepX : pad.left + plotW / 2;
             inner += `<text x="${x}" y="${pad.top + plotH + 20}" text-anchor="middle" font-size="11.5" font-weight="600" fill="#334155">${escapeHtml(lbl)}</text>`;
           });
 
-          q.series.forEach((s, si) => {
+          series.forEach((s, si) => {
+            const color = sanitizeSvgColor(s.color, DI_COLOR_PALETTE[si % DI_COLOR_PALETTE.length]);
             const pts = s.points.map((p, idx) => {
-              const x = pad.left + idx * stepX;
-              const y = pad.top + plotH - (p.value / yMax) * plotH;
-              return { x, y, value: p.value };
+              const x = s.points.length > 1 ? pad.left + idx * stepX : pad.left + plotW / 2;
+              const val = Math.max(0, toFiniteNum(p?.value, 0));
+              const y = pad.top + plotH - (val / yMax) * plotH;
+              return { x, y, value: val };
             });
             const dAttr = pts.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(' ');
-            inner += `<path d="${dAttr}" fill="none" stroke="${s.color}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />`;
+            inner += `<path d="${dAttr}" fill="none" stroke="${color}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />`;
             pts.forEach(p => {
               const dy = si === 0 ? -10 : 16;
               inner += `
-                <circle cx="${p.x}" cy="${p.y}" r="4.5" fill="#ffffff" stroke="${s.color}" stroke-width="2.5" />
-                <text x="${p.x}" y="${p.y + dy}" text-anchor="middle" font-size="10.5" font-weight="700" fill="${s.color}">${formatChartVal(p.value, q.unit)}</text>
+                <circle cx="${p.x}" cy="${p.y}" r="4.5" fill="#ffffff" stroke="${color}" stroke-width="2.5" />
+                <text x="${p.x}" y="${p.y + dy}" text-anchor="middle" font-size="10.5" font-weight="700" fill="${color}">${formatChartVal(p.value, q.unit)}</text>
               `;
             });
           });
         } else if (q.chartType === 'single-line') {
-          const stepX = plotW / Math.max(1, q.points.length - 1);
-          const pts = q.points.map((p, idx) => {
-            const x = pad.left + idx * stepX;
-            const y = pad.top + plotH - (p.value / yMax) * plotH;
-            return { x, y, label: p.label, value: p.value };
+          const rawPts = q.points.filter(p => p && typeof p === 'object');
+          if (rawPts.length === 0) return renderEmptyChart();
+          const seriesColor = sanitizeSvgColor(q.color, DI_COLOR_PALETTE[0]);
+          const stepX = rawPts.length > 1 ? plotW / (rawPts.length - 1) : 0;
+          const pts = rawPts.map((p, idx) => {
+            const x = rawPts.length > 1 ? pad.left + idx * stepX : pad.left + plotW / 2;
+            const val = Math.max(0, toFiniteNum(p.value, 0));
+            const y = pad.top + plotH - (val / yMax) * plotH;
+            return { x, y, label: String(p.label ?? ''), value: val };
           });
 
           const areaPath = `M ${pts[0].x} ${pad.top + plotH} ` +
             pts.map(p => `L ${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(' ') +
             ` L ${pts[pts.length - 1].x} ${pad.top + plotH} Z`;
-          inner += `<path d="${areaPath}" fill="${q.color}" fill-opacity="0.12" />`;
+          inner += `<path d="${areaPath}" fill="${seriesColor}" fill-opacity="0.12" />`;
 
           const linePath = pts.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(' ');
-          inner += `<path d="${linePath}" fill="none" stroke="${q.color}" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" />`;
+          inner += `<path d="${linePath}" fill="none" stroke="${seriesColor}" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" />`;
 
           pts.forEach(p => {
             const valLabel = formatChartVal(p.value, q.unit);
             inner += `
-              <circle cx="${p.x}" cy="${p.y}" r="5" fill="#ffffff" stroke="${q.color}" stroke-width="2.5" />
+              <circle cx="${p.x}" cy="${p.y}" r="5" fill="#ffffff" stroke="${seriesColor}" stroke-width="2.5" />
               <text x="${p.x}" y="${p.y - 11}" text-anchor="middle" font-size="11" font-weight="700" fill="#0f172a">${valLabel}</text>
               <text x="${p.x}" y="${pad.top + plotH + 20}" text-anchor="middle" font-size="11.5" font-weight="600" fill="#334155">${escapeHtml(p.label)}</text>
             `;
           });
         }
 
-        return `<svg viewBox="0 0 ${W} ${H}" class="w-full max-w-[640px] h-auto rounded-lg border border-slate-200 bg-white shadow-xs" role="img" aria-label="${escapeHtml(q.title)}">${inner}</svg>`;
+        return `<svg viewBox="0 0 ${W} ${H}" class="w-full max-w-[640px] h-auto rounded-lg border border-slate-200 bg-white shadow-xs" role="img" aria-label="${escapeHtml(q.title || '')}">${inner}</svg>`;
       }
 
       // ==========================================
@@ -6004,6 +6092,20 @@
           .replace(/'/g, '&#39;');
       }
 
+      function sanitizeHttpUrl(url) {
+        const raw = String(url ?? '').trim();
+        if (!raw) return '#';
+        try {
+          const parsed = new URL(raw);
+          if (parsed.protocol === 'http:' || parsed.protocol === 'https:') {
+            return parsed.href;
+          }
+          return '#';
+        } catch (e) {
+          return '#';
+        }
+      }
+
       function getSectionMeta(sectionKey) {
         if (sectionKey === 'roleplay') {
           return {
@@ -7256,6 +7358,19 @@
       const DI_COLOR_PALETTE = ['#0284c7', '#0d9488', '#4f46e5', '#f59e0b', '#ec4899', '#16a34a'];
 
       function normalizeDiQuestion(raw, id) {
+        const pickSafeColor = (val, fallbackIdx = 0) => {
+          const s = String(val ?? '').trim();
+          if (/^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(s)) return s;
+          if (/^(?:black|white|gray|grey|red|blue|green|yellow|orange|purple|pink|teal|cyan|indigo|navy|slate|emerald|amber|rose|sky|violet)$/i.test(s)) {
+            return s;
+          }
+          return DI_COLOR_PALETTE[fallbackIdx % DI_COLOR_PALETTE.length];
+        };
+        const toNum = (v, fb = 0) => {
+          const n = Number(v);
+          return Number.isFinite(n) ? n : fb;
+        };
+
         let chartType = String(raw?.chartType || 'bar').toLowerCase().trim();
         if (chartType === 'multi-line' || chartType === 'multiline') chartType = 'line';
         const validTypes = ['bar', 'grouped-bar', 'line', 'single-line', 'pie', 'process', 'horizontal-bar'];
@@ -7264,15 +7379,15 @@
         const labels = Array.isArray(raw?.labels) ? raw.labels.map(String) : [];
         const rawDatasets = Array.isArray(raw?.datasets) ? raw.datasets : [];
         const rawValues = Array.isArray(raw?.values)
-          ? raw.values.map(v => Number(v) || 0)
-          : (Array.isArray(rawDatasets[0]?.data) ? rawDatasets[0].data.map(v => Number(v) || 0) : []);
+          ? raw.values.map(v => toNum(v, 0))
+          : (Array.isArray(rawDatasets[0]?.data) ? rawDatasets[0].data.map(v => toNum(v, 0)) : []);
 
         const base = {
-          id,
+          id: String(id || `DI-${Date.now()}`),
           title: String(raw?.title || `AI Chart ${id}`).trim(),
           chartType,
           subtitle: String(raw?.subtitle || 'Data Overview').trim(),
-          unit: raw?.unit !== undefined ? String(raw.unit) : '',
+          unit: raw?.unit !== undefined && raw?.unit !== null ? String(raw.unit) : '',
           modelAnswer: String(raw?.modelAnswer || '').trim(),
           keyPoints: String(raw?.keyPoints || '').trim(),
           isCustomAi: true
@@ -7285,9 +7400,9 @@
             slices = labels.map((lbl, i) => ({ label: lbl, value: rawValues[i] ?? 10 }));
           }
           base.slices = slices.slice(0, 5).map((s, i) => ({
-            label: String(s.label || `Item ${i + 1}`),
-            value: Math.max(1, Number(s.value) || 0),
-            color: s.color || DI_COLOR_PALETTE[i % DI_COLOR_PALETTE.length]
+            label: String(s?.label || `Item ${i + 1}`),
+            value: Math.max(1, toNum(s?.value, 0)),
+            color: pickSafeColor(s?.color, i)
           }));
           if (base.slices.length === 0) {
             base.slices = [{ label: 'Category A', value: 60, color: DI_COLOR_PALETTE[0] }, { label: 'Category B', value: 40, color: DI_COLOR_PALETTE[1] }];
@@ -7299,10 +7414,10 @@
             steps = labels.map((lbl, i) => ({ step: String(i + 1), title: lbl, detail: 'Stage process' }));
           }
           base.steps = steps.slice(0, 5).map((st, i) => ({
-            step: String(st.step || i + 1),
-            title: String(st.title || `Stage ${i + 1}`).slice(0, 18),
-            detail: String(st.detail || '').slice(0, 26),
-            color: st.color || DI_COLOR_PALETTE[i % DI_COLOR_PALETTE.length]
+            step: String(st?.step || i + 1),
+            title: String(st?.title || `Stage ${i + 1}`).slice(0, 18),
+            detail: String(st?.detail || '').slice(0, 26),
+            color: pickSafeColor(st?.color, i)
           }));
           if (base.steps.length === 0) {
             base.steps = [{ step: '1', title: 'Input', detail: 'Collect materials', color: DI_COLOR_PALETTE[0] }, { step: '2', title: 'Output', detail: 'Final product', color: DI_COLOR_PALETTE[1] }];
@@ -7314,47 +7429,47 @@
           let series = Array.isArray(raw?.series) ? raw.series : [];
           if (series.length === 0 && rawDatasets.length > 0) {
             series = rawDatasets.map((ds, si) => ({
-              name: String(ds.name || ds.label || `Series ${si + 1}`),
-              color: ds.color || DI_COLOR_PALETTE[si % DI_COLOR_PALETTE.length],
-              values: (Array.isArray(ds.data) ? ds.data : []).map(v => Number(v) || 0)
+              name: String(ds?.name || ds?.label || `Series ${si + 1}`),
+              color: pickSafeColor(ds?.color, si),
+              values: (Array.isArray(ds?.data) ? ds.data : []).map(v => toNum(v, 0))
             }));
           }
           base.categories = cats.slice(0, 5);
           base.series = (series.length > 0 ? series : [{ name: 'Metric A', values: cats.map(() => 50) }, { name: 'Metric B', values: cats.map(() => 35) }])
             .slice(0, 3)
             .map((s, si) => ({
-              name: String(s.name || `Series ${si + 1}`),
-              color: s.color || DI_COLOR_PALETTE[si % DI_COLOR_PALETTE.length],
-              values: base.categories.map((_, ci) => Number((s.values || s.data || [])[ci]) || 0)
+              name: String(s?.name || `Series ${si + 1}`),
+              color: pickSafeColor(s?.color, si),
+              values: base.categories.map((_, ci) => toNum((s?.values || s?.data || [])[ci], 0))
             }));
         } else if (chartType === 'line') {
           let series = Array.isArray(raw?.series) ? raw.series : [];
           if (series.length === 0 && rawDatasets.length > 0 && labels.length > 0) {
             series = rawDatasets.map((ds, si) => ({
-              name: String(ds.name || ds.label || `Series ${si + 1}`),
-              color: ds.color || DI_COLOR_PALETTE[si % DI_COLOR_PALETTE.length],
-              points: labels.map((lbl, idx) => ({ label: lbl, value: Number((ds.data || [])[idx]) || 0 }))
+              name: String(ds?.name || ds?.label || `Series ${si + 1}`),
+              color: pickSafeColor(ds?.color, si),
+              points: labels.map((lbl, idx) => ({ label: lbl, value: toNum((ds?.data || [])[idx], 0) }))
             }));
           }
           base.series = (series.length > 0 ? series : [
             { name: 'Trend A', color: DI_COLOR_PALETTE[0], points: [{ label: '2021', value: 20 }, { label: '2023', value: 45 }, { label: '2025', value: 70 }] },
             { name: 'Trend B', color: DI_COLOR_PALETTE[1], points: [{ label: '2021', value: 35 }, { label: '2023', value: 30 }, { label: '2025', value: 25 }] }
           ]).slice(0, 3).map((s, si) => ({
-            name: String(s.name || `Series ${si + 1}`),
-            color: s.color || DI_COLOR_PALETTE[si % DI_COLOR_PALETTE.length],
-            points: (Array.isArray(s.points) && s.points.length > 0
+            name: String(s?.name || `Series ${si + 1}`),
+            color: pickSafeColor(s?.color, si),
+            points: (Array.isArray(s?.points) && s.points.length > 0
               ? s.points
-              : labels.map((lbl, idx) => ({ label: lbl, value: Number((s.values || s.data || [])[idx]) || 0 }))
-            ).map(p => ({ label: String(p.label ?? ''), value: Number(p.value) || 0 }))
+              : labels.map((lbl, idx) => ({ label: lbl, value: toNum((s?.values || s?.data || [])[idx], 0) }))
+            ).map(p => ({ label: String(p?.label ?? ''), value: toNum(p?.value, 0) }))
           }));
         } else if (chartType === 'single-line') {
           let pts = Array.isArray(raw?.points) ? raw.points : [];
           if (pts.length === 0 && labels.length > 0) {
             pts = labels.map((lbl, idx) => ({ label: lbl, value: rawValues[idx] ?? 0 }));
           }
-          base.color = raw?.color || DI_COLOR_PALETTE[0];
+          base.color = pickSafeColor(raw?.color, 0);
           base.points = (pts.length > 0 ? pts : [{ label: '2020', value: 20 }, { label: '2023', value: 45 }, { label: '2025', value: 65 }])
-            .map(p => ({ label: String(p.label ?? ''), value: Number(p.value) || 0 }));
+            .map(p => ({ label: String(p?.label ?? ''), value: toNum(p?.value, 0) }));
         } else {
           // 'bar' | 'horizontal-bar'
           let data = Array.isArray(raw?.data) ? raw.data : [];
@@ -7364,9 +7479,9 @@
           base.data = (data.length > 0 ? data : [{ label: 'A', value: 45 }, { label: 'B', value: 30 }, { label: 'C', value: 15 }])
             .slice(0, 6)
             .map((d, i) => ({
-              label: String(d.label || `Item ${i + 1}`),
-              value: Number(d.value) || 0,
-              color: d.color || DI_COLOR_PALETTE[i % DI_COLOR_PALETTE.length]
+              label: String(d?.label || `Item ${i + 1}`),
+              value: toNum(d?.value, 0),
+              color: pickSafeColor(d?.color, i)
             }));
         }
 
@@ -10070,6 +10185,29 @@
         return candidate;
       }
 
+      const DANGEROUS_OBJ_KEYS = new Set(['__proto__', 'constructor', 'prototype']);
+
+      function isSafeObjKey(k) {
+        return typeof k === 'string' && k.length > 0 && !DANGEROUS_OBJ_KEYS.has(k);
+      }
+
+      function stripDangerousKeys(val, depth = 0) {
+        if (depth > 12 || val === null || val === undefined) return val;
+        if (Array.isArray(val)) {
+          return val.map(item => stripDangerousKeys(item, depth + 1));
+        }
+        if (typeof val === 'object') {
+          const out = {};
+          Object.keys(val).forEach(k => {
+            if (isSafeObjKey(k)) {
+              out[k] = stripDangerousKeys(val[k], depth + 1);
+            }
+          });
+          return out;
+        }
+        return val;
+      }
+
       function mergeImportedData(rawText) {
         let parsed;
         try {
@@ -10079,12 +10217,13 @@
           return false;
         }
 
-        if (!parsed || typeof parsed !== 'object') {
+        if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
           showSyncFeedback('❌ 가져올 수 있는 데이터 객체가 아닙니다.', true);
           return false;
         }
 
-        const src = (parsed.data && typeof parsed.data === 'object') ? parsed.data : parsed;
+        parsed = stripDangerousKeys(parsed);
+        const src = (parsed.data && typeof parsed.data === 'object' && !Array.isArray(parsed.data)) ? parsed.data : parsed;
         const stats = {
           ytRlSets: 0,
           ytShadowSets: 0,
@@ -10101,12 +10240,27 @@
         if (Array.isArray(inRlSets)) {
           if (!Array.isArray(state.ytClipSets)) state.ytClipSets = [];
           const setIds = new Set(state.ytClipSets.map(s => s.id));
+          const toCleanClip = (c, idx) => {
+            const startSec = Math.max(0, Math.round(Number(c?.startSec) || 0));
+            const rawEnd = Math.round(Number(c?.endSec) || (startSec + 15));
+            return {
+              id: String(c?.id || `yt-clip-${idx + 1}`).trim().slice(0, 80),
+              title: String(c?.title || `Clip ${idx + 1}`).trim().slice(0, 160),
+              startSec,
+              endSec: rawEnd > startSec ? rawEnd : startSec + 15,
+              keywords: Array.isArray(c?.keywords) ? c.keywords.map(k => String(k).trim()).filter(Boolean).slice(0, 20) : [],
+              script: String(c?.script || '').trim(),
+              modelAnswer: String(c?.modelAnswer || '').trim(),
+              translation: String(c?.translation || '').trim()
+            };
+          };
           inRlSets.forEach(inSet => {
             if (!inSet || typeof inSet !== 'object' || !Array.isArray(inSet.clips)) return;
+            const cleanClips = inSet.clips.filter(c => c && typeof c === 'object').map(toCleanClip);
             const sameSet = state.ytClipSets.find(s => s.id === inSet.id);
             if (sameSet && sameSet.videoId === inSet.videoId) {
               const clipKeys = new Set((sameSet.clips || []).map(c => `${c.id}::${c.title}::${c.startSec}`));
-              inSet.clips.forEach(c => {
+              cleanClips.forEach(c => {
                 const k = `${c.id}::${c.title}::${c.startSec}`;
                 if (!clipKeys.has(k)) {
                   sameSet.clips.push(c);
@@ -10115,13 +10269,19 @@
                 }
               });
             } else {
-              const copy = JSON.parse(JSON.stringify(inSet));
-              if (!copy.id || setIds.has(copy.id)) {
-                copy.id = generateUniqueSyncId('yt-imp', setIds);
-              } else {
-                setIds.add(copy.id);
-              }
-              state.ytClipSets.push(copy);
+              const safeUrl = sanitizeHttpUrl(inSet.url);
+              const setId = (!inSet.id || typeof inSet.id !== 'string' || setIds.has(inSet.id))
+                ? generateUniqueSyncId('yt-imp', setIds)
+                : (setIds.add(inSet.id), inSet.id);
+              state.ytClipSets.push({
+                id: setId,
+                title: String(inSet.title || 'YouTube Clip Set').trim().slice(0, 160),
+                videoId: String(inSet.videoId || '').trim().slice(0, 32),
+                url: safeUrl === '#' ? '' : safeUrl,
+                overallSummary: String(inSet.overallSummary || '').trim(),
+                createdAt: Number.isFinite(Number(inSet.createdAt)) ? Number(inSet.createdAt) : Date.now(),
+                clips: cleanClips
+              });
               stats.ytRlSets += 1;
             }
           });
@@ -10133,13 +10293,26 @@
         if (Array.isArray(inYtsSets)) {
           if (!Array.isArray(state.ytShadowingSets)) state.ytShadowingSets = [];
           const setIds = new Set(state.ytShadowingSets.map(s => s.id));
+          const toCleanSentence = (s) => {
+            const startSec = Math.max(0, Math.round(Number(s?.startSec) || 0));
+            const rawEnd = Math.round(Number(s?.endSec) || (startSec + 5));
+            return {
+              startSec,
+              endSec: Math.max(startSec + 1, rawEnd),
+              situationTag: String(s?.situationTag || '실전회화').trim().slice(0, 60),
+              enText: String(s?.enText || '').trim(),
+              koMeaning: String(s?.koMeaning || '').trim(),
+              stressAndLinkingTip: String(s?.stressAndLinkingTip || '').trim()
+            };
+          };
           inYtsSets.forEach(inSet => {
             if (!inSet || typeof inSet !== 'object' || !Array.isArray(inSet.sentences)) return;
+            const cleanSentences = inSet.sentences.filter(s => s && typeof s === 'object' && String(s.enText || '').trim()).map(toCleanSentence);
             const sameSet = state.ytShadowingSets.find(s => s.id === inSet.id);
             if (sameSet && sameSet.videoId === inSet.videoId) {
               const sentKeys = new Set((sameSet.sentences || []).map(x => String(x.enText || '').trim().toLowerCase()));
-              inSet.sentences.forEach(s => {
-                const k = String(s.enText || '').trim().toLowerCase();
+              cleanSentences.forEach(s => {
+                const k = s.enText.toLowerCase();
                 if (k && !sentKeys.has(k)) {
                   sameSet.sentences.push(s);
                   sentKeys.add(k);
@@ -10147,13 +10320,18 @@
                 }
               });
             } else {
-              const copy = JSON.parse(JSON.stringify(inSet));
-              if (!copy.id || setIds.has(copy.id)) {
-                copy.id = generateUniqueSyncId('yts-imp', setIds);
-              } else {
-                setIds.add(copy.id);
-              }
-              state.ytShadowingSets.push(copy);
+              const safeUrl = sanitizeHttpUrl(inSet.url);
+              const setId = (!inSet.id || typeof inSet.id !== 'string' || setIds.has(inSet.id))
+                ? generateUniqueSyncId('yts-imp', setIds)
+                : (setIds.add(inSet.id), inSet.id);
+              state.ytShadowingSets.push({
+                id: setId,
+                title: String(inSet.title || 'YouTube 쉐도잉').trim().slice(0, 160),
+                videoId: String(inSet.videoId || '').trim().slice(0, 32),
+                url: safeUrl === '#' ? '' : safeUrl,
+                createdAt: Number.isFinite(Number(inSet.createdAt)) ? Number(inSet.createdAt) : Date.now(),
+                sentences: cleanSentences
+              });
               stats.ytShadowSets += 1;
             }
           });
@@ -10167,7 +10345,7 @@
           const existingIds = new Set(state.vocabList.map(v => v.id));
           const wordMap = new Map(state.vocabList.map(v => [String(v.word || '').trim().toLowerCase(), v]));
           inVocab.forEach(item => {
-            if (!item || !item.word) return;
+            if (!item || typeof item !== 'object' || !item.word) return;
             const normWord = String(item.word).trim().toLowerCase();
             if (!normWord) return;
             const cur = wordMap.get(normWord);
@@ -10175,7 +10353,7 @@
               if (!cur.example && item.example) cur.example = String(item.example).trim();
               return;
             }
-            const newId = (!item.id || existingIds.has(item.id))
+            const newId = (!item.id || typeof item.id !== 'string' || existingIds.has(item.id))
               ? generateUniqueSyncId('voc', existingIds)
               : (existingIds.add(item.id), item.id);
             const entry = {
@@ -10184,7 +10362,7 @@
               meaning: String(item.meaning || '').trim() || '불러온 단어',
               example: String(item.example || '').trim(),
               memorized: Boolean(item.memorized),
-              createdAt: Number(item.createdAt) || Date.now()
+              createdAt: Number.isFinite(Number(item.createdAt)) ? Number(item.createdAt) : Date.now()
             };
             state.vocabList.push(entry);
             wordMap.set(normWord, entry);
@@ -10199,9 +10377,15 @@
           if (!Array.isArray(state.bookmarks)) state.bookmarks = [];
           const bmIds = new Set(state.bookmarks.map(b => b.id));
           inBookmarks.forEach(bm => {
-            if (!bm || !bm.id || bmIds.has(bm.id)) return;
+            if (!bm || typeof bm !== 'object' || typeof bm.id !== 'string' || !bm.id || bmIds.has(bm.id)) return;
             bmIds.add(bm.id);
-            state.bookmarks.push(bm);
+            state.bookmarks.push({
+              id: bm.id.trim().slice(0, 80),
+              mode: String(bm.mode || 'read-aloud').trim().slice(0, 40),
+              title: String(bm.title || bm.id).trim().slice(0, 160),
+              topic: String(bm.topic || '').trim().slice(0, 120),
+              addedAt: Number.isFinite(Number(bm.addedAt)) ? Number(bm.addedAt) : Date.now()
+            });
             stats.bookmarks += 1;
           });
           saveStorage(STORAGE_KEYS.bookmarks, state.bookmarks);
@@ -10213,11 +10397,23 @@
           if (!Array.isArray(state.practiceLogs)) state.practiceLogs = [];
           const logKeys = new Set(state.practiceLogs.map(l => l.id || `${l.qId}::${l.timestamp}`));
           inLogs.forEach(lg => {
-            if (!lg || !lg.qId) return;
-            const key = lg.id || `${lg.qId}::${lg.timestamp}`;
-            if (logKeys.has(key)) return;
+            if (!lg || typeof lg !== 'object' || !lg.qId) return;
+            const cleanQId = String(lg.qId).trim().slice(0, 80);
+            const ts = Number.isFinite(Number(lg.timestamp)) ? Number(lg.timestamp) : Date.now();
+            const cleanId = (typeof lg.id === 'string' && lg.id.trim()) ? lg.id.trim().slice(0, 80) : `log-imp-${cleanQId}-${ts}`;
+            const key = (typeof lg.id === 'string' && lg.id.trim()) ? cleanId : `${cleanQId}::${ts}`;
+            if (!cleanQId || logKeys.has(key)) return;
             logKeys.add(key);
-            state.practiceLogs.push(lg);
+            const rawScore = Number(lg.aiScore);
+            state.practiceLogs.push({
+              id: cleanId,
+              qId: cleanQId,
+              mode: String(lg.mode || 'read-aloud').trim().slice(0, 40),
+              title: String(lg.title || cleanQId).trim().slice(0, 160),
+              date: String(lg.date || '').trim().slice(0, 20),
+              timestamp: ts,
+              aiScore: (lg.aiScore !== null && lg.aiScore !== undefined && Number.isFinite(rawScore)) ? Math.round(rawScore) : null
+            });
             stats.logs += 1;
           });
           state.practiceLogs.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
@@ -10230,7 +10426,8 @@
         if (inSolved && typeof inSolved === 'object' && !Array.isArray(inSolved)) {
           if (!state.solvedMap || typeof state.solvedMap !== 'object') state.solvedMap = {};
           Object.keys(inSolved).forEach(qId => {
-            if (inSolved[qId] && !state.solvedMap[qId]) {
+            if (!isSafeObjKey(qId)) return;
+            if (inSolved[qId] === true && !state.solvedMap[qId]) {
               state.solvedMap[qId] = true;
               stats.solved += 1;
             }
@@ -10243,14 +10440,29 @@
         if (Array.isArray(inRs)) {
           if (!Array.isArray(state.customRsQuestions)) state.customRsQuestions = [];
           const existingIds = new Set(state.customRsQuestions.map(q => q.id));
-          const textSet = new Set(state.customRsQuestions.map(q => String(q.text || '').trim().toLowerCase()));
+          const getRsText = (q) => String(q?.sentence ?? q?.text ?? '').trim();
+          const textSet = new Set(
+            state.customRsQuestions
+              .map(q => getRsText(q).toLowerCase())
+              .filter(Boolean)
+          );
           inRs.forEach(q => {
-            const normText = String(q?.text || '').trim().toLowerCase();
+            if (!q || typeof q !== 'object') return;
+            const rawSentence = getRsText(q);
+            const normText = rawSentence.toLowerCase();
             if (!normText || textSet.has(normText)) return;
-            const id = (!q.id || existingIds.has(q.id))
+            const id = (!q.id || typeof q.id !== 'string' || existingIds.has(q.id))
               ? generateUniqueSyncId('RS-IMP', existingIds)
-              : (existingIds.add(q.id), q.id);
-            state.customRsQuestions.push({ ...q, id });
+              : (existingIds.add(q.id), q.id.trim().slice(0, 60));
+            state.customRsQuestions.push({
+              id,
+              title: String(q.title || `AI Sentence ${id}`).trim().slice(0, 120),
+              topic: String(q.topic || 'Academic · AI 생성').trim().slice(0, 80),
+              sentence: rawSentence.slice(0, 600),
+              chunking: String(q.chunking || rawSentence).trim().slice(0, 700),
+              translation: String(q.translation || '').trim().slice(0, 600),
+              isCustomAi: true
+            });
             textSet.add(normText);
             stats.customQ += 1;
           });
@@ -10264,13 +10476,15 @@
           const existingIds = new Set(state.customDiQuestions.map(q => q.id));
           const sigSet = new Set(state.customDiQuestions.map(q => `${q.title || ''}::${q.chartType || ''}`.toLowerCase()));
           inDi.forEach(q => {
-            if (!q || !q.title || !q.chartType) return;
-            const sig = `${q.title}::${q.chartType}`.toLowerCase();
+            if (!q || typeof q !== 'object' || !q.title || !q.chartType) return;
+            const cleanCandidate = normalizeDiQuestion(q, '__tmp__');
+            const sig = `${cleanCandidate.title}::${cleanCandidate.chartType}`.toLowerCase();
             if (sigSet.has(sig)) return;
-            const id = (!q.id || existingIds.has(q.id))
+            const id = (!q.id || typeof q.id !== 'string' || existingIds.has(q.id))
               ? generateUniqueSyncId('DI-IMP', existingIds)
-              : (existingIds.add(q.id), q.id);
-            state.customDiQuestions.push({ ...q, id });
+              : (existingIds.add(q.id), q.id.trim().slice(0, 60));
+            cleanCandidate.id = id;
+            state.customDiQuestions.push(cleanCandidate);
             sigSet.add(sig);
             stats.customQ += 1;
           });
@@ -10284,17 +10498,33 @@
           const wkIds = new Set(state.weaknessLogs.map(w => w.id));
           const keyMap = new Map(state.weaknessLogs.map(w => [w.key, w]));
           inWeak.forEach(w => {
-            if (!w || !w.target) return;
-            const k = w.key || `${w.category || 'pronunciation'}::${String(w.target).trim().toLowerCase()}`;
+            if (!w || typeof w !== 'object' || !w.target) return;
+            const cleanTarget = String(w.target).trim().slice(0, 160);
+            const cleanCategory = String(w.category || 'pronunciation').trim().slice(0, 40);
+            if (!cleanTarget) return;
+            const k = (typeof w.key === 'string' && w.key.trim())
+              ? w.key.trim().slice(0, 200)
+              : `${cleanCategory}::${cleanTarget.toLowerCase()}`;
             const cur = keyMap.get(k);
+            const wCount = Number.isFinite(Number(w.count)) ? Math.max(1, Math.round(Number(w.count))) : 1;
+            const wLastSeen = Number.isFinite(Number(w.lastSeen)) ? Number(w.lastSeen) : 0;
             if (cur) {
-              cur.count = Math.max(cur.count || 1, w.count || 1);
-              cur.lastSeen = Math.max(cur.lastSeen || 0, w.lastSeen || 0);
+              cur.count = Math.max(cur.count || 1, wCount);
+              cur.lastSeen = Math.max(cur.lastSeen || 0, wLastSeen);
             } else {
-              const id = (!w.id || wkIds.has(w.id))
+              const id = (!w.id || typeof w.id !== 'string' || wkIds.has(w.id))
                 ? generateUniqueSyncId('wk', wkIds)
-                : (wkIds.add(w.id), w.id);
-              const entry = { ...w, id, key: k };
+                : (wkIds.add(w.id), w.id.trim().slice(0, 80));
+              const entry = {
+                id,
+                key: k,
+                target: cleanTarget,
+                correction: String(w.correction || '').trim().slice(0, 240),
+                category: cleanCategory,
+                sourceMode: String(w.sourceMode || 'speaking').trim().slice(0, 40),
+                count: wCount,
+                lastSeen: wLastSeen || Date.now()
+              };
               state.weaknessLogs.push(entry);
               keyMap.set(k, entry);
               stats.weaknesses += 1;
@@ -10308,9 +10538,16 @@
           if (!Array.isArray(state.weaknessDrills)) state.weaknessDrills = [];
           const drillSet = new Set(state.weaknessDrills.map(d => String(d.sentence || '').trim().toLowerCase()));
           inDrills.forEach(d => {
-            const norm = String(d?.sentence || '').trim().toLowerCase();
+            if (!d || typeof d !== 'object') return;
+            const cleanSent = String(d.sentence || '').trim();
+            const norm = cleanSent.toLowerCase();
             if (!norm || drillSet.has(norm)) return;
-            state.weaknessDrills.push(d);
+            state.weaknessDrills.push({
+              sentence: cleanSent.slice(0, 400),
+              targetFocus: String(d.targetFocus || '').trim().slice(0, 120),
+              chunkingTipKo: String(d.chunkingTipKo || '').trim().slice(0, 240),
+              translationKo: String(d.translationKo || '').trim().slice(0, 300)
+            });
             drillSet.add(norm);
           });
           saveStorage(STORAGE_KEYS.weaknessDrills, state.weaknessDrills);
@@ -10322,38 +10559,87 @@
           if (!Array.isArray(state.liveAcademySets)) state.liveAcademySets = [];
           const laIds = new Set(state.liveAcademySets.map(s => s.id));
           inLaSets.forEach(s => {
-            if (!s || !s.title || !Array.isArray(s.items)) return;
-            if (!s.id || laIds.has(s.id)) return;
-            laIds.add(s.id);
-            state.liveAcademySets.push(s);
+            if (!s || typeof s !== 'object' || !s.title || !Array.isArray(s.items)) return;
+            if (!s.id || typeof s.id !== 'string' || laIds.has(s.id)) return;
+            const safeYt = sanitizeHttpUrl(s.youtubeUrl);
+            const cleanSetId = s.id.trim().slice(0, 80);
+            laIds.add(cleanSetId);
+            state.liveAcademySets.push({
+              id: cleanSetId,
+              title: String(s.title).trim().slice(0, 160),
+              youtubeUrl: safeYt === '#' ? '' : safeYt,
+              createdAt: Number.isFinite(Number(s.createdAt)) ? Number(s.createdAt) : Date.now(),
+              nuanceComparisons: (Array.isArray(s.nuanceComparisons) ? s.nuanceComparisons : [])
+                .filter(n => n && typeof n === 'object')
+                .map(n => ({
+                  literal: String(n.literal || '').trim(),
+                  native: String(n.native || '').trim(),
+                  noteKo: String(n.noteKo || '').trim()
+                })),
+              items: s.items
+                .filter(it => it && typeof it === 'object' && it.kr && it.en)
+                .map((it, idx) => ({
+                  id: String(it.id || `${cleanSetId}-q${idx + 1}`).trim().slice(0, 80),
+                  pattern: String(it.pattern || '').trim(),
+                  kr: String(it.kr || '').trim(),
+                  en: String(it.en || '').trim(),
+                  variants: Array.isArray(it.variants) ? it.variants.map(v => String(v).trim()).filter(Boolean) : []
+                })),
+              makeYourOwnPrompts: (Array.isArray(s.makeYourOwnPrompts) ? s.makeYourOwnPrompts : [])
+                .filter(p => p && typeof p === 'object')
+                .map((p, idx) => ({
+                  id: String(p.id || `${cleanSetId}-myo-${idx + 1}`).trim().slice(0, 80),
+                  pattern: String(p.pattern || '').trim(),
+                  promptKo: String(p.promptKo || '').trim()
+                }))
+            });
           });
           saveStorage(STORAGE_KEYS.liveAcademySets, state.liveAcademySets);
         }
 
         const inLaProg = src.pte_live_academy_progress || src.bpProgress;
-        if (inLaProg && typeof inLaProg === 'object') {
+        if (inLaProg && typeof inLaProg === 'object' && !Array.isArray(inLaProg)) {
           if (!state.bpProgress) state.bpProgress = { checks: {}, myoDrafts: {}, selectedMissions: {} };
-          if (inLaProg.checks && typeof inLaProg.checks === 'object') {
+          if (inLaProg.checks && typeof inLaProg.checks === 'object' && !Array.isArray(inLaProg.checks)) {
             Object.entries(inLaProg.checks).forEach(([k, v]) => {
+              if (!isSafeObjKey(k) || !v || typeof v !== 'object') return;
               const cur = state.bpProgress.checks[k] || {};
               state.bpProgress.checks[k] = {
-                s1: Boolean(cur.s1 || v?.s1),
-                s2: Boolean(cur.s2 || v?.s2),
-                s3: Boolean(cur.s3 || v?.s3)
+                s1: Boolean(cur.s1 || v.s1),
+                s2: Boolean(cur.s2 || v.s2),
+                s3: Boolean(cur.s3 || v.s3)
               };
             });
           }
-          if (inLaProg.myoDrafts && typeof inLaProg.myoDrafts === 'object') {
+          if (inLaProg.myoDrafts && typeof inLaProg.myoDrafts === 'object' && !Array.isArray(inLaProg.myoDrafts)) {
             Object.entries(inLaProg.myoDrafts).forEach(([k, v]) => {
-              if (!state.bpProgress.myoDrafts[k] && v) state.bpProgress.myoDrafts[k] = v;
+              if (!isSafeObjKey(k) || state.bpProgress.myoDrafts[k] || !v || typeof v !== 'object') return;
+              const cleanDraft = {
+                userText: typeof v.userText === 'string' ? v.userText : ''
+              };
+              if (v.aiResult && typeof v.aiResult === 'object') {
+                cleanDraft.aiResult = {
+                  correctedEn: String(v.aiResult.correctedEn || '').trim(),
+                  meaningKo: String(v.aiResult.meaningKo || '').trim(),
+                  explanationKo: String(v.aiResult.explanationKo || '').trim()
+                };
+              }
+              state.bpProgress.myoDrafts[k] = cleanDraft;
+            });
+          }
+          if (inLaProg.selectedMissions && typeof inLaProg.selectedMissions === 'object' && !Array.isArray(inLaProg.selectedMissions)) {
+            Object.entries(inLaProg.selectedMissions).forEach(([k, v]) => {
+              if (!isSafeObjKey(k) || state.bpProgress.selectedMissions[k] || !Array.isArray(v)) return;
+              state.bpProgress.selectedMissions[k] = v.map(x => String(x || '').trim()).filter(Boolean).slice(0, 10);
             });
           }
           saveStorage(STORAGE_KEYS.liveAcademyProgress, state.bpProgress);
         }
 
         // 10. Non-destructive Writing Drafts & Retell Notes
-        if (src.writingDrafts && typeof src.writingDrafts === 'object') {
+        if (src.writingDrafts && typeof src.writingDrafts === 'object' && !Array.isArray(src.writingDrafts)) {
           Object.entries(src.writingDrafts).forEach(([k, v]) => {
+            if (!isSafeObjKey(k)) return;
             if (k.startsWith('pte_writing_') && typeof v === 'string' && v.trim()) {
               try {
                 if (!localStorage.getItem(k)) localStorage.setItem(k, v);
@@ -10361,8 +10647,9 @@
             }
           });
         }
-        if (src.rlNotes && typeof src.rlNotes === 'object') {
+        if (src.rlNotes && typeof src.rlNotes === 'object' && !Array.isArray(src.rlNotes)) {
           Object.entries(src.rlNotes).forEach(([k, v]) => {
+            if (!isSafeObjKey(k)) return;
             if (k.startsWith('pte_rl_notes_') && typeof v === 'string' && v.trim()) {
               try {
                 if (!localStorage.getItem(k)) localStorage.setItem(k, v);
@@ -10928,8 +11215,10 @@
           `).join('');
         }
         if (el.bpYtLink) {
-          el.bpYtLink.href = set.youtubeUrl || '#';
-          el.bpYtLink.classList.toggle('hidden', !set.youtubeUrl);
+          const safeYtUrl = sanitizeHttpUrl(set?.youtubeUrl);
+          el.bpYtLink.href = safeYtUrl;
+          el.bpYtLink.setAttribute('rel', 'noopener noreferrer');
+          el.bpYtLink.classList.toggle('hidden', safeYtUrl === '#');
         }
         if (el.btnBpDeleteSet) {
           const isOnlyDefault = sets.length <= DEFAULT_LIVE_ACADEMY_SETS.length && String(set.id || '').startsWith('la-set-');
@@ -11279,10 +11568,11 @@
           const result = await callGeminiApi(parts);
           const itemsRaw = Array.isArray(result?.items) ? result.items : [];
           const stamp = Date.now();
+          const safeYt = sanitizeHttpUrl(canonicalWatchUrl || urlInput);
           const newSet = {
             id: `la-custom-${stamp}`,
             title: String(result?.title || '새 패턴 훈련 세트').trim(),
-            youtubeUrl: canonicalWatchUrl || urlInput || '',
+            youtubeUrl: safeYt === '#' ? '' : safeYt,
             createdAt: stamp,
             nuanceComparisons: Array.isArray(result?.nuanceComparisons) ? result.nuanceComparisons : [],
             items: itemsRaw.map((it, i) => ({
