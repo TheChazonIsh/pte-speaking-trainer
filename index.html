@@ -2581,20 +2581,95 @@
         }
       };
 
-      function loadJsonStorage(key, fallback) {
+      let storageQuotaToastShown = false;
+
+      function isQuotaExceededError(err) {
+        if (!err) return false;
+        const name = String(err.name || '');
+        return (
+          name === 'QuotaExceededError' ||
+          name === 'NS_ERROR_DOM_QUOTA_REACHED' ||
+          err.code === 22 ||
+          err.code === 1014
+        );
+      }
+
+      function showStorageQuotaToast() {
+        if (storageQuotaToastShown) return;
+        storageQuotaToastShown = true;
+        try {
+          if (document.getElementById('storage-quota-toast')) return;
+          const toast = document.createElement('div');
+          toast.id = 'storage-quota-toast';
+          toast.setAttribute('role', 'alert');
+          toast.className = 'fixed bottom-4 right-4 left-4 sm:left-auto sm:max-w-md z-50 rounded-2xl border border-amber-300 bg-amber-50 text-amber-950 shadow-lg p-3.5 flex items-start justify-between gap-3 text-xs';
+          toast.innerHTML = `
+            <div class="space-y-1">
+              <p class="font-extrabold text-amber-900">⚠️ 브라우저 저장 공간이 가득 찼습니다</p>
+              <p class="text-amber-800 leading-relaxed">상단 <strong>[🔄 동기화]</strong>에서 학습 데이터를 파일로 백업한 뒤 오래된 세트·기록을 정리해 주세요.</p>
+            </div>
+            <button type="button" aria-label="알림 닫기"
+              class="shrink-0 px-2 py-1 rounded-lg font-bold text-amber-800 hover:bg-amber-200/70 transition cursor-pointer">
+              닫기
+            </button>
+          `;
+          const closeBtn = toast.querySelector('button');
+          if (closeBtn) {
+            closeBtn.addEventListener('click', () => toast.remove());
+          }
+          document.body.appendChild(toast);
+          setTimeout(() => {
+            try { toast.remove(); } catch (e) {}
+          }, 10000);
+        } catch (e) {
+          // ignore DOM errors
+        }
+      }
+
+      function safeGetStorage(key, fallback = null, parseJson = false) {
         try {
           const raw = localStorage.getItem(key);
-          return raw ? JSON.parse(raw) : fallback;
+          if (raw === null || raw === undefined) return fallback;
+          if (!parseJson) return raw;
+          if (!raw) return fallback;
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(fallback)) {
+            return Array.isArray(parsed) ? parsed : fallback;
+          }
+          if (typeof fallback === 'boolean') {
+            return typeof parsed === 'boolean' ? parsed : fallback;
+          }
+          if (fallback !== null && typeof fallback === 'object') {
+            return (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) ? parsed : fallback;
+          }
+          return parsed;
         } catch (e) {
           return fallback;
         }
       }
 
+      function loadJsonStorage(key, fallback) {
+        return safeGetStorage(key, fallback, true);
+      }
+
+      function loadObjectArrayStorage(key, predicate = null) {
+        const arr = loadJsonStorage(key, []);
+        return arr.filter(item => item && typeof item === 'object' && !Array.isArray(item) && (!predicate || predicate(item)));
+      }
+
+      function loadRawStorage(key, fallback = '') {
+        return safeGetStorage(key, fallback, false);
+      }
+
       function saveStorage(key, val) {
         try {
           localStorage.setItem(key, typeof val === 'string' ? val : JSON.stringify(val));
+          return true;
         } catch (e) {
-          // ignore
+          if (isQuotaExceededError(e)) {
+            showStorageQuotaToast();
+          }
+          return false;
         }
       }
 
@@ -2618,12 +2693,16 @@
         unsolvedFirst: loadJsonStorage(STORAGE_KEYS.unsolvedFirst, true),
 
         // Neural TTS state (shared between RS & RL)
-        ttsAccent: localStorage.getItem(STORAGE_KEYS.ttsAccent) || 'en-AU',
-        ttsVoiceUri: localStorage.getItem(STORAGE_KEYS.ttsVoiceUri) || '',
-        ttsRate: parseFloat(localStorage.getItem(STORAGE_KEYS.ttsRate) || '1.0') || 1.0,
+        ttsAccent: safeGetStorage(STORAGE_KEYS.ttsAccent, 'en-AU', false) || 'en-AU',
+        ttsVoiceUri: safeGetStorage(STORAGE_KEYS.ttsVoiceUri, '', false) || '',
+        ttsRate: (() => {
+          const parsed = parseFloat(safeGetStorage(STORAGE_KEYS.ttsRate, '1.0', false));
+          return Number.isFinite(parsed) && parsed > 0 ? parsed : 1.0;
+        })(),
         allVoices: [],
         speechSessionId: 0,
         ttsSafetyTimerId: null,
+        ttsFetchAbortController: null,
 
         // RS / RL / Impromptu Reveal & Shadowing Compare State
         rsScriptVisible: false,
@@ -2653,6 +2732,7 @@
         recordedBlob: null,
         recordingUrl: null,
         recordingMime: 'audio/webm',
+        micSourceNode: null,
         analyser: null,
         meterRafId: null,
 
@@ -2661,17 +2741,26 @@
         geminiModel: loadRawStorage(STORAGE_KEYS.geminiModel, 'gemini-4-hydrogen') || 'gemini-4-hydrogen',
         useGeminiTts: loadRawStorage(STORAGE_KEYS.useGeminiTts, 'true') !== 'false',
         ttsAudioCache: new Map(),
-        bookmarks: loadJsonStorage(STORAGE_KEYS.bookmarks, []),
-        vocabList: loadJsonStorage(STORAGE_KEYS.vocabList, []),
-        practiceLogs: loadJsonStorage(STORAGE_KEYS.practiceLogs, []),
-        customRsQuestions: loadJsonStorage(STORAGE_KEYS.customRsQuestions, []),
-        customDiQuestions: loadJsonStorage(STORAGE_KEYS.customDiQuestions, []),
+        bookmarks: loadObjectArrayStorage(STORAGE_KEYS.bookmarks),
+        vocabList: loadObjectArrayStorage(STORAGE_KEYS.vocabList, v => typeof v.word === 'string'),
+        practiceLogs: loadObjectArrayStorage(STORAGE_KEYS.practiceLogs),
+        customRsQuestions: loadObjectArrayStorage(STORAGE_KEYS.customRsQuestions, q => typeof q.sentence === 'string'),
+        customDiQuestions: loadObjectArrayStorage(STORAGE_KEYS.customDiQuestions, q => typeof q.id === 'string'),
         bookmarkFilter: 'all',
         vocabSearch: '',
         vocabFilter: 'all',
         lastSpeakingLogId: null,
         lastWritingLogId: null,
-        aiGradingBusy: false,
+        speakingGradingBusy: false,
+        speakingGradeSeq: 0,
+        speakingGradeAbort: null,
+        writingGradingBusy: false,
+        writingGradeSeq: 0,
+        writingGradeAbort: null,
+        ytsGradeSeq: 0,
+        ytsGradeAbort: null,
+        bpEvalSeqMap: {},
+        bpMyoSeqMap: {},
         rsAiGenerating: false,
         diAiGenerating: false,
         ttsKeepAliveTimerId: null,
@@ -2680,7 +2769,8 @@
         rlSourceMode: 'academic', // 'academic' | 'youtube'
         ytClipSets: (() => {
           const loaded = loadJsonStorage(STORAGE_KEYS.ytClipSets, null);
-          return Array.isArray(loaded) && loaded.length > 0 ? loaded : DEFAULT_YT_CLIP_SETS;
+          const valid = Array.isArray(loaded) ? loaded.filter(s => s && typeof s === 'object' && s.id) : [];
+          return valid.length > 0 ? valid : DEFAULT_YT_CLIP_SETS;
         })(),
         activeYtSetId: '',
         activeYtClipIndex: 0,
@@ -2704,8 +2794,8 @@
         rpMessages: [],
 
         // Weakness Pronunciation & Konglish Tracker
-        weaknessLogs: loadJsonStorage(STORAGE_KEYS.weaknessLogs, []),
-        weaknessDrills: loadJsonStorage(STORAGE_KEYS.weaknessDrills, []),
+        weaknessLogs: loadObjectArrayStorage(STORAGE_KEYS.weaknessLogs),
+        weaknessDrills: loadObjectArrayStorage(STORAGE_KEYS.weaknessDrills),
         weaknessGenerating: false,
         drillRecordingIdx: null,
         drillMediaRecorder: null,
@@ -2715,13 +2805,14 @@
         // YouTube Sentence Shadowing Studio
         ytShadowingSets: (() => {
           const loaded = loadJsonStorage(STORAGE_KEYS.ytShadowingSets, null);
-          if (!Array.isArray(loaded) || loaded.length === 0) return DEFAULT_YT_SHADOWING_SETS;
+          const valid = Array.isArray(loaded) ? loaded.filter(s => s && typeof s === 'object' && s.id && Array.isArray(s.sentences)) : [];
+          if (valid.length === 0) return DEFAULT_YT_SHADOWING_SETS;
           const defSet = DEFAULT_YT_SHADOWING_SETS[0];
-          return loaded.map(set => {
+          return valid.map(set => {
             if (!set || set.id !== defSet.id || !Array.isArray(set.sentences)) return set;
             const merged = set.sentences.map((s, i) => {
               const defItem = defSet.sentences[i];
-              return (!s.situationTag && defItem?.situationTag)
+              return (s && !s.situationTag && defItem?.situationTag)
                 ? { ...s, situationTag: defItem.situationTag }
                 : s;
             });
@@ -2766,12 +2857,13 @@
         // Live Academy Brain Pattern Training
         liveAcademySets: (() => {
           const loaded = loadJsonStorage(STORAGE_KEYS.liveAcademySets, null);
-          return Array.isArray(loaded) && loaded.length > 0 ? loaded : DEFAULT_LIVE_ACADEMY_SETS;
+          const valid = Array.isArray(loaded) ? loaded.filter(s => s && typeof s === 'object' && s.id) : [];
+          return valid.length > 0 ? valid : DEFAULT_LIVE_ACADEMY_SETS;
         })(),
         bpActiveSetId: '',
         bpProgress: (() => {
           const loaded = loadJsonStorage(STORAGE_KEYS.liveAcademyProgress, null);
-          return (loaded && typeof loaded === 'object')
+          return (loaded && typeof loaded === 'object' && !Array.isArray(loaded))
             ? {
                 checks: loaded.checks && typeof loaded.checks === 'object' ? loaded.checks : {},
                 myoDrafts: loaded.myoDrafts && typeof loaded.myoDrafts === 'object' ? loaded.myoDrafts : {},
@@ -2798,15 +2890,6 @@
       }
       if (state.ytClipSets.length > 0 && !state.activeYtSetId) {
         state.activeYtSetId = state.ytClipSets[0].id;
-      }
-
-      function loadRawStorage(key, fallback = '') {
-        try {
-          const val = localStorage.getItem(key);
-          return val !== null ? val : fallback;
-        } catch (e) {
-          return fallback;
-        }
       }
 
       // ==========================================
@@ -3272,6 +3355,11 @@
           osc.connect(gain);
           gain.connect(ctx.destination);
 
+          osc.onended = () => {
+            try { osc.disconnect(); } catch (e) {}
+            try { gain.disconnect(); } catch (e) {}
+          };
+
           osc.start(now);
           osc.stop(now + durationSec);
         } catch (err) {
@@ -3494,11 +3582,43 @@
         return new Blob([wavHeader, pcmBytes], { type: 'audio/wav' });
       }
 
-      async function fetchOrGetCachedGeminiTts(text, voiceName) {
+      const TTS_CACHE_MAX_ITEMS = 15;
+
+      function getTtsCacheEntry(cacheKey) {
+        if (!state.ttsAudioCache || !state.ttsAudioCache.has(cacheKey)) return null;
+        const entry = state.ttsAudioCache.get(cacheKey);
+        // Move to most-recently-used position at end of Map
+        state.ttsAudioCache.delete(cacheKey);
+        state.ttsAudioCache.set(cacheKey, entry);
+        return entry;
+      }
+
+      function setTtsCacheEntry(cacheKey, entry) {
+        if (!state.ttsAudioCache) state.ttsAudioCache = new Map();
+        if (state.ttsAudioCache.has(cacheKey)) {
+          const prev = state.ttsAudioCache.get(cacheKey);
+          state.ttsAudioCache.delete(cacheKey);
+          if (prev && prev.blobUrl && prev.blobUrl !== entry.blobUrl) {
+            try { URL.revokeObjectURL(prev.blobUrl); } catch (e) {}
+          }
+        }
+        state.ttsAudioCache.set(cacheKey, entry);
+        while (state.ttsAudioCache.size > TTS_CACHE_MAX_ITEMS) {
+          const oldestKey = state.ttsAudioCache.keys().next().value;
+          const oldest = state.ttsAudioCache.get(oldestKey);
+          state.ttsAudioCache.delete(oldestKey);
+          if (oldest && oldest.blobUrl) {
+            try { URL.revokeObjectURL(oldest.blobUrl); } catch (e) {}
+          }
+        }
+        updateTtsCacheBadges();
+      }
+
+      async function fetchOrGetCachedGeminiTts(text, voiceName, { timeoutMs = 30000 } = {}) {
         const cleanText = String(text || '').trim();
         const cacheKey = `${voiceName}::${cleanText}`;
-        if (state.ttsAudioCache.has(cacheKey)) {
-          const cached = state.ttsAudioCache.get(cacheKey);
+        const cached = getTtsCacheEntry(cacheKey);
+        if (cached) {
           return { ...cached, fromCache: true };
         }
 
@@ -3507,49 +3627,82 @@
           throw new Error('Gemini API 키가 설정되지 않았습니다.');
         }
 
+        if (state.ttsFetchAbortController) {
+          try { state.ttsFetchAbortController.abort(); } catch (e) {}
+        }
+        const controller = new AbortController();
+        state.ttsFetchAbortController = controller;
+        let timedOut = false;
+        const timeoutId = setTimeout(() => {
+          timedOut = true;
+          try { controller.abort(); } catch (e) {}
+        }, timeoutMs);
+
         const endpoint = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash-tts:generateContent';
-        const response = await fetch(endpoint, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'x-goog-api-key': apiKey
-          },
-          body: JSON.stringify({
-            contents: [{ role: 'user', parts: [{ text: cleanText }] }],
-            generationConfig: {
-              responseModalities: ['AUDIO'],
-              speechConfig: {
-                voiceConfig: {
-                  prebuiltVoiceConfig: {
-                    voiceName
+        try {
+          let response;
+          try {
+            response = await fetch(endpoint, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'x-goog-api-key': apiKey
+              },
+              signal: controller.signal,
+              body: JSON.stringify({
+                contents: [{ role: 'user', parts: [{ text: cleanText }] }],
+                generationConfig: {
+                  responseModalities: ['AUDIO'],
+                  speechConfig: {
+                    voiceConfig: {
+                      prebuiltVoiceConfig: {
+                        voiceName
+                      }
+                    }
                   }
                 }
+              })
+            });
+          } catch (fetchErr) {
+            if (fetchErr && fetchErr.name === 'AbortError') {
+              if (timedOut) {
+                const err = new Error('AI 음성 생성 시간이 초과되었습니다(30초). 브라우저 음성으로 전환하거나 다시 시도해 주세요.');
+                err.isTimeout = true;
+                throw err;
               }
+              const err = new Error('TTS_ABORTED');
+              err.isAborted = true;
+              throw err;
             }
-          })
-        });
+            throw fetchErr;
+          }
 
-        const payload = await response.json().catch(() => ({}));
-        if (!response.ok) {
-          const errMsg = payload?.error?.message || `HTTP ${response.status} 오류가 발생했습니다.`;
-          throw new Error(errMsg);
+          const payload = await response.json().catch(() => ({}));
+          if (!response.ok) {
+            const errMsg = payload?.error?.message || `HTTP ${response.status} 오류가 발생했습니다.`;
+            throw new Error(errMsg);
+          }
+
+          const parts = payload?.candidates?.[0]?.content?.parts || [];
+          const audioPart = parts.find(p => p.inlineData && p.inlineData.data);
+          if (!audioPart) {
+            throw new Error('Gemini TTS 응답에 오디오 데이터가 포함되지 않았습니다.');
+          }
+
+          const wavBlob = pcmBase64ToWavBlob(
+            audioPart.inlineData.data,
+            audioPart.inlineData.mimeType || 'audio/L16;rate=24000'
+          );
+          const blobUrl = URL.createObjectURL(wavBlob);
+          const entry = { blobUrl, voiceName, byteLength: wavBlob.size };
+          setTtsCacheEntry(cacheKey, entry);
+          return { ...entry, fromCache: false };
+        } finally {
+          clearTimeout(timeoutId);
+          if (state.ttsFetchAbortController === controller) {
+            state.ttsFetchAbortController = null;
+          }
         }
-
-        const parts = payload?.candidates?.[0]?.content?.parts || [];
-        const audioPart = parts.find(p => p.inlineData && p.inlineData.data);
-        if (!audioPart) {
-          throw new Error('Gemini TTS 응답에 오디오 데이터가 포함되지 않았습니다.');
-        }
-
-        const wavBlob = pcmBase64ToWavBlob(
-          audioPart.inlineData.data,
-          audioPart.inlineData.mimeType || 'audio/L16;rate=24000'
-        );
-        const blobUrl = URL.createObjectURL(wavBlob);
-        const entry = { blobUrl, voiceName, byteLength: wavBlob.size };
-        state.ttsAudioCache.set(cacheKey, entry);
-        updateTtsCacheBadges();
-        return { ...entry, fromCache: false };
       }
 
       function loadVoices() {
@@ -3682,6 +3835,10 @@
 
       function cancelSpeech() {
         state.speechSessionId += 1;
+        if (state.ttsFetchAbortController) {
+          try { state.ttsFetchAbortController.abort(); } catch (e) {}
+          state.ttsFetchAbortController = null;
+        }
         if (state.ttsKeepAliveTimerId !== null) {
           clearInterval(state.ttsKeepAliveTimerId);
           state.ttsKeepAliveTimerId = null;
@@ -3967,7 +4124,7 @@
             await audio.play();
             audio.playbackRate = state.ttsRate || 1.0;
           } catch (err) {
-            if (sessionId !== state.speechSessionId) return;
+            if (err?.isAborted || sessionId !== state.speechSessionId) return;
             console.warn('Gemini TTS fallback to SpeechSynthesis:', err);
             speakWithBrowserTts({
               text,
@@ -4018,12 +4175,37 @@
         }
       }
 
-      function releaseMicrophoneStream() {
-        if (state.meterRafId) {
+      function disconnectMicAnalyserNodes() {
+        if (state.micSourceNode) {
+          try { state.micSourceNode.disconnect(); } catch (e) {}
+          state.micSourceNode = null;
+        }
+        if (state.analyser) {
+          try { state.analyser.disconnect(); } catch (e) {}
+          state.analyser = null;
+        }
+      }
+
+      function isMicLevelBarVisible() {
+        if (!el.micLevelBar || document.hidden) return false;
+        if (!MODE_CONFIG[state.mode]) return false;
+        return el.micLevelBar.offsetParent !== null;
+      }
+
+      function stopLevelMeter() {
+        if (state.meterRafId !== null) {
           cancelAnimationFrame(state.meterRafId);
           state.meterRafId = null;
         }
-        state.analyser = null;
+        if (el.micLevelBar) {
+          el.micLevelBar.style.width = '0%';
+          el.micLevelBar.className = 'h-full w-0 bg-emerald-500 transition-all duration-75 rounded-full';
+        }
+      }
+
+      function releaseMicrophoneStream() {
+        stopLevelMeter();
+        disconnectMicAnalyserNodes();
         if (state.micStream) {
           try {
             state.micStream.getTracks().forEach(track => track.stop());
@@ -4031,9 +4213,6 @@
             // ignore
           }
           state.micStream = null;
-        }
-        if (el.micLevelBar) {
-          el.micLevelBar.style.width = '0%';
         }
         if (state.micStatus === 'ready') {
           updateMicUI('대기 중');
@@ -4081,41 +4260,67 @@
 
       function setupMicAnalyser(stream) {
         try {
+          disconnectMicAnalyserNodes();
           const ctx = ensureAudioContext();
           if (!ctx) return;
           const source = ctx.createMediaStreamSource(stream);
           const analyser = ctx.createAnalyser();
           analyser.fftSize = 256;
           source.connect(analyser);
+          state.micSourceNode = source;
           state.analyser = analyser;
-          startLevelMeter();
+          if (isMicLevelBarVisible()) {
+            startLevelMeter();
+          } else {
+            stopLevelMeter();
+          }
         } catch (e) {
-          // ignore
+          disconnectMicAnalyserNodes();
         }
       }
 
       function startLevelMeter() {
-        if (state.meterRafId) cancelAnimationFrame(state.meterRafId);
-        const dataArray = state.analyser ? new Uint8Array(state.analyser.frequencyBinCount) : null;
+        stopLevelMeter();
+        if (!state.analyser || !state.micStream || !state.micStream.active || !isMicLevelBarVisible()) {
+          return;
+        }
+        const dataArray = new Uint8Array(state.analyser.frequencyBinCount);
+        let lastPct = -1;
+        let lastIsRecording = null;
 
         const tick = () => {
-          if (state.analyser && dataArray && state.micStream && state.micStream.active) {
-            state.analyser.getByteFrequencyData(dataArray);
-            let sum = 0;
-            for (let i = 0; i < dataArray.length; i++) sum += dataArray[i];
-            const avg = sum / dataArray.length;
-            const pct = Math.min(100, Math.round((avg / 90) * 100));
+          if (!state.analyser || !state.micStream || !state.micStream.active || !isMicLevelBarVisible()) {
+            stopLevelMeter();
+            return;
+          }
+          state.analyser.getByteFrequencyData(dataArray);
+          let sum = 0;
+          for (let i = 0; i < dataArray.length; i++) sum += dataArray[i];
+          const avg = sum / dataArray.length;
+          const pct = Math.min(100, Math.round((avg / 90) * 100));
+          const isRecording = state.phase === 'recording';
+          if (pct !== lastPct) {
             el.micLevelBar.style.width = pct + '%';
-            el.micLevelBar.className = state.phase === 'recording'
+            lastPct = pct;
+          }
+          if (isRecording !== lastIsRecording) {
+            el.micLevelBar.className = isRecording
               ? 'h-full bg-rose-500 transition-all duration-75 rounded-full'
               : 'h-full bg-emerald-500 transition-all duration-75 rounded-full';
-          } else {
-            el.micLevelBar.style.width = '0%';
+            lastIsRecording = isRecording;
           }
           state.meterRafId = requestAnimationFrame(tick);
         };
         state.meterRafId = requestAnimationFrame(tick);
       }
+
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+          stopLevelMeter();
+        } else if (state.phase === 'recording' && state.analyser && state.micStream && state.micStream.active && isMicLevelBarVisible()) {
+          startLevelMeter();
+        }
+      });
 
       function pickSupportedMimeType() {
         if (typeof MediaRecorder === 'undefined') return '';
@@ -4184,6 +4389,9 @@
 
           recorder.start(250);
           state.mediaRecorder = recorder;
+          if (state.analyser && isMicLevelBarVisible() && state.meterRafId === null) {
+            startLevelMeter();
+          }
         } catch (err) {
           console.warn('MediaRecorder start failed:', err);
           releaseMicrophoneStream();
@@ -4191,6 +4399,7 @@
       }
 
       function stopMediaRecording() {
+        stopLevelMeter();
         const rec = state.mediaRecorder;
         if (rec && rec.state !== 'inactive') {
           try {
@@ -5100,12 +5309,7 @@
           }
 
           // Restore scratchpad notes from localStorage
-          let savedNotes = '';
-          try {
-            savedNotes = localStorage.getItem(getRlNotesKey(q.id)) || '';
-          } catch (e) {
-            savedNotes = '';
-          }
+          const savedNotes = safeGetStorage(getRlNotesKey(q.id), '', false) || '';
           el.rlScratchpad.value = savedNotes;
           el.rlNotesStatus.textContent = savedNotes ? '저장된 메모 불러옴' : '자동 저장';
 
@@ -5272,6 +5476,9 @@
         cancelSpeech();
         stopYouTubeClipPlayback();
         stopMediaRecording();
+        if (clearAudio) {
+          cancelPendingSpeakingGrade();
+        }
         if (MODE_CONFIG[state.mode]) {
           const cfg = MODE_CONFIG[state.mode];
           state.phase = 'idle';
@@ -5686,12 +5893,7 @@
         el.wModelTip.textContent = q.tip;
         renderWritingModelBox();
 
-        let saved = '';
-        try {
-          saved = localStorage.getItem(getWritingStorageKey(q.id)) || '';
-        } catch (e) {
-          saved = '';
-        }
+        const saved = safeGetStorage(getWritingStorageKey(q.id), '', false) || '';
         el.writingTextarea.value = saved;
         el.writingSaveStatus.textContent = saved
           ? '저장된 답안 불러옴'
@@ -5702,6 +5904,7 @@
 
       function switchWritingSubmode(submode) {
         if (state.writingSubmode === submode) return;
+        cancelPendingWritingGrade();
         state.writingSubmode = submode;
         state.writingModelVisible = false;
         resetWritingTimer();
@@ -5713,6 +5916,7 @@
       function selectWritingQuestion(index) {
         const list = getWritingQuestions();
         if (index < 0 || index >= list.length) return;
+        cancelPendingWritingGrade();
         state.writingIndex[state.writingSubmode] = index;
         state.writingModelVisible = false;
         renderWritingQuestionSelector();
@@ -5727,6 +5931,7 @@
         if (MODE_CONFIG[state.mode]) {
           resetPractice(true);
         } else if (state.mode === 'writing') {
+          cancelPendingWritingGrade();
           stopWritingTimer();
           renderWritingTimerUI();
         } else if (state.mode === 'roleplay') {
@@ -5734,6 +5939,7 @@
           cancelSpeech();
           releaseMicrophoneStream();
         } else if (state.mode === 'yt-shadowing') {
+          cancelPendingYtsGrade();
           stopYtsComparePlayback(false);
           stopYtsRecording(true);
           stopYtsPlayback();
@@ -5941,6 +6147,7 @@
           localStorage.setItem(getRlNotesKey(q.id), el.rlScratchpad.value);
           el.rlNotesStatus.textContent = '메모 자동 저장됨';
         } catch (e) {
+          if (isQuotaExceededError(e)) showStorageQuotaToast();
           el.rlNotesStatus.textContent = '저장 실패';
         }
       });
@@ -6034,6 +6241,7 @@
           localStorage.setItem(getWritingStorageKey(q.id), el.writingTextarea.value);
           el.writingSaveStatus.textContent = '자동 저장됨';
         } catch (e) {
+          if (isQuotaExceededError(e)) showStorageQuotaToast();
           el.writingSaveStatus.textContent = '저장 공간 부족';
         }
         validateAndUpdateWritingStats();
@@ -6661,7 +6869,7 @@
         });
       }
 
-      async function callGeminiApi(parts) {
+      async function callGeminiApi(parts, { timeoutMs = 25000, signal = null } = {}) {
         const apiKey = (state.geminiApiKey || '').trim();
         if (!apiKey) {
           openAiSettingsModal('먼저 Google AI Studio Gemini API 키를 입력하고 저장해주세요.');
@@ -6670,39 +6878,122 @@
           throw err;
         }
 
+        if (signal && signal.aborted) {
+          const abortErr = new Error('요청이 취소되었습니다.');
+          abortErr.isAborted = true;
+          throw abortErr;
+        }
+
         const model = (state.geminiModel || 'gemini-4-hydrogen').trim() || 'gemini-4-hydrogen';
         const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`;
 
-        const response = await fetch(endpoint, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'x-goog-api-key': apiKey
-          },
-          body: JSON.stringify({
-            contents: [{ role: 'user', parts }],
-            generationConfig: {
-              temperature: 0.3,
-              responseMimeType: 'application/json'
+        const controller = new AbortController();
+        let timedOut = false;
+        let externallyAborted = false;
+        const onExternalAbort = () => {
+          externallyAborted = true;
+          try { controller.abort(); } catch (e) {}
+        };
+        if (signal && typeof signal.addEventListener === 'function') {
+          signal.addEventListener('abort', onExternalAbort, { once: true });
+        }
+        const timeoutId = setTimeout(() => {
+          timedOut = true;
+          try { controller.abort(); } catch (e) {}
+        }, timeoutMs);
+
+        try {
+          let response;
+          try {
+            response = await fetch(endpoint, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'x-goog-api-key': apiKey
+              },
+              signal: controller.signal,
+              body: JSON.stringify({
+                contents: [{ role: 'user', parts }],
+                generationConfig: {
+                  temperature: 0.3,
+                  responseMimeType: 'application/json'
+                }
+              })
+            });
+          } catch (fetchErr) {
+            if (fetchErr && fetchErr.name === 'AbortError') {
+              if (timedOut) {
+                const tErr = new Error('AI 응답 시간이 초과되었습니다(25초). 네트워크 상태를 확인한 뒤 다시 시도해 주세요.');
+                tErr.isTimeout = true;
+                throw tErr;
+              }
+              const aErr = new Error(externallyAborted ? '요청이 취소되었습니다.' : 'AI 요청이 중단되었습니다.');
+              aErr.isAborted = true;
+              throw aErr;
             }
-          })
-        });
+            throw fetchErr;
+          }
 
-        const payload = await response.json().catch(() => ({}));
-        if (!response.ok) {
-          const msg = payload?.error?.message || `HTTP ${response.status} 오류가 발생했습니다.`;
-          throw new Error(msg);
+          const payload = await response.json().catch(() => ({}));
+          if (!response.ok) {
+            const msg = payload?.error?.message || `HTTP ${response.status} 오류가 발생했습니다.`;
+            throw new Error(msg);
+          }
+
+          const textPart = payload?.candidates?.[0]?.content?.parts
+            ?.map(p => p.text || '')
+            .join('')
+            .trim();
+
+          if (!textPart) {
+            throw new Error('Gemini API가 유효한 응답을 반환하지 않았습니다.');
+          }
+          return parseGeminiJson(textPart);
+        } finally {
+          clearTimeout(timeoutId);
+          if (signal && typeof signal.removeEventListener === 'function') {
+            signal.removeEventListener('abort', onExternalAbort);
+          }
         }
+      }
 
-        const textPart = payload?.candidates?.[0]?.content?.parts
-          ?.map(p => p.text || '')
-          .join('')
-          .trim();
-
-        if (!textPart) {
-          throw new Error('Gemini API가 유효한 응답을 반환하지 않았습니다.');
+      function cancelPendingSpeakingGrade() {
+        state.speakingGradeSeq += 1;
+        if (state.speakingGradeAbort) {
+          try { state.speakingGradeAbort.abort(); } catch (e) {}
+          state.speakingGradeAbort = null;
         }
-        return parseGeminiJson(textPart);
+        state.speakingGradingBusy = false;
+        if (el.btnAiGradeSpeaking) {
+          el.btnAiGradeSpeaking.disabled = false;
+          el.btnAiGradeSpeaking.classList.remove('opacity-60');
+        }
+      }
+
+      function cancelPendingWritingGrade() {
+        state.writingGradeSeq += 1;
+        if (state.writingGradeAbort) {
+          try { state.writingGradeAbort.abort(); } catch (e) {}
+          state.writingGradeAbort = null;
+        }
+        state.writingGradingBusy = false;
+        if (el.btnAiGradeWriting) {
+          el.btnAiGradeWriting.disabled = false;
+          el.btnAiGradeWriting.classList.remove('opacity-60');
+        }
+      }
+
+      function cancelPendingYtsGrade() {
+        state.ytsGradeSeq += 1;
+        if (state.ytsGradeAbort) {
+          try { state.ytsGradeAbort.abort(); } catch (e) {}
+          state.ytsGradeAbort = null;
+        }
+        state.ytsAiGrading = false;
+        if (el.btnYtsAiGrade) {
+          el.btnYtsAiGrade.disabled = false;
+          el.btnYtsAiGrade.classList.remove('opacity-60');
+        }
       }
 
       function setAiLoadingState(containerEl, btnEl, label) {
@@ -6890,10 +7181,13 @@
       }
 
       async function gradeWritingWithAi() {
-        if (state.aiGradingBusy) return;
+        if (state.writingGradingBusy) return;
         const q = getCurrentWritingQuestion();
         if (!q) return;
 
+        const reqSubmode = state.writingSubmode;
+        const reqQId = q.id;
+        const reqQTitle = q.title;
         const userText = (el.writingTextarea.value || '').trim();
         const words = countWords(userText);
         if (words < 3) {
@@ -6901,15 +7195,15 @@
           return;
         }
 
-        const cfg = WRITING_CONFIG[state.writingSubmode];
-        const taskLabel = state.writingSubmode === 'swt' ? 'Summarize Written Text (SWT, 1 sentence, 5-75 words)' : 'Write Essay (200-300 words)';
+        const cfg = WRITING_CONFIG[reqSubmode];
+        const taskLabel = reqSubmode === 'swt' ? 'Summarize Written Text (SWT, 1 sentence, 5-75 words)' : 'Write Essay (200-300 words)';
         const prompt = [
           `You are a strict official PTE Academic Writing examiner.`,
           `Task Type: ${taskLabel}`,
-          `Question ID: ${q.id} (${q.title})`,
+          `Question ID: ${reqQId} (${reqQTitle})`,
           `Source Prompt / Passage:\n${q.passage}`,
           `\nCandidate Response (${words} words):\n${userText}`,
-          `\nEvaluate Content, Form (${cfg.minWords}-${cfg.maxWords} words${state.writingSubmode === 'swt' ? ', strictly ONE single sentence with one ending period' : ''}), Grammar, Vocabulary, and Spelling.`,
+          `\nEvaluate Content, Form (${cfg.minWords}-${cfg.maxWords} words${reqSubmode === 'swt' ? ', strictly ONE single sentence with one ending period' : ''}), Grammar, Vocabulary, and Spelling.`,
           `Respond strictly in JSON matching this schema (all explanations/feedback in Korean):`,
           `{`,
           `  "overallScore": <integer 10..90>,`,
@@ -6930,30 +7224,50 @@
           `}`
         ].join('\n');
 
-        state.aiGradingBusy = true;
+        if (state.writingGradeAbort) {
+          try { state.writingGradeAbort.abort(); } catch (e) {}
+        }
+        const abortCtrl = new AbortController();
+        state.writingGradeAbort = abortCtrl;
+        const reqSeq = ++state.writingGradeSeq;
+        state.writingGradingBusy = true;
         setAiLoadingState(el.writingAiResult, el.btnAiGradeWriting, 'Writing 답안을 분석하고 첨삭 중입니다...');
         try {
-          const result = await callGeminiApi([{ text: prompt }]);
+          const result = await callGeminiApi([{ text: prompt }], { timeoutMs: 25000, signal: abortCtrl.signal });
+          const isStale = (
+            reqSeq !== state.writingGradeSeq ||
+            state.mode !== 'writing' ||
+            state.writingSubmode !== reqSubmode ||
+            getCurrentWritingQuestion()?.id !== reqQId
+          );
+          if (isStale) return;
+
           renderWritingAiResult(result);
-          markQuestionSolved(q.id, true);
+          markQuestionSolved(reqQId, true);
           renderWritingQuestionSelector();
           state.lastWritingLogId = attachAiScoreToPracticeLog(
             state.lastWritingLogId,
-            q.id,
-            state.writingSubmode,
-            q.title,
+            reqQId,
+            reqSubmode,
+            reqQTitle,
             result.overallScore
           );
         } catch (err) {
+          if (err?.isAborted || reqSeq !== state.writingGradeSeq) return;
           if (err.isMissingKey) {
             el.writingAiResult.classList.add('hidden');
           } else {
             renderAiErrorCard(el.writingAiResult, err.message || 'AI 채점 중 오류가 발생했습니다.');
           }
         } finally {
-          state.aiGradingBusy = false;
-          el.btnAiGradeWriting.disabled = false;
-          el.btnAiGradeWriting.classList.remove('opacity-60');
+          if (state.writingGradeAbort === abortCtrl) {
+            state.writingGradeAbort = null;
+          }
+          if (reqSeq === state.writingGradeSeq) {
+            state.writingGradingBusy = false;
+            el.btnAiGradeWriting.disabled = false;
+            el.btnAiGradeWriting.classList.remove('opacity-60');
+          }
         }
       }
 
@@ -7046,7 +7360,7 @@
       }
 
       async function gradeSpeakingWithAi() {
-        if (state.aiGradingBusy) return;
+        if (state.speakingGradingBusy) return;
         const q = getCurrentQuestion();
         if (!q || !MODE_CONFIG[state.mode]) return;
 
@@ -7056,9 +7370,13 @@
         }
 
         stopShadowingCompare(false);
+        const reqMode = state.mode;
+        const reqQId = q.id;
+        const reqQTitle = q.title;
+        const reqLogId = state.lastSpeakingLogId;
         const cleanMime = (state.recordingMime || state.recordedBlob.type || 'audio/webm').split(';')[0] || 'audio/webm';
-        const refContext = buildSpeakingReferencePrompt(q, state.mode);
-        const isImpromptu = state.mode === 'impromptu';
+        const refContext = buildSpeakingReferencePrompt(q, reqMode);
+        const isImpromptu = reqMode === 'impromptu';
 
         const prompt = isImpromptu ? [
           `You are a native English speaking coach helping a Korean learner living in New Zealand.`,
@@ -7109,40 +7427,58 @@
           `}`
         ].join('\n');
 
-        state.aiGradingBusy = true;
+        if (state.speakingGradeAbort) {
+          try { state.speakingGradeAbort.abort(); } catch (e) {}
+        }
+        const abortCtrl = new AbortController();
+        state.speakingGradeAbort = abortCtrl;
+        const reqSeq = ++state.speakingGradeSeq;
+        state.speakingGradingBusy = true;
         const loadingMsg = isImpromptu
           ? '1분 즉흥 말하기를 분석하고 원어민식 표현 교정을 생성 중입니다...'
           : '녹음된 음성을 분석하여 발음·유창성 채점 중입니다...';
         setAiLoadingState(el.speakingAiResult, el.btnAiGradeSpeaking, loadingMsg);
         try {
           const base64Audio = await blobToBase64(state.recordedBlob);
+          if (reqSeq !== state.speakingGradeSeq || state.mode !== reqMode || getCurrentQuestion()?.id !== reqQId) {
+            return;
+          }
           const result = await callGeminiApi([
             { text: prompt },
             { inlineData: { mimeType: cleanMime, data: base64Audio } }
-          ]);
+          ], { timeoutMs: 25000, signal: abortCtrl.signal });
+          if (reqSeq !== state.speakingGradeSeq || state.mode !== reqMode || getCurrentQuestion()?.id !== reqQId) {
+            return;
+          }
           if (isImpromptu) {
             renderImpromptuAiResult(result);
           } else {
             renderSpeakingAiResult(result);
           }
-          extractAndRecordWeaknessesFromAi(result, state.mode);
+          extractAndRecordWeaknessesFromAi(result, reqMode);
           state.lastSpeakingLogId = attachAiScoreToPracticeLog(
-            state.lastSpeakingLogId,
-            q.id,
-            state.mode,
-            q.title,
+            reqLogId,
+            reqQId,
+            reqMode,
+            reqQTitle,
             result.overallScore
           );
         } catch (err) {
+          if (err?.isAborted || reqSeq !== state.speakingGradeSeq) return;
           if (err.isMissingKey) {
             el.speakingAiResult.classList.add('hidden');
           } else {
             renderAiErrorCard(el.speakingAiResult, err.message || 'AI 음성 채점 중 오류가 발생했습니다.');
           }
         } finally {
-          state.aiGradingBusy = false;
-          el.btnAiGradeSpeaking.disabled = false;
-          el.btnAiGradeSpeaking.classList.remove('opacity-60');
+          if (state.speakingGradeAbort === abortCtrl) {
+            state.speakingGradeAbort = null;
+          }
+          if (reqSeq === state.speakingGradeSeq) {
+            state.speakingGradingBusy = false;
+            el.btnAiGradeSpeaking.disabled = false;
+            el.btnAiGradeSpeaking.classList.remove('opacity-60');
+          }
         }
       }
 
@@ -7295,7 +7631,8 @@
           localStorage.setItem(STORAGE_KEYS.geminiApiKey, key);
           localStorage.setItem(STORAGE_KEYS.geminiModel, model);
         } catch (err) {
-          showAiSettingsFeedback('브라우저 localStorage 저장에 실패했습니다.', true);
+          if (isQuotaExceededError(err)) showStorageQuotaToast();
+          showAiSettingsFeedback('브라우저 저장 공간에 저장하지 못했습니다.', true);
           return;
         }
         updateAiHeaderUI();
@@ -9280,7 +9617,7 @@
         btnEl.dataset.aiVocabExample = (sentence.stressAndLinkingTip || '').trim();
 
         const inVocab = Array.isArray(state.vocabList)
-          && state.vocabList.some(v => v.word.toLowerCase() === word.toLowerCase());
+          && state.vocabList.some(v => v && typeof v.word === 'string' && v.word.toLowerCase() === word.toLowerCase());
         if (inVocab) {
           btnEl.textContent = '✓ 단어장 저장됨';
           btnEl.disabled = true;
@@ -9390,6 +9727,7 @@
       }
 
       function resetYtsSentenceRecordingState() {
+        cancelPendingYtsGrade();
         stopYtsComparePlayback(true);
         stopYtsRecording(true);
         if (state.ytsRecordedUrl) {
@@ -9783,7 +10121,15 @@
         const info = getActiveYtsSentence();
         if (!info) return;
         const { set, idx, sentence } = info;
+        const reqSetId = set.id;
+        const reqIdx = idx;
 
+        if (state.ytsGradeAbort) {
+          try { state.ytsGradeAbort.abort(); } catch (e) {}
+        }
+        const abortCtrl = new AbortController();
+        state.ytsGradeAbort = abortCtrl;
+        const reqSeq = ++state.ytsGradeSeq;
         state.ytsAiGrading = true;
         setAiLoadingState(el.ytsAiResult, el.btnYtsAiGrade, '유튜브 쉐도잉 발음·강세·연음을 분석 중입니다...');
 
@@ -9810,16 +10156,24 @@
 
         try {
           const base64Audio = await blobToBase64(state.ytsRecordedBlob);
+          const curInfo = getActiveYtsSentence();
+          if (reqSeq !== state.ytsGradeSeq || state.mode !== 'yt-shadowing' || curInfo?.set?.id !== reqSetId || curInfo?.idx !== reqIdx) {
+            return;
+          }
           const result = await callGeminiApi([
             { text: prompt },
             { inlineData: { mimeType: state.ytsRecordedMime || 'audio/webm', data: base64Audio } }
-          ]);
+          ], { timeoutMs: 25000, signal: abortCtrl.signal });
+          const afterInfo = getActiveYtsSentence();
+          if (reqSeq !== state.ytsGradeSeq || state.mode !== 'yt-shadowing' || afterInfo?.set?.id !== reqSetId || afterInfo?.idx !== reqIdx) {
+            return;
+          }
 
           const overall = Math.max(10, Math.min(90, Math.round(Number(result.overallScore) || 70)));
           const issues = Array.isArray(result.omittedOrMispronounced) ? result.omittedOrMispronounced : [];
 
           extractAndRecordWeaknessesFromAi(result, 'yt-shadowing');
-          recordPracticeLog(`${set.id}-S${idx + 1}`, 'yt-shadowing', sentence.enText.slice(0, 48), overall);
+          recordPracticeLog(`${reqSetId}-S${reqIdx + 1}`, 'yt-shadowing', sentence.enText.slice(0, 48), overall);
 
           el.ytsAiResult.classList.remove('hidden');
           el.ytsAiResult.innerHTML = `
@@ -9848,16 +10202,22 @@
             ${renderHighScoreExpressionsSection(result.highScoreExpressions)}
           `;
         } catch (err) {
+          if (err?.isAborted || reqSeq !== state.ytsGradeSeq) return;
           if (err.isMissingKey) {
             el.ytsAiResult.classList.add('hidden');
           } else {
             renderAiErrorCard(el.ytsAiResult, err.message || 'AI 쉐도잉 채점 중 오류가 발생했습니다.');
           }
         } finally {
-          state.ytsAiGrading = false;
-          if (el.btnYtsAiGrade) {
-            el.btnYtsAiGrade.disabled = false;
-            el.btnYtsAiGrade.classList.remove('opacity-60');
+          if (state.ytsGradeAbort === abortCtrl) {
+            state.ytsGradeAbort = null;
+          }
+          if (reqSeq === state.ytsGradeSeq) {
+            state.ytsAiGrading = false;
+            if (el.btnYtsAiGrade) {
+              el.btnYtsAiGrade.disabled = false;
+              el.btnYtsAiGrade.classList.remove('opacity-60');
+            }
           }
         }
       }
@@ -10643,7 +11003,9 @@
             if (k.startsWith('pte_writing_') && typeof v === 'string' && v.trim()) {
               try {
                 if (!localStorage.getItem(k)) localStorage.setItem(k, v);
-              } catch (e) {}
+              } catch (e) {
+                if (isQuotaExceededError(e)) showStorageQuotaToast();
+              }
             }
           });
         }
@@ -10653,7 +11015,9 @@
             if (k.startsWith('pte_rl_notes_') && typeof v === 'string' && v.trim()) {
               try {
                 if (!localStorage.getItem(k)) localStorage.setItem(k, v);
-              } catch (e) {}
+              } catch (e) {
+                if (isQuotaExceededError(e)) showStorageQuotaToast();
+              }
             }
           });
         }
@@ -11325,6 +11689,8 @@
         if (prevUrl) { try { URL.revokeObjectURL(prevUrl); } catch (e) {} }
         const audioUrl = URL.createObjectURL(blob);
 
+        const reqSeq = (state.bpEvalSeqMap[key] || 0) + 1;
+        state.bpEvalSeqMap[key] = reqSeq;
         state.bpRevealedItems[key] = true;
         state.bpItemFeedbackMap[key] = { audioUrl, loading: true };
         renderBpWorkspace();
@@ -11355,6 +11721,7 @@
             { text: prompt },
             { inlineData: { mimeType, data: base64Audio } }
           ]);
+          if (state.bpEvalSeqMap[key] !== reqSeq) return;
 
           state.bpItemFeedbackMap[key] = {
             audioUrl,
@@ -11374,6 +11741,7 @@
             });
           }
         } catch (err) {
+          if (state.bpEvalSeqMap[key] !== reqSeq) return;
           state.bpItemFeedbackMap[key] = {
             audioUrl,
             loading: false,
@@ -11382,7 +11750,9 @@
               : (err.message || '채점 중 오류가 발생했습니다.')
           };
         }
-        renderBpWorkspace();
+        if (state.bpEvalSeqMap[key] === reqSeq && state.mode === 'brain-pattern' && getActiveBpSet()?.id === set.id) {
+          renderBpWorkspace();
+        }
       }
 
       async function gradeBpMyoItem(idx, { audioBlob = null, mimeType = 'audio/webm' } = {}) {
@@ -11392,6 +11762,7 @@
         const key = `${set.id}::${promptObj.id || idx}`;
         if (!state.bpProgress.myoDrafts) state.bpProgress.myoDrafts = {};
         const draft = state.bpProgress.myoDrafts[key] || { userText: '' };
+        if (draft.loading) return;
         const userText = (draft.userText || '').trim();
 
         if (!audioBlob && userText.length < 3) {
@@ -11401,6 +11772,8 @@
           return;
         }
 
+        const reqSeq = (state.bpMyoSeqMap[key] || 0) + 1;
+        state.bpMyoSeqMap[key] = reqSeq;
         draft.loading = true;
         draft.error = '';
         state.bpProgress.myoDrafts[key] = draft;
@@ -11429,6 +11802,7 @@
             parts.push({ inlineData: { mimeType, data: base64Audio } });
           }
           const res = await callGeminiApi(parts);
+          if (state.bpMyoSeqMap[key] !== reqSeq) return;
           draft.loading = false;
           if (res.userTranscript) draft.userText = res.userTranscript;
           draft.aiResult = {
@@ -11439,13 +11813,16 @@
           state.bpProgress.myoDrafts[key] = draft;
           saveBpProgress();
         } catch (err) {
+          if (state.bpMyoSeqMap[key] !== reqSeq) return;
           draft.loading = false;
           draft.error = err.isMissingKey
             ? '⚙️ AI 설정에서 Gemini API 키를 입력하면 원어민 교정 결과를 받을 수 있습니다.'
             : (err.message || '교정 중 오류가 발생했습니다.');
           state.bpProgress.myoDrafts[key] = draft;
         }
-        renderBpMyoList(set);
+        if (state.bpMyoSeqMap[key] === reqSeq && state.mode === 'brain-pattern' && getActiveBpSet()?.id === set.id) {
+          renderBpMyoList(set);
+        }
       }
 
       async function toggleBpMyoVoiceInput(idx) {
@@ -11804,6 +12181,9 @@
       window.addEventListener('beforeunload', () => {
         clearTimerInterval();
         stopWritingTimer();
+        cancelPendingSpeakingGrade();
+        cancelPendingWritingGrade();
+        cancelPendingYtsGrade();
         stopShadowingCompare(false);
         stopRoleplayRecording(true);
         stopDrillRecording(true);
