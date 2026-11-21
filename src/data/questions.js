@@ -1,7 +1,7 @@
 // NZ PTE Academic Practice Trainer - Question Bank Data
 // Loaded by index.html and cached by sw.js
 
-window.PTE_DATA = {
+export const PTE_DATA = {
   // ==========================================================
   // 1. Read Aloud (30 Questions)
   // ==========================================================
@@ -2390,3 +2390,13 @@ In conclusion, preserving endangered languages enriches cultural heritage and co
     }
   ]
 };
+
+export const {
+  READ_ALOUD_QUESTIONS,
+  DESCRIBE_IMAGE_QUESTIONS,
+  REPEAT_SENTENCE_QUESTIONS,
+  RETELL_LECTURE_QUESTIONS,
+  IMPROMPTU_QUESTIONS,
+  SWT_QUESTIONS,
+  ESSAY_QUESTIONS,
+} = PTE_DATA;

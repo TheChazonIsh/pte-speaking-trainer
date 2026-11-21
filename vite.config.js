@@ -6,7 +6,6 @@ import crypto from 'node:crypto';
 const STATIC_PRECACHE = [
   './',
   './index.html',
-  './data.js',
   './manifest.json',
   './icon.svg',
   './icon-180.png',
